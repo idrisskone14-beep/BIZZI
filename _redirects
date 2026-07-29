@@ -1,0 +1,6 @@
+/admin /?admin=1&entry=admin-access&open=admin 302
+/admin/ /?admin=1&entry=admin-access&open=admin 302
+/admin-access /?admin=1&entry=admin-access&open=admin 302
+/admin-access/ /?admin=1&entry=admin-access&open=admin 302
+/admin-panel /?admin=1&entry=admin-access&open=admin 302
+/admin-panel/ /?admin=1&entry=admin-access&open=admin 302

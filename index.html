@@ -1,0 +1,1358 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#06183f">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="Bizzi permet de trouver rapidement un prestataire local, sans inscription client.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Bizzi">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>Bizzi</title>
+  <link rel="icon" href="assets/icon-192-v302.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon-v302.png">
+  <link rel="manifest" href="manifest.webmanifest?v=304">
+  <link rel="preconnect" href="https://hqqppxnvorcnvksulhna.supabase.co">
+  <script>
+    window.__bizziCssReady = false;
+    window.__bizziAppReady = false;
+    window.__bizziShowApp = function () {
+      if (!window.__bizziCssReady || !window.__bizziAppReady || !document.body) return;
+      window.setTimeout(function () {
+        document.body.classList.add("bizzi-ready");
+      }, 220);
+    };
+  </script>
+  <style>
+    :root { color-scheme: light; }
+    html, body { margin: 0; min-height: 100%; background: #06183f; }
+    body:not(.bizzi-ready) .app-shell,
+    body:not(.bizzi-ready) .bottom-nav { opacity: 0; }
+    #bootSplash {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 50% 36%, rgba(0,173,238,.22), transparent 34%),
+        linear-gradient(145deg, #06183f 0%, #07111f 58%, #120f0c 100%);
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      transition: opacity .38s ease, visibility .38s ease;
+    }
+    .bizzi-ready #bootSplash { opacity: 0; visibility: hidden; pointer-events: none; }
+    .boot-card { display: grid; justify-items: center; gap: 18px; text-align: center; padding: 24px; }
+    .boot-logo {
+      width: 92px;
+      height: 92px;
+      padding: 8px;
+      border-radius: 24px;
+      display: grid;
+      place-items: center;
+      background: white;
+      box-shadow: 0 24px 80px rgba(0,0,0,.34), 0 0 42px rgba(0,173,238,.24);
+    }
+    .boot-logo img { width: 100%; height: 100%; object-fit: contain; }
+    .boot-name { margin: 0; font-size: 28px; font-weight: 950; letter-spacing: .12em; }
+    .boot-line { margin: 0; color: rgba(255,255,255,.78); font-size: 12px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; }
+    .boot-loader { width: 92px; height: 3px; border-radius: 999px; overflow: hidden; background: rgba(255,255,255,.14); }
+    .boot-loader span { display: block; width: 38%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #ffb000, #00adee); animation: bizziBootLoad 1.1s ease-in-out infinite alternate; }
+    @keyframes bizziBootLoad { from { transform: translateX(0); } to { transform: translateX(164%); } }
+  </style>
+  <link rel="preload" href="styles.css?v=304" as="style" onload="this.onload=null;this.rel='stylesheet';window.__bizziCssReady=true;window.__bizziShowApp&&window.__bizziShowApp();">
+  <link rel="stylesheet" href="mobile-forms.css?v=304">
+  <link rel="stylesheet" href="journey-visuals.css?v=243">
+  <link rel="stylesheet" href="service-ai-images.css?v=304">
+  <link rel="stylesheet" href="v302.css?v=304">
+  <link rel="stylesheet" href="v302-home.css?v=304">
+  <link rel="stylesheet" href="home-magazine.css?v=304">
+  <link rel="stylesheet" href="bizzi-life.css?v=304">
+  <link rel="stylesheet" href="global-assistant.css?v=304">
+  <link rel="stylesheet" href="location-intelligence.css?v=304">
+  <link rel="stylesheet" href="motion-system.css?v=304">
+  <link rel="stylesheet" href="mobile-layout-v297.css?v=304">
+  <noscript><link rel="stylesheet" href="styles.css?v=304"><link rel="stylesheet" href="mobile-forms.css?v=304"></noscript>
+</head>
+<body>
+  <div id="bootSplash" aria-label="Chargement Bizzi">
+    <div class="boot-card">
+      <div class="boot-logo" aria-hidden="true"><img src="assets/icon-192-v302.png" alt=""></div>
+      <p class="boot-name">BIZZI</p>
+      <p class="boot-line">Trouver. Réserver. Réaliser.</p>
+      <div class="boot-loader" aria-hidden="true"><span></span></div>
+    </div>
+  </div>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <img src="assets/icon-192-v302.png" alt="Bizzi">
+        <span>Bizzi</span>
+      </div>
+      <nav class="side-nav" aria-label="Navigation principale">
+        <button class="nav-link active" data-view="home" data-i18n="home">Accueil</button>
+        <button class="nav-link life-link" data-view="life">Bizzi Life</button>
+        <button class="nav-link exception-link" data-view="exception-places">Lieux d’exception</button>
+        <button class="nav-link delivery-link" data-view="delivery" data-i18n="delivery">Livraison et course</button>
+        <button class="nav-link food-link" data-view="food">Food</button>
+        <button class="nav-link" data-view="events">Événements</button>
+        <button class="nav-link" data-view="search" data-i18n="services">Services</button>
+        <button class="nav-link" data-view="jobs" data-i18n="jobs">Emplois</button>
+        <button class="nav-link" data-view="provider" data-i18n="provider">Prestataire</button>
+        <button class="nav-link" data-view="legal">Légal</button>
+      </nav>
+      <div class="side-note">
+        <strong>Bizzi V304</strong>
+        <span>Parcours sécurisés et fluides.</span>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Application de services</p>
+          <h1 id="pageTitle" data-i18n="welcome">Bienvenue sur Bizzi</h1>
+        </div>
+        <div class="location-pill">
+          <span>Zone</span>
+          <select id="citySelect" aria-label="Ville"></select>
+          <button id="geoButton" type="button">Me localiser</button>
+          <button id="installButton" type="button" hidden data-i18n="install">Installer</button>
+          <select id="languageSelect" aria-label="Langue">
+            <option value="fr">Français simple</option>
+            <option value="nouchi">Nouchi (bêta)</option>
+          </select>
+          <span id="connectionMode" class="connection-mode">Connexion normale</span>
+        </div>
+        <p id="geoStatus" class="geo-status">Position manuelle par ville.</p>
+      </header>
+
+      <div id="lifeReturnBar" class="life-return-bar" hidden>
+        <button type="button" data-life-return>← Revenir à mon projet Bizzi Life</button>
+        <span id="lifeReturnLabel">Votre checklist et votre progression sont conservées.</span>
+      </div>
+
+      <section id="view-home" class="view active">
+        <div class="premium-home">
+          <section class="premium-hero premium-hero-direct" aria-label="Recherche Bizzi">
+            <div class="premium-hero-copy">
+              <div class="home-context-bar">
+                <div>
+                  <span id="homeTimeGreeting">Bonjour</span>
+                  <strong id="homeContextName">Bienvenue sur Bizzi</strong>
+                  <small id="homeContextLocation">Votre ville</small>
+                </div>
+                <button id="homeUpdatesButton" type="button" aria-label="Voir les nouveautés Bizzi">
+                  <span aria-hidden="true">◉</span>
+                  <b id="homeUpdatesCount">0</b>
+                </button>
+              </div>
+              <div class="premium-brand" aria-label="Bizzi, services intelligents">
+                <img src="assets/icon-192-v302.png" alt="">
+                <span>Bizzi</span>
+              </div>
+              <h2 class="premium-instant-title">Je cherche…</h2>
+              <p id="homeContextPrompt" class="home-context-prompt">Que recherchez-vous aujourd’hui&nbsp;?</p>
+              <form id="homeQuickSearchForm" class="premium-home-search" role="search">
+                <span aria-hidden="true">⌕</span>
+                <label class="sr-only" for="homeQuickSearchInput">Décrivez votre besoin</label>
+                <input id="homeQuickSearchInput" type="search" maxlength="260" placeholder="Un plombier, un restaurant, un événement…" autocomplete="off" required>
+                <button type="submit">Trouver</button>
+              </form>
+              <button id="homeDriveAction" class="premium-drive-banner" type="button" data-home-intent="Je veux une course maintenant" data-home-route="drive" aria-label="Drive — commander une course maintenant">
+                <span class="premium-drive-icon" aria-hidden="true">
+                  <svg viewBox="0 0 64 64" focusable="false"><path d="M8 39h6l6-13h22l8 13h6v10H8V39Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/><path d="M22 28h18l5 10H17l5-10Z" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="19" cy="49" r="5"/><circle cx="46" cy="49" r="5"/></svg>
+                </span>
+                <span><strong>Drive</strong><small>Commander une course</small></span>
+                <b>Maintenant <i aria-hidden="true">→</i></b>
+              </button>
+              <div class="home-instant-actions" aria-label="Besoins immédiats">
+                <button type="button" data-home-intent="Je cherche un plombier"><span aria-hidden="true">⌕</span>Un plombier</button>
+                <button type="button" data-home-intent="Je veux livrer un colis" data-home-route="delivery"><span aria-hidden="true">▣</span>Livrer un colis</button>
+                <button type="button" data-home-intent="Je veux sortir ce soir" data-home-route="events"><span aria-hidden="true">☆</span>Sortir ce soir</button>
+              </div>
+              <div class="premium-hero-actions">
+                <button class="premium-cta premium-cta-voice" id="homeVoiceStart" type="button" aria-pressed="false">
+                  <span class="premium-mic" aria-hidden="true">●</span>
+                  <span><strong>Parler à Bizzi</strong><small>Recherche vocale intelligente</small></span>
+                </button>
+              </div>
+              <div id="homeVoiceStatus" class="home-voice-status" role="status" aria-live="polite" hidden></div>
+            </div>
+          </section>
+
+          <section class="premium-paths premium-paths-priority" aria-labelledby="premiumPathsTitle">
+            <div class="premium-section-intro">
+              <h2 id="premiumPathsTitle">Les essentiels</h2>
+            </div>
+            <div class="premium-path-grid">
+              <button type="button" data-go="search" aria-label="Ouvrir Services"><span class="premium-path-visual"><img src="assets/journey-services-v302.jpg" loading="lazy" decoding="async" alt=""><i class="premium-path-icon coral">⌕</i></span><strong>Services</strong><b aria-hidden="true">→</b></button>
+              <button type="button" data-go="delivery" aria-label="Ouvrir Livraison et courses"><span class="premium-path-visual"><img src="assets/journey-delivery-v302.jpg" loading="lazy" decoding="async" alt=""><i class="premium-path-icon orange">▣</i></span><strong>Livraison et courses</strong><b aria-hidden="true">→</b></button>
+              <button type="button" data-go="food" aria-label="Ouvrir Food"><span class="premium-path-visual"><img src="assets/journey-food-v302.jpg" loading="lazy" decoding="async" alt=""><i class="premium-path-icon green">♨</i></span><strong>Food</strong><b aria-hidden="true">→</b></button>
+              <button type="button" data-go="events" aria-label="Ouvrir Événements"><span class="premium-path-visual"><img src="assets/journey-events-v302.jpg" loading="lazy" decoding="async" alt=""><i class="premium-path-icon purple">☆</i></span><strong>Événements</strong><b aria-hidden="true">→</b></button>
+              <button type="button" data-go="jobs" aria-label="Ouvrir Emploi"><span class="premium-path-visual"><img src="assets/journey-jobs-v302.jpg" loading="lazy" decoding="async" alt=""><i class="premium-path-icon blue">◈</i></span><strong>Emploi</strong><b aria-hidden="true">→</b></button>
+              <button type="button" data-go="life" aria-label="Ouvrir Bizzi Life"><span class="premium-path-visual"><img src="assets/journey-life-v302.svg" loading="lazy" decoding="async" alt=""><i class="premium-path-icon gold">✦</i></span><strong>Bizzi Life</strong><b aria-hidden="true">→</b></button>
+              <button type="button" data-go="exception-places" aria-label="Ouvrir Lieux d’exception"><span class="premium-path-visual"><img src="assets/journey-exception-v302.jpg" loading="lazy" decoding="async" alt=""><i class="premium-path-icon green">⌖</i></span><strong>Lieux d’exception</strong><b aria-hidden="true">→</b></button>
+            </div>
+          </section>
+
+          <section id="homeRecommendationsSection" class="home-magazine-section home-recommendations" aria-labelledby="homeRecommendationsTitle">
+            <div class="home-magazine-head">
+              <div><span>Selon votre ville et vos besoins</span><h2 id="homeRecommendationsTitle">Recommandés pour vous</h2></div>
+              <button type="button" data-go="search">Voir tout →</button>
+            </div>
+            <div id="homeRecommendations" class="home-magazine-rail" aria-live="polite"></div>
+          </section>
+
+          <section class="premium-confidence premium-events-spotlight" aria-label="Événements à ne pas manquer">
+            <div class="premium-confidence-copy">
+              <p class="premium-kicker premium-kicker-light"><span></span> Événements à ne pas manquer</p>
+              <button class="premium-outline-action" type="button" data-go="events">Voir l’agenda →</button>
+            </div>
+            <div id="boostedHomeEvents" class="boosted-home-events" aria-live="polite"></div>
+          </section>
+
+          <div class="home-discovery premium-discovery">
+            <div class="premium-discovery-grid">
+              <section id="exceptionPlacesSection" class="panel home-section premium-home-section premium-exception-section" aria-labelledby="exceptionPlacesTitle">
+                <div class="section-head premium-section-head">
+                  <div><p class="premium-overline">Sites touristiques &amp; endroits insolites</p><h2 id="exceptionPlacesTitle">Lieux d’exception</h2></div>
+                  <button class="premium-text-link" type="button" data-go="exception-places">Voir les 10 →</button>
+                </div>
+                <div id="featuredExceptionPlaces" class="featured-exception-places" aria-live="polite"></div>
+              </section>
+
+              <section class="panel home-section premium-home-section premium-monthly-food">
+                <div class="section-head premium-section-head">
+                  <div><p class="premium-overline">Palmarès du mois</p><h2>Les meilleurs restaurants du mois</h2></div>
+                  <div class="carousel-head-actions"><span class="carousel-swipe-hint">Glissez pour découvrir ↔</span><button class="premium-text-link" type="button" data-go="food">Explorer →</button></div>
+                </div>
+                <div id="featuredFood" class="featured-food"></div>
+              </section>
+            </div>
+
+            <section id="homeGoodDealsSection" class="home-magazine-section home-good-deals" aria-labelledby="homeGoodDealsTitle">
+              <div class="home-magazine-head">
+                <div><span>Promotions réellement actives</span><h2 id="homeGoodDealsTitle">Bons plans du jour</h2></div>
+              </div>
+              <div id="homeGoodDeals" class="home-magazine-rail home-deals-rail" aria-live="polite"></div>
+            </section>
+
+            <section id="homeMagazineUpdates" class="home-magazine-section home-updates" aria-labelledby="homeUpdatesTitle">
+              <div class="home-magazine-head">
+                <div><span>Ajoutés récemment sur Bizzi</span><h2 id="homeUpdatesTitle">Nouveautés</h2></div>
+              </div>
+              <div id="homeNewItems" class="home-magazine-rail home-updates-rail" aria-live="polite"></div>
+            </section>
+
+            <section class="premium-share-only" aria-label="Partager Bizzi">
+              <a id="shareBizziWhatsApp" class="primary social-action" href="#" target="_blank" rel="noreferrer">Partager sur WhatsApp</a>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-life" class="view">
+        <div class="life-shell">
+          <section class="life-hero" aria-labelledby="lifeTitle">
+            <div class="life-hero-copy">
+              <div class="life-brand"><span aria-hidden="true">✦</span> Bizzi Life</div>
+              <h2 id="lifeTitle">Dis-nous ce que tu veux faire.</h2>
+              <p>Bizzi organise les services autour de toi.</p>
+              <form id="lifeGoalForm" class="life-goal-form">
+                <label for="lifeGoalInput">Votre objectif</label>
+                <textarea id="lifeGoalInput" name="goal" rows="3" maxlength="500" required placeholder="Ex. Je déménage de Yopougon à Cocody samedi prochain."></textarea>
+                <div class="life-goal-fields">
+                  <label>Date souhaitée<input id="lifeTargetDate" name="targetDate" type="date"></label>
+                  <label>Budget prévu<input id="lifeBudget" name="budget" type="number" min="0" step="5000" inputmode="numeric" placeholder="FCFA"></label>
+                  <label>Niveau
+                    <select id="lifeBudgetTier" name="budgetTier">
+                      <option value="standard">Standard</option>
+                      <option value="economy">Économique</option>
+                      <option value="premium">Premium</option>
+                    </select>
+                  </label>
+                </div>
+                <button class="life-primary" type="submit">Construire mon projet</button>
+              </form>
+              <div class="life-examples" aria-label="Exemples de projets">
+                <button type="button" data-life-example="Je veux organiser mon anniversaire pour 30 personnes à Cocody.">Anniversaire</button>
+                <button type="button" data-life-example="Je souhaite organiser mon mariage à Abidjan.">Mariage</button>
+                <button type="button" data-life-example="Je déménage de Yopougon à Cocody samedi prochain.">Déménagement</button>
+                <button type="button" data-life-example="Ma voiture est en panne à Marcory.">Panne voiture</button>
+                <button type="button" data-life-example="Je cherche une nounou pour ce soir à Cocody.">Nounou</button>
+                <button type="button" data-life-example="Je veux rénover un appartement de trois pièces.">Rénovation</button>
+                <button type="button" data-life-example="Je dois aller à l’aéroport demain matin.">Aéroport</button>
+                <button type="button" data-life-example="Je veux organiser un afterwork à Cocody.">Afterwork</button>
+                <button type="button" data-life-example="Je veux organiser un défilé de mode à Abidjan.">Défilé de mode</button>
+                <button type="button" data-life-example="Je veux organiser un team building pour mon équipe à Grand-Bassam.">Team building</button>
+                <button type="button" data-life-example="Je veux organiser un baptême à Cocody.">Baptême</button>
+                <button type="button" data-life-example="Je veux organiser un showcase à Abidjan.">Showcase</button>
+                <button type="button" data-life-example="Je veux organiser une conférence de presse au Plateau.">Conférence de presse</button>
+              </div>
+            </div>
+            <aside class="life-hero-proof" aria-label="Fonctionnement Bizzi Life">
+              <span>01</span><strong>Comprendre</strong>
+              <span>02</span><strong>Organiser</strong>
+              <span>03</span><strong>Réaliser</strong>
+            </aside>
+          </section>
+
+          <section id="lifeProactivePanel" class="life-proactive-panel" aria-live="polite"></section>
+
+          <section id="lifePlanSection" class="life-plan-section" hidden aria-live="polite">
+            <div id="lifeProjectSummary"></div>
+            <div class="life-plan-grid">
+              <section class="life-card">
+                <div class="life-section-head"><div><span>Plan intelligent</span><h3>Services nécessaires</h3></div><strong id="lifeServiceCount">0</strong></div>
+                <div id="lifeServices" class="life-services"></div>
+              </section>
+              <section class="life-card">
+                <div class="life-section-head"><div><span>Suivi</span><h3>Étapes du projet</h3></div><strong id="lifeProgressValue">0 %</strong></div>
+                <div id="lifeTasks" class="life-tasks"></div>
+              </section>
+            </div>
+            <section class="life-card life-recommendation-card">
+              <div class="life-section-head"><div><span>Choix simplifié</span><h3>Votre stratégie de sélection</h3></div></div>
+              <div id="lifeStrategies" class="life-strategies"></div>
+            </section>
+          </section>
+
+          <section class="life-lower-grid">
+            <section class="life-card">
+              <div class="life-section-head"><div><span>Vos projets</span><h3>Continuer là où vous étiez</h3></div></div>
+              <div id="lifeProjects" class="life-projects"></div>
+            </section>
+            <section class="life-card">
+              <div class="life-section-head"><div><span>Personnalisation</span><h3>Mes préférences</h3></div></div>
+              <form id="lifePreferencesForm" class="life-preferences">
+                <label>Commune préférée<input name="preferredArea" maxlength="80" placeholder="Cocody, Marcory…"></label>
+                <label>Priorité
+                  <select name="priority">
+                    <option value="balanced">Équilibre</option>
+                    <option value="fast">Rapidité</option>
+                    <option value="discreet">Discrétion</option>
+                    <option value="premium">Haut de gamme</option>
+                  </select>
+                </label>
+                <label>Moyen de paiement
+                  <select name="payment">
+                    <option value="mobile-money">Mobile Money</option>
+                    <option value="cash">Espèces</option>
+                    <option value="card">Carte</option>
+                  </select>
+                </label>
+                <label class="life-check"><input name="verifiedOnly" type="checkbox"> Priorité aux profils vérifiés</label>
+                <button class="secondary" type="submit">Enregistrer</button>
+                <p id="lifePreferencesStatus" role="status"></p>
+              </form>
+            </section>
+          </section>
+
+          <section class="life-premium-preview">
+            <div><span>Bizzi Premium</span><h3>Un accompagnement renforcé, quand vous en aurez besoin.</h3></div>
+            <p>Comparaison de devis, assistance prioritaire et avantages fidélité seront activés après validation des conditions commerciales.</p>
+            <span class="life-coming-soon">Bientôt</span>
+          </section>
+        </div>
+      </section>
+
+      <section id="view-exception-places" class="view">
+        <section class="panel exception-directory-hero">
+          <p class="eyebrow">Lieux d’exception</p>
+          <h2>Les adresses qui méritent le détour</h2>
+          <p>Les boosts actifs apparaissent en premier. Les 10 premiers lieux sont également visibles sur l’écran d’accueil.</p>
+          <div class="exception-hero-actions">
+            <button id="exceptionSubmitToggle" class="primary" type="button" aria-expanded="false">Inscrire un lieu gratuitement</button>
+            <span class="tag ok">1 mois gratuit</span>
+          </div>
+        </section>
+
+        <section id="exceptionSubmitPanel" class="panel exception-submit-panel" hidden>
+          <div class="section-head"><div><p class="eyebrow">Inscription</p><h2>Proposer un lieu d’exception</h2></div><span class="tag">Validation Bizzi</span></div>
+          <p>La période gratuite de 30 jours commence à la validation. Un boost est facultatif.</p>
+          <form id="exceptionPlaceForm" class="form">
+            <div class="form-grid">
+              <label>Nom du lieu<input name="name" required minlength="2" maxlength="100" placeholder="Ex. Domaine des cascades"></label>
+              <label>Responsable<input name="ownerName" required minlength="2" maxlength="80" placeholder="Nom ou société"></label>
+              <label>Téléphone / WhatsApp<input name="contactPhone" required inputmode="tel" autocomplete="tel" placeholder="+225 07 00 00 00 00"></label>
+              <label>Ville<input name="city" required minlength="2" placeholder="Abidjan, Bouaké, Man…"></label>
+              <label>Zone ou quartier<input name="area" maxlength="100" placeholder="Île Boulay, Mondoukou…"></label>
+              <label>Adresse<input name="address" maxlength="180" placeholder="Adresse ou repère précis"></label>
+            </div>
+            <label>Description<textarea name="description" required minlength="20" maxlength="600" placeholder="Décrivez l’expérience, le cadre et les activités proposées."></textarea></label>
+            <label>Photo du lieu<input name="photo" type="file" accept="image/*" required><small>Photo horizontale recommandée.</small></label>
+            <fieldset class="exception-plan-fieldset">
+              <legend>Visibilité</legend>
+              <div id="exceptionPlacePlans" class="exception-plan-grid"></div>
+            </fieldset>
+            <div id="exceptionPaymentFields" class="exception-payment-fields" hidden>
+              <div class="form-grid">
+                <label>Moyen de paiement<select name="paymentMethod" id="exceptionPaymentMethod"></select></label>
+                <label>Référence de transaction<input name="paymentReference" maxlength="120" placeholder="Référence Wave / Mobile Money"></label>
+              </div>
+            </div>
+            <label id="exceptionAdminGrantField" class="exception-admin-grant" hidden><input name="adminGrant" type="checkbox"> Ajout gratuit par l’équipe Bizzi (publication immédiate, sans paiement)</label>
+            <div id="exceptionPlaceStatus" class="sync-status" role="status" aria-live="polite"></div>
+            <button class="primary" type="submit">Envoyer pour validation</button>
+          </form>
+        </section>
+
+        <section class="panel">
+          <div class="section-head"><div><p class="eyebrow">Classement</p><h2>Les lieux visibles</h2></div><span id="exceptionPlaceCount" class="tag ok">0 lieu</span></div>
+          <div id="exceptionPlacesList" class="exception-directory-list" aria-live="polite"></div>
+        </section>
+      </section>
+
+      <section id="view-delivery" class="view">
+        <section class="panel delivery-simple-panel">
+          <div class="section-head"><div><p class="eyebrow">Bizzi Livraison et courses</p><h2>Choisissez votre trajet</h2></div><span class="tag ok">Tarif automatique</span></div>
+          <div class="delivery-kind-tabs" role="tablist" aria-label="Course ou livraison">
+            <button class="delivery-kind-tab selected" type="button" data-delivery-kind="ride" aria-selected="true">Course</button>
+            <button class="delivery-kind-tab" type="button" data-delivery-kind="delivery" aria-selected="false">Livraison</button>
+          </div>
+          <form id="deliveryRequestForm" class="form delivery-simple-form">
+            <select name="requestType" id="deliveryRequestType" hidden><option value="ride" selected>Course</option><option value="delivery">Livraison</option></select>
+            <label class="delivery-client-name"><span>Votre prénom ou pseudo</span><input name="clientName" id="deliveryClientNameInput" required autocomplete="nickname" minlength="2" maxlength="40" placeholder="Ex: Awa ou Koffi225"><small>Obligatoire pour commander une course ou une livraison.</small></label>
+            <label class="delivery-client-phone"><span>Votre téléphone</span><input name="phone" id="deliveryClientPhoneInput" required inputmode="tel" autocomplete="tel" placeholder="+225 07 00 00 00 00"><small>Ce numéro sera enregistré pour le suivi de votre commande.</small></label>
+            <label id="deliveryPickupLabel"><span>Lieu de départ</span><input name="pickup" required autocomplete="street-address" list="ciReferencePlaces" placeholder="Position ou lieu de référence"></label>
+            <button class="secondary compact-action" type="button" id="deliveryPickupCurrentButton">Utiliser ma position</button>
+            <span id="deliveryPickupGeoStatus" class="sync-status" hidden></span>
+            <input type="hidden" name="pickupLatitude" id="deliveryPickupLatitude"><input type="hidden" name="pickupLongitude" id="deliveryPickupLongitude"><input type="hidden" name="pickupAccuracy" id="deliveryPickupAccuracy">
+            <label id="deliveryDropoffLabel"><span>Lieu de destination</span><input name="dropoff" required autocomplete="street-address" list="ciReferencePlaces" placeholder="Destination ou lieu de référence"></label>
+            <datalist id="ciReferencePlaces"></datalist>
+            <input type="hidden" name="parcel" value="Colis / commande"><input type="hidden" name="passengerCount" value="1"><input type="hidden" name="vehicleType" value="taxi"><input type="hidden" name="city" value="Abidjan">
+            <input type="hidden" name="distanceKm" id="deliveryDistanceInput"><input type="hidden" name="urgency" id="deliveryUrgencySelect" value="today"><input type="hidden" name="scheduledAt" id="deliveryScheduledAtInput"><input type="checkbox" name="badWeather" id="deliveryBadWeatherInput" hidden>
+            <div id="deliveryPricingSummary" class="delivery-pricing-summary delivery-fare-summary"></div>
+            <input name="amount" id="deliveryAmountInput" type="hidden" required>
+            <div id="deliveryPaymentStage" class="delivery-payment-box" hidden>
+              <h3 id="deliveryPaymentTitle">Choisissez le paiement</h3>
+              <div id="deliveryPaymentMethods" class="payment-grid"></div><div id="deliveryPaymentInstructions" class="payment-instructions"></div>
+              <input type="hidden" name="paymentReference"><input type="hidden" name="notes">
+              <button class="primary" id="deliverySubmitButton" type="submit">Valider la course</button>
+            </div>
+          </form>
+          <div id="deliveryRequestStatus" class="status-box"></div>
+        </section>
+      </section>
+
+      <section id="view-food" class="view">
+        <section class="panel food-hero-panel">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Bizzi Food</p>
+              <h2>Trouvez un bon plat près de vous</h2>
+            </div>
+            <span class="tag ok">Adresses vérifiées</span>
+          </div>
+          <div class="food-quick-tags" id="foodQuickTags"></div>
+        </section>
+
+        <div class="food-layout">
+          <section class="panel food-search-panel">
+            <div class="section-head">
+              <h2>Restaurants : contacter ou se faire livrer</h2>
+              <span id="foodCount" class="tag ok">0 adresse</span>
+            </div>
+            <div class="toolbar food-toolbar">
+              <input id="foodSearchInput" type="search" placeholder="Rechercher : garba, poulet braisé, attiéké...">
+              <select id="foodSpecialtyFilter" aria-label="Spécialité"></select>
+              <select id="foodCityFilter" aria-label="Ville Food"></select>
+            </div>
+            <div id="foodList" class="food-list"></div>
+          </section>
+
+          <section id="foodOrderPanel" class="panel food-order-panel" hidden></section>
+          <button class="secondary food-submit-toggle" id="foodSubmitToggle" type="button" aria-expanded="false">Proposer une adresse Food</button>
+          <section class="panel food-submit-panel" id="foodSubmitPanel" hidden>
+            <div class="section-head">
+              <h2>Proposer une adresse Food</h2>
+              <span class="tag pending">Visibilité Bizzi</span>
+            </div>
+            <form id="foodForm" class="form">
+              <label>Nom de l'adresse<input name="name" required maxlength="90" placeholder="Ex: Chez Awa Garba"></label>
+              <label>Responsable<input name="ownerName" required placeholder="Nom du responsable"></label>
+              <label>WhatsApp ou téléphone<input name="contactPhone" required placeholder="+225 07 00 00 00 00"></label>
+              <label>Type d'adresse<select name="placeType" id="foodPlaceType"></select></label>
+              <label>Spécialité principale<select name="mainSpecialty" id="foodMainSpecialty"></select></label>
+              <label>Autres spécialités<input name="specialties" placeholder="Ex: alloco, poisson braisé, jus naturel"></label>
+              <label>Ville<select name="city" id="foodCity" required></select></label>
+              <label>Quartier<input name="area" required placeholder="Ex: Cocody, Yopougon, Air France"></label>
+              <label>Adresse ou repère<input name="address" required placeholder="Ex: près du marché, carrefour..."></label>
+              <label>Budget moyen<input name="averageBudget" placeholder="Ex: 1 000 - 3 000 FCFA"></label>
+              <label>Horaires<input name="openingHours" placeholder="Ex: 10h - 22h"></label>
+              <label>Photo / affiche<input name="photo" type="file" accept="image/*"></label>
+              <label class="check-row"><input name="deliveryAvailable" type="checkbox"> Livraison possible ou partenaire livreur disponible</label>
+              <label>Description<textarea name="description" rows="3" maxlength="260" placeholder="Ce qui rend votre adresse spéciale."></textarea></label>
+              <label class="check-row"><input name="foodTerms" type="checkbox" required> Je confirme que les informations sont exactes et que Bizzi sert de plateforme de visibilité.</label>
+              <button class="primary" type="submit">Envoyer l'adresse Food</button>
+            </form>
+            <div id="foodStatus" class="status-box"></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="view-events" class="view">
+        <section class="panel event-entry-panel">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Événements Bizzi</p>
+              <h2>Que voulez-vous faire ?</h2>
+            </div>
+            <span class="tag ok">Billets hors Bizzi</span>
+          </div>
+          <div class="event-entry-tabs" role="tablist" aria-label="Choix événement">
+            <button class="event-entry-tab selected" type="button" data-event-entry="tickets" aria-selected="true">Acheter un billet</button>
+            <button class="event-entry-tab" type="button" data-event-entry="promote" aria-selected="false">Promouvoir</button>
+          </div>
+          <p class="event-entry-note">Achat auprès de l’organisateur.</p>
+        </section>
+        <div class="events-layout">
+          <section class="panel events-list-panel">
+            <div class="section-head">
+              <h2>Acheter un billet</h2>
+              <span id="eventCount" class="tag ok">0 événement</span>
+            </div>
+            <div class="toolbar events-toolbar">
+              <input id="eventSearchInput" type="search" placeholder="Rechercher : concert, conférence, humour...">
+              <select id="eventCategoryFilter" aria-label="Catégorie événement"></select>
+              <label class="inline-filter">Changer de ville<select id="eventCityFilter" aria-label="Changer de ville événement"></select></label>
+            </div>
+            <div id="eventGeoStatus" class="sync-status" role="status" aria-live="polite"></div>
+            <div id="eventList" class="event-list"></div>
+          </section>
+
+          <section class="panel event-submit-panel">
+            <div class="section-head">
+              <h2>Promouvoir votre spectacle</h2>
+              <span class="tag pending">Forfait visibilité</span>
+            </div>
+            <form id="eventForm" class="form mobile-step-form" data-mobile-form="event">
+              <div class="mobile-form-progress" aria-live="polite">
+                <strong data-mobile-progress-label>Étape 1 sur 3</strong>
+                <span data-mobile-progress-text>Informations principales</span>
+              </div>
+              <fieldset class="mobile-form-step active" data-mobile-step="1" data-step-title="Informations principales">
+                <legend>1. Informations principales</legend>
+                <label>Nom de l'événement<input name="title" required maxlength="100" autocomplete="organization-title" placeholder="Ex: Grand concert live"></label>
+                <label>Organisateur<input name="organizerName" required autocomplete="organization" placeholder="Ex: Agence Event CI"></label>
+                <label>Contact WhatsApp ou téléphone<input name="contactPhone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="+225 07 00 00 00 00"></label>
+                <label>Catégorie<select name="category" id="eventCategory"></select></label>
+                <label>Date et heure de début<input name="dateTime" type="datetime-local" required></label>
+                <label>Date et heure de fin<input name="endDateTime" type="datetime-local" required></label>
+                <div class="mobile-step-actions"><button class="primary" type="button" data-mobile-next>Continuer vers le lieu</button></div>
+              </fieldset>
+              <fieldset class="mobile-form-step" data-mobile-step="2" data-step-title="Lieu de l'événement">
+                <legend>2. Lieu de l'événement</legend>
+                <label>Lieu<input name="venue" required autocomplete="organization" placeholder="Ex: Palais de la Culture"></label>
+                <label>Ville<select name="city" id="eventCity" required></select></label>
+                <label>Commune / quartier<input name="area" required autocomplete="address-level2" placeholder="Ex: Cocody, Belleville, Commerce"></label>
+                <label>Adresse du lieu<input name="address" required autocomplete="street-address" placeholder="Ex: Rue, salle, repère précis"></label>
+                <details class="optional-fields">
+                  <summary>Options de localisation avancées</summary>
+                  <div class="form-grid">
+                    <label>Latitude GPS optionnelle<input name="latitude" inputmode="decimal" placeholder="Ex: 5.3453"></label>
+                    <label>Longitude GPS optionnelle<input name="longitude" inputmode="decimal" placeholder="Ex: -4.0244"></label>
+                  </div>
+                  <label>Rayon de visibilité souhaité<input name="visibilityRadiusKm" type="number" min="1" max="300" value="25" required placeholder="Ex: 25"></label>
+                </details>
+                <div class="mobile-step-actions"><button class="secondary" type="button" data-mobile-prev>Retour</button><button class="primary" type="button" data-mobile-next>Continuer vers la publication</button></div>
+              </fieldset>
+              <fieldset class="mobile-form-step" data-mobile-step="3" data-step-title="Affiche et publication">
+                <legend>3. Affiche et publication</legend>
+                <label>Affiche / image<input name="poster" type="file" accept="image/*"></label>
+                <label>Prix indicatif des billets<input name="ticketPrice" placeholder="Ex: 10 000 FCFA, gratuit, à partir de 5 000 FCFA"></label>
+                <details class="optional-fields">
+                  <summary>Description et lien officiel (optionnels)</summary>
+                  <label>Site officiel ou lien billetterie<input name="ticketUrl" type="url" inputmode="url" placeholder="https://plateforme-officielle.com/evenement"></label>
+                  <label>Description<textarea name="description" rows="3" maxlength="360" placeholder="Présentez l'événement, les artistes, le programme ou les informations utiles."></textarea></label>
+                </details>
+                <div class="event-payment-box">
+                  <h3>Choisissez votre visibilité</h3>
+                  <p class="mobile-form-hint">La publication Standard est gratuite. Un boost est facultatif.</p>
+                  <div id="eventPlans" class="event-plans"></div>
+                  <div id="eventPaidOptions">
+                    <h3>Paiement du boost</h3>
+                    <div id="eventPaymentMethods" class="payment-grid"></div>
+                    <div id="eventPaymentInstructions" class="payment-instructions"></div>
+                  </div>
+                </div>
+                <label id="eventPaymentReferenceRow">Référence de la transaction du boost<input name="paymentReference" autocomplete="off" placeholder="Ex: WV-EVT-2026-001"></label>
+                <label class="check-row"><input name="ticketDisclaimer" type="checkbox" required> Je confirme que Bizzi ne vend pas les billets et met seulement les clients en relation avec mon WhatsApp ou mon site officiel.</label>
+                <div class="mobile-step-actions"><button class="secondary" type="button" data-mobile-prev>Retour</button></div>
+                <button class="primary mobile-final-submit" type="submit">Envoyer pour validation Bizzi</button>
+              </fieldset>
+            </form>
+            <div id="eventStatus" class="status-box"></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="view-event-detail" class="view">
+        <button class="back-button" data-go="events">← Retour aux événements</button>
+        <div id="eventDetailContent"></div>
+      </section>
+
+      <section id="view-search" class="view">
+        <section class="search-assistant-panel" id="searchAssistantPanel">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Recherche intelligente</p>
+              <h2>Décrivez votre besoin</h2>
+            </div>
+            <span class="tag ok">Texte ou voix</span>
+          </div>
+          <form id="searchAssistantForm" class="search-assistant-form">
+            <input id="searchAssistantInput" name="prompt" type="search" maxlength="260" placeholder="Ex: je veux livrer un colis de Cocody à Marcory maintenant">
+            <input id="searchClientNameInput" name="clientName" type="text" required autocomplete="nickname" maxlength="40" placeholder="Votre prénom ou pseudo">
+            <input id="searchClientPhoneInput" name="clientPhone" type="tel" inputmode="tel" required placeholder="Votre WhatsApp ou téléphone">
+            <button class="primary" type="submit">Trouver</button>
+            <button class="secondary voice-button" id="searchVoiceButton" type="button" aria-label="Démarrer la recherche vocale" aria-pressed="false">Parler</button>
+          </form>
+          <div id="searchAssistantStatus" class="status-box compact"></div>
+        </section>
+        <details class="advanced-search-panel" open>
+          <summary>Filtres avancés · affiner la recherche</summary>
+          <div class="toolbar">
+            <input id="searchInput" type="search" placeholder="Rechercher : plombier, coiffure, mécanicien...">
+            <select id="categorySelect" aria-label="Catégorie"></select>
+            <select id="radiusSelect" aria-label="Distance">
+              <option value="5">Autour de moi : 5 km</option>
+              <option value="10" selected>Autour de moi : 10 km</option>
+              <option value="25">Autour de moi : 25 km</option>
+              <option value="50">Autour de moi : 50 km</option>
+              <option value="0">Toutes les distances</option>
+            </select>
+            <button class="secondary" id="resetProviderFilters" type="button">Tout afficher</button>
+          </div>
+        </details>
+        <section class="verified-service-panel" id="verifiedServicePanel">
+          <div class="verified-service-copy">
+            <span class="verified-service-badge">Service vérifié Bizzi</span>
+            <h2>Prestataires vérifiés</h2>
+          </div>
+          <label class="verified-service-toggle">
+            <input id="verifiedOnly" type="checkbox">
+            <span class="verified-toggle-mark">✓</span>
+            <span id="verifiedServiceAction">Afficher les vérifiés</span>
+          </label>
+          <span id="verifiedServiceCount" class="tag verified">0 vérifié</span>
+        </section>
+        <div id="servicesGrid" class="services-grid"></div>
+        <div class="section-head">
+          <h2>Prestataires près de vous</h2>
+          <span id="resultCount" class="tag">0 résultat</span>
+        </div>
+        <div id="providersList" class="providers-list"></div>
+      </section>
+
+      <section id="view-jobs" class="view">
+        <section class="panel job-entry-panel">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Emplois & missions</p>
+              <h2>Que voulez-vous faire ?</h2>
+            </div>
+            <span class="tag ok">Offres vérifiées</span>
+          </div>
+          <div class="job-entry-tabs" role="tablist" aria-label="Choix emplois et missions">
+            <button class="job-entry-tab selected" type="button" data-job-entry="search" aria-selected="true">Vous cherchez un emploi</button>
+            <button class="job-entry-tab" type="button" data-job-entry="publish" aria-selected="false">Publier job / emploi</button>
+          </div>
+          <p class="job-entry-note">Consultez ou publiez une offre.</p>
+        </section>
+        <div class="jobs-layout">
+          <section class="panel job-search-panel">
+            <div class="section-head">
+              <h2>Vous cherchez un emploi</h2>
+              <span id="jobCount" class="tag ok">0 offre</span>
+            </div>
+            <div class="toolbar jobs-toolbar">
+              <input id="jobSearchInput" type="search" placeholder="Rechercher : chauffeur, apprenti, assistant...">
+              <select id="jobServiceFilter" aria-label="Métier recherché"></select>
+              <select id="jobCityFilter" aria-label="Ville"></select>
+            </div>
+            <div id="jobOffersList" class="job-offers-list"></div>
+          </section>
+
+          <section class="panel job-publish-panel">
+            <div class="section-head">
+              <h2>Publier une recherche</h2>
+              <span class="tag">Paiement requis</span>
+            </div>
+            <form id="jobOfferForm" class="form">
+              <label>Nom entreprise / prestataire<input name="companyName" required placeholder="Ex: Garage Express Yopougon"></label>
+              <label>Type de demandeur<select name="companyType" id="jobCompanyType"></select></label>
+              <label>Téléphone ou WhatsApp<input name="contactPhone" required placeholder="+225 07 00 00 00 00"></label>
+              <label>Email facultatif<input name="contactEmail" type="email" placeholder="contact@entreprise.com"></label>
+              <label>Métier recherché<select name="service" id="jobOfferService"></select></label>
+              <label>Ville / commune<input name="city" required placeholder="Ex: Abidjan, Bouaké, Man"></label>
+              <label>Quartier ou zone<input name="area" placeholder="Ex: Yopougon, Cocody, centre-ville"></label>
+              <label>Titre de l'offre<input name="title" required maxlength="90" placeholder="Ex: Recherche apprenti plombier disponible"></label>
+              <label>Type d'offre
+                <select name="contractType">
+                  <option>Mission ponctuelle</option>
+                  <option>Emploi régulier</option>
+                  <option>Apprentissage / stage</option>
+                  <option>Partenariat</option>
+                </select>
+              </label>
+              <label>Rémunération indicative<input name="salaryRange" placeholder="Ex: À discuter, 80 000 FCFA/mois"></label>
+              <label>Description<textarea name="description" rows="3" maxlength="260" placeholder="Décrivez le profil recherché, les horaires, l'expérience souhaitée."></textarea></label>
+              <div class="job-payment-box">
+                <h3>Forfait de publication</h3>
+                <div id="jobPlans" class="job-plans"></div>
+                <h3>Paiement mobile money</h3>
+                <div id="jobPaymentMethods" class="payment-grid"></div>
+                <div id="jobPaymentInstructions" class="payment-instructions"></div>
+              </div>
+              <button class="primary" type="submit">Payer et envoyer l'offre</button>
+            </form>
+            <div id="jobOfferStatus" class="status-box"></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="view-request" class="view">
+        <div class="request-layout">
+          <section class="panel">
+            <div class="section-head">
+              <h2>Demande express</h2>
+              <span class="tag ok">Sans compte</span>
+            </div>
+            <p>Décrivez le besoin, Bizzi trouve les prestataires actifs et prépare un message WhatsApp clair.</p>
+            <form id="requestForm" class="form">
+              <label>Service recherché<select name="service" id="requestService"></select></label>
+              <label>Ville / commune<input name="city" placeholder="Ex: Cocody, Bouaké, Man..." required></label>
+              <label>Quartier ou repère<input name="area" placeholder="Ex: Riviera 2, Belleville, centre-ville"></label>
+              <label>Urgence
+                <select name="urgency">
+                  <option value="today">Aujourd'hui</option>
+                  <option value="24h">Dans les 24h</option>
+                  <option value="week">Cette semaine</option>
+                  <option value="quote">Je veux comparer les prix</option>
+                </select>
+              </label>
+              <label>Description du besoin<textarea name="message" rows="3" maxlength="220" placeholder="Ex: fuite sous l'évier, besoin d'un plombier disponible aujourd'hui"></textarea></label>
+              <label>Votre WhatsApp ou téléphone<input name="phone" required placeholder="+225 07 00 00 00 00"></label>
+              <button class="primary" type="submit">Trouver les bons prestataires</button>
+            </form>
+          </section>
+
+          <section class="panel">
+            <div class="section-head">
+              <h2>Réponse Bizzi</h2>
+              <span class="tag">Matching</span>
+            </div>
+            <div id="requestStatus" class="status-box"></div>
+            <div id="requestMatches" class="request-matches"></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="view-profile" class="view">
+        <button class="back-button" data-go="search">← Retour aux résultats</button>
+        <div id="profileContent"></div>
+      </section>
+
+      <section id="view-provider" class="view">
+        <section class="panel provider-entry-panel">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Espace prestataire</p>
+              <h2>Êtes-vous déjà prestataire ?</h2>
+            </div>
+            <span class="tag ok">Anti doublon</span>
+          </div>
+          <div class="provider-entry-tabs" role="tablist" aria-label="Choix prestataire">
+            <button class="provider-entry-tab selected" type="button" data-provider-entry="new" aria-selected="true">Je m'inscris</button>
+            <button class="provider-entry-tab" type="button" data-provider-entry="existing" aria-selected="false">Déjà prestataire</button>
+          </div>
+          <form id="providerIdentifyForm" class="form compact provider-identify-form">
+            <label>Votre téléphone d'inscription
+              <input name="providerPhone" placeholder="+225 07 00 00 00 00">
+            </label>
+            <button class="primary" type="submit">Identifier mon profil</button>
+          </form>
+          <div id="providerIdentityStatus" class="status-box compact">
+            <strong>Nouveau prestataire</strong>
+            <p>Si vous avez déjà un profil Bizzi, utilisez exactement le téléphone principal donné à l'inscription.</p>
+          </div>
+        </section>
+        <div class="provider-layout">
+          <section class="panel provider-create-panel">
+            <div class="section-head">
+              <h2>Proposer vos services</h2>
+              <span class="tag ok">1 mois gratuit</span>
+            </div>
+            <form id="providerForm" class="form mobile-step-form" data-mobile-form="provider" autocomplete="off" novalidate>
+              <div class="mobile-form-progress" aria-live="polite">
+                <strong data-mobile-progress-label>Étape 1 sur 3</strong>
+                <span data-mobile-progress-text>Votre contact</span>
+              </div>
+              <fieldset class="mobile-form-step active" data-mobile-step="1" data-step-title="Votre contact">
+                <legend>1. Votre contact</legend>
+                <label>Nom complet<input name="fullName" required autocomplete="name" placeholder="Ex: Jean Prestataire"></label>
+                <label>Téléphone principal<input name="phone" type="tel" required autocomplete="tel" inputmode="tel" placeholder="+225 07 00 00 00 00"></label>
+                <label>WhatsApp <span class="optional-label">(laisser vide si identique)</span><input name="whatsapp" type="tel" autocomplete="tel" inputmode="tel" placeholder="+225 07 00 00 00 00"></label>
+                <div class="mobile-step-actions"><button class="primary" type="button" data-mobile-next>Continuer vers le métier</button></div>
+              </fieldset>
+              <fieldset class="mobile-form-step" data-mobile-step="2" data-step-title="Métier et localisation">
+                <legend>2. Métier et localisation</legend>
+                <label>Métier<select name="service" id="providerService" required></select></label>
+                <label>Ville<select name="providerCity" id="providerCity" required></select></label>
+                <label>Commune / quartier<input name="area" required autocomplete="address-level2" placeholder="Ex: Yopougon, Riviera 3"></label>
+                <div class="mobile-step-actions"><button class="secondary" type="button" data-mobile-prev>Retour</button><button class="primary" type="button" data-mobile-next>Continuer vers la photo</button></div>
+              </fieldset>
+              <fieldset class="mobile-form-step" data-mobile-step="3" data-step-title="Photo et confirmation">
+                <legend>3. Photo et confirmation</legend>
+                <label>Photo du prestataire ou de l'entreprise <span class="optional-label">(optionnelle)</span><input name="photo" type="file" accept="image/*"></label>
+                <details class="optional-fields">
+                  <summary>Justificatif et description (optionnels)</summary>
+                  <label>Justificatif pour badge vérifié<input name="verificationProof" type="file" accept="image/*,application/pdf"></label>
+                  <label>Description<textarea name="description" rows="3" placeholder="Décrivez votre service"></textarea></label>
+                </details>
+                <label class="check-row"><input name="acceptTerms" type="checkbox" required> Je certifie que mes informations sont exactes et j'accepte les conditions Bizzi.</label>
+                <div id="providerCreateStatus" class="status-box compact" aria-live="polite" hidden></div>
+                <div class="mobile-step-actions"><button class="secondary" type="button" data-mobile-prev>Retour</button></div>
+                <button class="primary mobile-final-submit" type="submit">Créer mon profil</button>
+              </fieldset>
+            </form>
+          </section>
+
+          <section class="panel provider-renew-panel">
+            <h2>Forfaits visibilité</h2>
+            <div class="plans">
+              <button class="plan selected" data-plan="1 mois" data-price="3000"><strong>1 mois</strong><span>3 000 FCFA</span></button>
+              <button class="plan" data-plan="3 mois" data-price="4500"><strong>3 mois</strong><span>4 500 FCFA</span></button>
+              <button class="plan" data-plan="6 mois" data-price="6500"><strong>6 mois</strong><span>6 500 FCFA</span></button>
+            </div>
+            <h3>Option boost</h3>
+            <div class="boosts">
+              <button class="boost-plan selected" data-boost="none" data-price="0" data-days="0"><strong>Sans boost</strong><span>0 FCFA</span></button>
+              <button class="boost-plan recommended" data-boost="boost_7" data-price="1000" data-days="7"><strong>Boost 1 semaine</strong><span>1 000 FCFA · recommandé</span></button>
+              <button class="boost-plan" data-boost="boost_30" data-price="2000" data-days="30"><strong>Boost 1 mois</strong><span>2 000 FCFA · visibilité max</span></button>
+            </div>
+            <h3>Paiement accepté</h3>
+            <p class="payment-mode-note">Paiement manuel sécurisé : le prestataire paie sur le compte Bizzi indiqué, ajoute la référence, puis l'admin valide la visibilité.</p>
+            <div class="payment-grid">
+              <button class="pay selected" data-method="Wave">Wave</button>
+              <button class="pay" data-method="Orange Money">Orange Money</button>
+              <button class="pay" data-method="MTN Money">MTN Money</button>
+            </div>
+            <div id="paymentInstructions" class="payment-instructions"></div>
+            <form id="paymentForm" class="form compact">
+              <div class="payment-provider-tools">
+                <button class="secondary" id="paymentProviderSync" type="button">Recharger prestataires Supabase</button>
+              </div>
+              <label class="provider-target-label">Prestataire à renouveler<select name="providerId" id="paymentProviderSelect"></select></label>
+              <div id="paymentProviderQuickPick" class="payment-provider-picks"></div>
+              <div id="paymentTargetNote" class="payment-target-note"></div>
+              <label>Référence transaction<input name="reference" required autocomplete="off" placeholder="Ex: WV-2026-001"></label>
+              <label>Preuve de paiement<input name="proof" type="file" accept="image/*,application/pdf"></label>
+              <button class="primary" type="submit">Envoyer pour validation admin</button>
+            </form>
+            <div id="providerStatus" class="status-box"></div>
+            <div class="delivery-provider-box">
+              <div class="section-head">
+                <h3>Livraisons à accepter</h3>
+                <span id="providerDeliveryCount" class="tag">0</span>
+              </div>
+              <button class="secondary" id="enableDeliveryAlerts" type="button">Activer alertes locales</button>
+              <button class="secondary" id="enableCourierLive" type="button">Activer disponibilité livreur live</button>
+              <div id="providerDeliveryQueue" class="delivery-request-list"></div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section id="view-admin" class="view">
+        <section id="adminLogin" class="panel admin-lock">
+          <h2>Accès admin</h2>
+          <p>Utilisez le lien admin officiel pour ouvrir cette zone. Les validations réelles restent protégées par votre compte Supabase.</p>
+          <form id="adminLoginForm" class="form compact">
+            <label>Code admin désactivé<input name="pin" type="password" inputmode="numeric" placeholder="Utilisez admin-access.html" disabled></label>
+            <button class="primary" type="submit">Ouvrir via lien admin</button>
+          </form>
+          <div id="adminLoginStatus" class="status-box"></div>
+        </section>
+
+        <div id="adminContent" hidden>
+          <div class="metrics">
+            <div class="metric"><strong id="metricProviders">0</strong><span>Prestataires</span></div>
+            <div class="metric"><strong id="metricActive">0</strong><span>Actifs</span></div>
+            <div class="metric"><strong id="metricBlurred">0</strong><span>Floutés</span></div>
+            <div class="metric"><strong id="metricVerified">0</strong><span>Vérifiés</span></div>
+            <div class="metric"><strong id="metricPayments">0</strong><span>Paiements</span></div>
+            <div class="metric"><strong id="metricReports">0</strong><span>Signalements</span></div>
+            <div class="metric"><strong id="metricRequests">0</strong><span>Demandes express</span></div>
+            <div class="metric"><strong id="metricFood">0</strong><span>Food</span></div>
+            <div class="metric"><strong id="metricLeads">0</strong><span>Contacts Bizzi</span></div>
+            <div class="metric"><strong id="metricReviews">0</strong><span>Avis clients</span></div>
+            <div class="metric"><strong id="metricRevenue">0</strong><span>FCFA validés</span></div>
+          </div>
+          <section class="panel prelaunch-gate-panel">
+            <div class="section-head">
+              <h2>Prêt / Pas prêt pour lancement</h2>
+              <span class="tag pending">V304</span>
+            </div>
+            <div id="prelaunchGateDashboard"></div>
+          </section>
+          <section class="panel public-launch-checklist-panel">
+            <div class="section-head">
+              <h2>Checklist ouverture publique</h2>
+              <span class="tag ok">Interactive</span>
+            </div>
+            <div id="publicLaunchChecklist"></div>
+          </section>
+          <section class="panel admin-errors-panel">
+            <div class="section-head">
+              <h2>Erreurs visibles admin</h2>
+              <span class="tag pending">Diagnostic</span>
+            </div>
+            <div id="adminErrorDashboard"></div>
+          </section>
+          <section class="panel app-health-panel">
+            <div class="section-head">
+              <h2>Santé de l'application</h2>
+              <span class="tag ok">Pré-lancement</span>
+            </div>
+            <div id="appHealthDashboard"></div>
+          </section>
+          <section class="panel launch-mode-panel">
+            <div class="section-head">
+              <h2>Mode lancement</h2>
+              <span class="tag pending">Sécurité</span>
+            </div>
+            <div id="launchModeDashboard"></div>
+          </section>
+          <section class="panel commercial-panel">
+            <div class="section-head">
+              <h2>Pilotage commercial</h2>
+              <span class="tag ok">Revenus</span>
+            </div>
+            <div id="commercialDashboard"></div>
+          </section>
+          <section class="panel revenue-panel">
+            <div class="section-head">
+              <h2>Revenus par source</h2>
+              <span class="tag ok">Projection</span>
+            </div>
+            <div id="revenueDashboard"></div>
+          </section>
+          <section class="panel conversion-panel">
+            <div class="section-head">
+              <h2>Prestataires à relancer</h2>
+              <span class="tag pending">Rentabilité</span>
+            </div>
+            <div id="conversionDashboard"></div>
+          </section>
+          <section class="panel delivery-admin-panel">
+            <div class="section-head">
+              <h2>Suivi livraisons</h2>
+              <span class="tag pending">Commission 15%</span>
+            </div>
+            <div id="deliveryAdminDashboard"></div>
+          </section>
+          <section class="panel store-business-panel">
+            <div class="section-head">
+              <h2>Stores & lancement terrain</h2>
+              <span class="tag pending" id="storeBusinessStatusTag">À valider</span>
+            </div>
+            <div id="storeBusinessDashboard"></div>
+          </section>
+          <section class="panel field-test-panel">
+            <div class="section-head">
+              <h2>Prochain test terrain</h2>
+              <span class="tag ok">Guidé</span>
+            </div>
+            <div id="fieldTestPanel"></div>
+          </section>
+          <section class="panel operations-panel">
+            <div class="section-head">
+              <h2>Centre opérationnel</h2>
+              <span class="tag ok">Live</span>
+            </div>
+            <div id="adminOperationsDashboard"></div>
+          </section>
+          <section class="panel test-data-panel">
+            <div class="section-head">
+              <h2>Données de test complètes</h2>
+              <span class="tag pending">Local uniquement</span>
+            </div>
+            <p>Un seul clic crée automatiquement un profil fictif pour chacun des 105 métiers, sept restaurants et six événements. Aucun de ces éléments n'est envoyé à Supabase.</p>
+            <div class="admin-actions">
+              <button class="primary" id="installTestData" type="button">Créer automatiquement les données test</button>
+              <button class="danger" id="removeTestData" type="button">Supprimer les données test</button>
+            </div>
+            <div id="testDataStatus" class="sync-status" role="status" aria-live="polite"></div>
+          </section>
+          <div class="admin-actions admin-session">
+            <button class="secondary" id="lockAdmin" type="button">Verrouiller admin</button>
+          </div>
+          <div class="admin-actions admin-jump-actions">
+            <button class="secondary" type="button" data-admin-jump="#appHealthDashboard">Voir santé</button>
+            <button class="secondary" type="button" data-admin-jump="#revenueDashboard">Voir revenus</button>
+            <button class="secondary" type="button" data-admin-jump="#deliveryAdminDashboard">Voir livraisons</button>
+            <button class="secondary" type="button" data-admin-jump="#conversionDashboard">Voir conversions</button>
+            <button class="secondary" type="button" data-admin-jump="#remoteProviders">Voir validations Supabase</button>
+            <button class="secondary" type="button" data-admin-jump="#localProvidersPanel">Voir prestataires locaux</button>
+            <button class="secondary" type="button" data-admin-jump="#launchChecklist">Voir recette lancement</button>
+          </div>
+          <section class="panel remote-admin-panel">
+            <h2>Validation Supabase</h2>
+            <p>C'est ici que se font les validations payantes et les contrôles publiés dans Supabase. Le mois gratuit des nouveaux prestataires est désormais automatique.</p>
+            <form id="supabaseAdminLoginForm" class="form compact">
+              <label>Email admin<input name="email" type="email" autocomplete="email" placeholder="admin@bizzi.ci"></label>
+              <label>Mot de passe<input name="password" type="password" autocomplete="current-password" placeholder="Mot de passe Supabase"></label>
+              <button class="primary" type="submit">Connexion Supabase</button>
+            </form>
+            <div class="admin-actions">
+              <button class="secondary" id="loadRemoteQueue" type="button">Charger validations Supabase</button>
+              <button class="secondary" id="supabaseAdminLogout" type="button">Déconnexion Supabase</button>
+            </div>
+            <div id="adminRemoteStatus" class="sync-status" role="status" aria-live="polite"></div>
+            <div class="admin-real-action">
+              <strong>Action officielle</strong>
+              <span>Les nouveaux prestataires sont publiés automatiquement pendant 30 jours. Utilisez cette zone surtout pour valider les paiements, traiter les demandes et corriger les profils bloqués.</span>
+            </div>
+            <div id="remoteProviders" class="admin-list"></div>
+            <div id="remotePayments" class="admin-list"></div>
+            <div id="remoteRequests" class="admin-list"></div>
+            <div id="remoteJobs" class="admin-list"></div>
+            <div id="remoteEvents" class="admin-list"></div>
+            <div id="remoteFoods" class="admin-list"></div>
+            <div id="remoteExceptionPlaces" class="admin-list"></div>
+          </section>
+          <section class="panel launch-checklist-panel">
+            <h2>Recette lancement</h2>
+            <div id="launchChecklist" class="launch-checklist"></div>
+          </section>
+          <div class="admin-grid">
+            <section class="panel" id="localProvidersPanel">
+              <h2>Prestataires locaux / test</h2>
+              <p>Cette liste sert au contrôle local. Pour publier réellement dans Supabase, utilisez le bloc Validation Supabase au-dessus.</p>
+              <div id="adminProviders" class="admin-list"></div>
+            </section>
+            <section class="panel">
+              <h2>Paiements locaux à valider</h2>
+              <p>Les paiements réels Supabase se valident dans le bloc Validation Supabase en haut.</p>
+              <div id="adminPayments" class="admin-list"></div>
+            </section>
+            <section class="panel">
+              <h2>Demandes express clients</h2>
+              <div id="adminRequests" class="admin-list"></div>
+            </section>
+            <section class="panel">
+              <h2>Offres emploi locales</h2>
+              <div id="adminJobs" class="admin-list"></div>
+            </section>
+            <section class="panel">
+              <h2>Événements locaux</h2>
+              <div id="adminEvents" class="admin-list"></div>
+            </section>
+            <section class="panel">
+              <h2>Adresses Food locales</h2>
+              <div id="adminFoodPlaces" class="admin-list"></div>
+            </section>
+            <section class="panel">
+              <h2>Lieux d’exception locaux</h2>
+              <p>L’équipe Bizzi peut valider les dossiers, offrir 30 jours ou archiver un lieu.</p>
+              <div id="adminExceptionPlaces" class="admin-list"></div>
+            </section>
+            <section class="panel">
+              <h2>Renouvellements proches</h2>
+              <div id="adminRenewals" class="admin-list"></div>
+            </section>
+            <section class="panel">
+              <h2>Historique paiements</h2>
+              <div id="adminPaymentHistory" class="admin-list"></div>
+            </section>
+            <section class="panel">
+              <h2>Signalements clients</h2>
+              <div id="adminReports" class="admin-list"></div>
+            </section>
+            <section class="panel">
+              <h2>Avis clients</h2>
+              <div id="adminReviews" class="admin-list"></div>
+            </section>
+            <section class="panel">
+              <h2>Données & production</h2>
+              <div id="productionStatus" class="status-box"></div>
+              <div class="production-docs">
+                <a class="doc-link" href="docs/guide-production-reelle-bizzi.md" target="_blank" rel="noreferrer">Guide production</a>
+                <a class="doc-link" href="docs/checklist-acces-production-bizzi.md" target="_blank" rel="noreferrer">Accès nécessaires</a>
+                <a class="doc-link" href="docs/guide-branchement-supabase-v21-bizzi.md" target="_blank" rel="noreferrer">Brancher Supabase</a>
+                <a class="doc-link" href="docs/guide-sync-supabase-v22-bizzi.md" target="_blank" rel="noreferrer">Sync Supabase</a>
+                <a class="doc-link" href="docs/guide-ecriture-supabase-v23-bizzi.md" target="_blank" rel="noreferrer">Écriture Supabase</a>
+                <a class="doc-link" href="docs/guide-storage-supabase-v24-bizzi.md" target="_blank" rel="noreferrer">Storage Supabase</a>
+                <a class="doc-link" href="docs/guide-livraison-v25-bizzi.md" target="_blank" rel="noreferrer">Connexion V25</a>
+                <a class="doc-link" href="docs/guide-test-supabase-connecte-v25-bizzi.md" target="_blank" rel="noreferrer">Test V25</a>
+                <a class="doc-link" href="docs/guide-livraison-v26-bizzi.md" target="_blank" rel="noreferrer">Clé anon V26</a>
+                <a class="doc-link" href="docs/guide-livraison-v27-bizzi.md" target="_blank" rel="noreferrer">Retour import V27</a>
+                <a class="doc-link" href="docs/guide-correction-rls-v28-bizzi.md" target="_blank" rel="noreferrer">Correction RLS V28</a>
+                <a class="doc-link" href="docs/guide-correction-rls-v29-bizzi.md" target="_blank" rel="noreferrer">Correction RLS V29</a>
+                <a class="doc-link" href="docs/guide-admin-supabase-v30-bizzi.md" target="_blank" rel="noreferrer">Admin Supabase V30</a>
+                <a class="doc-link" href="docs/guide-relances-abonnements-v40-bizzi.md" target="_blank" rel="noreferrer">Relances V40</a>
+                <a class="doc-link" href="docs/guide-pilotage-commercial-v41-bizzi.md" target="_blank" rel="noreferrer">Pilotage V41</a>
+                <a class="doc-link" href="docs/guide-demande-express-v42-bizzi.md" target="_blank" rel="noreferrer">Demande V42</a>
+                <a class="doc-link" href="docs/guide-demandes-supabase-v43-bizzi.md" target="_blank" rel="noreferrer">Demandes V43</a>
+                <a class="doc-link" href="sql-copie-bizzi/16-demandes-express-supabase.sql" target="_blank" rel="noreferrer">SQL demandes V43</a>
+                <a class="doc-link" href="docs/guide-priorite-demandes-v44-bizzi.md" target="_blank" rel="noreferrer">Priorité V44</a>
+                <a class="doc-link" href="sql-copie-bizzi/17-priorite-demandes-express.sql" target="_blank" rel="noreferrer">SQL priorité V44</a>
+                <a class="doc-link" href="docs/guide-catalogue-services-v45-bizzi.md" target="_blank" rel="noreferrer">Catalogue V45</a>
+                <a class="doc-link" href="sql-copie-bizzi/18-catalogue-services-v45.sql" target="_blank" rel="noreferrer">SQL services V45</a>
+                <a class="doc-link" href="docs/guide-paiement-lancement-v46-bizzi.md" target="_blank" rel="noreferrer">Paiement V46</a>
+                <a class="doc-link" href="docs/guide-domaine-email-v47-bizzi.md" target="_blank" rel="noreferrer">Domaine V47</a>
+                <a class="doc-link" href="docs/guide-hebergement-cloudflare-v48-bizzi.md" target="_blank" rel="noreferrer">Hébergement</a>
+                <a class="doc-link" href="docs/guide-api-cartographique-mapbox-v153-bizzi.md" target="_blank" rel="noreferrer">API carte V153</a>
+                <a class="doc-link" href="docs/guide-emplois-missions-v66-bizzi.md" target="_blank" rel="noreferrer">Emplois V66</a>
+                <a class="doc-link" href="sql-copie-bizzi/25-emplois-missions-supabase.sql" target="_blank" rel="noreferrer">SQL emplois V66</a>
+                <a class="doc-link" href="docs/guide-emplois-payants-v67-bizzi.md" target="_blank" rel="noreferrer">Emplois payants V67</a>
+                <a class="doc-link" href="sql-copie-bizzi/26-emplois-payants-supabase.sql" target="_blank" rel="noreferrer">SQL emplois V67</a>
+                <a class="doc-link" href="sql-copie-bizzi/59-emplois-missions-toutes-entreprises-v130.sql" target="_blank" rel="noreferrer">SQL emplois V130</a>
+                <a class="doc-link" href="sql-copie-bizzi/63-evenements-promotion-v146.sql" target="_blank" rel="noreferrer">SQL événements V146</a>
+                <a class="doc-link" href="sql-copie-bizzi/67-evenements-geolocalises-v156.sql" target="_blank" rel="noreferrer">SQL événements V156</a>
+                <a class="doc-link" href="sql-copie-bizzi/91-bizzi-food-v204.sql" target="_blank" rel="noreferrer">SQL Bizzi Food V206</a>
+                <a class="doc-link" href="sql-copie-bizzi/98-lieux-exception-v302.sql" target="_blank" rel="noreferrer">SQL Lieux d’exception V304</a>
+                <a class="doc-link" href="sql-copie-bizzi/64-livraisons-paiements-commission-v147.sql" target="_blank" rel="noreferrer">SQL livraisons V147</a>
+                <a class="doc-link" href="sql-copie-bizzi/65-livraisons-tarification-distance-v148.sql" target="_blank" rel="noreferrer">SQL tarifs livraison V148</a>
+                <a class="doc-link" href="sql-copie-bizzi/66-livraisons-detection-automatique-v149.sql" target="_blank" rel="noreferrer">SQL détection livraison V149</a>
+                <a class="doc-link" href="sql-copie-bizzi/60-service-vendeur-vendeuse-v133.sql" target="_blank" rel="noreferrer">SQL vendeur V133</a>
+                <a class="doc-link" href="sql-copie-bizzi/27-services-finance-immobilier-sport.sql" target="_blank" rel="noreferrer">SQL services V68</a>
+                <a class="doc-link" href="sql-copie-bizzi/28-service-imprimeur.sql" target="_blank" rel="noreferrer">SQL imprimeur V69</a>
+                <a class="doc-link" href="sql-copie-bizzi/29-diagnostic-prestataire-imprimeur.sql" target="_blank" rel="noreferrer">SQL diagnostic V70</a>
+                <a class="doc-link" href="docs/supabase-seed-cote-ivoire-bizzi.sql" target="_blank" rel="noreferrer">Seed Côte d'Ivoire</a>
+              </div>
+              <div id="supabaseStatus" class="sync-status" role="status" aria-live="polite"></div>
+              <div class="admin-actions">
+                <button class="secondary" id="testSupabase" type="button">Tester Supabase</button>
+                <button class="secondary" id="syncSupabase" type="button">Importer public Supabase</button>
+                <button class="secondary" id="exportData" type="button">Exporter les données</button>
+                <button class="secondary" id="exportProvidersCsv" type="button">Exporter CSV prestataires</button>
+                <button class="secondary" id="exportPaymentsCsv" type="button">Exporter CSV paiements</button>
+                <button class="secondary" id="exportReportsCsv" type="button">Exporter CSV signalements</button>
+                <button class="secondary" id="exportLeadsCsv" type="button">Exporter CSV contacts</button>
+                <button class="secondary" id="exportRequestsCsv" type="button">Exporter CSV demandes</button>
+                <button class="secondary" id="exportReviewsCsv" type="button">Exporter CSV avis</button>
+                <button class="secondary" id="exportRenewalsCsv" type="button">Exporter CSV relances</button>
+                <label class="file-action">Importer<input id="importData" type="file" accept="application/json"></label>
+                <button class="danger" id="resetDemo" type="button">Réinitialiser la démo</button>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-legal" class="view">
+        <div class="legal-grid">
+          <section class="panel">
+            <h2>Confidentialité</h2>
+            <p>Le client peut chercher sans compte. La géolocalisation est facultative et sert uniquement à afficher les prestataires proches.</p>
+            <a class="secondary doc-link" href="docs/politique-confidentialite-bizzi.md" target="_blank" rel="noreferrer">Ouvrir la politique</a>
+          </section>
+          <section class="panel">
+            <h2>Conditions</h2>
+            <p>Les prestataires doivent fournir des informations exactes. Après l'essai gratuit, un forfait est nécessaire pour rester pleinement visible.</p>
+            <a class="secondary doc-link" href="docs/conditions-utilisation-bizzi.md" target="_blank" rel="noreferrer">Ouvrir les conditions</a>
+          </section>
+          <section class="panel">
+            <h2>Modération</h2>
+            <p>Les clients peuvent signaler un prestataire. L'admin peut traiter le signalement, flouter ou suspendre une fiche.</p>
+            <a class="secondary doc-link" href="docs/politique-moderation-bizzi.md" target="_blank" rel="noreferrer">Ouvrir la politique</a>
+          </section>
+          <section class="panel">
+            <h2>Règles prestataires</h2>
+            <p>Règles de visibilité, abonnement, métier, photo, retrait et réactivation côté client.</p>
+            <a class="secondary doc-link" href="docs/regles-prestataires-bizzi.md" target="_blank" rel="noreferrer">Ouvrir les règles</a>
+          </section>
+          <section class="panel">
+            <h2>Règles livraison</h2>
+            <p>Fonctionnement de Bizzi Livraison, commission de 15%, paiement, affectation et responsabilité.</p>
+            <a class="secondary doc-link" href="docs/regles-livraison-bizzi.md" target="_blank" rel="noreferrer">Ouvrir les règles</a>
+          </section>
+          <section class="panel">
+            <h2>Règles événements</h2>
+            <p>Bizzi promeut les événements, redirige vers un lien externe et ne vend pas les billets.</p>
+            <a class="secondary doc-link" href="docs/regles-evenements-bizzi.md" target="_blank" rel="noreferrer">Ouvrir les règles</a>
+          </section>
+          <section class="panel">
+            <h2>Pré-lancement</h2>
+            <p>Checklist finale, procédure admin, plan terrain et audit avant ouverture publique.</p>
+            <div class="doc-list">
+              <a class="doc-link" href="docs/checklist-recette-finale-v159-bizzi.md" target="_blank" rel="noreferrer">Checklist finale</a>
+              <a class="doc-link" href="docs/procedure-admin-bizzi-v159.md" target="_blank" rel="noreferrer">Procédure admin</a>
+              <a class="doc-link" href="docs/plan-lancement-terrain-v159-bizzi.md" target="_blank" rel="noreferrer">Plan terrain</a>
+              <a class="doc-link" href="docs/audit-preproduction-v159-bizzi.md" target="_blank" rel="noreferrer">Audit préproduction</a>
+              <a class="doc-link" href="docs/guide-prelancement-v159-bizzi.md" target="_blank" rel="noreferrer">Guide pré-lancement</a>
+              <a class="doc-link" href="docs/guide-livraison-v160-separation-client-prestataire-bizzi.md" target="_blank" rel="noreferrer">Correction V160</a>
+              <a class="doc-link" href="docs/guide-livraison-v161-identification-prestataire-bizzi.md" target="_blank" rel="noreferrer">Correction V161</a>
+              <a class="doc-link" href="docs/guide-livraison-v162-evenements-client-organisateur-bizzi.md" target="_blank" rel="noreferrer">Correction V162</a>
+              <a class="doc-link" href="docs/guide-livraison-v163-livraison-client-livreur-bizzi.md" target="_blank" rel="noreferrer">Correction V163</a>
+              <a class="doc-link" href="docs/guide-livraison-v164-services-emplois-bizzi.md" target="_blank" rel="noreferrer">Correction V164</a>
+              <a class="doc-link" href="docs/guide-livraison-v165-service-verifie-bizzi.md" target="_blank" rel="noreferrer">Correction V165</a>
+              <a class="doc-link" href="docs/guide-livraison-v166-tarifs-evenements-bizzi.md" target="_blank" rel="noreferrer">Correction V166</a>
+              <a class="doc-link" href="docs/guide-livraison-v167-tableau-de-bord-bizzi.md" target="_blank" rel="noreferrer">Correction V167</a>
+              <a class="doc-link" href="docs/audit-technique-v168-bizzi.md" target="_blank" rel="noreferrer">Audit technique V168</a>
+              <a class="doc-link" href="docs/guide-livraison-v168-audit-nettoyage-bizzi.md" target="_blank" rel="noreferrer">Correction V168</a>
+              <a class="doc-link" href="docs/guide-v169-v2-technique-bizzi.md" target="_blank" rel="noreferrer">V2 technique V169</a>
+              <a class="doc-link" href="docs/guide-v170-v2-avancee-bizzi.md" target="_blank" rel="noreferrer">V2 avancée V170</a>
+              <a class="doc-link" href="docs/guide-v171-temps-reel-bizzi.md" target="_blank" rel="noreferrer">Temps réel V171</a>
+              <a class="doc-link" href="docs/guide-v172-integrations-externes-bizzi.md" target="_blank" rel="noreferrer">Intégrations V172</a>
+              <a class="doc-link" href="docs/guide-v173-prelancement-bizzi.md" target="_blank" rel="noreferrer">Pré-lancement V173</a>
+              <a class="doc-link" href="docs/checklist-lancement-v173.md" target="_blank" rel="noreferrer">Checklist V173</a>
+              <a class="doc-link" href="docs/procedures-integrations-v173.md" target="_blank" rel="noreferrer">Procédures V173</a>
+              <a class="doc-link" href="docs/messages-lancement-v173.md" target="_blank" rel="noreferrer">Messages V173</a>
+              <a class="doc-link" href="docs/store-listing-v174.md" target="_blank" rel="noreferrer">Stores V174</a>
+              <a class="doc-link" href="docs/tests-terrain-v174.md" target="_blank" rel="noreferrer">Tests V174</a>
+              <a class="doc-link" href="docs/plan-business-lancement-v174.md" target="_blank" rel="noreferrer">Business V174</a>
+              <a class="doc-link" href="docs/securite-stabilite-v174.md" target="_blank" rel="noreferrer">Sécurité V174</a>
+              <a class="doc-link" href="docs/checklist-lancement-v174.md" target="_blank" rel="noreferrer">Checklist V174</a>
+              <a class="doc-link" href="docs/procedures-integrations-v174.md" target="_blank" rel="noreferrer">Intégrations V174</a>
+              <a class="doc-link" href="docs/procedures-cartographie-monitoring-v183.md" target="_blank" rel="noreferrer">Carte & monitoring V206</a>
+              <a class="doc-link" href="docs/guide-livraison-v184-coherence-bizzi.md" target="_blank" rel="noreferrer">Livraison cohérente V206</a>
+              <a class="doc-link" href="docs/guide-livraison-v185-ville-5km-bizzi.md" target="_blank" rel="noreferrer">Livraison ville + 5 km V206</a>
+              <a class="doc-link" href="docs/guide-v187-livraison-verrouillage-penalite-bizzi.md" target="_blank" rel="noreferrer">Verrouillage livraison V206</a>
+              <a class="doc-link" href="docs/guide-v188-renouvellement-prive-bizzi.md" target="_blank" rel="noreferrer">Renouvellement privé V206</a>
+              <a class="doc-link" href="docs/guide-v190-colis-international-transitaires-bizzi.md" target="_blank" rel="noreferrer">Colis international V206</a>
+              <a class="doc-link" href="docs/guide-v191-assistant-recherche-vocale-bizzi.md" target="_blank" rel="noreferrer">Assistant vocal V206</a>
+              <a class="doc-link" href="docs/guide-v192-correction-micro-bizzi.md" target="_blank" rel="noreferrer">Correction micro V206</a>
+              <a class="doc-link" href="docs/guide-v207-micro-ia.md" target="_blank" rel="noreferrer">Micro IA fiabilisé V207</a>
+              <a class="doc-link" href="docs/guide-v208-livraisons-actives.md" target="_blank" rel="noreferrer">Livraisons actives uniquement V208</a>
+              <a class="doc-link" href="docs/guide-v209-transcription-ia.md" target="_blank" rel="noreferrer">Transcription vocale OpenAI V209</a>
+              <a class="doc-link" href="docs/guide-v210-micro-secours-automatique.md" target="_blank" rel="noreferrer">Micro avec secours automatique V210</a>
+              <a class="doc-link" href="docs/guide-v211-suivi-livraisons-prive.md" target="_blank" rel="noreferrer">Suivi livraison privé V211</a>
+              <a class="doc-link" href="docs/guide-v212-minimum-500-fcfa.md" target="_blank" rel="noreferrer">Minimum courses et livraisons 500 FCFA V212</a>
+              <a class="doc-link" href="docs/guide-v213-circulation-fluide-nuit.md" target="_blank" rel="noreferrer">Circulation fluide 22h-8h V213</a>
+              <a class="doc-link" href="docs/guide-v214-selection-ia-top-3.md" target="_blank" rel="noreferrer">Sélection IA Top 3 V214</a>
+              <a class="doc-link" href="docs/guide-v215-performance-suivi-confiance.md" target="_blank" rel="noreferrer">Performance, suivi et confiance</a>
+              <a class="doc-link" href="docs/guide-v194-remplissage-livraison-assistant-bizzi.md" target="_blank" rel="noreferrer">Remplissage livraison V206</a>
+              <a class="doc-link" href="docs/guide-v199-accueil-sans-assistant-separe-bizzi.md" target="_blank" rel="noreferrer">Accueil simplifié V206</a>
+              <a class="doc-link" href="docs/guide-v199-livraison-depart-position-actuelle-bizzi.md" target="_blank" rel="noreferrer">Départ position actuelle V206</a>
+              <a class="doc-link" href="docs/guide-v200-dispatch-livraison-direct-bizzi.md" target="_blank" rel="noreferrer">Dispatch livraison direct V206</a>
+              <a class="doc-link" href="docs/guide-v201-cartographie-tarifs-livraison-bizzi.md" target="_blank" rel="noreferrer">Carte CI + tarifs V206</a>
+              <a class="doc-link" href="docs/guide-v203-confiance-sos-bizzi.md" target="_blank" rel="noreferrer">Confiance + SOS V206</a>
+              <a class="doc-link" href="docs/guide-v204-bizzi-food.md" target="_blank" rel="noreferrer">Bizzi Food V206</a>
+              <a class="doc-link" href="docs/guide-v186-intuitif-fluide-bizzi.md" target="_blank" rel="noreferrer">Interface fluide V206</a>
+              <a class="doc-link" href="docs/messages-lancement-v174.md" target="_blank" rel="noreferrer">Messages V174</a>
+              <a class="doc-link" href="docs/store-listing-v302.md" target="_blank" rel="noreferrer">Stores V304</a>
+              <a class="doc-link" href="docs/checklist-publication-stores-v302.md" target="_blank" rel="noreferrer">Publication V304</a>
+              <a class="doc-link" href="docs/pack-lancement-v302.md" target="_blank" rel="noreferrer">Pack lancement V304</a>
+              <a class="doc-link" href="docs/politique-confidentialite-v302.md" target="_blank" rel="noreferrer">Confidentialité V304</a>
+              <a class="doc-link" href="docs/conditions-utilisation-v302.md" target="_blank" rel="noreferrer">Conditions V304</a>
+              <a class="doc-link" href="docs/tests-terrain-v302.md" target="_blank" rel="noreferrer">Tests terrain V304</a>
+              <a class="doc-link" href="docs/plan-business-lancement-v302.md" target="_blank" rel="noreferrer">Business V304</a>
+              <a class="doc-link" href="docs/securite-stabilite-v302.md" target="_blank" rel="noreferrer">Sécurité V304</a>
+            </div>
+          </section>
+          <section class="panel official-contact-panel">
+            <h2>Contact officiel</h2>
+            <div id="officialContact"></div>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="clientAccessDialog" class="client-access-dialog" aria-labelledby="clientAccessTitle">
+    <form id="clientAccessForm" class="client-access-card">
+      <button id="closeClientAccessDialog" class="client-access-close" type="button" aria-label="Fermer">×</button>
+      <p class="eyebrow">Accès client Bizzi</p>
+      <h2 id="clientAccessTitle">Avant de continuer</h2>
+      <p id="clientAccessReason">Indiquez un prénom ou un pseudo et votre numéro de téléphone. Aucun mot de passe n’est nécessaire.</p>
+      <label>Prénom ou pseudo<input id="clientAccessNameInput" name="clientName" type="text" required autocomplete="nickname" minlength="2" maxlength="40" placeholder="Ex: Awa ou Koffi225"></label>
+      <label>Numéro de téléphone<input id="clientAccessPhoneInput" name="clientPhone" type="tel" required inputmode="tel" autocomplete="tel" placeholder="+225 07 00 00 00 00"></label>
+      <div id="clientAccessStatus" class="sync-status" role="status" aria-live="polite"></div>
+      <button class="primary" type="submit">Continuer</button>
+      <small>Ces informations sont mémorisées sur cet appareil pour simplifier vos prochaines demandes.</small>
+    </form>
+  </dialog>
+
+  <div class="global-voice-dock">
+    <div id="globalVoiceStatus" class="global-voice-status" role="status" aria-live="polite" hidden></div>
+    <button id="globalVoiceFloating" class="global-voice-floating" type="button" aria-pressed="false">
+      <span aria-hidden="true">●</span> Parler à Bizzi
+    </button>
+  </div>
+
+  <nav class="bottom-nav" aria-label="Navigation mobile">
+    <button class="bottom-link active" data-view="home">Accueil</button>
+    <button class="bottom-link life-link" data-view="life">Life</button>
+    <button class="bottom-link exception-link" data-view="exception-places">Lieux</button>
+    <button class="bottom-link delivery-link" data-view="delivery">Livraison et course</button>
+    <button class="bottom-link food-link" data-view="food">Food</button>
+    <button class="bottom-link" data-view="search">Services</button>
+    <button class="bottom-link" data-view="provider">Pro</button>
+  </nav>
+
+  <script src="js/storage-safe.js?v=240"></script>
+  <script src="js/privacy-guard.js?v=304"></script>
+  <script src="js/data-dedupe.js?v=304"></script>
+  <script src="config.js?v=304"></script>
+  <script src="js/ci-map.js?v=304"></script>
+  <script src="js/error-monitor.js?v=240"></script>
+  <script src="js/performance-monitor.js?v=240"></script>
+  <script src="js/payment-gateway.js?v=240"></script>
+  <script src="js/admin-guard.js?v=240"></script>
+  <script src="js/live-location.js?v=240"></script>
+  <script src="js/push-client.js?v=240"></script>
+  <script src="js/fraud-guard.js?v=240"></script>
+  <script src="js/admin-dashboard.js?v=240"></script>
+  <script src="js/geo-precision.js?v=304"></script>
+  <script src="js/maps-provider.js?v=304"></script>
+  <script src="js/network-lite.js?v=240"></script>
+  <script src="js/voice-access.js?v=240"></script>
+  <script src="js/ai-voice.js?v=240"></script>
+  <script src="js/assistant-parser.js?v=304"></script>
+  <script src="js/assistant-router.js?v=240"></script>
+  <script src="js/voice-language.js?v=304"></script>
+  <script src="js/test-data.js?v=304"></script>
+  <script src="js/premium-home.js?v=240"></script>
+  <script src="js/service-ai-images.js?v=304"></script>
+  <script src="js/mobile-form-wizard.js?v=304"></script>
+  <script src="js/bizzi-life-event-templates.js?v=304"></script>
+  <script src="js/bizzi-life.js?v=304"></script>
+  <script src="js/motion-system.js?v=304"></script>
+  <script src="app.js?v=304"></script>
+  <script src="js/location-intelligence.js?v=304"></script>
+  <script src="js/home-magazine.js?v=304"></script>
+  <script>
+    window.addEventListener("load", function () {
+      window.setTimeout(function () {
+        window.__bizziCssReady = true;
+        window.__bizziAppReady = true;
+        window.__bizziShowApp && window.__bizziShowApp();
+      }, 2200);
+    });
+    window.setTimeout(function () {
+      window.__bizziCssReady = true;
+      window.__bizziAppReady = true;
+      document.body.classList.add("bizzi-ready");
+    }, 1800);
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+      var refreshRequested = new URLSearchParams(location.search).get("refresh") === "1";
+      if (refreshRequested && "caches" in window) {
+        Promise.all([
+          navigator.serviceWorker.getRegistrations().then(function (registrations) {
+            return Promise.all(registrations.map(function (registration) { return registration.unregister(); }));
+          }),
+          caches.keys().then(function (keys) {
+            return Promise.all(keys.filter(function (key) { return key.indexOf("bizzi-") === 0; }).map(function (key) { return caches.delete(key); }));
+          })
+        ]).then(function () {
+          var cleanUrl = new URL(location.href);
+          cleanUrl.searchParams.delete("refresh");
+          cleanUrl.searchParams.set("v", "290");
+          location.replace(cleanUrl.toString());
+        });
+      } else {
+        navigator.serviceWorker.register("./sw.js", { updateViaCache: "none" }).then(function (registration) {
+          registration.update().catch(function () {});
+        }).catch(function () {});
+      }
+    }
+  </script>
+</body>
+</html>

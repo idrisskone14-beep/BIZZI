@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Bizzi Life, organisation intelligente de projets</title>
+  <desc id="desc">Une interface premium relie un objectif à plusieurs étapes et prestataires.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071a3e"/>
+      <stop offset=".55" stop-color="#123b63"/>
+      <stop offset="1" stop-color="#0d6b6d"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff6b4a"/>
+      <stop offset="1" stop-color="#ffb14a"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#031028" flood-opacity=".42"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="800" rx="48" fill="url(#bg)"/>
+  <circle cx="1010" cy="110" r="260" fill="#fff" opacity=".045"/>
+  <circle cx="90" cy="760" r="300" fill="#ff7a4f" opacity=".09"/>
+  <path d="M220 426C370 195 536 604 690 355S936 285 1040 178" fill="none" stroke="#b8eef0" stroke-width="8" stroke-linecap="round" stroke-dasharray="18 24" opacity=".7"/>
+  <g filter="url(#shadow)">
+    <rect x="356" y="190" width="488" height="420" rx="42" fill="#fff"/>
+    <rect x="408" y="244" width="282" height="28" rx="14" fill="#0d2249"/>
+    <rect x="408" y="294" width="362" height="15" rx="8" fill="#dbe4ec"/>
+    <g>
+      <rect x="408" y="352" width="384" height="62" rx="20" fill="#f3f6f8"/>
+      <circle cx="448" cy="383" r="18" fill="#21a67a"/>
+      <path d="m439 383 7 7 13-16" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="485" y="371" width="190" height="13" rx="7" fill="#1a3153"/>
+      <rect x="485" y="393" width="115" height="8" rx="4" fill="#bdc9d3"/>
+    </g>
+    <g>
+      <rect x="408" y="430" width="384" height="62" rx="20" fill="#fff5ed"/>
+      <circle cx="448" cy="461" r="18" fill="url(#accent)"/>
+      <rect x="485" y="449" width="222" height="13" rx="7" fill="#1a3153"/>
+      <rect x="485" y="471" width="148" height="8" rx="4" fill="#d4aa8d"/>
+    </g>
+    <g>
+      <rect x="408" y="508" width="384" height="62" rx="20" fill="#f3f6f8"/>
+      <circle cx="448" cy="539" r="18" fill="#dbe4ec"/>
+      <rect x="485" y="527" width="174" height="13" rx="7" fill="#1a3153"/>
+      <rect x="485" y="549" width="126" height="8" rx="4" fill="#bdc9d3"/>
+    </g>
+  </g>
+  <g filter="url(#shadow)">
+    <circle cx="220" cy="426" r="76" fill="#fff"/>
+    <path d="M190 425h60M220 395v60" stroke="#ff704c" stroke-width="18" stroke-linecap="round"/>
+    <circle cx="1012" cy="178" r="74" fill="#fff"/>
+    <path d="m980 179 22 22 44-52" fill="none" stroke="#20a77b" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g fill="#fff" font-family="Arial, sans-serif">
+    <text x="86" y="100" font-size="30" font-weight="700" letter-spacing="5">BIZZI LIFE</text>
+    <text x="86" y="142" font-size="22" opacity=".78">Votre objectif devient un plan clair.</text>
+  </g>
+</svg>

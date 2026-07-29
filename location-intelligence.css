@@ -1,0 +1,351 @@
+.location-pill.has-precise-location {
+  border-color: rgba(255, 91, 72, .32);
+  box-shadow: 0 12px 34px rgba(21, 36, 70, .09);
+}
+
+#geoButton {
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bizzi-location-dialog {
+  width: min(720px, calc(100vw - 24px));
+  max-height: min(900px, calc(100dvh - 24px));
+  padding: 0;
+  border: 0;
+  border-radius: 28px;
+  color: #102044;
+  background: #fff;
+  box-shadow: 0 28px 90px rgba(10, 23, 52, .28);
+}
+
+.bizzi-location-dialog::backdrop {
+  background: rgba(7, 18, 42, .62);
+  backdrop-filter: blur(8px);
+}
+
+.location-sheet {
+  display: grid;
+  gap: 16px;
+  padding: 22px;
+}
+
+.location-sheet > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.location-sheet > header p {
+  margin: 0 0 3px;
+  color: #ff5b48;
+  font-size: .76rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.location-sheet > header h2 {
+  margin: 0;
+  font-size: clamp(1.35rem, 4vw, 2rem);
+}
+
+.location-close {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: #f3f6fb;
+  color: #102044;
+  font-size: 1.7rem;
+}
+
+.location-search {
+  display: grid;
+  gap: 7px;
+  font-weight: 750;
+}
+
+.location-search > div {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+.location-search input {
+  min-width: 0;
+}
+
+.location-map {
+  position: relative;
+  min-height: 300px;
+  overflow: hidden;
+  border: 1px solid #dce4f0;
+  border-radius: 22px;
+  background: #edf3ef;
+}
+
+.location-map img,
+.location-map-touch {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.location-map img {
+  object-fit: cover;
+}
+
+.location-map-touch {
+  z-index: 2;
+  touch-action: none;
+}
+
+.location-marker {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  place-items: center;
+  translate: -50% -68%;
+  border: 5px solid #fff;
+  border-radius: 50% 50% 50% 8px;
+  rotate: -45deg;
+  background: #ff5b48;
+  color: #102044;
+  box-shadow: 0 8px 22px rgba(12, 30, 64, .3);
+  cursor: grab;
+}
+
+.location-marker::first-letter {
+  color: transparent;
+}
+
+.location-marker:active {
+  cursor: grabbing;
+  scale: 1.08;
+}
+
+.location-map-help {
+  margin: -9px 2px 0;
+  color: #64738d;
+  font-size: .8rem;
+}
+
+.location-result {
+  display: grid;
+  gap: 3px;
+  padding: 14px 16px;
+  border: 1px solid #e4e9f2;
+  border-radius: 17px;
+  background: #f8fafc;
+}
+
+.location-result strong {
+  font-size: 1rem;
+}
+
+.location-result span,
+.location-result small {
+  color: #5e6c83;
+}
+
+.location-result em {
+  margin-top: 3px;
+  color: #25835b;
+  font-size: .78rem;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.location-result.error {
+  border-color: #ffcbc4;
+  color: #a62f23;
+  background: #fff5f3;
+}
+
+.location-details {
+  border: 1px solid #e4e9f2;
+  border-radius: 17px;
+  background: #fff;
+}
+
+.location-details summary {
+  padding: 14px 16px;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.location-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 0 16px 16px;
+}
+
+.location-fields label {
+  display: grid;
+  gap: 6px;
+  font-size: .83rem;
+  font-weight: 700;
+}
+
+.location-field-wide {
+  grid-column: 1 / -1;
+}
+
+.location-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 10px;
+}
+
+.form-location-button {
+  width: 100%;
+  margin: 5px 0 10px;
+  white-space: normal;
+}
+
+.delivery-address-field {
+  margin-bottom: 0;
+}
+
+.delivery-address-suggestions {
+  display: grid;
+  max-height: 330px;
+  margin-top: -8px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid #d7dfeb;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 18px 42px rgba(9, 31, 68, .16);
+}
+
+.delivery-address-suggestions[hidden] {
+  display: none;
+}
+
+.delivery-address-suggestions button {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 1px 10px;
+  min-height: 68px;
+  padding: 11px 14px;
+  border: 0;
+  border-bottom: 1px solid #e8edf4;
+  border-radius: 0;
+  background: #fff;
+  color: #102044;
+  text-align: left;
+}
+
+.delivery-address-suggestions button:last-of-type {
+  border-bottom: 0;
+}
+
+.delivery-address-suggestions button:hover,
+.delivery-address-suggestions button:focus-visible,
+.delivery-address-suggestions button.active {
+  outline: 0;
+  background: #eef8f6;
+}
+
+.delivery-address-suggestions button > span {
+  grid-row: 1 / 3;
+  align-self: center;
+  color: #087e75;
+  font-size: 1.35rem;
+  font-weight: 900;
+}
+
+.delivery-address-suggestions strong,
+.delivery-address-suggestions small {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.delivery-address-suggestions strong {
+  align-self: end;
+  font-size: .94rem;
+}
+
+.delivery-address-suggestions small {
+  color: #63718a;
+  font-size: .78rem;
+  font-weight: 650;
+}
+
+.delivery-address-loading,
+.delivery-address-empty {
+  margin: 0;
+  padding: 12px 14px;
+  color: #63718a;
+  font-size: .8rem;
+  font-weight: 700;
+}
+
+@media (max-width: 720px) {
+  .location-pill {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  #geoButton {
+    grid-column: 1 / -1;
+    width: 100%;
+    max-width: none;
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .bizzi-location-dialog {
+    width: 100vw;
+    max-width: none;
+    max-height: 94dvh;
+    margin: auto 0 0;
+    border-radius: 26px 26px 0 0;
+  }
+
+  .location-sheet {
+    max-height: 94dvh;
+    overflow: auto;
+    padding: 18px 16px calc(20px + env(safe-area-inset-bottom));
+  }
+
+  .location-map {
+    min-height: 250px;
+  }
+
+  .location-search > div,
+  .location-actions,
+  .location-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .location-field-wide {
+    grid-column: auto;
+  }
+
+  .delivery-address-suggestions {
+    max-height: min(42dvh, 310px);
+    border-radius: 14px;
+  }
+
+  .delivery-address-suggestions button {
+    min-height: 72px;
+    padding: 12px;
+  }
+}

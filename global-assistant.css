@@ -1,0 +1,15 @@
+/* V301 — assistant vocal global */
+.home-voice-status{max-width:680px;margin:12px 0 0;padding:12px 14px;border:1px solid rgba(255,255,255,.2);border-radius:14px;background:rgba(255,255,255,.1);color:#fff}
+.home-voice-status[hidden]{display:none}
+.home-voice-status strong{display:block;margin-bottom:3px}
+.home-voice-status p{margin:0;color:rgba(255,255,255,.82)}
+#homeVoiceStart.is-listening{box-shadow:0 0 0 4px rgba(255,138,63,.25);transform:translateY(-1px)}
+.global-voice-dock{position:fixed;right:22px;bottom:22px;z-index:70;display:grid;justify-items:end;gap:8px;max-width:min(360px,calc(100vw - 28px))}
+.global-voice-floating{display:flex;align-items:center;gap:8px;padding:12px 16px;border:0;border-radius:999px;background:linear-gradient(135deg,#ff7535,#ff9d4f);color:#fff;font-weight:900;box-shadow:0 14px 30px rgba(77,37,10,.24)}
+.global-voice-floating span{width:11px;height:11px;border-radius:50%;color:#fff;line-height:11px}
+.global-voice-floating.is-listening{box-shadow:0 0 0 5px rgba(255,138,63,.24),0 14px 30px rgba(77,37,10,.24)}
+.global-voice-status{padding:11px 13px;border:1px solid #dbe3ef;border-radius:14px;background:#fff;color:#13213b;box-shadow:0 14px 34px rgba(18,35,64,.18)}
+.global-voice-status[hidden]{display:none}
+.global-voice-status strong{display:block;margin-bottom:3px}.global-voice-status p{margin:0;color:#536177}
+body:has(#view-home.active) .global-voice-dock,body:has(#view-admin.active) .global-voice-dock{display:none}
+@media(max-width:760px){.global-voice-dock{right:14px;bottom:84px}.global-voice-floating{padding:11px 14px}.global-voice-status{font-size:13px}}

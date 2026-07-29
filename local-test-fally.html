@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Préparation du test local Bizzi</title>
+</head>
+<body>
+  <p>Création du concert de test local…</p>
+  <script>
+    (function () {
+      var now = new Date();
+      var boostEnd = new Date(now.getTime());
+      boostEnd.setDate(boostEnd.getDate() + 30);
+      var event = {
+        id: "local-test-fally-ipupa-2026",
+        remoteId: "",
+        remoteStatus: "local_test",
+        title: "Fally Ipupa en concert live",
+        description: "Concert live de Fally Ipupa au Palais des Expositions d'Abidjan, à proximité de l'aéroport. Événement créé uniquement pour tester le parcours Bizzi.",
+        dateTime: "2026-12-25T20:00:00",
+        endDateTime: "2026-12-26T00:30:00",
+        venue: "Palais des Expositions d'Abidjan",
+        city: "Abidjan",
+        area: "Port-Bouët",
+        address: "Près de l'aéroport international Félix-Houphouët-Boigny, Abidjan",
+        latitude: 5.261,
+        longitude: -3.926,
+        visibilityRadiusKm: 50,
+        category: "Concert",
+        poster: "assets/fally-ipupa-concert-2026.jpg",
+        posterUrl: "",
+        ticketPrice: "À confirmer",
+        ticketUrl: "",
+        contactPhone: "+225 07 00 00 00 00",
+        organizerName: "Test local Bizzi",
+        planId: "boost_30_days",
+        planName: "Boost 1 mois",
+        boostDurationDays: 30,
+        boostStartsAt: now.toISOString(),
+        boostEndsAt: boostEnd.toISOString(),
+        amount: 3000000,
+        currency: "FCFA",
+        paymentMethod: "Test local",
+        paymentReference: "TEST-LOCAL-FALLY-2026",
+        paymentStatus: "approved",
+        isSponsored: true,
+        isPremium: false,
+        status: "published",
+        clickCount: 0,
+        ticketClickCount: 0,
+        contactClickCount: 0,
+        detailViewCount: 0,
+        submissionReference: "BZ-TEST-FALLY-2026",
+        createdAt: now.toISOString(),
+        updatedAt: now.toISOString()
+      };
+      var state = {};
+      try {
+        state = JSON.parse(localStorage.getItem("bizzi-state") || "{}");
+      } catch (error) {
+        state = {};
+      }
+      var events = Array.isArray(state.eventPromotions) ? state.eventPromotions : [];
+      state.eventPromotions = [event].concat(events.filter(function (item) {
+        return item && item.id !== event.id;
+      }));
+      state.selectedEventEntryMode = "tickets";
+      state.selectedEventId = event.id;
+      localStorage.setItem("bizzi-state", JSON.stringify(state));
+      location.replace("./?v=243#events");
+    }());
+  </script>
+</body>
+</html>

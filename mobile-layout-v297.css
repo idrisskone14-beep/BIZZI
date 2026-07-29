@@ -1,0 +1,184 @@
+/* Bizzi V304 — restitution fidèle de la mise en page téléphone V297 */
+
+@media (max-width: 760px) {
+  /* Les ajouts V304 restent actifs, mais ne rallongent pas l'accueil mobile V297. */
+  #view-home .home-context-bar,
+  #view-home #homeRecommendationsSection,
+  #view-home #homeGoodDealsSection,
+  #view-home #homeMagazineUpdates {
+    display: none;
+  }
+
+  #view-home .premium-home {
+    gap: 22px;
+  }
+
+  #view-home .premium-hero-direct {
+    min-height: auto;
+    padding: 26px 18px;
+    border-radius: 24px;
+  }
+
+  #view-home .premium-hero-direct .premium-brand {
+    margin-bottom: 16px;
+  }
+
+  #view-home .premium-instant-title {
+    font-size: clamp(32px, 10vw, 48px);
+  }
+
+  #view-home .premium-hero-direct .premium-home-search {
+    min-height: 60px;
+    margin-top: 22px;
+    padding-left: 12px;
+    border-radius: 17px;
+  }
+
+  #view-home .premium-hero-direct .premium-home-search input {
+    font-size: 14px;
+  }
+
+  #view-home .premium-drive-banner {
+    min-height: 68px;
+    padding: 8px;
+    border-radius: 17px;
+    grid-template-columns: 46px minmax(0, 1fr) auto;
+    gap: 9px;
+  }
+
+  #view-home .premium-drive-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+  }
+
+  #view-home .premium-drive-icon svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  #view-home .premium-drive-banner strong {
+    font-size: 17px;
+  }
+
+  #view-home .premium-drive-banner > b {
+    min-height: 38px;
+    padding: 0 10px;
+    font-size: 9px;
+  }
+
+  #view-home .home-instant-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+    overflow: visible;
+  }
+
+  #view-home .home-instant-actions button {
+    min-height: 70px;
+    padding: 8px 5px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 5px;
+    text-align: center;
+    font-size: 10px;
+  }
+
+  #view-home .premium-paths-priority {
+    padding: 22px 12px;
+    border-radius: 24px;
+  }
+
+  #view-home .premium-paths-priority .premium-path-grid {
+    display: grid;
+    grid-auto-flow: row;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-columns: auto;
+    gap: 10px;
+    overflow: visible;
+    padding: 0;
+    scroll-snap-type: none;
+  }
+
+  #view-home .premium-paths-priority .premium-path-grid button,
+  #view-home .premium-paths-priority .premium-path-grid button:last-child {
+    min-height: 0;
+    padding: 7px 7px 12px;
+    border-radius: 17px;
+    gap: 9px 5px;
+  }
+
+  #view-home .premium-paths-priority .premium-path-visual {
+    aspect-ratio: 4 / 3;
+    border-radius: 13px;
+  }
+
+  #view-home .premium-paths-priority .premium-path-visual .premium-path-icon {
+    width: 32px;
+    height: 32px;
+    left: 7px;
+    bottom: 7px;
+    font-size: 15px;
+  }
+
+  #view-home .premium-paths-priority .premium-path-grid button strong {
+    padding-left: 3px;
+    font-size: 14px;
+  }
+
+  #view-home .premium-paths-priority .premium-path-grid button b {
+    padding-right: 3px;
+    font-size: 18px;
+  }
+
+  #view-home .provider-card-premium {
+    grid-template-columns: 96px minmax(0, 1fr);
+    padding: 10px;
+    border-radius: 18px;
+    gap: 11px;
+  }
+
+  #view-home .provider-card-media,
+  #view-home .provider-card-media > .provider-photo,
+  #view-home .provider-card-media > .avatar {
+    min-height: 124px;
+  }
+
+  #view-home .provider-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #view-home .provider-facts span:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 380px) {
+  #view-home .premium-paths-priority .premium-path-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #view-home .premium-paths-priority .premium-path-visual {
+    aspect-ratio: 16 / 9;
+  }
+
+  #view-home .provider-card-premium {
+    grid-template-columns: 82px minmax(0, 1fr);
+  }
+
+  #view-home .provider-card-media,
+  #view-home .provider-card-media > .provider-photo,
+  #view-home .provider-card-media > .avatar {
+    min-height: 112px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #view-home .home-instant-actions button,
+  #view-home .premium-paths-priority .premium-path-grid button,
+  #view-home .provider-card-premium {
+    transition: none;
+  }
+}

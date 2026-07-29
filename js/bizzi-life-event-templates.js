@@ -1,0 +1,77 @@
+(function () {
+  "use strict";
+
+  globalThis.BizziLifeEventTemplates = Object.freeze([
+    {
+      id: "team-building",
+      icon: "🤝",
+      title: "Organiser un team building",
+      keywords: ["team building", "teambuilding", "cohesion d equipe", "journee d equipe", "seminaire d equipe"],
+      services: [
+        ["Agence événementielle / organisateur événements", "Concevoir l’expérience et coordonner les équipes"],
+        ["Guide touristique", "Proposer une activité locale ou de plein air"],
+        ["Coach sportif", "Animer les défis et activités collectives"],
+        ["Traiteur / Cuisinier à domicile", "Prévoir les repas, pauses et boissons"],
+        ["Transport de marchandises", "Acheminer le matériel nécessaire"],
+        ["Chauffeur", "Organiser les déplacements du groupe"],
+        ["Photographe", "Couvrir les temps forts de la journée"],
+        ["Location sonorisation / lumière", "Équiper les prises de parole et animations"],
+      ],
+      tasks: ["Définir les objectifs, la date et le nombre de participants", "Choisir le format, le lieu et l’agence", "Valider les activités, le transport et la restauration", "Communiquer le programme aux participants", "Confirmer le déroulé et les responsables"],
+    },
+    {
+      id: "baptism",
+      icon: "🕊️",
+      title: "Organiser un baptême",
+      keywords: ["bapteme", "baptiser", "ceremonie de bapteme", "fete de bapteme"],
+      services: [
+        ["Agence événementielle / organisateur événements", "Coordonner la cérémonie et la réception"],
+        ["Traiteur / Cuisinier à domicile", "Préparer le repas et les boissons"],
+        ["Décorateur événementiel", "Créer une décoration douce et adaptée"],
+        ["Photographe", "Conserver les moments importants"],
+        ["Fleuriste", "Préparer les compositions florales"],
+        ["DJ / Animateur", "Animer la réception avec mesure"],
+        ["Serveur / Serveuse", "Assurer le service des invités"],
+        ["Location d'articles d'événements", "Prévoir tables, chaises et accessoires"],
+        ["Bizzi Livraison", "Acheminer les commandes et éléments de décoration"],
+      ],
+      tasks: ["Fixer la date, les lieux et la liste des invités", "Définir le budget et le style de la réception", "Choisir restauration, décoration et photo", "Confirmer le matériel et les livraisons", "Vérifier le programme final avec la famille"],
+    },
+    {
+      id: "showcase",
+      icon: "🎤",
+      title: "Organiser un showcase",
+      keywords: ["showcase", "show case", "mini concert", "concert prive", "session live"],
+      services: [
+        ["Agence événementielle / organisateur événements", "Produire et coordonner le showcase"],
+        ["Location sonorisation / lumière", "Installer la scène, le son et les lumières"],
+        ["DJ / Animateur", "Assurer les transitions et l’ambiance"],
+        ["Photographe", "Créer les visuels officiels"],
+        ["Community manager", "Préparer la communication et la couverture en ligne"],
+        ["Imprimeur", "Produire affiches, badges et signalétique"],
+        ["Gardiennage", "Sécuriser les artistes, le public et le matériel"],
+        ["Barman / Barmaid", "Organiser le service des boissons"],
+        ["Location d'articles d'événements", "Prévoir scène, barrières et mobilier"],
+      ],
+      tasks: ["Définir l’artiste, le format, la jauge et le budget", "Sélectionner l’agence, le lieu et la date", "Valider la fiche technique et la sécurité", "Lancer la communication et les invitations", "Organiser les balances et valider le conducteur"],
+    },
+    {
+      id: "press-conference",
+      icon: "📰",
+      title: "Organiser une conférence de presse",
+      keywords: ["conference de presse", "point presse", "rencontre presse", "media briefing", "briefing presse"],
+      services: [
+        ["Agence événementielle / organisateur événements", "Coordonner les médias, invités et prestataires"],
+        ["Location sonorisation / lumière", "Garantir des prises de parole claires"],
+        ["Photographe", "Produire les photos presse"],
+        ["Community manager", "Assurer la diffusion numérique et le direct"],
+        ["Imprimeur", "Préparer dossiers, badges et supports de marque"],
+        ["Traducteur / Interprète", "Accompagner les médias multilingues si nécessaire"],
+        ["Traiteur / Cuisinier à domicile", "Prévoir l’accueil café et les collations"],
+        ["Serveur / Serveuse", "Assurer l’accueil et le service"],
+        ["Gardiennage", "Contrôler les accès et sécuriser le lieu"],
+      ],
+      tasks: ["Définir le message, les intervenants et les médias ciblés", "Choisir le lieu, l’agence et la date", "Préparer invitations, dossier et supports de presse", "Valider la technique, l’accueil et la sécurité", "Répéter les prises de parole et confirmer le conducteur"],
+    },
+  ]);
+}());

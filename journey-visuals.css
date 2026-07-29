@@ -1,0 +1,393 @@
+.journey-showcase {
+  min-height: 360px;
+  margin-bottom: 21px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 26px;
+  color: white;
+  background: #060a12;
+  box-shadow: 0 24px 60px rgba(8,20,44,.18);
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(300px, .95fr);
+  align-items: stretch;
+}
+
+.journey-showcase::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(4,7,13,.1), transparent 55%);
+}
+
+.journey-showcase-copy {
+  position: relative;
+  z-index: 2;
+  padding: clamp(28px, 4vw, 54px);
+  display: grid;
+  align-content: center;
+  gap: 14px;
+}
+
+.journey-showcase-kicker {
+  width: fit-content;
+  color: #ff8a3d;
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.journey-showcase h2 {
+  max-width: 660px;
+  margin: 0;
+  color: white;
+  font-size: clamp(32px, 4vw, 56px);
+  line-height: 1;
+  letter-spacing: -.045em;
+}
+
+.journey-showcase h2 em {
+  color: #ff7a20;
+  font-style: normal;
+}
+
+.journey-showcase-copy > p:not(.journey-showcase-kicker) {
+  max-width: 620px;
+  color: rgba(255,255,255,.7);
+  font-size: 15px;
+}
+
+.journey-showcase-tags {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.journey-showcase-tags span {
+  min-height: 30px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 999px;
+  color: rgba(255,255,255,.82);
+  background: rgba(255,255,255,.08);
+  font-size: 10px;
+  font-weight: 850;
+}
+
+.journey-showcase-media,
+.journey-showcase-media figure {
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.journey-showcase-media > img,
+.journey-showcase-media figure img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.journey-showcase-media {
+  position: relative;
+  z-index: 0;
+}
+
+.journey-showcase-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, #060a12 0%, transparent 32%);
+}
+
+.journey-showcase-delivery {
+  background: linear-gradient(135deg, #080b12, #2a1605);
+}
+
+.journey-showcase-delivery h2 em,
+.journey-showcase-delivery .journey-showcase-kicker {
+  color: #ffc029;
+}
+
+.journey-showcase-delivery .journey-showcase-media img {
+  object-position: center;
+}
+
+.journey-showcase-food {
+  background: linear-gradient(135deg, #111008, #49310b);
+}
+
+.journey-showcase-food h2 em,
+.journey-showcase-food .journey-showcase-kicker {
+  color: #ffc84d;
+}
+
+.journey-showcase-food .journey-showcase-media img {
+  object-position: center 48%;
+}
+
+.journey-showcase-events {
+  background: linear-gradient(135deg, #07080d, #331a0f);
+}
+
+.journey-showcase-events .journey-showcase-media img {
+  object-position: center 28%;
+}
+
+.journey-showcase-services {
+  min-height: 330px;
+  background: linear-gradient(135deg, #071021, #11253b);
+}
+
+.journey-showcase-jobs {
+  background: linear-gradient(135deg, #071326, #073b80);
+}
+
+.journey-showcase-jobs h2 em,
+.journey-showcase-jobs .journey-showcase-kicker {
+  color: #65b6ff;
+}
+
+.journey-showcase-jobs .journey-showcase-media {
+  background: #fff;
+}
+
+.journey-showcase-jobs .journey-showcase-media img {
+  object-fit: contain;
+  padding: 14px;
+}
+
+.journey-services-duo {
+  display: grid;
+  grid-template-columns: .75fr 1.25fr;
+  gap: 6px;
+  padding: 12px 12px 12px 0;
+}
+
+.journey-services-duo figure {
+  position: relative;
+  border-radius: 18px;
+}
+
+.journey-services-duo figure:first-child {
+  margin-top: 34px;
+  margin-bottom: 34px;
+}
+
+.journey-services-duo img {
+  object-position: center;
+}
+
+.journey-services-duo::after {
+  z-index: 2;
+}
+
+.premium-path-grid button {
+  min-height: 228px;
+  padding: 10px 12px 14px;
+}
+
+.premium-path-visual {
+  height: 102px;
+  margin: 0 0 4px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  display: block;
+  background: #edf2f7;
+}
+
+.premium-path-visual img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform .22s ease;
+}
+
+.premium-path-grid button:hover .premium-path-visual img {
+  transform: scale(1.04);
+}
+
+.premium-path-visual .premium-path-icon {
+  width: 36px;
+  height: 36px;
+  margin: 0;
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  border: 3px solid rgba(255,255,255,.88);
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 7px 18px rgba(8,20,44,.22);
+  font-size: 17px;
+  font-style: normal;
+}
+
+.premium-path-grid [data-go="delivery"] .premium-path-visual img {
+  object-position: center;
+}
+
+.premium-path-grid [data-go="food"] .premium-path-visual img {
+  object-position: center 48%;
+}
+
+.premium-path-grid [data-go="events"] .premium-path-visual img {
+  object-position: center 25%;
+}
+
+.premium-path-grid [data-go="jobs"] .premium-path-visual img {
+  object-fit: contain;
+  padding: 7px;
+  background: white;
+}
+
+.premium-path-grid [data-go="life"] .premium-path-visual img {
+  object-position: center 42%;
+}
+
+.data-lite .journey-showcase {
+  min-height: auto;
+  grid-template-columns: 1fr;
+}
+
+.data-lite .journey-showcase-media {
+  display: none;
+}
+
+.data-lite .premium-path-visual {
+  height: 50px;
+  background: #f4f7fa;
+}
+
+.data-lite .premium-path-visual img {
+  display: none;
+}
+
+.data-lite .premium-path-visual .premium-path-icon {
+  left: 7px;
+  bottom: 7px;
+}
+
+@media (max-width: 1180px) {
+  .journey-showcase {
+    grid-template-columns: minmax(0, 1fr) minmax(260px, .72fr);
+  }
+
+  .journey-showcase h2 {
+    font-size: clamp(30px, 4vw, 44px);
+  }
+}
+
+@media (max-width: 760px) {
+  .journey-showcase {
+    min-height: 0;
+    grid-template-columns: 1fr;
+    border-radius: 21px;
+  }
+
+  .journey-showcase-copy {
+    padding: 25px 22px;
+  }
+
+  .journey-showcase h2 {
+    font-size: clamp(32px, 10vw, 46px);
+  }
+
+  .journey-showcase-media {
+    height: 240px;
+    order: -1;
+  }
+
+  .journey-showcase-media::after {
+    background: linear-gradient(0deg, #060a12 0%, transparent 38%);
+  }
+
+  .journey-services-duo {
+    height: 230px;
+    padding: 10px;
+    grid-template-columns: .8fr 1.2fr;
+    order: 0;
+  }
+
+  .journey-services-duo figure:first-child {
+    margin: 22px 0;
+  }
+
+  .journey-showcase-services .journey-showcase-copy {
+    padding-bottom: 6px;
+  }
+
+  .premium-path-grid button {
+    min-height: 235px;
+  }
+
+  .premium-path-visual {
+    height: 112px;
+  }
+}
+
+@media (max-width: 420px) {
+  .journey-showcase-copy > p:not(.journey-showcase-kicker) {
+    font-size: 13px;
+  }
+
+  .journey-showcase-tags span:nth-child(3) {
+    display: none;
+  }
+
+  .journey-showcase-media {
+    height: 205px;
+  }
+
+  .journey-services-duo {
+    height: 205px;
+  }
+}
+
+/* V243 : cadrage téléphone fidèle au format de chaque visuel d'accueil. */
+@media (max-width: 560px) {
+  .premium-path-grid button,
+  .premium-path-grid button:last-child {
+    min-height: auto;
+    padding: 10px 11px 15px;
+  }
+
+  .premium-path-visual {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    background: #f5f3ef;
+  }
+
+  .premium-path-grid [data-go="delivery"] .premium-path-visual,
+  .premium-path-grid [data-go="jobs"] .premium-path-visual {
+    aspect-ratio: 3 / 2;
+  }
+
+  .premium-path-grid [data-go="search"] .premium-path-visual img,
+  .premium-path-grid [data-go="food"] .premium-path-visual img,
+  .premium-path-grid [data-go="events"] .premium-path-visual img,
+  .premium-path-grid [data-go="life"] .premium-path-visual img {
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .premium-path-grid [data-go="delivery"] .premium-path-visual img {
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .premium-path-grid [data-go="jobs"] .premium-path-visual img {
+    object-fit: contain;
+    object-position: center;
+    padding: 4px;
+  }
+}

@@ -1,0 +1,37 @@
+.mobile-form-progress{display:none}
+.mobile-form-step{min-width:0;margin:0;padding:16px;border:1px solid rgba(8,36,92,.12);border-radius:12px;background:rgba(255,255,255,.72);display:grid;gap:var(--space-2)}
+.mobile-form-step legend{padding:0 8px;color:var(--brand);font-size:14px;font-weight:950}
+.mobile-step-actions{display:none}
+.optional-fields{border:1px solid rgba(8,36,92,.12);border-radius:10px;padding:0 12px;background:#f7fbff}
+.optional-fields summary{min-height:48px;display:flex;align-items:center;color:var(--brand);font-size:13px;font-weight:900;cursor:pointer;touch-action:manipulation}
+.optional-fields[open]{padding-bottom:12px}
+.optional-fields[open] summary{margin-bottom:10px}
+.optional-fields label+label,.optional-fields .form-grid+label{margin-top:10px}
+.optional-label,.mobile-form-hint{color:var(--muted);font-size:12px;font-weight:750}
+.mobile-form-hint{margin:-4px 0 8px}
+#eventPaidOptions[hidden],#eventPaymentReferenceRow[hidden]{display:none}
+
+@media (max-width:720px){
+  .main{padding-left:10px;padding-right:10px}
+  .panel{padding:16px}
+  #view-events.event-mode-promote .journey-showcase-events,#view-provider.provider-mode-new #providerIdentityStatus{display:none}
+  .mobile-step-form{gap:12px}
+  .mobile-form-progress{position:sticky;z-index:4;top:8px;min-height:58px;padding:10px 12px;border:1px solid rgba(8,36,92,.14);border-radius:12px;background:rgba(255,255,255,.96);box-shadow:0 10px 24px rgba(8,36,92,.1);display:grid;gap:2px}
+  .mobile-form-progress strong{color:var(--brand);font-size:14px}
+  .mobile-form-progress span{color:var(--muted);font-size:12px;font-weight:800}
+  .mobile-form-step{padding:4px 0 0;border:0;background:transparent}
+  .mobile-form-step:not(.active){display:none}
+  .mobile-form-step legend{width:100%;margin-bottom:4px;padding:0;font-size:17px}
+  .mobile-step-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .mobile-step-actions>:only-child{grid-column:1/-1}
+  .mobile-step-actions button,.mobile-final-submit{min-height:52px;touch-action:manipulation}
+  .mobile-final-submit{position:sticky;z-index:5;bottom:68px;width:100%;box-shadow:0 14px 28px rgba(8,36,92,.24)}
+  .mobile-step-form input,.mobile-step-form select,.mobile-step-form textarea{min-height:50px;font-size:16px}
+  .mobile-step-form input[type="checkbox"]{min-height:22px;width:22px;height:22px}
+  .mobile-step-form input[type="file"]{min-height:54px;padding:9px}
+  .mobile-step-form .check-row{padding:12px;border-radius:10px;background:#fff8e8}
+  .event-entry-tabs,.provider-entry-tabs{grid-template-columns:1fr}
+  .event-entry-tab,.provider-entry-tab{min-height:52px}
+  .event-plans{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:2px 2px 10px}
+  .event-plan{flex:0 0 min(78vw,290px);min-height:122px;scroll-snap-align:start}
+}

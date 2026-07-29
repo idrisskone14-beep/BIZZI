@@ -1,0 +1,201 @@
+:root {
+  --motion-fast: 160ms;
+  --motion-medium: 280ms;
+  --motion-slow: 420ms;
+  --motion-ease-out: cubic-bezier(.2, .8, .2, 1);
+  --motion-ease-soft: cubic-bezier(.22, 1, .36, 1);
+}
+
+@keyframes bizziViewForward {
+  from { opacity: 0; transform: translate3d(18px, 0, 0) scale(.995); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes bizziViewBack {
+  from { opacity: 0; transform: translate3d(-14px, 0, 0) scale(.995); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes bizziItemRise {
+  from { opacity: 0; transform: translate3d(0, 12px, 0) scale(.985); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes bizziSurfaceChange {
+  from { opacity: .35; transform: translate3d(0, 8px, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes bizziTitleSlide {
+  from { opacity: 0; transform: translate3d(0, 6px, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes bizziTabPop {
+  0% { transform: scale(.96); }
+  62% { transform: scale(1.035); }
+  100% { transform: scale(1); }
+}
+
+@keyframes bizziNavPulse {
+  0% { transform: translateY(2px) scale(.96); }
+  100% { transform: none; }
+}
+
+.view.motion-view-enter {
+  animation: bizziViewForward var(--motion-medium) both var(--motion-ease-soft);
+}
+
+html[data-motion-direction="back"] .view.motion-view-enter {
+  animation-name: bizziViewBack;
+}
+
+.motion-title-enter {
+  animation: bizziTitleSlide 220ms both var(--motion-ease-out);
+}
+
+.motion-item-enter {
+  animation: bizziItemRise var(--motion-slow) both var(--motion-ease-soft);
+  animation-delay: min(calc(var(--motion-order, 0) * 34ms), 204ms);
+}
+
+.motion-surface-change {
+  animation: bizziSurfaceChange var(--motion-medium) both var(--motion-ease-out);
+  animation-delay: min(calc(var(--motion-order, 0) * 28ms), 84ms);
+}
+
+.motion-tab-selected {
+  animation: bizziTabPop 260ms both var(--motion-ease-soft);
+}
+
+.motion-nav-active {
+  animation: bizziNavPulse 230ms both var(--motion-ease-soft);
+}
+
+.bizzi-motion-ready button,
+.bizzi-motion-ready a[href],
+.bizzi-motion-ready .clickable-provider,
+.bizzi-motion-ready .clickable-featured {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.bizzi-motion-ready .motion-pressing {
+  transform: scale(.975) !important;
+  transition-duration: 80ms !important;
+}
+
+.delivery-kind-tab,
+.event-entry-tab,
+.job-entry-tab,
+.provider-entry-tab,
+.delivery-entry-tab,
+.exception-plan-card {
+  transition:
+    transform var(--motion-fast) ease,
+    color var(--motion-medium) ease,
+    background-color var(--motion-medium) ease,
+    border-color var(--motion-medium) ease,
+    box-shadow var(--motion-medium) ease;
+}
+
+.delivery-kind-tab.selected,
+.event-entry-tab.selected,
+.job-entry-tab.selected,
+.provider-entry-tab.selected,
+.delivery-entry-tab.selected,
+.exception-plan-card.selected {
+  transform: translateY(-1px);
+}
+
+.service-card .service-art,
+.premium-path-visual img,
+.event-poster img,
+.exception-place-visual img,
+.food-place-visual img {
+  transition: transform var(--motion-slow) var(--motion-ease-out), filter var(--motion-medium) ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .service-card:hover .service-art,
+  .premium-path-grid button:hover .premium-path-visual img,
+  .event-card:hover .event-poster img,
+  .exception-place-card:hover .exception-place-visual img,
+  .food-place-card:hover .food-place-visual img {
+    transform: scale(1.035);
+  }
+
+  .service-card:hover,
+  .provider-card:hover,
+  .event-card:hover,
+  .job-card:hover,
+  .exception-place-card:hover,
+  .food-place-card:hover {
+    box-shadow: 0 18px 42px rgba(8, 36, 92, .14);
+  }
+}
+
+.sync-status:not(:empty)::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  vertical-align: 1px;
+  animation: bizziStatusBreath 1.4s ease-in-out infinite alternate;
+}
+
+@keyframes bizziStatusBreath {
+  from { opacity: .32; transform: scale(.72); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@media (max-width: 720px) {
+  :root {
+    --motion-medium: 240ms;
+    --motion-slow: 340ms;
+  }
+
+  .motion-item-enter {
+    animation-delay: min(calc(var(--motion-order, 0) * 24ms), 120ms);
+  }
+
+  .bottom-link.active {
+    transform: translateY(-2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+
+  .motion-view-enter,
+  .motion-title-enter,
+  .motion-item-enter,
+  .motion-surface-change,
+  .motion-tab-selected,
+  .motion-nav-active,
+  .sync-status:not(:empty)::before {
+    animation: none !important;
+  }
+
+  .bizzi-motion-ready .motion-pressing,
+  .delivery-kind-tab,
+  .event-entry-tab,
+  .job-entry-tab,
+  .provider-entry-tab,
+  .delivery-entry-tab,
+  .exception-plan-card,
+  .service-card .service-art,
+  .premium-path-visual img,
+  .event-poster img,
+  .exception-place-visual img,
+  .food-place-visual img {
+    transition: none !important;
+    transform: none !important;
+  }
+}

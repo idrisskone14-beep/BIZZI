@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#06183f">
+  <title>Acces admin securise - Bizzi</title>
+  <link rel="icon" href="assets/icon-192-v302.png">
+  <link rel="stylesheet" href="styles.css?v=206">
+  <script>
+    function adminTarget() {
+      return "./index.html?admin=1&entry=admin-access&open=admin#admin";
+    }
+    try {
+      sessionStorage.setItem("bizzi-admin-entry", "true");
+      sessionStorage.setItem("bizzi-admin-unlocked", "true");
+    } catch (error) {
+      // Le parametre admin=1 sert de secours si sessionStorage est indisponible.
+    }
+    window.location.replace(adminTarget());
+  </script>
+</head>
+<body>
+  <main class="main single-page">
+    <section class="panel admin-lock">
+      <h1>Acces admin Bizzi</h1>
+      <p>Redirection vers l'espace administrateur...</p>
+      <button class="primary" type="button" onclick="try{sessionStorage.setItem('bizzi-admin-entry','true');sessionStorage.setItem('bizzi-admin-unlocked','true')}catch(e){}; window.location.href=adminTarget();">
+        Continuer
+      </button>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: bizzi-backend
+    runtime: docker
+    dockerContext: .
+    dockerfilePath: ./Dockerfile
+    plan: free
+    envVars:
+      - key: MAPBOX_ACCESS_TOKEN
+        sync: false
+      - key: BIZZI_MAPS_PROVIDER
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false

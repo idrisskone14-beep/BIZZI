@@ -10013,10 +10013,14 @@ function deliveryTrackingHtml(request = {}, options = {}) {
   const eta = deliveryEtaMinutes(request);
   const progress = Math.min(100, Math.max(8, ((info.index + 1) / info.stages.length) * 100));
   const supportEmail = officialEmail("supportEmail") || "support@bizzi-africa.com";
+  const supportWhatsapp = String(bizziConfig.official?.supportWhatsapp || "").trim();
   const words = deliveryMissionWords(request);
   const ride = deliveryRequestIsRide(request);
   const subject = encodeURIComponent(`SOS ${words.mission} ${request.paymentReference || request.id}`);
   const body = encodeURIComponent(`Bonjour Bizzi, j'ai besoin d'aide pour la ${words.mission} ${request.paymentReference || request.id}.`);
+  const supportWhatsappHref = supportWhatsapp
+    ? `https://wa.me/${supportWhatsapp.replace(/[^\d]/g, "")}?text=${body}`
+    : "";
   return `
     <section class="delivery-tracking" aria-label="Suivi de la ${words.mission}">
       <div class="delivery-tracking-head">
@@ -10038,6 +10042,7 @@ function deliveryTrackingHtml(request = {}, options = {}) {
       <div class="delivery-tracking-actions">
         <a class="danger" href="mailto:${safe(supportEmail)}?subject=${subject}&body=${body}">SOS Bizzi</a>
         <a class="secondary" href="mailto:${safe(supportEmail)}?subject=${encodeURIComponent(`Support ${words.mission} ${request.paymentReference || request.id}`)}">Contacter le support</a>
+        ${supportWhatsapp ? `<a class="secondary" href="${safe(supportWhatsappHref)}" target="_blank" rel="noreferrer">WhatsApp support</a>` : ""}
         ${options.providerId && info.stage === "accepted" ? `<button class="primary" type="button" data-delivery-stage="picked_up" data-delivery-id="${safe(request.id)}">${ride ? "Client à bord" : "Colis récupéré"}</button>` : ""}
         ${options.providerId && info.stage === "picked_up" ? `<button class="primary" type="button" data-delivery-stage="en_route" data-delivery-id="${safe(request.id)}">Je suis en route</button>` : ""}
         ${options.providerId && info.stage === "en_route" ? `<label class="proof-upload">Photo facultative<input type="file" accept="image/*" data-delivery-proof-file="${safe(request.id)}"></label><button class="primary" type="button" data-delivery-stage="delivered" data-delivery-id="${safe(request.id)}">${ride ? "Confirmer l'arrivée" : "Confirmer la livraison"}</button>` : ""}
@@ -15428,11 +15433,14 @@ function renderOfficialContact() {
   const supportEmail = officialEmail("supportEmail");
   const paymentEmail = officialEmail("paymentEmail");
   const providersEmail = officialEmail("providersEmail");
+  const supportWhatsapp = String(bizziConfig.official?.supportWhatsapp || "").trim();
+  const supportWhatsappHref = supportWhatsapp ? `https://wa.me/${supportWhatsapp.replace(/[^\d]/g, "")}` : "";
   root.innerHTML = `
     <div class="official-contact">
       <p><strong>Domaine :</strong> ${website ? `<a href="${safe(website)}" target="_blank" rel="noreferrer">${safe(domain)}</a>` : safe(domain)}</p>
       <p><strong>Contact :</strong> ${safeMailtoHref(contactEmail) ? `<a href="${safe(safeMailtoHref(contactEmail))}">${safe(contactEmail)}</a>` : safe(contactEmail)}</p>
       <p><strong>Support :</strong> ${safeMailtoHref(supportEmail) ? `<a href="${safe(safeMailtoHref(supportEmail))}">${safe(supportEmail)}</a>` : safe(supportEmail)}</p>
+      ${supportWhatsapp ? `<p><strong>WhatsApp :</strong> <a href="${safe(supportWhatsappHref)}" target="_blank" rel="noreferrer">${safe(supportWhatsapp)}</a></p>` : ""}
       <p><strong>Paiements :</strong> ${safeMailtoHref(paymentEmail) ? `<a href="${safe(safeMailtoHref(paymentEmail))}">${safe(paymentEmail)}</a>` : safe(paymentEmail)}</p>
       <p><strong>Prestataires :</strong> ${safeMailtoHref(providersEmail) ? `<a href="${safe(safeMailtoHref(providersEmail))}">${safe(providersEmail)}</a>` : safe(providersEmail)}</p>
     </div>

@@ -11,6 +11,7 @@ window.BizziConfig = {
     supportEmail: "support@bizzi-africa.com",
     paymentEmail: "paiement@bizzi-africa.com",
     providersEmail: "prestataires@bizzi-africa.com",
+    supportWhatsapp: "+225 07 59 95 81 21",
   },
   supabase: {
     url: "https://hqqppxnvorcnvksulhna.supabase.co",

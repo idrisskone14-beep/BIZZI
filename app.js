@@ -15447,6 +15447,18 @@ function renderOfficialContact() {
   `;
 }
 
+function renderSidebarContact() {
+  const root = document.querySelector("#sidebarContact");
+  if (!root) return;
+  const supportWhatsapp = String(bizziConfig.official?.supportWhatsapp || "").trim();
+  if (!supportWhatsapp) {
+    root.innerHTML = "";
+    return;
+  }
+  const href = `https://wa.me/${supportWhatsapp.replace(/[^\d]/g, "")}`;
+  root.innerHTML = `<a class="sidebar-contact-link" href="${safe(href)}" target="_blank" rel="noreferrer"><span aria-hidden="true">💬</span> ${safe(supportWhatsapp)}</a>`;
+}
+
 function refreshApp() {
   applySubscriptionRules();
   renderCategories();
@@ -15477,6 +15489,7 @@ function refreshApp() {
   renderSavedProviders();
   renderGeoStatus();
   renderOfficialContact();
+  renderSidebarContact();
 }
 
 function replaceState(nextState) {

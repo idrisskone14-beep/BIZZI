@@ -317,6 +317,20 @@ textarea:focus-visible {
   line-height: 1.35;
 }
 
+.sidebar-contact-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--space-2);
+  border-radius: 8px;
+  background: rgba(37,211,102,.16);
+  border: 1px solid rgba(37,211,102,.32);
+  color: #25d366;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
 .main {
   min-width: 0;
   padding: var(--space-4);

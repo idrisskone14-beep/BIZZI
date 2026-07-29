@@ -77,7 +77,7 @@ window.BizziConfig = {
   maps: {
     provider: "auto",
     mapboxAccessToken: "",
-    geocodingEndpoint: "https://hqqppxnvorcnvksulhna.supabase.co/functions/v1/map-geocode",
+    geocodingEndpoint: "https://bizzi-backend.onrender.com",
     routingMode: "backend_first",
     fallbackProvider: "openstreetmap",
     country: "ci",

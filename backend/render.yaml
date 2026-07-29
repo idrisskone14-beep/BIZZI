@@ -2,6 +2,7 @@ services:
   - type: web
     name: bizzi-backend
     runtime: docker
+    rootDir: backend
     dockerContext: .
     dockerfilePath: ./Dockerfile
     plan: free

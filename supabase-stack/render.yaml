@@ -1,0 +1,81 @@
+services:
+  - type: pserv
+    name: bizzi-rest
+    runtime: image
+    plan: free
+    image:
+      url: docker.io/postgrest/postgrest:v14.12
+    envVars:
+      - key: PGRST_DB_URI
+        sync: false
+      - key: PGRST_DB_SCHEMAS
+        value: public
+      - key: PGRST_DB_ANON_ROLE
+        value: anon
+      - key: PGRST_JWT_SECRET
+        sync: false
+      - key: PGRST_SERVER_PORT
+        value: 3000
+      - key: PORT
+        value: 3000
+
+  - type: pserv
+    name: bizzi-storage
+    runtime: image
+    plan: free
+    image:
+      url: docker.io/supabase/storage-api:v1.60.4
+    envVars:
+      - key: ANON_KEY
+        sync: false
+      - key: SERVICE_KEY
+        sync: false
+      - key: AUTH_JWT_SECRET
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: POSTGREST_URL
+        value: http://bizzi-rest:3000
+      - key: STORAGE_BACKEND
+        value: s3
+      - key: REGION
+        value: auto
+      - key: GLOBAL_S3_BUCKET
+        sync: false
+      - key: GLOBAL_S3_ENDPOINT
+        sync: false
+      - key: GLOBAL_S3_FORCE_PATH_STYLE
+        value: "true"
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      - key: FILE_SIZE_LIMIT
+        value: "52428800"
+      - key: TENANT_ID
+        value: bizzi
+      - key: PROJECT_REF
+        value: bizzi
+      - key: IS_MULTITENANT
+        value: "false"
+      - key: ENABLE_IMAGE_TRANSFORMATION
+        value: "false"
+      - key: SERVER_PORT
+        value: 5000
+      - key: PORT
+        value: 5000
+
+  - type: web
+    name: bizzi-gateway
+    runtime: docker
+    plan: free
+    rootDir: supabase-stack/kong
+    dockerContext: .
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: ANON_KEY
+        sync: false
+      - key: SERVICE_ROLE_KEY
+        sync: false
+      - key: PORT
+        value: 8000

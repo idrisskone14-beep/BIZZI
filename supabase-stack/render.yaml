@@ -1,5 +1,5 @@
 services:
-  - type: pserv
+  - type: web
     name: bizzi-rest
     runtime: image
     plan: free
@@ -19,7 +19,7 @@ services:
       - key: PORT
         value: 3000
 
-  - type: pserv
+  - type: web
     name: bizzi-storage
     runtime: image
     plan: free

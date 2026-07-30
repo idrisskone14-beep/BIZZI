@@ -335,6 +335,7 @@ textarea:focus-visible {
   min-width: 0;
   padding: var(--space-4);
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-3);
   align-content: start;
 }
@@ -4082,7 +4083,7 @@ p {
   .admin-grid,
   .toolbar,
   .social-boost {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .toolbar > input[type="search"] {
@@ -4254,6 +4255,7 @@ p {
   --premium-cream: #fff8f0;
   --premium-night: #05070b;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 28px;
 }
 

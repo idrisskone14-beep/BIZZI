@@ -14,7 +14,7 @@
     }
     if (status) {
       status.hidden = false;
-      status.innerHTML = "<strong>Bizzi se prépare…</strong><p>Réessayez dans un instant.</p>";
+      status.innerHTML = "<strong>Bizzis se prépare…</strong><p>Réessayez dans un instant.</p>";
     }
   }
 

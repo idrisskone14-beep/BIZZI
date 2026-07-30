@@ -3,12 +3,12 @@
   const translations = {
     fr: {
       home: "Accueil", delivery: "Livraison et course", services: "Services", jobs: "Emplois",
-      express: "Demande express", provider: "Prestataire", welcome: "Bienvenue sur Bizzi",
+      express: "Demande express", provider: "Prestataire", welcome: "Bienvenue sur Bizzis",
       today: "Que voulez-vous faire aujourd'hui ?", install: "Installer",
     },
     nouchi: {
       home: "Accueil", delivery: "Livraison et course", services: "Services", jobs: "Boulot",
-      express: "Besoin rapide", provider: "Pro", welcome: "Akwaba sur Bizzi",
+      express: "Besoin rapide", provider: "Pro", welcome: "Akwaba sur Bizzis",
       today: "Tu veux faire quoi aujourd'hui ?", install: "Mettre sur téléphone",
     },
   };

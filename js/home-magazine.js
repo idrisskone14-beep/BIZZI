@@ -104,8 +104,8 @@
         <button class="home-provider-main" type="button" data-magazine-query="${safe(provider.fullName || provider.service)}" aria-label="Trouver ${safe(provider.fullName || provider.service)}">
           <span class="home-provider-photo">${image ? `<img src="${image}" loading="lazy" decoding="async" alt="">` : `<b>${safe(provider.initials || "BZ")}</b>`}${provider.verificationStatus === "verified" ? `<i>Vérifié</i>` : ""}</span>
           <span class="home-provider-copy">
-            <strong>${safe(provider.fullName || "Prestataire Bizzi")}</strong>
-            <small>${safe(provider.service || "Service Bizzi")}</small>
+            <strong>${safe(provider.fullName || "Prestataire Bizzis")}</strong>
+            <small>${safe(provider.service || "Service Bizzis")}</small>
             <span class="home-provider-rating"><b>★ ${Number(provider.rating || 0).toFixed(1)}</b><i>${reviews ? `${reviews} avis` : "Nouveau"}</i></span>
             <span class="home-provider-location">${safe([provider.area, provider.city, distance].filter(Boolean).join(" · "))}</span>
           </span>

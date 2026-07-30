@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#06183f">
   <meta name="color-scheme" content="light">
-  <meta name="description" content="Bizzi permet de trouver rapidement un prestataire local, sans inscription client.">
+  <meta name="description" content="Bizzis permet de trouver rapidement un prestataire local, sans inscription client.">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="Bizzi">
+  <meta name="apple-mobile-web-app-title" content="Bizzis">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <title>Bizzi</title>
+  <title>Bizzis</title>
   <link rel="icon" href="assets/icon-192-v302.png">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon-v302.png">
   <link rel="manifest" href="manifest.webmanifest?v=304">
@@ -89,7 +89,7 @@
   <noscript><link rel="stylesheet" href="styles.css?v=304"><link rel="stylesheet" href="mobile-forms.css?v=304"></noscript>
 </head>
 <body>
-  <div id="bootSplash" aria-label="Chargement Bizzi">
+  <div id="bootSplash" aria-label="Chargement Bizzis">
     <div class="boot-card">
       <div class="boot-logo" aria-hidden="true">
         <img class="boot-logo-base" src="assets/icon-192-v302.png" alt="">
@@ -101,12 +101,12 @@
   <div class="app-shell">
     <aside class="sidebar">
       <div class="brand">
-        <img src="assets/icon-192-v302.png" alt="Bizzi">
+        <img src="assets/icon-192-v302.png" alt="Bizzis">
       </div>
       <nav class="side-nav" aria-label="Navigation principale">
         <div class="nav-active-indicator" aria-hidden="true"></div>
         <button class="nav-link active" data-view="home" data-i18n="home">Accueil</button>
-        <button class="nav-link life-link" data-view="life">Bizzi Life</button>
+        <button class="nav-link life-link" data-view="life">Bizzis Life</button>
         <button class="nav-link exception-link" data-view="exception-places">Lieux d’exception</button>
         <button class="nav-link delivery-link" data-view="delivery" data-i18n="delivery">Livraison et course</button>
         <button class="nav-link food-link" data-view="food">Food</button>
@@ -117,7 +117,7 @@
         <button class="nav-link" data-view="legal">Légal</button>
       </nav>
       <div class="side-note">
-        <strong>Bizzi V304</strong>
+        <strong>Bizzis V304</strong>
         <span>Parcours sécurisés et fluides.</span>
       </div>
       <div id="sidebarContact" class="sidebar-contact"></div>
@@ -127,7 +127,7 @@
       <header class="topbar">
         <div>
           <p class="eyebrow">Application de services</p>
-          <h1 id="pageTitle" data-i18n="welcome">Bienvenue sur Bizzi</h1>
+          <h1 id="pageTitle" data-i18n="welcome">Bienvenue sur Bizzis</h1>
         </div>
         <div class="location-pill">
           <span>Zone</span>
@@ -144,26 +144,26 @@
       </header>
 
       <div id="lifeReturnBar" class="life-return-bar" hidden>
-        <button type="button" data-life-return>← Revenir à mon projet Bizzi Life</button>
+        <button type="button" data-life-return>← Revenir à mon projet Bizzis Life</button>
         <span id="lifeReturnLabel">Votre checklist et votre progression sont conservées.</span>
       </div>
 
       <section id="view-home" class="view active">
         <div class="premium-home">
-          <section class="premium-hero premium-hero-direct" aria-label="Recherche Bizzi">
+          <section class="premium-hero premium-hero-direct" aria-label="Recherche Bizzis">
             <div class="premium-hero-copy">
               <div class="home-context-bar">
                 <div>
                   <span id="homeTimeGreeting">Bonjour</span>
-                  <strong id="homeContextName">Bienvenue sur Bizzi</strong>
+                  <strong id="homeContextName">Bienvenue sur Bizzis</strong>
                   <small id="homeContextLocation">Votre ville</small>
                 </div>
-                <button id="homeUpdatesButton" type="button" aria-label="Voir les nouveautés Bizzi">
+                <button id="homeUpdatesButton" type="button" aria-label="Voir les nouveautés Bizzis">
                   <span aria-hidden="true">◉</span>
                   <b id="homeUpdatesCount">0</b>
                 </button>
               </div>
-              <div class="premium-brand" aria-label="Bizzi, services intelligents">
+              <div class="premium-brand" aria-label="Bizzis, services intelligents">
                 <img src="assets/icon-192-v302.png" alt="">
               </div>
               <h2 class="premium-instant-title">Je cherche…</h2>
@@ -184,7 +184,7 @@
               <div class="premium-hero-actions">
                 <button class="premium-cta premium-cta-voice" id="homeVoiceStart" type="button" aria-pressed="false">
                   <span class="premium-mic" aria-hidden="true">●</span>
-                  <span><strong>Parler à Bizzi</strong><small>Recherche vocale intelligente</small></span>
+                  <span><strong>Parler à Bizzis</strong><small>Recherche vocale intelligente</small></span>
                 </button>
               </div>
               <div id="homeVoiceStatus" class="home-voice-status" role="status" aria-live="polite" hidden></div>
@@ -202,7 +202,7 @@
               <button type="button" data-go="food" aria-label="Ouvrir Food"><span class="premium-path-emoji green" aria-hidden="true">🍔</span><strong>Food<small>Commandez vos repas</small></strong></button>
               <button type="button" data-go="events" aria-label="Ouvrir Événements"><span class="premium-path-emoji purple" aria-hidden="true">📅</span><strong>Événements<small>Sorties &amp; activités</small></strong></button>
               <button type="button" data-go="jobs" aria-label="Ouvrir Emploi"><span class="premium-path-emoji blue" aria-hidden="true">💼</span><strong>Emplois<small>Trouvez votre job</small></strong></button>
-              <button type="button" data-go="life" aria-label="Ouvrir Bizzi Life"><span class="premium-path-emoji gold" aria-hidden="true">✦</span><strong>Bizzi Life<small>Projets &amp; inspiration</small></strong></button>
+              <button type="button" data-go="life" aria-label="Ouvrir Bizzis Life"><span class="premium-path-emoji gold" aria-hidden="true">✦</span><strong>Bizzis Life<small>Projets &amp; inspiration</small></strong></button>
               <button type="button" data-go="exception-places" aria-label="Ouvrir Lieux d’exception"><span class="premium-path-emoji green" aria-hidden="true">📍</span><strong>Lieux d’exception<small>Adresses uniques</small></strong></button>
             </div>
           </section>
@@ -251,12 +251,12 @@
 
             <section id="homeMagazineUpdates" class="home-magazine-section home-updates" aria-labelledby="homeUpdatesTitle">
               <div class="home-magazine-head">
-                <div><span>Ajoutés récemment sur Bizzi</span><h2 id="homeUpdatesTitle">Nouveautés</h2></div>
+                <div><span>Ajoutés récemment sur Bizzis</span><h2 id="homeUpdatesTitle">Nouveautés</h2></div>
               </div>
               <div id="homeNewItems" class="home-magazine-rail home-updates-rail" aria-live="polite"></div>
             </section>
 
-            <section class="premium-share-only" aria-label="Partager Bizzi">
+            <section class="premium-share-only" aria-label="Partager Bizzis">
               <a id="shareBizziWhatsApp" class="primary social-action" href="#" target="_blank" rel="noreferrer">Partager sur WhatsApp</a>
             </section>
           </div>
@@ -267,9 +267,9 @@
         <div class="life-shell">
           <section class="life-hero" aria-labelledby="lifeTitle">
             <div class="life-hero-copy">
-              <div class="life-brand"><span aria-hidden="true">✦</span> Bizzi Life</div>
+              <div class="life-brand"><span aria-hidden="true">✦</span> Bizzis Life</div>
               <h2 id="lifeTitle">Dis-nous ce que tu veux faire.</h2>
-              <p>Bizzi organise les services autour de toi.</p>
+              <p>Bizzis organise les services autour de toi.</p>
               <form id="lifeGoalForm" class="life-goal-form">
                 <label for="lifeGoalInput">Votre objectif</label>
                 <textarea id="lifeGoalInput" name="goal" rows="3" maxlength="500" required placeholder="Ex. Je déménage de Yopougon à Cocody samedi prochain."></textarea>
@@ -302,7 +302,7 @@
                 <button type="button" data-life-example="Je veux organiser une conférence de presse au Plateau.">Conférence de presse</button>
               </div>
             </div>
-            <aside class="life-hero-proof" aria-label="Fonctionnement Bizzi Life">
+            <aside class="life-hero-proof" aria-label="Fonctionnement Bizzis Life">
               <span>01</span><strong>Comprendre</strong>
               <span>02</span><strong>Organiser</strong>
               <span>03</span><strong>Réaliser</strong>
@@ -361,7 +361,7 @@
           </section>
 
           <section class="life-premium-preview">
-            <div><span>Bizzi Premium</span><h3>Un accompagnement renforcé, quand vous en aurez besoin.</h3></div>
+            <div><span>Bizzis Premium</span><h3>Un accompagnement renforcé, quand vous en aurez besoin.</h3></div>
             <p>Comparaison de devis, assistance prioritaire et avantages fidélité seront activés après validation des conditions commerciales.</p>
             <span class="life-coming-soon">Bientôt</span>
           </section>
@@ -380,7 +380,7 @@
         </section>
 
         <section id="exceptionSubmitPanel" class="panel exception-submit-panel" hidden>
-          <div class="section-head"><div><p class="eyebrow">Inscription</p><h2>Proposer un lieu d’exception</h2></div><span class="tag">Validation Bizzi</span></div>
+          <div class="section-head"><div><p class="eyebrow">Inscription</p><h2>Proposer un lieu d’exception</h2></div><span class="tag">Validation Bizzis</span></div>
           <p>La période gratuite de 30 jours commence à la validation. Un boost est facultatif.</p>
           <form id="exceptionPlaceForm" class="form">
             <div class="form-grid">
@@ -403,7 +403,7 @@
                 <label>Référence de transaction<input name="paymentReference" maxlength="120" placeholder="Référence Wave / Mobile Money"></label>
               </div>
             </div>
-            <label id="exceptionAdminGrantField" class="exception-admin-grant" hidden><input name="adminGrant" type="checkbox"> Ajout gratuit par l’équipe Bizzi (publication immédiate, sans paiement)</label>
+            <label id="exceptionAdminGrantField" class="exception-admin-grant" hidden><input name="adminGrant" type="checkbox"> Ajout gratuit par l’équipe Bizzis (publication immédiate, sans paiement)</label>
             <div id="exceptionPlaceStatus" class="sync-status" role="status" aria-live="polite"></div>
             <button class="primary" type="submit">Envoyer pour validation</button>
           </form>
@@ -417,7 +417,7 @@
 
       <section id="view-delivery" class="view">
         <section class="panel delivery-simple-panel">
-          <div class="section-head"><div><p class="eyebrow">Bizzi Livraison et courses</p><h2>Choisissez votre trajet</h2></div><span class="tag ok">Tarif automatique</span></div>
+          <div class="section-head"><div><p class="eyebrow">Bizzis Livraison et courses</p><h2>Choisissez votre trajet</h2></div><span class="tag ok">Tarif automatique</span></div>
           <div class="delivery-kind-tabs" role="tablist" aria-label="Course ou livraison">
             <button class="delivery-kind-tab selected" type="button" data-delivery-kind="ride" aria-selected="true">Course</button>
             <button class="delivery-kind-tab" type="button" data-delivery-kind="delivery" aria-selected="false">Livraison</button>
@@ -451,7 +451,7 @@
         <section class="panel food-hero-panel">
           <div class="section-head">
             <div>
-              <p class="eyebrow">Bizzi Food</p>
+              <p class="eyebrow">Bizzis Food</p>
               <h2>Trouvez un bon plat près de vous</h2>
             </div>
             <span class="tag ok">Adresses vérifiées</span>
@@ -478,7 +478,7 @@
           <section class="panel food-submit-panel" id="foodSubmitPanel" hidden>
             <div class="section-head">
               <h2>Proposer une adresse Food</h2>
-              <span class="tag pending">Visibilité Bizzi</span>
+              <span class="tag pending">Visibilité Bizzis</span>
             </div>
             <form id="foodForm" class="form">
               <label>Nom de l'adresse<input name="name" required maxlength="90" placeholder="Ex: Chez Awa Garba"></label>
@@ -495,7 +495,7 @@
               <label>Photo / affiche<input name="photo" type="file" accept="image/*"></label>
               <label class="check-row"><input name="deliveryAvailable" type="checkbox"> Livraison possible ou partenaire livreur disponible</label>
               <label>Description<textarea name="description" rows="3" maxlength="260" placeholder="Ce qui rend votre adresse spéciale."></textarea></label>
-              <label class="check-row"><input name="foodTerms" type="checkbox" required> Je confirme que les informations sont exactes et que Bizzi sert de plateforme de visibilité.</label>
+              <label class="check-row"><input name="foodTerms" type="checkbox" required> Je confirme que les informations sont exactes et que Bizzis sert de plateforme de visibilité.</label>
               <button class="primary" type="submit">Envoyer l'adresse Food</button>
             </form>
             <div id="foodStatus" class="status-box"></div>
@@ -507,10 +507,10 @@
         <section class="panel event-entry-panel">
           <div class="section-head">
             <div>
-              <p class="eyebrow">Événements Bizzi</p>
+              <p class="eyebrow">Événements Bizzis</p>
               <h2>Que voulez-vous faire ?</h2>
             </div>
-            <span class="tag ok">Billets hors Bizzi</span>
+            <span class="tag ok">Billets hors Bizzis</span>
           </div>
           <div class="event-entry-tabs" role="tablist" aria-label="Choix événement">
             <button class="event-entry-tab selected" type="button" data-event-entry="tickets" aria-selected="true">Acheter un billet</button>
@@ -589,9 +589,9 @@
                   </div>
                 </div>
                 <label id="eventPaymentReferenceRow">Référence de la transaction du boost<input name="paymentReference" autocomplete="off" placeholder="Ex: WV-EVT-2026-001"></label>
-                <label class="check-row"><input name="ticketDisclaimer" type="checkbox" required> Je confirme que Bizzi ne vend pas les billets et met seulement les clients en relation avec mon WhatsApp ou mon site officiel.</label>
+                <label class="check-row"><input name="ticketDisclaimer" type="checkbox" required> Je confirme que Bizzis ne vend pas les billets et met seulement les clients en relation avec mon WhatsApp ou mon site officiel.</label>
                 <div class="mobile-step-actions"><button class="secondary" type="button" data-mobile-prev>Retour</button></div>
-                <button class="primary mobile-final-submit" type="submit">Envoyer pour validation Bizzi</button>
+                <button class="primary mobile-final-submit" type="submit">Envoyer pour validation Bizzis</button>
               </fieldset>
             </form>
             <div id="eventStatus" class="status-box"></div>
@@ -639,7 +639,7 @@
         </details>
         <section class="verified-service-panel" id="verifiedServicePanel">
           <div class="verified-service-copy">
-            <span class="verified-service-badge">Service vérifié Bizzi</span>
+            <span class="verified-service-badge">Service vérifié Bizzis</span>
             <h2>Prestataires vérifiés</h2>
           </div>
           <label class="verified-service-toggle">
@@ -731,7 +731,7 @@
               <h2>Demande express</h2>
               <span class="tag ok">Sans compte</span>
             </div>
-            <p>Décrivez le besoin, Bizzi trouve les prestataires actifs et prépare un message WhatsApp clair.</p>
+            <p>Décrivez le besoin, Bizzis trouve les prestataires actifs et prépare un message WhatsApp clair.</p>
             <form id="requestForm" class="form">
               <label>Service recherché<select name="service" id="requestService"></select></label>
               <label>Ville / commune<input name="city" placeholder="Ex: Cocody, Bouaké, Man..." required></label>
@@ -752,7 +752,7 @@
 
           <section class="panel">
             <div class="section-head">
-              <h2>Réponse Bizzi</h2>
+              <h2>Réponse Bizzis</h2>
               <span class="tag">Matching</span>
             </div>
             <div id="requestStatus" class="status-box"></div>
@@ -787,7 +787,7 @@
           </form>
           <div id="providerIdentityStatus" class="status-box compact">
             <strong>Nouveau prestataire</strong>
-            <p>Si vous avez déjà un profil Bizzi, utilisez exactement le téléphone principal donné à l'inscription.</p>
+            <p>Si vous avez déjà un profil Bizzis, utilisez exactement le téléphone principal donné à l'inscription.</p>
           </div>
         </section>
         <div class="provider-layout">
@@ -823,7 +823,7 @@
                   <label>Justificatif pour badge vérifié<input name="verificationProof" type="file" accept="image/*,application/pdf"></label>
                   <label>Description<textarea name="description" rows="3" placeholder="Décrivez votre service"></textarea></label>
                 </details>
-                <label class="check-row"><input name="acceptTerms" type="checkbox" required> Je certifie que mes informations sont exactes et j'accepte les conditions Bizzi.</label>
+                <label class="check-row"><input name="acceptTerms" type="checkbox" required> Je certifie que mes informations sont exactes et j'accepte les conditions Bizzis.</label>
                 <div id="providerCreateStatus" class="status-box compact" aria-live="polite" hidden></div>
                 <div class="mobile-step-actions"><button class="secondary" type="button" data-mobile-prev>Retour</button></div>
                 <button class="primary mobile-final-submit" type="submit">Créer mon profil</button>
@@ -845,7 +845,7 @@
               <button class="boost-plan" data-boost="boost_30" data-price="2000" data-days="30"><strong>Boost 1 mois</strong><span>2 000 FCFA · visibilité max</span></button>
             </div>
             <h3>Paiement accepté</h3>
-            <p class="payment-mode-note">Paiement manuel sécurisé : le prestataire paie sur le compte Bizzi indiqué, ajoute la référence, puis l'admin valide la visibilité.</p>
+            <p class="payment-mode-note">Paiement manuel sécurisé : le prestataire paie sur le compte Bizzis indiqué, ajoute la référence, puis l'admin valide la visibilité.</p>
             <div class="payment-grid">
               <button class="pay selected" data-method="Wave">Wave</button>
               <button class="pay" data-method="Orange Money">Orange Money</button>
@@ -898,7 +898,7 @@
             <div class="metric"><strong id="metricReports">0</strong><span>Signalements</span></div>
             <div class="metric"><strong id="metricRequests">0</strong><span>Demandes express</span></div>
             <div class="metric"><strong id="metricFood">0</strong><span>Food</span></div>
-            <div class="metric"><strong id="metricLeads">0</strong><span>Contacts Bizzi</span></div>
+            <div class="metric"><strong id="metricLeads">0</strong><span>Contacts Bizzis</span></div>
             <div class="metric"><strong id="metricReviews">0</strong><span>Avis clients</span></div>
             <div class="metric"><strong id="metricRevenue">0</strong><span>FCFA validés</span></div>
           </div>
@@ -1068,7 +1068,7 @@
             </section>
             <section class="panel">
               <h2>Lieux d’exception locaux</h2>
-              <p>L’équipe Bizzi peut valider les dossiers, offrir 30 jours ou archiver un lieu.</p>
+              <p>L’équipe Bizzis peut valider les dossiers, offrir 30 jours ou archiver un lieu.</p>
               <div id="adminExceptionPlaces" class="admin-list"></div>
             </section>
             <section class="panel">
@@ -1124,7 +1124,7 @@
                 <a class="doc-link" href="sql-copie-bizzi/59-emplois-missions-toutes-entreprises-v130.sql" target="_blank" rel="noreferrer">SQL emplois V130</a>
                 <a class="doc-link" href="sql-copie-bizzi/63-evenements-promotion-v146.sql" target="_blank" rel="noreferrer">SQL événements V146</a>
                 <a class="doc-link" href="sql-copie-bizzi/67-evenements-geolocalises-v156.sql" target="_blank" rel="noreferrer">SQL événements V156</a>
-                <a class="doc-link" href="sql-copie-bizzi/91-bizzi-food-v204.sql" target="_blank" rel="noreferrer">SQL Bizzi Food V206</a>
+                <a class="doc-link" href="sql-copie-bizzi/91-bizzi-food-v204.sql" target="_blank" rel="noreferrer">SQL Bizzis Food V206</a>
                 <a class="doc-link" href="sql-copie-bizzi/98-lieux-exception-v302.sql" target="_blank" rel="noreferrer">SQL Lieux d’exception V304</a>
                 <a class="doc-link" href="sql-copie-bizzi/64-livraisons-paiements-commission-v147.sql" target="_blank" rel="noreferrer">SQL livraisons V147</a>
                 <a class="doc-link" href="sql-copie-bizzi/65-livraisons-tarification-distance-v148.sql" target="_blank" rel="noreferrer">SQL tarifs livraison V148</a>
@@ -1179,12 +1179,12 @@
           </section>
           <section class="panel">
             <h2>Règles livraison</h2>
-            <p>Fonctionnement de Bizzi Livraison, commission de 15%, paiement, affectation et responsabilité.</p>
+            <p>Fonctionnement de Bizzis Livraison, commission de 15%, paiement, affectation et responsabilité.</p>
             <a class="secondary doc-link" href="docs/regles-livraison-bizzi.md" target="_blank" rel="noreferrer">Ouvrir les règles</a>
           </section>
           <section class="panel">
             <h2>Règles événements</h2>
-            <p>Bizzi promeut les événements, redirige vers un lien externe et ne vend pas les billets.</p>
+            <p>Bizzis promeut les événements, redirige vers un lien externe et ne vend pas les billets.</p>
             <a class="secondary doc-link" href="docs/regles-evenements-bizzi.md" target="_blank" rel="noreferrer">Ouvrir les règles</a>
           </section>
           <section class="panel">
@@ -1243,7 +1243,7 @@
               <a class="doc-link" href="docs/guide-v200-dispatch-livraison-direct-bizzi.md" target="_blank" rel="noreferrer">Dispatch livraison direct V206</a>
               <a class="doc-link" href="docs/guide-v201-cartographie-tarifs-livraison-bizzi.md" target="_blank" rel="noreferrer">Carte CI + tarifs V206</a>
               <a class="doc-link" href="docs/guide-v203-confiance-sos-bizzi.md" target="_blank" rel="noreferrer">Confiance + SOS V206</a>
-              <a class="doc-link" href="docs/guide-v204-bizzi-food.md" target="_blank" rel="noreferrer">Bizzi Food V206</a>
+              <a class="doc-link" href="docs/guide-v204-bizzi-food.md" target="_blank" rel="noreferrer">Bizzis Food V206</a>
               <a class="doc-link" href="docs/guide-v186-intuitif-fluide-bizzi.md" target="_blank" rel="noreferrer">Interface fluide V206</a>
               <a class="doc-link" href="docs/messages-lancement-v174.md" target="_blank" rel="noreferrer">Messages V174</a>
               <a class="doc-link" href="docs/store-listing-v302.md" target="_blank" rel="noreferrer">Stores V304</a>
@@ -1268,7 +1268,7 @@
   <dialog id="clientAccessDialog" class="client-access-dialog" aria-labelledby="clientAccessTitle">
     <form id="clientAccessForm" class="client-access-card">
       <button id="closeClientAccessDialog" class="client-access-close" type="button" aria-label="Fermer">×</button>
-      <p class="eyebrow">Accès client Bizzi</p>
+      <p class="eyebrow">Accès client Bizzis</p>
       <h2 id="clientAccessTitle">Avant de continuer</h2>
       <p id="clientAccessReason">Indiquez un prénom ou un pseudo et votre numéro de téléphone. Aucun mot de passe n’est nécessaire.</p>
       <label>Prénom ou pseudo<input id="clientAccessNameInput" name="clientName" type="text" required autocomplete="nickname" minlength="2" maxlength="40" placeholder="Ex: Awa ou Koffi225"></label>
@@ -1282,7 +1282,7 @@
   <div class="global-voice-dock">
     <div id="globalVoiceStatus" class="global-voice-status" role="status" aria-live="polite" hidden></div>
     <button id="globalVoiceFloating" class="global-voice-floating" type="button" aria-pressed="false">
-      <span aria-hidden="true">●</span> Parler à Bizzi
+      <span aria-hidden="true">●</span> Parler à Bizzis
     </button>
   </div>
 

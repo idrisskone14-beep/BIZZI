@@ -26,7 +26,7 @@
     },
     {
       id: "standard",
-      title: "Choix recommandé par Bizzi",
+      title: "Choix recommandé par Bizzis",
       description: "Disponibilité, proximité, vérification et qualité équilibrées.",
     },
     {
@@ -423,10 +423,10 @@
       return [{ project, message }];
     }).slice(0, 3);
     if (!reminders.length) {
-      panel.innerHTML = `<div><span>Assistant proactif</span><strong>Vos prochains rappels apparaîtront ici.</strong></div><p>Ajoutez une date à un projet pour que Bizzi vous accompagne au bon moment.</p>`;
+      panel.innerHTML = `<div><span>Assistant proactif</span><strong>Vos prochains rappels apparaîtront ici.</strong></div><p>Ajoutez une date à un projet pour que Bizzis vous accompagne au bon moment.</p>`;
       return;
     }
-    panel.innerHTML = `<div class="life-proactive-title"><span>À ne pas oublier</span><strong>Bizzi veille sur vos projets.</strong></div><div class="life-proactive-items">${reminders.map(({ project, message }) => `
+    panel.innerHTML = `<div class="life-proactive-title"><span>À ne pas oublier</span><strong>Bizzis veille sur vos projets.</strong></div><div class="life-proactive-items">${reminders.map(({ project, message }) => `
       <button type="button" data-life-open="${safe(project.id)}"><span>${safe(project.icon || "✦")}</span><span><strong>${safe(project.title)}</strong><small>${safe(message)}</small></span><b>→</b></button>
     `).join("")}</div>`;
   }
@@ -440,7 +440,7 @@
       <article class="life-project-summary">
         <div class="life-project-symbol">${safe(project.icon || "✦")}</div>
         <div class="life-project-copy">
-          <span>Projet Bizzi Life</span>
+          <span>Projet Bizzis Life</span>
           <h3>${safe(project.title)}</h3>
           <p>« ${safe(project.goal)} »</p>
           <div class="life-project-meta">
@@ -499,7 +499,7 @@
     if (!container) return;
     const all = projects();
     if (!all.length) {
-      container.innerHTML = `<div class="life-empty"><span>✦</span><strong>Aucun projet pour le moment.</strong><p>Décrivez un objectif : Bizzi construira les étapes et les services utiles.</p></div>`;
+      container.innerHTML = `<div class="life-empty"><span>✦</span><strong>Aucun projet pour le moment.</strong><p>Décrivez un objectif : Bizzis construira les étapes et les services utiles.</p></div>`;
       return;
     }
     container.innerHTML = all.map((project) => `

@@ -1,7 +1,7 @@
 {
   "id": "/bizzi-app/",
-  "name": "Bizzi",
-  "short_name": "Bizzi",
+  "name": "Bizzis",
+  "short_name": "Bizzis",
   "description": "Application de services géolocalisés pour trouver rapidement un prestataire local.",
   "start_url": "./index.html?v=304",
   "scope": "./",
@@ -45,7 +45,7 @@
       ]
     },
     {
-      "name": "Bizzi Food",
+      "name": "Bizzis Food",
       "short_name": "Food",
       "url": "./index.html?v=304#food",
       "icons": [

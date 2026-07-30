@@ -362,7 +362,7 @@ const seed = {
       visibility: "active",
       verificationStatus: "verified",
       verifiedAt: isoDaysFromNow(-3),
-      verificationNote: "Profil vérifié par Bizzi.",
+      verificationNote: "Profil vérifié par Bizzis.",
       trialEndsAt: isoDaysFromNow(18),
       subscriptionEndsAt: null,
       calls: 18,
@@ -390,7 +390,7 @@ const seed = {
       visibility: "active",
       verificationStatus: "verified",
       verifiedAt: isoDaysFromNow(-5),
-      verificationNote: "Profil vérifié par Bizzi.",
+      verificationNote: "Profil vérifié par Bizzis.",
       trialEndsAt: isoDaysFromNow(24),
       subscriptionEndsAt: null,
       calls: 31,
@@ -460,7 +460,7 @@ const seed = {
     {
       id: "featured-exception-nzi-river-lodge",
       name: "N’Zi River Lodge",
-      ownerName: "Équipe Bizzi",
+      ownerName: "Équipe Bizzis",
       contactPhone: FEATURED_BOOKING_WHATSAPP,
       city: "Bouaké",
       area: "Bouaké",
@@ -468,7 +468,7 @@ const seed = {
       description: "Un lodge au cœur de la nature ivoirienne.",
       photo: "assets/lieu-nzi-river-lodge.jpg",
       planId: "free_30_days",
-      planName: "Offert par Bizzi",
+      planName: "Offert par Bizzis",
       amount: 0,
       paymentStatus: "approved",
       status: "published",
@@ -480,7 +480,7 @@ const seed = {
     {
       id: "featured-exception-mondoukou-resort",
       name: "Mondoukou Resort",
-      ownerName: "Équipe Bizzi",
+      ownerName: "Équipe Bizzis",
       contactPhone: FEATURED_BOOKING_WHATSAPP,
       city: "Grand-Bassam",
       area: "Mondoukou",
@@ -488,7 +488,7 @@ const seed = {
       description: "Une parenthèse balnéaire entre piscine, plage et cocotiers.",
       photo: "assets/lieu-mondoukou-resort.jpg",
       planId: "free_30_days",
-      planName: "Offert par Bizzi",
+      planName: "Offert par Bizzis",
       amount: 0,
       paymentStatus: "approved",
       status: "published",
@@ -500,7 +500,7 @@ const seed = {
     {
       id: "featured-exception-boulay-beach-resort",
       name: "Le Boulay Beach Resort",
-      ownerName: "Équipe Bizzi",
+      ownerName: "Équipe Bizzis",
       contactPhone: FEATURED_BOOKING_WHATSAPP,
       city: "Abidjan",
       area: "Île Boulay",
@@ -508,7 +508,7 @@ const seed = {
       description: "Un lieu de détente remarquable aux portes d’Abidjan.",
       photo: "assets/lieu-boulay-beach-resort.jpg",
       planId: "free_30_days",
-      planName: "Offert par Bizzi",
+      planName: "Offert par Bizzis",
       amount: 0,
       paymentStatus: "approved",
       status: "published",
@@ -711,13 +711,13 @@ const ADMIN_PATHS = new Set(["admin", "admin-access", "admin-panel", "admin-cons
 const SUPABASE_REQUEST_TIMEOUT_MS = 20000;
 const FINAL_RECIPE_ITEMS = [
   { id: "cloudflare_v181", label: `${CURRENT_RELEASE} uploadée et cache Cloudflare purgé`, detail: `Uploader le ZIP ${CURRENT_RELEASE} puis faire Purge everything.` },
-  { id: "phone_clean", label: "Téléphone propre", detail: "Supprimer l'ancienne PWA ou les données du site, puis rouvrir Bizzi." },
+  { id: "phone_clean", label: "Téléphone propre", detail: "Supprimer l'ancienne PWA ou les données du site, puis rouvrir Bizzis." },
   { id: "client_search", label: "Parcours client validé", detail: "Recherche sans compte, ville, fiche prestataire, appel/WhatsApp." },
   { id: "provider_signup", label: "Parcours prestataire validé", detail: "Création profil, métier, ville, photo, essai gratuit automatique." },
   { id: "provider_payment", label: "Forfait prestataire validé", detail: "Paiement préparé, référence reçue, validation admin, visibilité prolongée." },
   { id: "admin_control", label: "Admin validé", detail: "Connexion Supabase, validation paiement, retrait et réactivation visibles." },
   { id: "delivery_local", label: "Livraison locale validée", detail: "Distance estimée, prix affiché, commission 15%, paiement et affectation." },
-  { id: "jobs_missions", label: "Emplois / missions validés", detail: "Création, référence Bizzi, paiement forfait, validation et affichage." },
+  { id: "jobs_missions", label: "Emplois / missions validés", detail: "Création, référence Bizzis, paiement forfait, validation et affichage." },
   { id: "events_geo", label: "Événements géolocalisés validés", detail: "Ville, dates début/fin, publication, disparition après fin, stats clics." },
   { id: "legal_docs", label: "Documents légaux relus", detail: "Conditions, confidentialité, modération, règles prestataires/livraison/événements." },
   { id: "payments_accounts", label: "Comptes de paiement dédiés", detail: "Wave, Orange Money, MTN Money ou agrégateur renseignés avant vente réelle." },
@@ -730,7 +730,7 @@ const PUBLIC_LAUNCH_ITEMS = [
   { id: "payment_manual_trace", label: "Paiement manuel traçable", detail: "Référence reçue, validation admin et relance prestataire contrôlées." },
   { id: "delivery_trace", label: "Livraison test complète", detail: "Tarif, commission, validation paiement, message client et livreur copiés." },
   { id: "admin_backup", label: "Export admin sauvegardé", detail: "Export JSON/CSV conservé avant ouverture publique." },
-  { id: "support_ready", label: "Support prêt", detail: "Email, WhatsApp ou téléphone Bizzi opérationnel pour les premiers retours." },
+  { id: "support_ready", label: "Support prêt", detail: "Email, WhatsApp ou téléphone Bizzis opérationnel pour les premiers retours." },
   { id: "legal_ready", label: "Textes légaux relus", detail: "Conditions, confidentialité, livraison, prestataires et événements relus." },
 ];
 function safeSessionGet(key) {
@@ -1045,7 +1045,7 @@ function saveState() {
   const stateSaved = safeLocalSet("bizzi-state", compactState);
   const registry = state.providers.filter(durableLocalProvider).map(providerRegistryRecord).slice(-250);
   const registrySaved = safeLocalSet(PROVIDER_REGISTRY_KEY, JSON.stringify(registry));
-  if (!stateSaved || !registrySaved) captureBizziError(new Error("Stockage local Bizzi saturé"), { module: "state_storage" });
+  if (!stateSaved || !registrySaved) captureBizziError(new Error("Stockage local Bizzis saturé"), { module: "state_storage" });
   return stateSaved;
 }
 
@@ -1189,7 +1189,7 @@ function mergeDuplicateRecord(preferred = {}, duplicate = {}, kind = "record") {
 }
 
 function dedupeEntityRecords(records = [], kind = "record") {
-  if (!globalThis.BizziDataDedupe?.dedupe) throw new Error("Module anti-doublons Bizzi indisponible");
+  if (!globalThis.BizziDataDedupe?.dedupe) throw new Error("Module anti-doublons Bizzis indisponible");
   return globalThis.BizziDataDedupe.dedupe(records, {
     keysFor: (record) => recordIdentityKeys(record, kind),
     mergeRecords: (preferred, duplicate) => mergeDuplicateRecord(preferred, duplicate, kind),
@@ -1671,7 +1671,7 @@ function openCreatedProviderByPhone(phone = "") {
   const input = form?.elements?.namedItem("providerPhone");
   if (!form || !input) return;
   input.value = phone;
-  renderProviderIdentityStatus(`<strong>Recherche du profil</strong><p>Vérification de ${safe(phone)} dans Bizzi...</p>`);
+  renderProviderIdentityStatus(`<strong>Recherche du profil</strong><p>Vérification de ${safe(phone)} dans Bizzis...</p>`);
   if (typeof form.requestSubmit === "function") form.requestSubmit();
   else form.querySelector("button[type='submit']")?.click();
 }
@@ -1681,7 +1681,7 @@ function renderProviderIdentityStatus(message = "") {
   if (!root) return;
   root.innerHTML = message || `
     <strong>Nouveau prestataire</strong>
-    <p>Si vous avez déjà un profil Bizzi, identifiez-vous avec le même numéro pour renouveler au lieu de recréer un compte.</p>
+    <p>Si vous avez déjà un profil Bizzis, identifiez-vous avec le même numéro pour renouveler au lieu de recréer un compte.</p>
     ${recentProviderSignupsHtml()}
   `;
   root.querySelector("[data-clear-provider-identity]")?.addEventListener("click", () => clearProviderIdentification());
@@ -1792,7 +1792,7 @@ function renderProviderCreateStatus(message = "", type = "info") {
   status.hidden = !message;
   status.classList.toggle("error", type === "error");
   status.classList.toggle("success", type === "success");
-  status.innerHTML = message ? `<strong>${type === "error" ? "À corriger" : "Inscription Bizzi"}</strong><p>${safe(message)}</p>` : "";
+  status.innerHTML = message ? `<strong>${type === "error" ? "À corriger" : "Inscription Bizzis"}</strong><p>${safe(message)}</p>` : "";
 }
 
 function reportProviderSignupIssue(form, button, message, fieldName = "") {
@@ -1923,10 +1923,10 @@ function openCourierProfileCreation() {
   renderProviderEntryMode();
   setProviderServiceSelect(service);
   renderProviderIdentityStatus(`
-    <strong>Profil livreur ou chauffeur Bizzi</strong>
+    <strong>Profil livreur ou chauffeur Bizzis</strong>
     <p>Remplissez le formulaire avec votre numéro principal. Le métier “${safe(service)}” est prêt à recevoir les missions locales payées.</p>
   `);
-  renderProviderStatus("Créez votre profil. Après inscription, Bizzi pourra vous proposer les livraisons ou courses compatibles proches de vous.");
+  renderProviderStatus("Créez votre profil. Après inscription, Bizzis pourra vous proposer les livraisons ou courses compatibles proches de vous.");
   document.querySelector(".provider-create-panel")?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
@@ -1939,7 +1939,7 @@ function openCourierRenewal() {
   renderProviderEntryMode();
   renderPaymentProviderOptions();
   renderProviderIdentityStatus(`
-    <strong>Déjà livreur Bizzi ?</strong>
+    <strong>Déjà livreur Bizzis ?</strong>
     <p>Identifiez-vous avec le même numéro que votre profil livreur, puis renouvelez votre visibilité si nécessaire.</p>
   `);
   renderProviderStatus("Entrez votre téléphone ou WhatsApp pour retrouver votre profil livreur et éviter de recréer un compte.");
@@ -1971,7 +1971,7 @@ function isVerified(provider) {
 }
 
 function verificationBadge(provider) {
-  if (isVerified(provider)) return `<span class="tag verified">Vérifié Bizzi</span>`;
+  if (isVerified(provider)) return `<span class="tag verified">Vérifié Bizzis</span>`;
   if (provider.verificationStatus === "pending") return `<span class="tag pending">Vérification en cours</span>`;
   return "";
 }
@@ -2108,11 +2108,11 @@ const views = {
 };
 
 const titles = {
-  home: "Bienvenue sur Bizzi",
-  life: "Bizzi Life",
+  home: "Bienvenue sur Bizzis",
+  life: "Bizzis Life",
   "exception-places": "Lieux d’exception",
-  delivery: "Bizzi Livraison et course",
-  food: "Bizzi Food",
+  delivery: "Bizzis Livraison et course",
+  food: "Bizzis Food",
   events: "Événements",
   eventDetail: "Détail événement",
   search: "Rechercher un service",
@@ -2147,7 +2147,7 @@ function setView(name) {
   document.querySelectorAll(".nav-link,.bottom-link").forEach((btn) => {
     btn.classList.toggle("active", btn.dataset.view === name);
   });
-  document.querySelector("#pageTitle").textContent = titles[name] || "Bizzi";
+  document.querySelector("#pageTitle").textContent = titles[name] || "Bizzis";
   globalThis.BizziMotion?.viewChanged?.({ from: previousName, to: name, view: views[name] });
   window.scrollTo(0, 0);
   if (name === "home") renderHomeDiscovery();
@@ -3553,51 +3553,51 @@ function deliveryPaymentInstructionText(amount = 0, method = state.selectedDeliv
   if (BizziPrivacy.isCash(method)) return BizziPrivacy.cashInstruction(formatMoney(amount));
   const account = bizziConfig.payments?.accounts?.[method] || "A renseigner";
   const accountLine = hasProductionValue(account)
-    ? `Compte Bizzi ${method} : ${account}.`
-    : `Compte Bizzi ${method} : a renseigner avant publication.`;
+    ? `Compte Bizzis ${method} : ${account}.`
+    : `Compte Bizzis ${method} : a renseigner avant publication.`;
   const financials = deliveryFinancials(amount);
   return [
-    "Paiement Bizzi Livraison",
+    "Paiement Bizzis Livraison",
     `Montant à payer : ${formatMoney(financials.amount)}.`,
     "Tarif calculé selon la distance estimée, l'heure détectée et les conditions de livraison.",
     accountLine,
-    "Après confirmation de la commande, Bizzi ouvre la mission aux livreurs proches sans afficher leur contact avant acceptation.",
+    "Après confirmation de la commande, Bizzis ouvre la mission aux livreurs proches sans afficher leur contact avant acceptation.",
   ].join("\n");
 }
 
 function jobPaymentInstructionText(plan = selectedJobPlan(), method = state.selectedJobPayment) {
   const account = bizziConfig.payments?.accounts?.[method] || "A renseigner";
   const accountLine = hasProductionValue(account)
-    ? `Compte Bizzi ${method} : ${account}.`
-    : `Compte Bizzi ${method} : a renseigner avant publication.`;
+    ? `Compte Bizzis ${method} : ${account}.`
+    : `Compte Bizzis ${method} : a renseigner avant publication.`;
   return [
-    `Publication offre emploi Bizzi - ${plan.name}`,
+    `Publication offre emploi Bizzis - ${plan.name}`,
     `Montant : ${plan.price.toLocaleString("fr-FR")} FCFA.`,
     accountLine,
-    "Bizzi genere une reference de suivi et l'associe au contact indique. Cette reference sert de trace en cas de reclamation.",
+    "Bizzis genere une reference de suivi et l'associe au contact indique. Cette reference sert de trace en cas de reclamation.",
   ].join("\n");
 }
 
 function eventPaymentInstructionText(plan = selectedEventPlan(), method = state.selectedEventPayment) {
   if (Number(plan.price || 0) <= 0) {
     return [
-      `Promotion evenement Bizzi - ${plan.name}`,
+      `Promotion evenement Bizzis - ${plan.name}`,
       "Montant visibilite : gratuit.",
       "Aucun paiement n'est demande pour la publication standard.",
-      "La validation Bizzi reste obligatoire avant affichage public.",
-      "Important : Bizzi ne vend pas les billets et redirige uniquement vers le lien officiel de l'organisateur.",
+      "La validation Bizzis reste obligatoire avant affichage public.",
+      "Important : Bizzis ne vend pas les billets et redirige uniquement vers le lien officiel de l'organisateur.",
     ].join("\n");
   }
   const account = bizziConfig.payments?.accounts?.[method] || "A renseigner";
   const accountLine = hasProductionValue(account)
-    ? `Compte Bizzi ${method} : ${account}.`
-    : `Compte Bizzi ${method} : a renseigner avant publication.`;
+    ? `Compte Bizzis ${method} : ${account}.`
+    : `Compte Bizzis ${method} : a renseigner avant publication.`;
   return [
-    `Promotion evenement Bizzi - ${plan.name}`,
+    `Promotion evenement Bizzis - ${plan.name}`,
     `Montant visibilite : ${plan.price.toLocaleString("fr-FR")} FCFA.`,
     Number(plan.durationDays || 0) ? `Duree du boost : ${Number(plan.durationDays).toLocaleString("fr-FR")} jour(s).` : "",
     accountLine,
-    "Important : Bizzi ne vend pas les billets, ne rembourse pas les billets et redirige uniquement vers le lien officiel de l'organisateur.",
+    "Important : Bizzis ne vend pas les billets, ne rembourse pas les billets et redirige uniquement vers le lien officiel de l'organisateur.",
   ].filter(Boolean).join("\n");
 }
 
@@ -3961,7 +3961,7 @@ function renderRemoteAdminPanel() {
           <p>${safe(remotePlanName(payment))} - ${Number(payment.amount || 0).toLocaleString("fr-FR")} ${safe(payment.currency || "FCFA")} - ${safe(payment.method || "")}${paymentBoostSummary(payment) ? ` - ${safe(paymentBoostSummary(payment))}` : ""}</p>
           <p>${remoteProviderPhone(payment) ? `Téléphone : ${safe(remoteProviderPhone(payment))}` : "Téléphone non chargé"}</p>
           <p>Réf. ${safe(payment.transaction_reference || "Non renseignée")}</p>
-          ${Number(payment.duplicate_count || 1) > 1 ? `<p class="admin-warning">Doublon détecté : ${Number(payment.duplicate_count)} lignes Supabase pour la même référence. Validez une seule fois, Bizzi rejettera les copies.</p>` : ""}
+          ${Number(payment.duplicate_count || 1) > 1 ? `<p class="admin-warning">Doublon détecté : ${Number(payment.duplicate_count)} lignes Supabase pour la même référence. Validez une seule fois, Bizzis rejettera les copies.</p>` : ""}
         </div>
         <div class="admin-actions">
           <button class="primary" type="button" data-remote-approve-payment="${safe(payment.id)}">Valider Supabase</button>
@@ -3979,10 +3979,10 @@ function renderRemoteAdminPanel() {
       return `
       <div class="admin-item">
         <div>
-          <h3>${safe(request.service_name || "Service Bizzi")} - ${safe(requestUrgencyLabel(request.urgency))} ${priorityBadge(priorityLabel, priorityScore || null)}</h3>
+          <h3>${safe(request.service_name || "Service Bizzis")} - ${safe(requestUrgencyLabel(request.urgency))} ${priorityBadge(priorityLabel, priorityScore || null)}</h3>
           <p>${safe(request.city_name || "Côte d'Ivoire")}${request.area ? ` - ${safe(request.area)}` : ""}</p>
           <p>${safe(request.message || "Besoin non détaillé.")}</p>
-          <p>${matchedCount} prestataire(s) proposé(s) par Bizzi.</p>
+          <p>${matchedCount} prestataire(s) proposé(s) par Bizzis.</p>
           <p>${request.customer_phone ? `Contact client : ${safe(request.customer_phone)}` : "Client sans contact renseigné"} - ${request.created_at ? new Date(request.created_at).toLocaleString("fr-FR") : "date inconnue"}</p>
         </div>
         <div class="admin-actions">
@@ -3998,10 +3998,10 @@ function renderRemoteAdminPanel() {
     ${remoteAdminQueue.jobs.map((job) => `
       <div class="admin-item">
         <div>
-          <h3>${safe(job.title || "Offre emploi Bizzi")}</h3>
+          <h3>${safe(job.title || "Offre emploi Bizzis")}</h3>
           <p>${safe(job.company_name || "Entreprise")} - ${safe(job.company_type || "Entreprise")} - ${safe(job.service_name || "Métier non précisé")} - ${safe(job.city_name || "Côte d'Ivoire")}</p>
           <p><strong>Paiement :</strong> ${safe(job.plan_name || "Forfait emploi")} - ${Number(job.amount || 0).toLocaleString("fr-FR")} ${safe(job.currency || "FCFA")} - ${safe(paymentMethodLabel(job.payment_method || ""))}</p>
-          <p>Référence Bizzi : ${safe(job.transaction_reference || "Non renseignée")} - ${safe(job.payment_status || "pending")}${job.is_boosted ? " - Offre boostée" : ""}</p>
+          <p>Référence Bizzis : ${safe(job.transaction_reference || "Non renseignée")} - ${safe(job.payment_status || "pending")}${job.is_boosted ? " - Offre boostée" : ""}</p>
           <p>${safe(job.description || "Description non renseignée.")}</p>
           <p>${job.contact_phone ? `Contact : ${safe(job.contact_phone)}` : "Contact non renseigné"}${job.contact_email ? ` - ${safe(job.contact_email)}` : ""} - ${job.created_at ? new Date(job.created_at).toLocaleString("fr-FR") : "date inconnue"}</p>
         </div>
@@ -4021,15 +4021,15 @@ function renderRemoteAdminPanel() {
     ${remoteAdminQueue.events.map((event) => `
       <div class="admin-item">
         <div>
-          <h3>${safe(event.title || "Événement Bizzi")}</h3>
+          <h3>${safe(event.title || "Événement Bizzis")}</h3>
           <p>${safe(event.organizer_name || "Organisateur")} - ${safe(event.category || "Événement")} - ${safe(event.city_name || "Côte d'Ivoire")}${event.area ? ` - ${safe(event.area)}` : ""}</p>
           <p>${event.event_datetime ? new Date(event.event_datetime).toLocaleString("fr-FR") : "date inconnue"}${event.end_datetime ? ` au ${new Date(event.end_datetime).toLocaleString("fr-FR")}` : ""} - ${safe(event.venue || "lieu non renseigné")}</p>
           <p>${event.venue_address ? `Adresse : ${safe(event.venue_address)}. ` : ""}Rayon : ${Number(event.visibility_radius_km || 25).toLocaleString("fr-FR")} km${event.latitude && event.longitude ? ` - GPS ${Number(event.latitude).toLocaleString("fr-FR")}, ${Number(event.longitude).toLocaleString("fr-FR")}` : ""}</p>
           <p><strong>Forfait visibilité :</strong> ${safe(event.plan_name || "Standard")} - ${Number(event.amount || 0).toLocaleString("fr-FR")} ${safe(event.currency || "FCFA")} - ${safe(paymentMethodLabel(event.payment_method || ""))}</p>
-          <p>Référence Bizzi : ${safe(event.transaction_reference || "Non renseignée")} - paiement ${safe(event.payment_status || "pending")}${event.is_sponsored ? " - sponsorisé" : ""}${event.is_premium ? " - premium" : ""}</p>
+          <p>Référence Bizzis : ${safe(event.transaction_reference || "Non renseignée")} - paiement ${safe(event.payment_status || "pending")}${event.is_sponsored ? " - sponsorisé" : ""}${event.is_premium ? " - premium" : ""}</p>
           <p>Stats : ${Number(event.click_count || 0)} clic(s), ${Number(event.ticket_click_count || 0)} billet(s), ${Number(event.contact_click_count || 0)} contact(s).</p>
           <p>${safe(event.description || "Description non renseignée.")}</p>
-          <p>Billetterie externe : ${event.ticket_url ? safe(event.ticket_url) : "non renseignée"} - Bizzi n'encaisse pas les billets.</p>
+          <p>Billetterie externe : ${event.ticket_url ? safe(event.ticket_url) : "non renseignée"} - Bizzis n'encaisse pas les billets.</p>
         </div>
         <div class="admin-actions">
           ${eventPaymentTrackingWhatsAppUrl(eventPromotionFromSupabase(event)) ? `<a class="secondary" href="${safe(eventPaymentTrackingWhatsAppUrl(eventPromotionFromSupabase(event)))}" target="_blank" rel="noreferrer">Envoyer référence</a>` : ""}
@@ -4047,7 +4047,7 @@ function renderRemoteAdminPanel() {
     ${remoteAdminQueue.foods.map((place) => `
       <div class="admin-item">
         <div>
-          <h3>${safe(place.name || "Adresse Food Bizzi")}</h3>
+          <h3>${safe(place.name || "Adresse Food Bizzis")}</h3>
           <p>${safe(place.place_type || "Adresse")} - ${safe(place.main_specialty || "Spécialité non précisée")} - ${safe(place.city_name || "Côte d'Ivoire")}${place.area ? ` - ${safe(place.area)}` : ""}</p>
           <p>${place.address ? `Adresse : ${safe(place.address)}. ` : ""}${place.average_budget ? `Budget : ${safe(place.average_budget)}. ` : ""}${place.opening_hours ? `Horaires : ${safe(place.opening_hours)}.` : ""}</p>
           <p>${place.owner_name ? `Responsable : ${safe(place.owner_name)} - ` : ""}Contact : ${safe(place.contact_phone || "non renseigné")}</p>
@@ -4096,7 +4096,7 @@ function renderRemoteAdminPanel() {
     <div class="admin-real-action warning">
       <strong>Correction admin nécessaire</strong>
       <span>${remoteAdminQueue.isAdmin === false
-        ? "Le compte connecté à Supabase n'est pas reconnu comme administrateur Bizzi."
+        ? "Le compte connecté à Supabase n'est pas reconnu comme administrateur Bizzis."
         : `${Number(remoteAdminQueue.publicProviderCount || 0)} prestataire(s) sont visibles côté public, mais l'admin ne peut pas lire la table providers.`}
       Exécutez <b>sql-copie-bizzi/20-correction-admin-file-vide.sql</b> dans Supabase SQL Editor, puis déconnectez/reconnectez l'admin.</span>
     </div>
@@ -4700,7 +4700,7 @@ async function loadSupabaseAdminQueue(button = null) {
     renderRemoteAdminPanel();
     renderLaunchChecklist();
     const adminWarning = remoteAdminQueue.isAdmin === false
-      ? " Votre compte Supabase est connecté mais pas reconnu comme admin Bizzi : exécutez sql-copie-bizzi/20-correction-admin-file-vide.sql."
+      ? " Votre compte Supabase est connecté mais pas reconnu comme admin Bizzis : exécutez sql-copie-bizzi/20-correction-admin-file-vide.sql."
       : Number(remoteAdminQueue.publicProviderCount || 0) > 0 && remoteAdminQueue.recentProviders.length === 0
         ? " Des prestataires existent côté public, mais l'admin n'arrive pas à lire providers : exécutez sql-copie-bizzi/20-correction-admin-file-vide.sql."
         : "";
@@ -5669,7 +5669,7 @@ function providerFromSupabase(row, index, options = {}) {
     locationLabel: row.location_label || area,
     locationFullAddress: row.location_full_address || area,
     rating: Number(row.average_rating || 0) || 4.5,
-    description: visible ? row.description || "Prestataire disponible via Bizzi." : "Coordonnées masquées jusqu'au renouvellement.",
+    description: visible ? row.description || "Prestataire disponible via Bizzis." : "Coordonnées masquées jusqu'au renouvellement.",
     photo: row.photo_url || "",
     social: {
       whatsapp: visible ? row.whatsapp || row.phone || "" : "",
@@ -5678,7 +5678,7 @@ function providerFromSupabase(row, index, options = {}) {
     visibility,
     verificationStatus: row.is_verified ? "verified" : "none",
     verifiedAt: row.is_verified ? new Date().toISOString() : null,
-    verificationNote: row.is_verified ? "Profil vérifié par Bizzi." : "",
+    verificationNote: row.is_verified ? "Profil vérifié par Bizzis." : "",
     trialEndsAt: row.trial_ends_at || (row.visibility_status === "trial" ? isoDaysFromNow(30) : null),
     subscriptionEndsAt: row.subscription_ends_at || null,
     boostEndsAt: row.boost_ends_at || null,
@@ -5754,8 +5754,8 @@ function reviewFromSupabase(row, providers = []) {
     remoteId: row.id || "",
     remoteStatus: "linked",
     providerId: row.provider_id ? `sb-${row.provider_id}` : "",
-    providerName: provider?.fullName || "Prestataire Bizzi",
-    service: provider?.service || "Service Bizzi",
+    providerName: provider?.fullName || "Prestataire Bizzis",
+    service: provider?.service || "Service Bizzis",
     city: provider?.city || "Côte d'Ivoire",
     rating: Number(row.rating || 0),
     message: row.message || "",
@@ -5771,7 +5771,7 @@ function expressRequestFromSupabase(row) {
     id: `sb-req-${row.id}`,
     remoteId: row.id || "",
     remoteStatus: "linked",
-    service: canonicalServiceName(row.service_name || "Service Bizzi"),
+    service: canonicalServiceName(row.service_name || "Service Bizzis"),
     city: row.city_name || "Côte d'Ivoire",
     area: row.area || "",
     urgency: row.urgency || "today",
@@ -5894,7 +5894,7 @@ function normalizeEventPromotion(event = {}) {
     id: event.id || `evt${Date.now()}`,
     remoteId: event.remoteId || "",
     remoteStatus: event.remoteStatus || "",
-    title: String(event.title || "").trim() || "Événement Bizzi",
+    title: String(event.title || "").trim() || "Événement Bizzis",
     description: String(event.description || "").trim(),
     dateTime,
     endDateTime,
@@ -6027,7 +6027,7 @@ function rankedExceptionPlaces(limit = Infinity) {
 function exceptionPlaceWhatsAppUrl(place) {
   const phone = String(place.contactPhone || FEATURED_BOOKING_WHATSAPP).replace(/[^\d+]/g, "");
   if (!phone) return "";
-  const message = `Bonjour ${place.ownerName || place.name}, je souhaite réserver ${place.name}, présenté sur Bizzi. Merci de m’indiquer les disponibilités et les conditions.`;
+  const message = `Bonjour ${place.ownerName || place.name}, je souhaite réserver ${place.name}, présenté sur Bizzis. Merci de m’indiquer les disponibilités et les conditions.`;
   return `https://wa.me/${phone.replace(/^\+/, "")}?text=${encodeURIComponent(message)}`;
 }
 
@@ -6038,7 +6038,7 @@ function exceptionPlaceCardHtml(place, index = 0) {
     <article class="exception-place-card${boosted ? " is-boosted" : ""}">
       ${boosted ? `<span class="exception-boost-badge">Boost</span>` : ""}
       <div class="exception-place-visual"><img src="${safe(image)}" alt="${safe(place.name)}" loading="lazy" decoding="async"></div>
-      <div class="exception-place-copy"><span class="tag ok">${safe(place.area || place.city)}</span><h3>${safe(place.name)}</h3><p>${safe(place.description || place.address || "Lieu sélectionné par Bizzi.")}</p></div>
+      <div class="exception-place-copy"><span class="tag ok">${safe(place.area || place.city)}</span><h3>${safe(place.name)}</h3><p>${safe(place.description || place.address || "Lieu sélectionné par Bizzis.")}</p></div>
       <a class="booking-action" href="${safe(exceptionPlaceWhatsAppUrl(place))}" target="_blank" rel="noreferrer" data-exception-reservation="${safe(place.id)}">Réserver</a>
     </article>`;
 }
@@ -6056,7 +6056,7 @@ function normalizeFoodPlace(place = {}) {
     id: place.id || `food${Date.now()}`,
     remoteId: place.remoteId || "",
     remoteStatus: place.remoteStatus || "",
-    name: String(place.name || "").trim() || "Adresse Food Bizzi",
+    name: String(place.name || "").trim() || "Adresse Food Bizzis",
     ownerName: String(place.ownerName || place.owner_name || "").trim() || "Responsable",
     contactPhone: String(place.contactPhone || place.contact_phone || "").trim(),
     placeType: FOOD_PLACE_TYPES.includes(place.placeType || place.place_type) ? (place.placeType || place.place_type) : "Restaurant",
@@ -6095,7 +6095,7 @@ function foodPlaceFromSupabase(row, index = 0) {
     id: `sb-food-${row.id || index}`,
     remoteId: row.id || "",
     remoteStatus: "linked",
-    name: row.name || "Adresse Food Bizzi",
+    name: row.name || "Adresse Food Bizzis",
     ownerName: row.owner_name || "Responsable",
     contactPhone: row.contact_phone || "",
     placeType: row.place_type || "Restaurant",
@@ -6195,7 +6195,7 @@ function foodWhatsAppUrl(place) {
   if (!phone) return "";
   const clientPhone = currentClientPhone();
   const message = [
-    `Bonjour ${place.ownerName || place.name}, je souhaite réserver chez ${place.name}, présenté sur Bizzi.`,
+    `Bonjour ${place.ownerName || place.name}, je souhaite réserver chez ${place.name}, présenté sur Bizzis.`,
     `Spécialité : ${place.mainSpecialty}. Merci de m'indiquer les disponibilités et les conditions.`,
     clientPhone ? `Mon contact : ${clientPhone}.` : "",
   ].filter(Boolean).join("\n");
@@ -6205,7 +6205,7 @@ function foodWhatsAppUrl(place) {
 function featuredBookingWhatsAppUrl(place) {
   const phone = String(place.contactPhone || FEATURED_BOOKING_WHATSAPP).replace(/[^\d+]/g, "");
   if (!phone) return "";
-  const message = `Bonjour Events CI, je souhaite réserver ${place.name}, présenté sur Bizzi. Merci de m'indiquer les disponibilités et les conditions.`;
+  const message = `Bonjour Events CI, je souhaite réserver ${place.name}, présenté sur Bizzis. Merci de m'indiquer les disponibilités et les conditions.`;
   return `https://wa.me/${phone.replace(/^\+/, "")}?text=${encodeURIComponent(message)}`;
 }
 
@@ -6320,7 +6320,7 @@ async function submitExceptionPlaceToSupabase(place, files = {}) {
   place.remoteId = remoteId;
   place.remoteStatus = "pending";
   markRemoteWrite(`Lieu d’exception envoyé vers Supabase : ${place.name}.`);
-  return `Dossier transmis à Bizzi.${uploadWarning ? ` ${uploadWarning}` : ""}`;
+  return `Dossier transmis à Bizzis.${uploadWarning ? ` ${uploadWarning}` : ""}`;
 }
 
 async function submitAdminFreeExceptionPlaceToSupabase(place, files = {}) {
@@ -6346,7 +6346,7 @@ async function submitAdminFreeExceptionPlaceToSupabase(place, files = {}) {
     place.remoteId = row.id;
     place.remoteStatus = "linked";
   }
-  markRemoteWrite(`Lieu offert par Bizzi publié : ${place.name}.`);
+  markRemoteWrite(`Lieu offert par Bizzis publié : ${place.name}.`);
   return "Ajout gratuit publié dans Supabase pour 30 jours.";
 }
 
@@ -6395,7 +6395,7 @@ async function submitFoodPlaceToSupabase(place, files = {}) {
   await supabaseInsert("food_places", payload);
   place.remoteId = foodId;
   place.remoteStatus = "pending";
-  const message = `Adresse Food envoyée vers Supabase. Validation Bizzi nécessaire avant affichage public.${uploadWarning ? ` ${uploadWarning}` : ""}`;
+  const message = `Adresse Food envoyée vers Supabase. Validation Bizzis nécessaire avant affichage public.${uploadWarning ? ` ${uploadWarning}` : ""}`;
   markRemoteWrite(message);
   return message;
 }
@@ -6405,7 +6405,7 @@ function eventPromotionFromSupabase(row, index = 0) {
     id: `sb-event-${row.id || index}`,
     remoteId: row.id || "",
     remoteStatus: "linked",
-    title: row.title || "Événement Bizzi",
+    title: row.title || "Événement Bizzis",
     description: row.description || "",
     dateTime: row.event_datetime || row.event_date || isoDaysFromNow(7),
     endDateTime: row.end_datetime || row.event_end_datetime || "",
@@ -6621,8 +6621,8 @@ function normalizeJobOffer(job) {
     id: job.id || `job${Date.now()}`,
     remoteId: job.remoteId || "",
     remoteStatus: job.remoteStatus || "",
-    title: String(job.title || "").trim() || "Offre emploi Bizzi",
-    companyName: String(job.companyName || "").trim() || "Entreprise Bizzi",
+    title: String(job.title || "").trim() || "Offre emploi Bizzis",
+    companyName: String(job.companyName || "").trim() || "Entreprise Bizzis",
     companyType: String(job.companyType || "").trim() || "Entreprise formelle",
     contactPhone: String(job.contactPhone || "").trim(),
     contactEmail: String(job.contactEmail || "").trim(),
@@ -6633,7 +6633,7 @@ function normalizeJobOffer(job) {
     salaryRange: String(job.salaryRange || "").trim(),
     description: String(job.description || "").trim(),
     externalUrl: String(job.externalUrl || "").trim(),
-    source: String(job.source || "").trim() || "Bizzi",
+    source: String(job.source || "").trim() || "Bizzis",
     planId: job.planId || plan.id,
     planName: job.planName || plan.name,
     amount,
@@ -6657,19 +6657,19 @@ function jobOfferFromSupabase(row, index = 0) {
     id: `sb-job-${row.id || index}`,
     remoteId: row.id || "",
     remoteStatus: "linked",
-    title: row.title || "Offre emploi Bizzi",
-    companyName: row.company_name || "Entreprise Bizzi",
+    title: row.title || "Offre emploi Bizzis",
+    companyName: row.company_name || "Entreprise Bizzis",
     companyType: row.company_type || "Entreprise formelle",
     contactPhone: row.contact_phone || "",
     contactEmail: row.contact_email || "",
-    service: row.service_name || "Service Bizzi",
+    service: row.service_name || "Service Bizzis",
     city: row.city_name || "Toute la Côte d'Ivoire",
     area: row.area || "",
     contractType: row.contract_type || "Mission ponctuelle",
     salaryRange: row.salary_range || "",
     description: row.description || "",
     externalUrl: row.external_url || "",
-    source: row.source || "Bizzi",
+    source: row.source || "Bizzis",
     planName: row.plan_name || "",
     amount: Number(row.amount || 0),
     currency: row.currency || "FCFA",
@@ -6723,21 +6723,21 @@ function jobsMatching(serviceName = "", cityName = "", query = "") {
 function jobWhatsAppUrl(job) {
   const phone = String(job.contactPhone || "").replace(/[^\d+]/g, "");
   if (!phone) return "";
-  const message = `Bonjour, j'ai vu votre offre sur Bizzi : ${job.title} (${job.service} à ${job.city}). Est-elle toujours disponible ?`;
+  const message = `Bonjour, j'ai vu votre offre sur Bizzis : ${job.title} (${job.service} à ${job.city}). Est-elle toujours disponible ?`;
   return `https://wa.me/${phone.replace(/^\+/, "")}?text=${encodeURIComponent(message)}`;
 }
 
 function jobPaymentTrackingMessage(job) {
-  const reference = job.paymentReference || job.transaction_reference || "Référence Bizzi non renseignée";
+  const reference = job.paymentReference || job.transaction_reference || "Référence Bizzis non renseignée";
   const companyName = job.companyName || job.company_name || "votre organisation";
   const title = job.title || "votre offre emploi / mission";
-  const planName = job.planName || job.plan_name || "forfait Bizzi";
+  const planName = job.planName || job.plan_name || "forfait Bizzis";
   const amount = Number(job.amount || 0);
   const currency = job.currency || "FCFA";
   const amountLine = amount ? `${amount.toLocaleString("fr-FR")} ${currency}` : `montant ${currency}`;
   return [
     `Bonjour ${companyName},`,
-    `Bizzi a enregistré votre demande : ${title}.`,
+    `Bizzis a enregistré votre demande : ${title}.`,
     `Référence de suivi : ${reference}.`,
     `Forfait : ${planName} - ${amountLine}.`,
     "Conservez cette référence : elle permettra de retrouver votre paiement ou votre demande en cas de réclamation.",
@@ -6759,7 +6759,7 @@ function eventTicketUrl(event) {
 function eventWhatsAppUrl(event) {
   const phone = String(event.contactPhone || "").replace(/[^\d+]/g, "");
   if (!phone) return "";
-  const message = `Bonjour ${event.organizerName || "organisateur"}, j'ai vu votre événement sur Bizzi : ${event.title}. Je souhaite acheter un billet.`;
+  const message = `Bonjour ${event.organizerName || "organisateur"}, j'ai vu votre événement sur Bizzis : ${event.title}. Je souhaite acheter un billet.`;
   return `https://wa.me/${phone.replace(/^\+/, "")}?text=${encodeURIComponent(message)}`;
 }
 
@@ -6767,11 +6767,11 @@ function eventPaymentTrackingMessage(event) {
   ensureEventPaymentReference(event);
   return [
     `Bonjour ${event.organizerName || "organisateur"},`,
-    `Bizzi a enregistré votre événement : ${event.title}.`,
+    `Bizzis a enregistré votre événement : ${event.title}.`,
     `Référence de suivi visibilité : ${event.paymentReference}.`,
     `Forfait : ${event.planName} - ${Number(event.amount || 0).toLocaleString("fr-FR")} ${event.currency || "FCFA"}.`,
     Number(event.boostDurationDays || 0) ? `Durée du boost : ${Number(event.boostDurationDays).toLocaleString("fr-FR")} jour(s).` : "Formule standard gratuite.",
-    "Rappel : Bizzi ne vend pas les billets. Les clients seront redirigés vers votre lien officiel.",
+    "Rappel : Bizzis ne vend pas les billets. Les clients seront redirigés vers votre lien officiel.",
   ].join("\n");
 }
 
@@ -6855,7 +6855,7 @@ async function submitEventPromotionToSupabase(event, files = {}) {
   event.remoteId = eventId;
   event.remoteStatus = "pending";
   event.paymentStatus = paymentStatus;
-  const message = `Événement envoyé vers Supabase avec la référence Bizzi ${event.paymentReference}. Validation admin nécessaire avant publication.${uploadWarning ? ` ${uploadWarning}` : ""}`;
+  const message = `Événement envoyé vers Supabase avec la référence Bizzis ${event.paymentReference}. Validation admin nécessaire avant publication.${uploadWarning ? ` ${uploadWarning}` : ""}`;
   markRemoteWrite(message);
   return message;
 }
@@ -6907,7 +6907,7 @@ async function submitJobOfferToSupabase(job) {
   job.remoteId = jobId;
   job.remoteStatus = "pending";
   job.paymentStatus = "pending";
-  const message = `Offre emploi envoyée vers Supabase avec la référence Bizzi ${job.paymentReference}. Validation admin nécessaire avant affichage public.`;
+  const message = `Offre emploi envoyée vers Supabase avec la référence Bizzis ${job.paymentReference}. Validation admin nécessaire avant affichage public.`;
   markRemoteWrite(message);
   return message;
 }
@@ -7799,14 +7799,14 @@ function socialUrl(type, value) {
 }
 
 function providerShareText(provider) {
-  return `Je te recommande ${provider.fullName} sur Bizzi. Métier : ${provider.service}. Zone : ${provider.area}, ${provider.city}. Téléphone : ${provider.phone}.`;
+  return `Je te recommande ${provider.fullName} sur Bizzis. Métier : ${provider.service}. Zone : ${provider.area}, ${provider.city}. Téléphone : ${provider.phone}.`;
 }
 
 function providerContactText(provider) {
   const clientName = currentClientName();
   const clientPhone = currentClientPhone();
   return [
-    `Bonjour ${provider.fullName}, je vous contacte depuis Bizzi pour votre service : ${provider.service}.`,
+    `Bonjour ${provider.fullName}, je vous contacte depuis Bizzis pour votre service : ${provider.service}.`,
     clientName ? `Je m’appelle ${clientName}.` : "",
     clientPhone ? `Mon contact client : ${clientPhone}.` : "",
   ].filter(Boolean).join(" ");
@@ -7890,8 +7890,8 @@ function hydrateRequestPriority(request, matches = null) {
 
 function expressRequestMessage(request, provider = null) {
   const intro = provider
-    ? `Bonjour ${provider.fullName}, je vous contacte depuis Bizzi.`
-    : "Bonjour, je vous contacte depuis Bizzi.";
+    ? `Bonjour ${provider.fullName}, je vous contacte depuis Bizzis.`
+    : "Bonjour, je vous contacte depuis Bizzis.";
   const phoneLine = request.phone ? ` Mon contact : ${request.phone}.` : "";
   return `${intro} J'ai besoin d'un service : ${request.service}, ${requestUrgencyLabel(request.urgency)}, zone ${request.area || request.city}. Détail : ${request.message || "besoin à préciser"}.${phoneLine}`;
 }
@@ -8337,7 +8337,7 @@ function renderSearchAssistantStatus(message = "") {
 
 async function startGlobalVoiceAssistant(button = null) {
   if (!clientIdentityReady()) {
-    openClientAccessGate("search", "utiliser Parler à Bizzi dans toute l’application", () => startGlobalVoiceAssistant(button));
+    openClientAccessGate("search", "utiliser Parler à Bizzis dans toute l’application", () => startGlobalVoiceAssistant(button));
     return;
   }
   setGlobalVoiceSession(true, button);
@@ -8552,7 +8552,7 @@ function applyAssistantDeliveryPrompt(prompt = "", options = {}) {
     const detectedJourney = ride ? "Course détectée" : "Livraison détectée";
     const message = missing.length
       ? `${detectedJourney} : ${missing.join(" et ")} à préciser. Le tarif se calculera dès que les deux lieux seront renseignés.`
-      : `${detectedJourney} : trajet pré-rempli. Vérifiez le tarif Bizzi puis validez.`;
+      : `${detectedJourney} : trajet pré-rempli. Vérifiez le tarif Bizzis puis validez.`;
     renderDeliveryRequestStatus(message);
     renderSearchAssistantStatus(`
       <strong>${options.voice ? `Voix reconnue · ${detectedJourney}` : detectedJourney}</strong>
@@ -8564,7 +8564,7 @@ function applyAssistantDeliveryPrompt(prompt = "", options = {}) {
 
 function runSearchAssistant(prompt = "", options = {}) {
   const text = String(prompt || "").trim();
-  if (!requireClientPhoneForAccess("lancer la recherche Bizzi")) return;
+  if (!requireClientPhoneForAccess("lancer la recherche Bizzis")) return;
   if (!text) {
     renderSearchAssistantStatus("<strong>Décrivez votre besoin</strong><p>Exemple : plombier à Cocody, ou livrer un colis de Cocody à Marcory maintenant.</p>");
     return;
@@ -8627,7 +8627,7 @@ function showVoiceTextFallback(input, button, reason = "") {
   const fallbackMessage = `<strong>Utilisez le micro du clavier</strong>${detail}<p>Touchez le champ texte, dictez votre phrase avec le clavier du téléphone, puis appuyez sur Trouver.</p>`;
   if (globalVoiceSessionActive) {
     const homeInput = document.querySelector("#homeQuickSearchInput");
-    renderSearchAssistantStatus("<strong>Micro vocal indisponible</strong><p>Dictez votre demande dans la recherche Bizzi puis touchez Trouver.</p>");
+    renderSearchAssistantStatus("<strong>Micro vocal indisponible</strong><p>Dictez votre demande dans la recherche Bizzis puis touchez Trouver.</p>");
     homeInput?.focus();
     setGlobalVoiceSession(false);
     return;
@@ -8663,8 +8663,8 @@ async function startBrowserVoiceAssistant(button = null) {
   const readiness = await globalThis.BizziVoice?.microphoneReadiness?.().catch(() => ({ ready: true, permission: "unknown" }));
   if (readiness?.ready === false) {
     const explanation = readiness.reason === "denied"
-      ? "Le micro est bloqué. Ouvrez les réglages du site, autorisez le microphone, puis rechargez Bizzi."
-      : "La reconnaissance vocale nécessite l'adresse HTTPS de Bizzi.";
+      ? "Le micro est bloqué. Ouvrez les réglages du site, autorisez le microphone, puis rechargez Bizzis."
+      : "La reconnaissance vocale nécessite l'adresse HTTPS de Bizzis.";
     renderSearchAssistantStatus(`<strong>Micro indisponible</strong><p>${safe(explanation)}</p>`);
     resetSearchVoiceButton(button);
     if (globalVoiceSessionActive) setGlobalVoiceSession(false);
@@ -8781,7 +8781,7 @@ async function startSearchVoiceAssistant(button = null) {
   if (globalThis.BizziAIVoice?.active?.()) {
     globalThis.BizziAIVoice.stop();
     if (button) button.textContent = "Transcription...";
-    renderSearchAssistantStatus("<strong>Transcription IA...</strong><p>Bizzi transforme votre voix en texte.</p>");
+    renderSearchAssistantStatus("<strong>Transcription IA...</strong><p>Bizzis transforme votre voix en texte.</p>");
     if (globalVoiceSessionActive) setGlobalVoiceSession(false);
     return;
   }
@@ -8795,7 +8795,7 @@ async function startSearchVoiceAssistant(button = null) {
     button.setAttribute("aria-pressed", "true");
     button.setAttribute("aria-label", "Arrêter l'écoute IA");
   }
-  renderSearchAssistantStatus("<strong>J'écoute avec l'IA...</strong><p>Parlez naturellement avec votre accent. Bizzi optimise le français d'Afrique, puis touchez Stop ou attendez.</p>");
+  renderSearchAssistantStatus("<strong>J'écoute avec l'IA...</strong><p>Parlez naturellement avec votre accent. Bizzis optimise le français d'Afrique, puis touchez Stop ou attendez.</p>");
   try {
     const transcript = await globalThis.BizziAIVoice.start({
       maxMs: 15000,
@@ -8843,7 +8843,7 @@ function setupSearchAssistant() {
   });
   form.addEventListener("submit", (event) => {
     event.preventDefault();
-    if (!requireClientPhoneForAccess("lancer la recherche Bizzi")) return;
+    if (!requireClientPhoneForAccess("lancer la recherche Bizzis")) return;
     runSearchAssistant(input.value);
   });
   if (voiceButton && !speechRecognitionConstructor()) {
@@ -8942,7 +8942,7 @@ function renderExpressRequestResult(request) {
       ${priorityBadge(priority.label, priority.score)}
     </div>
     <p>${safe(request.service)} - ${safe(request.city)} - ${safe(requestUrgencyLabel(request.urgency))}. ${matches.length ? `${matches.length} prestataire(s) recommandé(s).` : "Aucun prestataire actif exact pour le moment."}${safe(remoteNote)}</p>
-    <p class="request-priority-note">Priorité Bizzi : ${safe(priority.label)} selon l'urgence, la zone et les prestataires disponibles.</p>
+    <p class="request-priority-note">Priorité Bizzis : ${safe(priority.label)} selon l'urgence, la zone et les prestataires disponibles.</p>
   `;
   root.innerHTML = matches.length ? matches.map((provider) => {
     const whatsappUrl = whatsappContactUrl(provider);
@@ -9002,8 +9002,8 @@ function renewalMessage(provider) {
   const dateLabel = endDate ? new Date(endDate).toLocaleDateString("fr-FR") : "bientôt";
   const status = renewalStatus(provider);
   const statusLine = status === "Expiré"
-    ? "Votre visibilité Bizzi est actuellement expirée."
-    : `Votre visibilité Bizzi ${status ? status.toLowerCase() : `arrive à échéance le ${dateLabel}`}.`;
+    ? "Votre visibilité Bizzis est actuellement expirée."
+    : `Votre visibilité Bizzis ${status ? status.toLowerCase() : `arrive à échéance le ${dateLabel}`}.`;
   return `Bonjour ${provider.fullName}, ${statusLine} Pour rester visible auprès des clients, vous pouvez renouveler votre abonnement : 1 mois à 3 000 FCFA, 3 mois à 4 500 FCFA ou 6 mois à 6 500 FCFA. Option boost : 1 000 FCFA la semaine ou 2 000 FCFA le mois pour remonter dans les recherches. Répondez à ce message pour recevoir les instructions Wave, Orange Money ou MTN Money.`;
 }
 
@@ -9020,7 +9020,7 @@ function whatsappContactUrl(provider) {
 
 function appShareText() {
   const appUrl = officialWebsiteUrl() || location.href.split("#")[0];
-  return `Découvre Bizzi : une application pour trouver rapidement un prestataire près de toi en Côte d'Ivoire. ${appUrl}`;
+  return `Découvre Bizzis : une application pour trouver rapidement un prestataire près de toi en Côte d'Ivoire. ${appUrl}`;
 }
 
 function recordLead(provider, action, detail = "") {
@@ -9094,11 +9094,11 @@ function contactActionMessage(provider, action) {
   const phone = provider.phone || "numéro indisponible";
   const messages = {
     call: {
-      title: "Appel lancé depuis Bizzi",
+      title: "Appel lancé depuis Bizzis",
       body: `Si rien ne s'ouvre sur cet appareil, composez directement : ${phone}.`,
     },
     whatsapp: {
-      title: "WhatsApp ouvert depuis Bizzi",
+      title: "WhatsApp ouvert depuis Bizzis",
       body: `Si WhatsApp ne s'ouvre pas, copiez ce numéro : ${provider.whatsapp || phone}.`,
     },
     route: {
@@ -9112,7 +9112,7 @@ function contactActionMessage(provider, action) {
   };
   return messages[action] || {
     title: "Action enregistrée",
-    body: "Bizzi a bien enregistré cette action.",
+    body: "Bizzis a bien enregistré cette action.",
   };
 }
 
@@ -9314,7 +9314,7 @@ function providerMedia(provider) {
   if (provider.photo) {
     return `<img class="provider-photo" src="${safe(provider.photo)}" alt="Photo de ${safe(provider.fullName)}" loading="lazy" decoding="async">`;
   }
-  const service = providerServiceNames(provider)[0] || provider.service || "Service Bizzi";
+  const service = providerServiceNames(provider)[0] || provider.service || "Service Bizzis";
   const serviceImage = !document.body.classList.contains("data-lite")
     ? globalThis.BizziServiceImages?.url?.(service)
     : "";
@@ -9540,14 +9540,14 @@ function paymentInstructionText(method = state.selectedPayment) {
   const account = bizziConfig.payments?.accounts?.[method] || "A renseigner";
   const accountReady = hasProductionValue(account);
   const accountLine = accountReady
-    ? `Compte Bizzi ${method} : ${account}.`
-    : `Compte Bizzi ${method} : a renseigner avant publication.`;
+    ? `Compte Bizzis ${method} : ${account}.`
+    : `Compte Bizzis ${method} : a renseigner avant publication.`;
   return [
-    `Paiement Bizzi - ${state.selectedPlan.name}`,
+    `Paiement Bizzis - ${state.selectedPlan.name}`,
     `Montant : ${selectedProviderPaymentTotal().toLocaleString("fr-FR")} FCFA.`,
     selectedProviderBoost().price ? `Option : ${selectedProviderBoost().name} (+${selectedProviderBoost().price.toLocaleString("fr-FR")} FCFA).` : "Option : sans boost.",
     accountLine,
-    "Apres paiement, indiquez la reference de transaction dans Bizzi et ajoutez une preuve si possible.",
+    "Apres paiement, indiquez la reference de transaction dans Bizzis et ajoutez une preuve si possible.",
   ].join("\n");
 }
 
@@ -9571,7 +9571,7 @@ function commercialSummary() {
   const [topService, topServiceCount] = topGroup(active, (provider) => provider.service);
   const [topCity, topCityCount] = topGroup(active, (provider) => provider.city);
   return [
-    `Bilan Bizzi du ${new Date().toLocaleDateString("fr-FR")}`,
+    `Bilan Bizzis du ${new Date().toLocaleDateString("fr-FR")}`,
     `Prestataires actifs : ${active.length}/${approved.length}.`,
     `Revenus validés : ${formatMoney(approvedRevenueTotal())}.`,
     `Paiements à valider : ${pendingPayments.length} pour ${formatMoney(pendingRevenueTotal())}.`,
@@ -9908,7 +9908,7 @@ function deliveryProviderOwnsRequest(request = {}, provider = null) {
 }
 
 function deliveryRequestLine(request) {
-  return `${request.pickup} -> ${request.dropoff} | ${request.parcel} | ${formatDistanceKm(request.distanceKm)} | ${deliveryUrgencyLabel(request.urgency)} | ${deliveryScheduledLabel(request.scheduledAt, request.urgency)} | ${formatMoney(request.amount)} | Bizzi ${deliveryCommissionPercent(request.commissionRate)} : ${formatMoney(request.bizziCommission)} | Professionnel : ${formatMoney(request.providerPayout)} | Réf. ${request.paymentReference || "non renseignée"} | Client : ${request.clientName || "non renseigné"} | Contact : ${request.phone || "non renseigné"}`;
+  return `${request.pickup} -> ${request.dropoff} | ${request.parcel} | ${formatDistanceKm(request.distanceKm)} | ${deliveryUrgencyLabel(request.urgency)} | ${deliveryScheduledLabel(request.scheduledAt, request.urgency)} | ${formatMoney(request.amount)} | Bizzis ${deliveryCommissionPercent(request.commissionRate)} : ${formatMoney(request.bizziCommission)} | Professionnel : ${formatMoney(request.providerPayout)} | Réf. ${request.paymentReference || "non renseignée"} | Client : ${request.clientName || "non renseigné"} | Contact : ${request.phone || "non renseigné"}`;
 }
 
 function deliveryMissionWords(request = {}) {
@@ -9966,13 +9966,13 @@ function deliveryClientMessage(request = {}) {
   const pipeline = deliveryPipelineInfo(request);
   const words = deliveryMissionWords(request);
   return [
-    `Suivi Bizzi ${words.title}`,
+    `Suivi Bizzis ${words.title}`,
     `${deliveryRequestIsRide(request) ? "Passagers" : "Colis"} : ${words.item}.`,
     `Trajet : ${request.pickup || "-"} vers ${request.dropoff || "-"}.`,
     `Statut : ${pipeline.label}.`,
     `Montant : ${formatMoney(request.amount)}. Référence : ${request.paymentReference || "non renseignée"}.`,
     request.status === "assigned"
-      ? `${words.provider[0].toUpperCase() + words.provider.slice(1)} attribué : ${request.assignedProviderName || "Bizzi"}${request.assignedProviderPhone ? ` - ${request.assignedProviderPhone}` : ""}.`
+      ? `${words.provider[0].toUpperCase() + words.provider.slice(1)} attribué : ${request.assignedProviderName || "Bizzis"}${request.assignedProviderPhone ? ` - ${request.assignedProviderPhone}` : ""}.`
       : `Le contact ${words.provider} est communiqué après validation du paiement et attribution.`,
   ].join(" ");
 }
@@ -9980,7 +9980,7 @@ function deliveryClientMessage(request = {}) {
 function deliveryCourierMessage(request = {}) {
   const words = deliveryMissionWords(request);
   return [
-    `Mission Bizzi ${words.title}`,
+    `Mission Bizzis ${words.title}`,
     `${request.pickup || "-"} vers ${request.dropoff || "-"}.`,
     `${deliveryRequestIsRide(request) ? "Passagers" : "Colis"} : ${words.item}.`,
     `Distance : ${formatDistanceKm(request.distanceKm)}.`,
@@ -10017,7 +10017,7 @@ function deliveryTrackingHtml(request = {}, options = {}) {
   const words = deliveryMissionWords(request);
   const ride = deliveryRequestIsRide(request);
   const subject = encodeURIComponent(`SOS ${words.mission} ${request.paymentReference || request.id}`);
-  const body = encodeURIComponent(`Bonjour Bizzi, j'ai besoin d'aide pour la ${words.mission} ${request.paymentReference || request.id}.`);
+  const body = encodeURIComponent(`Bonjour Bizzis, j'ai besoin d'aide pour la ${words.mission} ${request.paymentReference || request.id}.`);
   const supportWhatsappHref = supportWhatsapp
     ? `https://wa.me/${supportWhatsapp.replace(/[^\d]/g, "")}?text=${body}`
     : "";
@@ -10040,7 +10040,7 @@ function deliveryTrackingHtml(request = {}, options = {}) {
       ${!options.providerId && request.proofCode ? `<p class="delivery-proof-code"><strong>${ride ? "Code de fin de course" : "Code de remise"} :</strong> ${safe(request.proofCode)} <small>À communiquer uniquement ${ride ? "à l'arrivée" : "quand le colis est remis"}.</small></p>` : ""}
       ${request.proofPhoto ? `<a class="doc-link" href="${safe(request.proofPhoto)}" target="_blank" rel="noreferrer">Voir la preuve photo</a>` : ""}
       <div class="delivery-tracking-actions">
-        <a class="danger" href="mailto:${safe(supportEmail)}?subject=${subject}&body=${body}">SOS Bizzi</a>
+        <a class="danger" href="mailto:${safe(supportEmail)}?subject=${subject}&body=${body}">SOS Bizzis</a>
         <a class="secondary" href="mailto:${safe(supportEmail)}?subject=${encodeURIComponent(`Support ${words.mission} ${request.paymentReference || request.id}`)}">Contacter le support</a>
         ${supportWhatsapp ? `<a class="secondary" href="${safe(supportWhatsappHref)}" target="_blank" rel="noreferrer">WhatsApp support</a>` : ""}
         ${options.providerId && info.stage === "accepted" ? `<button class="primary" type="button" data-delivery-stage="picked_up" data-delivery-id="${safe(request.id)}">${ride ? "Client à bord" : "Colis récupéré"}</button>` : ""}
@@ -10057,7 +10057,7 @@ function deliveryRequestCard(request, options = {}) {
   const matches = deliveryRequestMatches(request);
   const assignedProvider = request.assignedProviderId ? state.providers.find((provider) => provider.id === request.assignedProviderId) : null;
   const paymentApproved = request.paymentStatus === "approved";
-  const assignedName = request.assignedProviderName || assignedProvider?.fullName || `un ${words.provider} Bizzi`;
+  const assignedName = request.assignedProviderName || assignedProvider?.fullName || `un ${words.provider} Bizzis`;
   const assignedPhone = request.assignedProviderPhone || assignedProvider?.phone || "";
   const pipeline = deliveryPipelineInfo(request);
   const candidateCount = Number(request.dispatchCandidateCount || matches.length || 0);
@@ -10073,7 +10073,7 @@ function deliveryRequestCard(request, options = {}) {
     : "";
   const clientWaitingText = paymentApproved
     ? `La commande est payée. Les ${words.provider}s proches peuvent accepter la mission ; le contact sera affiché après attribution.`
-    : `Le ${words.provider} ne voit pas encore cette mission. Confirmez le paiement Bizzi pour ouvrir la demande aux professionnels proches.`;
+    : `Le ${words.provider} ne voit pas encore cette mission. Confirmez le paiement Bizzis pour ouvrir la demande aux professionnels proches.`;
   return `
     <article class="delivery-request-card">
       <div>
@@ -10091,11 +10091,11 @@ function deliveryRequestCard(request, options = {}) {
         <p><strong>Tarif calculé :</strong> ${safe(formatDistanceKm(request.distanceKm))} - ${safe(request.pricingBreakdown || deliveryTimeSlotLabel(request.pricingSlot))}.</p>
         <p><strong>Paiement client :</strong> ${safe(formatMoney(request.amount))} - ${safe(paymentMethodLabel(request.paymentMethod))} - ${safe(request.paymentStatus || "pending")}</p>
         ${(options.providerId || options.admin) && request.clientName ? `<p><strong>Client :</strong> ${safe(request.clientName)}</p>` : ""}
-        ${showFinancialSplit ? `<p><strong>Répartition :</strong> Bizzi ${safe(formatMoney(request.bizziCommission))} (${safe(deliveryCommissionPercent(request.commissionRate))}) - professionnel ${safe(formatMoney(request.providerPayout))}.</p>` : ""}
+        ${showFinancialSplit ? `<p><strong>Répartition :</strong> Bizzis ${safe(formatMoney(request.bizziCommission))} (${safe(deliveryCommissionPercent(request.commissionRate))}) - professionnel ${safe(formatMoney(request.providerPayout))}.</p>` : ""}
         <p>Réf. ${safe(request.paymentReference || "Non renseignée")} ${showFinancialSplit && request.payoutStatus === "payable" ? "- part professionnelle à payer" : ""}</p>
-        ${cardProvider && deliveryProviderPenaltyActive(cardProvider) ? `<p class="admin-warning">Commission Bizzi temporaire ${safe(deliveryCommissionPercent(DELIVERY_PENALTY_COMMISSION_RATE))} : ${safe(Number(cardProvider.deliveryPenaltyRemaining || 0))} mission(s) restante(s).</p>` : ""}
+        ${cardProvider && deliveryProviderPenaltyActive(cardProvider) ? `<p class="admin-warning">Commission Bizzis temporaire ${safe(deliveryCommissionPercent(DELIVERY_PENALTY_COMMISSION_RATE))} : ${safe(Number(cardProvider.deliveryPenaltyRemaining || 0))} mission(s) restante(s).</p>` : ""}
         ${canAccept ? `<p class="admin-real-action"><strong>Mission disponible</strong><span>Gain professionnel ${safe(formatMoney(request.providerPayout))}. Après acceptation, la mission est verrouillée.</span></p>` : ""}
-        ${pickupDistanceLabel ? `<p><strong>Proximité :</strong> ${safe(pickupDistanceLabel)} - rayon Bizzi ${safe(formatDistanceKm(DELIVERY_MATCH_RADIUS_KM))}.</p>` : ""}
+        ${pickupDistanceLabel ? `<p><strong>Proximité :</strong> ${safe(pickupDistanceLabel)} - rayon Bizzis ${safe(formatDistanceKm(DELIVERY_MATCH_RADIUS_KM))}.</p>` : ""}
         ${request.dispatchStatus === "manual_review" ? `<p class="admin-warning">Aucun professionnel proche confirmé. La mission reste ouverte dans la ville.</p>` : ""}
         ${request.lastDispatchMessage ? `<p>${safe(request.lastDispatchMessage)}</p>` : ""}
         ${request.cancellationReason ? `<p><strong>Motif annulation client :</strong> ${safe(request.cancellationReason)}</p>` : ""}
@@ -10103,7 +10103,7 @@ function deliveryRequestCard(request, options = {}) {
         ${request.status === "assigned" && paymentApproved ? `<p class="admin-real-action"><strong>${safe(words.provider[0].toUpperCase() + words.provider.slice(1))} attribué :</strong><span>${safe(assignedName)}${assignedPhone ? ` - ${safe(assignedPhone)}` : ""}</span></p>` : ""}
         ${request.status !== "assigned" && !options.providerId && !options.admin ? `<p>${safe(clientWaitingText)}</p>` : ""}
         ${deliveryTrackingHtml(request, options)}
-        ${(options.providerId || options.admin) ? `<p>${safe(candidateCount)} professionnel(s) compatible(s) ou alerté(s) par Bizzi.</p>` : ""}
+        ${(options.providerId || options.admin) ? `<p>${safe(candidateCount)} professionnel(s) compatible(s) ou alerté(s) par Bizzis.</p>` : ""}
         ${request.acceptedAt ? `<p>Acceptée le ${new Date(request.acceptedAt).toLocaleString("fr-FR")}</p>` : ""}
       </div>
       <div class="delivery-card-actions">
@@ -10220,7 +10220,7 @@ async function startCourierLiveAvailability(button = null) {
             request.courierLocationAt = point.at;
           });
         state.userLocation = { lat: point.lat, lng: point.lng };
-        state.deliveryLiveLastStatus = `Position livreur active : Bizzi cherche les demandes à moins de ${DELIVERY_MATCH_RADIUS_KM} km dans ${provider.city || "sa ville"}.`;
+        state.deliveryLiveLastStatus = `Position livreur active : Bizzis cherche les demandes à moins de ${DELIVERY_MATCH_RADIUS_KM} km dans ${provider.city || "sa ville"}.`;
         saveState();
         renderDelivery();
         renderProviderDeliveryQueue();
@@ -10234,7 +10234,7 @@ async function startCourierLiveAvailability(button = null) {
     state.deliveryLiveProviderId = provider.id;
     state.deliveryLiveLastStatus = "Position live active. Gardez cette page ouverte pendant la disponibilité.";
     saveState();
-    renderProviderStatus(`Disponibilité livreur live activée. Gardez cette page ouverte : Bizzi propose les courses de votre ville dont le départ est à moins de ${DELIVERY_MATCH_RADIUS_KM} km.`);
+    renderProviderStatus(`Disponibilité livreur live activée. Gardez cette page ouverte : Bizzis propose les courses de votre ville dont le départ est à moins de ${DELIVERY_MATCH_RADIUS_KM} km.`);
     renderProviderDeliveryQueue();
     finishActionButton(button, "Live actif");
     return true;
@@ -10251,7 +10251,7 @@ async function startCourierLiveAvailability(button = null) {
 
 async function showLocalDeliveryNotification(request, matches, options = {}) {
   if (!state.deliveryAlertsEnabled || !("Notification" in window) || Notification.permission !== "granted") return;
-  const title = options.title || "Nouvelle livraison Bizzi";
+  const title = options.title || "Nouvelle livraison Bizzis";
   const body = options.body || `${request.pickup} vers ${request.dropoff} - ${matches.length} livreur(s) compatible(s).`;
   try {
     const registration = await navigator.serviceWorker?.ready;
@@ -10295,7 +10295,7 @@ async function notifyProviderDeliveryRequests(requests = []) {
   saveState();
   for (const request of fresh) {
     await showLocalDeliveryNotification(request, deliveryRequestMatches(request), {
-      title: "Livraison proche Bizzi",
+      title: "Livraison proche Bizzis",
       body: `${request.pickup} vers ${request.dropoff} - ${request.parcel}.`,
     });
   }
@@ -10453,7 +10453,7 @@ function renderInternationalParcelProviders() {
       ${providers.map(providerCard).join("")}
       <article class="international-note-card">
         <strong>Tarifs libres</strong>
-        <p>Bizzi ne fixe pas le prix d'un envoi international et ne vend pas le transport. Le client contacte le prestataire colis international ou le transitaire pour comparer les solutions.</p>
+        <p>Bizzis ne fixe pas le prix d'un envoi international et ne vend pas le transport. Le client contacte le prestataire colis international ou le transitaire pour comparer les solutions.</p>
         <button class="secondary" type="button" data-open-international-search>Voir tous les prestataires</button>
       </article>
     `;
@@ -10534,7 +10534,7 @@ function renderProviderDeliveryQueue() {
     liveButton.classList.toggle("primary", liveForProvider);
     liveButton.disabled = Boolean(provider && !canGoLive);
     liveButton.title = canGoLive
-      ? `Envoie la position à Bizzi pour recevoir les missions compatibles à moins de ${DELIVERY_MATCH_RADIUS_KM} km.`
+      ? `Envoie la position à Bizzis pour recevoir les missions compatibles à moins de ${DELIVERY_MATCH_RADIUS_KM} km.`
       : "Profil de livraison ou transport synchronisé Supabase requis.";
   }
   if (!provider) {
@@ -10669,7 +10669,7 @@ async function autoValidateDeliveryOrder(request) {
         request.dispatchStatus = "matched";
         request.dispatchCandidateCount = offers;
         request.dispatchMode = "supabase_auto";
-        request.lastDispatchMessage = `${offers} livreur(s) live notifié(s) automatiquement par Bizzi.`;
+        request.lastDispatchMessage = `${offers} livreur(s) live notifié(s) automatiquement par Bizzis.`;
       }
       remoteMessage = "Validation automatique confirmée dans Supabase.";
     } catch (error) {
@@ -10703,7 +10703,7 @@ async function approveDeliveryPayment(requestId, button = null) {
   renderAdmin();
   renderDeliveryRequestStatus(`Paiement livraison validé. Les livreurs proches peuvent accepter la mission. ${remoteMessage}`);
   await showLocalDeliveryNotification(request, deliveryRequestMatches(request), {
-    title: "Livraison payée Bizzi",
+    title: "Livraison payée Bizzis",
     body: `${request.pickup} vers ${request.dropoff} - livreurs proches alertés.`,
   });
   finishActionButton(button, "Validé");
@@ -10714,7 +10714,7 @@ async function acceptDeliveryRequest(requestId, providerId, button = null) {
   const provider = state.providers.find((item) => item.id === providerId);
   if (!request || !provider || request.status !== "open") return;
   if (request.paymentStatus !== "approved") {
-    renderProviderStatus("Cette livraison attend encore la confirmation du paiement client. Elle sera ouverte aux livreurs après confirmation Bizzi.");
+    renderProviderStatus("Cette livraison attend encore la confirmation du paiement client. Elle sera ouverte aux livreurs après confirmation Bizzis.");
     finishActionButton(button, "Paiement en attente");
     return;
   }
@@ -10739,7 +10739,7 @@ async function acceptDeliveryRequest(requestId, providerId, button = null) {
   renderDelivery();
   renderProviderDeliveryQueue();
   renderAdmin();
-  renderProviderStatus(`Livraison acceptée par ${safe(provider.fullName)}. Mission verrouillée. Commission Bizzi ${safe(deliveryCommissionPercent(financials?.commissionRate))}, gain livreur prévu : ${safe(formatMoney(request.providerPayout))}. Client : ${safe(request.clientName || "non renseigné")}. Contact : ${safe(request.phone || "non renseigné")}. ${safe(remoteMessage)}`);
+  renderProviderStatus(`Livraison acceptée par ${safe(provider.fullName)}. Mission verrouillée. Commission Bizzis ${safe(deliveryCommissionPercent(financials?.commissionRate))}, gain livreur prévu : ${safe(formatMoney(request.providerPayout))}. Client : ${safe(request.clientName || "non renseigné")}. Contact : ${safe(request.phone || "non renseigné")}. ${safe(remoteMessage)}`);
   finishActionButton(button, "Acceptée");
 }
 
@@ -10811,7 +10811,7 @@ async function requestProviderDeliveryCancellation(requestId, providerId, button
   renderDelivery();
   renderProviderDeliveryQueue();
   renderAdmin();
-  renderProviderStatus(`Signalement envoyé à Bizzi. La course reste engagée tant que Bizzi ne l'a pas libérée. ${safe(remoteMessage)}`);
+  renderProviderStatus(`Signalement envoyé à Bizzis. La course reste engagée tant que Bizzis ne l'a pas libérée. ${safe(remoteMessage)}`);
   finishActionButton(button, "Signalé");
 }
 
@@ -10837,8 +10837,8 @@ async function reviewProviderDeliveryCancellation(requestId, penalize = false, b
   request.providerCancelReviewedAt = new Date().toISOString();
   request.dispatchStatus = "not_dispatched";
   const reviewMessage = penalize
-    ? `${previousProviderName || "Livreur"} libéré avec pénalité : commission Bizzi 18% sur les prochaines courses.`
-    : `${previousProviderName || "Livreur"} libéré sans pénalité après examen Bizzi.`;
+    ? `${previousProviderName || "Livreur"} libéré avec pénalité : commission Bizzis 18% sur les prochaines courses.`
+    : `${previousProviderName || "Livreur"} libéré sans pénalité après examen Bizzis.`;
   request.lastDispatchMessage = reviewMessage;
   const dispatchMessage = dispatchDeliveryLocally(request);
   let remoteMessage = "";
@@ -11096,7 +11096,7 @@ function renderProviders() {
     list.innerHTML = `
       <article class="provider-card">
         <h3>Livraison locale protégée</h3>
-        <p>Pour éviter les contacts directs et les tarifs hors application, les profils des livreurs locaux ne sont pas affichés. Créez une demande, validez le paiement, puis Bizzi vous présente un livreur disponible.</p>
+        <p>Pour éviter les contacts directs et les tarifs hors application, les profils des livreurs locaux ne sont pas affichés. Créez une demande, validez le paiement, puis Bizzis vous présente un livreur disponible.</p>
         <div class="card-actions">
           <button class="primary" type="button" data-go="delivery">Créer une livraison</button>
           <button class="secondary" type="button" data-international-parcel>Colis international</button>
@@ -11199,10 +11199,10 @@ function eventStatsMessage(event) {
   const total = Number(event.clickCount || 0);
   return [
     `Bonjour ${event.organizerName || "organisateur"},`,
-    `Votre événement Bizzi "${event.title}" est terminé.`,
-    `Statistiques Bizzi : ${total} clic(s) total.`,
+    `Votre événement Bizzis "${event.title}" est terminé.`,
+    `Statistiques Bizzis : ${total} clic(s) total.`,
     `Détails : ${Number(event.detailViewCount || 0)} ouverture(s), ${Number(event.ticketClickCount || 0)} clic(s) billetterie, ${Number(event.contactClickCount || 0)} contact(s).`,
-    "Ces chiffres concernent uniquement les interactions visibles dans Bizzi.",
+    "Ces chiffres concernent uniquement les interactions visibles dans Bizzis.",
   ].join("\n");
 }
 
@@ -11290,12 +11290,12 @@ function pendingEventCard(event) {
       <div class="event-body">
         <div class="job-title-row">
           <h3>${safe(event.title)}</h3>
-          <span class="tag pending">Validation Bizzi</span>
+          <span class="tag pending">Validation Bizzis</span>
         </div>
         <p>${safe(event.organizerName)} - ${safe(event.category)} - ${safe(event.city)}</p>
         <p>Forfait ${safe(event.planName)} : ${Number(event.amount || 0).toLocaleString("fr-FR")} ${safe(event.currency || "FCFA")}.</p>
         <div class="meta">
-          <span class="tag">${safe(event.paymentReference || "Réf. Bizzi en création")}</span>
+          <span class="tag">${safe(event.paymentReference || "Réf. Bizzis en création")}</span>
           <span class="tag">${safe(event.paymentStatus || "pending")}</span>
           ${event.remoteId ? `<span class="tag ok">Supabase</span>` : `<span class="tag pending">Local</span>`}
         </div>
@@ -11350,7 +11350,7 @@ function renderEventDetail() {
         <p>${safe(event.description || "Aucune description complémentaire.")}</p>
         <div class="ticket-choice-box">
           <strong>Choisir le contact événement</strong>
-          <p>Bizzi ne vend pas les billets. Choisissez le WhatsApp de l'organisateur ou son site officiel s'il en a un.</p>
+          <p>Bizzis ne vend pas les billets. Choisissez le WhatsApp de l'organisateur ou son site officiel s'il en a un.</p>
         </div>
         <div class="event-detail-actions">
           ${whatsappUrl ? `<a class="primary" href="${safe(whatsappUrl)}" target="_blank" rel="noreferrer" data-event-track="${safe(event.id)}" data-event-track-kind="contact">WhatsApp organisateur</a>` : ""}
@@ -11552,7 +11552,7 @@ function openFoodOrder(placeId = "") {
     }
     panel.hidden = true;
     panel.innerHTML = "";
-    renderFoodStatus(`Commande validée : ${safe(pricing.selected.name)}. Total : ${safe(formatMoney(pricing.total))}. Restaurant : ${safe(formatMoney(restaurantPayout))} sur son compte Mobile Money enregistré. Livraison : ${safe(formatMoney(pricing.delivery.amount))}. Le livreur reçoit ${safe(formatMoney(pricing.delivery.providerPayout))} après la commission Bizzi de 15 %. ${safe(autoMessage)} ${safe(remoteMessage)}`);
+    renderFoodStatus(`Commande validée : ${safe(pricing.selected.name)}. Total : ${safe(formatMoney(pricing.total))}. Restaurant : ${safe(formatMoney(restaurantPayout))} sur son compte Mobile Money enregistré. Livraison : ${safe(formatMoney(pricing.delivery.amount))}. Le livreur reçoit ${safe(formatMoney(pricing.delivery.providerPayout))} après la commission Bizzis de 15 %. ${safe(autoMessage)} ${safe(remoteMessage)}`);
     renderDelivery();
     renderAdmin();
   });
@@ -11567,10 +11567,10 @@ function pendingFoodCard(place) {
       <div class="food-body">
         <div class="job-title-row">
           <h3>${safe(place.name)}</h3>
-          <span class="tag pending">Validation Bizzi</span>
+          <span class="tag pending">Validation Bizzis</span>
         </div>
         <p>${safe(place.placeType)} - ${safe(place.mainSpecialty)} - ${safe(place.city)}${place.area ? `, ${safe(place.area)}` : ""}</p>
-        <p>Adresse reçue. Elle sera visible après contrôle Bizzi.</p>
+        <p>Adresse reçue. Elle sera visible après contrôle Bizzis.</p>
         <div class="meta">
           <span class="tag">${safe(place.contactPhone || "Contact non renseigné")}</span>
           ${place.remoteId ? `<span class="tag ok">Supabase</span>` : `<span class="tag pending">Local</span>`}
@@ -11582,7 +11582,7 @@ function pendingFoodCard(place) {
 
 function foodShareText(place) {
   return [
-    `Bizzi Food : ${place.name}`,
+    `Bizzis Food : ${place.name}`,
     `${place.mainSpecialty} - ${place.placeType}`,
     `Zone : ${place.city}${place.area ? `, ${place.area}` : ""}`,
     place.address ? `Adresse : ${place.address}` : "",
@@ -11590,7 +11590,7 @@ function foodShareText(place) {
     place.openingHours ? `Horaires : ${place.openingHours}` : "",
     place.deliveryAvailable ? "Livraison possible" : "",
     place.contactPhone ? `Contact : ${place.contactPhone}` : "",
-    officialWebsiteUrl() ? `Bizzi : ${officialWebsiteUrl()}` : "",
+    officialWebsiteUrl() ? `Bizzis : ${officialWebsiteUrl()}` : "",
   ].filter(Boolean).join("\n");
 }
 
@@ -11598,7 +11598,7 @@ function renderFoodStatus(message = "") {
   const status = document.querySelector("#foodStatus");
   if (!status) return;
   status.innerHTML = message || `
-    <strong>Bizzi Food prêt</strong>
+    <strong>Bizzis Food prêt</strong>
     <p>Proposez une adresse fiable ou recherchez un plat par ville et spécialité.</p>
   `;
 }
@@ -11683,7 +11683,7 @@ function renderEventGeoStatus() {
   const cityFilter = document.querySelector("#eventCityFilter");
   if (!root || !cityFilter) return;
   const city = cityIsSpecific(cityFilter.value) ? cityFilter.value : defaultEventCity();
-  root.innerHTML = `<strong>Ville affichée : ${safe(city)}</strong><span>Par défaut, Bizzi ne mélange pas les événements des autres villes. Les événements sponsorisés restent limités à leur zone de visibilité.</span>`;
+  root.innerHTML = `<strong>Ville affichée : ${safe(city)}</strong><span>Par défaut, Bizzis ne mélange pas les événements des autres villes. Les événements sponsorisés restent limités à leur zone de visibilité.</span>`;
 }
 
 function renderJobs() {
@@ -11703,7 +11703,7 @@ function renderJobs() {
     <article class="job-card empty">
       <div>
         <h3>Aucune offre disponible pour ce filtre</h3>
-        <p>Les offres payées apparaissent ici après validation admin Bizzi.</p>
+        <p>Les offres payées apparaissent ici après validation admin Bizzis.</p>
       </div>
     </article>
   `;
@@ -11741,13 +11741,13 @@ function pendingJobCard(job) {
       <div class="job-body">
         <div class="job-title-row">
           <h3>${safe(job.title)}</h3>
-          <span class="tag pending">Validation Bizzi</span>
+          <span class="tag pending">Validation Bizzis</span>
         </div>
         <p>${safe(job.companyName)} - ${safe(job.companyType || "Entreprise")} - ${safe(job.service)} - ${safe(job.city)}${job.area ? `, ${safe(job.area)}` : ""}</p>
-        <p>Cette offre est enregistrée. Elle devient visible publiquement après validation du paiement par l'admin Bizzi.</p>
+        <p>Cette offre est enregistrée. Elle devient visible publiquement après validation du paiement par l'admin Bizzis.</p>
         <div class="meta">
           <span class="tag">${safe(job.planName || "Forfait emploi")}</span>
-          <span class="tag">${safe(job.paymentReference || "Réf. Bizzi en création")}</span>
+          <span class="tag">${safe(job.paymentReference || "Réf. Bizzis en création")}</span>
           <span class="tag">${safe(job.paymentStatus || "pending")}</span>
           ${job.remoteId ? `<span class="tag ok">Supabase</span>` : `<span class="tag pending">Local</span>`}
         </div>
@@ -11773,7 +11773,7 @@ function jobCard(job) {
         <div class="meta">
           ${job.salaryRange ? `<span class="tag">${safe(job.salaryRange)}</span>` : ""}
           ${job.planName ? `<span class="tag">${safe(job.planName)}</span>` : ""}
-          <span class="tag">${safe(job.source || "Bizzi")}</span>
+          <span class="tag">${safe(job.source || "Bizzis")}</span>
           <span class="tag">Publié le ${new Date(job.createdAt).toLocaleDateString("fr-FR")}</span>
         </div>
       </div>
@@ -11787,7 +11787,7 @@ function jobCard(job) {
 
 function jobShareText(job) {
   return [
-    `Offre Bizzi : ${job.title}`,
+    `Offre Bizzis : ${job.title}`,
     `${job.companyName} recherche : ${job.service}`,
     job.companyType ? `Demandeur : ${job.companyType}` : "",
     `Zone : ${job.city}${job.area ? `, ${job.area}` : ""}`,
@@ -11795,7 +11795,7 @@ function jobShareText(job) {
     job.salaryRange ? `Rémunération : ${job.salaryRange}` : "",
     job.description || "",
     job.contactPhone ? `Contact : ${job.contactPhone}` : "",
-    officialWebsiteUrl() ? `Bizzi : ${officialWebsiteUrl()}` : "",
+    officialWebsiteUrl() ? `Bizzis : ${officialWebsiteUrl()}` : "",
   ].filter(Boolean).join("\n");
 }
 
@@ -11900,7 +11900,7 @@ function openProfile(id) {
       </div>
       <div class="reliability-panel">
         <strong>${safe(reliabilityInfo(provider).label)} - ${providerReliabilityScore(provider)}/100</strong>
-        <p>Score calculé avec vérification Bizzi, avis clients, retours de contact, activité et abonnement actif.</p>
+        <p>Score calculé avec vérification Bizzis, avis clients, retours de contact, activité et abonnement actif.</p>
       </div>
       <a class="primary call-link" href="tel:${provider.phone.replace(/\s/g, "")}" data-lead-action="call">Appeler ${provider.phone}</a>
       ${whatsappUrl ? `<a class="secondary call-link" href="${safe(whatsappUrl)}" target="_blank" rel="noreferrer" data-lead-action="whatsapp">Contacter sur WhatsApp</a>` : ""}
@@ -11910,7 +11910,7 @@ function openProfile(id) {
         <button class="secondary call-link" type="button" data-copy-profile="${safe(provider.id)}">Copier le contact</button>
       </div>
       <div class="contact-proof" id="profileLeadStatus">
-        <strong>Bizzi peut confirmer ce contact</strong>
+        <strong>Bizzis peut confirmer ce contact</strong>
         <p>Après avoir contacté le prestataire, indiquez rapidement si tout s'est bien passé.</p>
         <div class="feedback-actions">
           <button class="secondary" type="button" data-contact-feedback="feedback_positive">J'ai eu le prestataire</button>
@@ -11920,7 +11920,7 @@ function openProfile(id) {
       </div>
       <form class="form review-form" data-review-provider="${safe(provider.id)}">
         <h3>Donner un avis rapide</h3>
-        <p>Un avis court aide Bizzi à recommander les prestataires fiables.</p>
+        <p>Un avis court aide Bizzis à recommander les prestataires fiables.</p>
         <label>Note
           <select name="rating">
             <option value="5">5 - Excellent</option>
@@ -12017,7 +12017,7 @@ function bindContactFeedbackButtons(provider) {
       recordLead(provider, action, button.textContent.trim());
       const status = document.querySelector("#profileLeadStatus");
       if (status) {
-        status.innerHTML = `<strong>${safe(contactFeedbackLabel(action))}</strong><p>Votre retour aide Bizzi à garder des fiches fiables.</p>`;
+        status.innerHTML = `<strong>${safe(contactFeedbackLabel(action))}</strong><p>Votre retour aide Bizzis à garder des fiches fiables.</p>`;
       }
     });
   });
@@ -12044,7 +12044,7 @@ function setupReviewForms() {
       currentForm.innerHTML = `
         <div class="status-box" id="reviewSubmitStatus" role="status" aria-live="polite">
           <strong>Avis enregistré</strong>
-          <p>Merci, votre avis est enregistré dans Bizzi. Envoi vers Supabase en cours...</p>
+          <p>Merci, votre avis est enregistré dans Bizzis. Envoi vers Supabase en cours...</p>
         </div>
       `;
       renderAdmin();
@@ -12055,7 +12055,7 @@ function setupReviewForms() {
         const remoteMessage = await submitReviewToSupabase(review, provider);
         const status = currentForm.querySelector("#reviewSubmitStatus");
         if (status) {
-          status.innerHTML = `<strong>Merci pour votre avis</strong><p>Votre retour aide Bizzi à mettre en avant les prestataires fiables. ${safe(remoteMessage)}</p>`;
+          status.innerHTML = `<strong>Merci pour votre avis</strong><p>Votre retour aide Bizzis à mettre en avant les prestataires fiables. ${safe(remoteMessage)}</p>`;
         }
       } catch (error) {
         review.remoteStatus = "local_only";
@@ -12063,7 +12063,7 @@ function setupReviewForms() {
         saveState();
         const status = currentForm.querySelector("#reviewSubmitStatus");
         if (status) {
-          status.innerHTML = `<strong>Merci pour votre avis</strong><p>Votre retour aide Bizzi à mettre en avant les prestataires fiables. ${safe(remoteMessage)}</p>`;
+          status.innerHTML = `<strong>Merci pour votre avis</strong><p>Votre retour aide Bizzis à mettre en avant les prestataires fiables. ${safe(remoteMessage)}</p>`;
         }
       }
       renderAdmin();
@@ -12112,7 +12112,7 @@ function setupReportForms() {
         report.remoteStatus = "local_only";
         saveState();
       }
-      currentForm.innerHTML = `<div class="status-box"><strong>Signalement envoyé</strong><p>L'équipe Bizzi pourra vérifier cette fiche. ${safe(remoteMessage)}</p></div>`;
+      currentForm.innerHTML = `<div class="status-box"><strong>Signalement envoyé</strong><p>L'équipe Bizzis pourra vérifier cette fiche. ${safe(remoteMessage)}</p></div>`;
       renderAdmin();
     });
   });
@@ -12196,18 +12196,18 @@ function renderEventPaymentOptions() {
       <strong>${safe(plan.name)}</strong>
       <span class="tag ${planIsFree || accountReady ? "ok" : "pending"}">${plan.price ? `${plan.price.toLocaleString("fr-FR")} FCFA` : "Gratuit"}</span>
     </div>
-    <p>${safe(plan.placement)}. Ce paiement concerne uniquement la visibilité dans Bizzi.</p>
+    <p>${safe(plan.placement)}. Ce paiement concerne uniquement la visibilité dans Bizzis.</p>
     ${Number(plan.durationDays || 0) ? `<p><strong>Durée du boost : ${Number(plan.durationDays).toLocaleString("fr-FR")} jour(s).</strong></p>` : ""}
     <p>Les billets restent vendus sur votre lien externe officiel.</p>
     ${planIsFree ? `
       <div class="payment-account-card ready">
         <span>Formule Standard</span>
-        <strong>Publication gratuite après validation Bizzi</strong>
+        <strong>Publication gratuite après validation Bizzis</strong>
       </div>
     ` : `
       <div class="payment-account-card ${accountReady ? "ready" : "todo"}">
-        <span>Compte Bizzi ${safe(state.selectedEventPayment)}</span>
-        <strong>${safe(accountReady ? account : "Compte Bizzi à renseigner")}</strong>
+        <span>Compte Bizzis ${safe(state.selectedEventPayment)}</span>
+        <strong>${safe(accountReady ? account : "Compte Bizzis à renseigner")}</strong>
       </div>
     `}
     <div class="payment-copy-actions">
@@ -12536,11 +12536,11 @@ function renderJobPaymentOptions() {
       <strong>${safe(plan.name)}</strong>
       <span class="tag ${accountReady ? "ok" : "pending"}">${plan.price.toLocaleString("fr-FR")} FCFA</span>
     </div>
-    <p>${plan.credits > 1 ? `Pack de ${plan.credits} offres, validé manuellement par Bizzi.` : `Publication pendant ${plan.days} jours.`} ${plan.boost ? "Mise en avant dans Emplois et Recherche Bizzi." : ""}</p>
-    <p>Après l'envoi, Bizzi crée une référence de suivi et l'associe au contact indiqué pour garder une trace en cas de réclamation.</p>
+    <p>${plan.credits > 1 ? `Pack de ${plan.credits} offres, validé manuellement par Bizzis.` : `Publication pendant ${plan.days} jours.`} ${plan.boost ? "Mise en avant dans Emplois et Recherche Bizzis." : ""}</p>
+    <p>Après l'envoi, Bizzis crée une référence de suivi et l'associe au contact indiqué pour garder une trace en cas de réclamation.</p>
     <div class="payment-account-card ${accountReady ? "ready" : "todo"}">
-      <span>Compte Bizzi ${safe(state.selectedJobPayment)}</span>
-      <strong>${safe(accountReady ? account : "Compte Bizzi à renseigner")}</strong>
+      <span>Compte Bizzis ${safe(state.selectedJobPayment)}</span>
+      <strong>${safe(accountReady ? account : "Compte Bizzis à renseigner")}</strong>
     </div>
     <div class="payment-copy-actions">
       <button class="secondary" type="button" data-copy-job-payment-account ${accountReady ? "" : "disabled"}>Copier compte</button>
@@ -12578,7 +12578,7 @@ function renderPaymentInstructions() {
   const method = state.selectedPayment;
   const account = bizziConfig.payments?.accounts?.[method] || "A renseigner";
   const accountReady = hasProductionValue(account);
-  const accountLabel = accountReady ? account : "Compte Bizzi à renseigner";
+  const accountLabel = accountReady ? account : "Compte Bizzis à renseigner";
   const instruction = paymentInstructionText(method);
   const plan = selectedProviderPlan();
   const boost = selectedProviderBoost();
@@ -12591,10 +12591,10 @@ function renderPaymentInstructions() {
     <p>Forfait : ${safe(plan.name)} - ${plan.price.toLocaleString("fr-FR")} FCFA. ${boost.price ? `Boost : ${safe(boost.name)} - ${boost.price.toLocaleString("fr-FR")} FCFA.` : "Boost : aucun."}</p>
     <p><strong>Total à payer : ${total.toLocaleString("fr-FR")} FCFA.</strong></p>
     <div class="payment-account-card ${accountReady ? "ready" : "todo"}">
-      <span>Compte Bizzi ${safe(method)}</span>
+      <span>Compte Bizzis ${safe(method)}</span>
       <strong>${safe(accountLabel)}</strong>
     </div>
-    <p>${accountReady ? "Après paiement, saisissez la référence et ajoutez une preuve si possible." : "Pour le lancement, renseignez un numéro dédié Bizzi dans config.js avant de publier publiquement."}</p>
+    <p>${accountReady ? "Après paiement, saisissez la référence et ajoutez une preuve si possible." : "Pour le lancement, renseignez un numéro dédié Bizzis dans config.js avant de publier publiquement."}</p>
     <div class="payment-copy-actions">
       <button class="secondary" type="button" data-copy-payment-account ${accountReady ? "" : "disabled"}>Copier compte</button>
       <button class="secondary" type="button" data-copy-payment-instruction>Copier instruction</button>
@@ -12828,7 +12828,7 @@ function setupForms() {
       description: data.get("description"),
       photo,
       planId: effectivePlan.id,
-      planName: adminGrant ? "Offert par Bizzi" : effectivePlan.name,
+      planName: adminGrant ? "Offert par Bizzis" : effectivePlan.name,
       amount: adminGrant ? 0 : effectivePlan.price,
       paymentMethod: adminGrant || !effectivePlan.price ? "" : (data.get("paymentMethod") || state.selectedExceptionPayment),
       paymentReference: adminGrant ? "" : paymentReference,
@@ -12842,7 +12842,7 @@ function setupForms() {
     });
     state.exceptionPlaces.unshift(place);
     saveState();
-    let remoteMessage = adminGrant ? "Ajout gratuit Bizzi publié sur cet appareil." : "";
+    let remoteMessage = adminGrant ? "Ajout gratuit Bizzis publié sur cet appareil." : "";
     try {
       remoteMessage = adminGrant
         ? await submitAdminFreeExceptionPlaceToSupabase(place, { photoFile })
@@ -12855,7 +12855,7 @@ function setupForms() {
     form.reset();
     state.selectedExceptionPlanId = "free_30_days";
     saveState();
-    renderExceptionPlaces(`${place.name} enregistré. ${adminGrant ? `Publication gratuite active pendant 30 jours. ${remoteMessage}` : `Dossier en attente de validation Bizzi. ${remoteMessage}`}`);
+    renderExceptionPlaces(`${place.name} enregistré. ${adminGrant ? `Publication gratuite active pendant 30 jours. ${remoteMessage}` : `Dossier en attente de validation Bizzis. ${remoteMessage}`}`);
     renderHomeDiscovery();
     renderAdmin();
     form.dataset.submitting = "false";
@@ -12928,7 +12928,7 @@ function setupForms() {
     form.reset();
     renderFood();
     renderAdmin();
-    renderFoodStatus(`Adresse Food reçue : ${safe(place.name)} (${safe(place.mainSpecialty)}). Dossier ${safe(place.submissionReference)}. Elle est en attente de validation Bizzi. ${safe(remoteMessage)}`);
+    renderFoodStatus(`Adresse Food reçue : ${safe(place.name)} (${safe(place.mainSpecialty)}). Dossier ${safe(place.submissionReference)}. Elle est en attente de validation Bizzis. ${safe(remoteMessage)}`);
     form.dataset.submitting = "false";
     finishActionButton(button, "Adresse envoyée");
   });
@@ -13016,7 +13016,7 @@ function setupForms() {
         remoteMessage = await submitEventPromotionToSupabase(promotion, { posterFile });
       } catch (error) {
         promotion.remoteStatus = "local_only";
-        remoteMessage = `Événement gardé en local : ${friendlySupabaseError(error)}. Reprenez la synchronisation depuis l'admin Bizzi.`;
+        remoteMessage = `Événement gardé en local : ${friendlySupabaseError(error)}. Reprenez la synchronisation depuis l'admin Bizzis.`;
         saveState();
       }
     }
@@ -13074,7 +13074,7 @@ function setupForms() {
       salaryRange: data.get("salaryRange"),
       externalUrl: "",
       description: data.get("description"),
-      source: "Bizzi",
+      source: "Bizzis",
       planId: plan.id,
       planName: plan.name,
       amount: plan.price,
@@ -13105,7 +13105,7 @@ function setupForms() {
     saveState();
     form.reset();
     renderJobPaymentOptions();
-    renderJobOfferStatus(`Offre reçue avec forfait ${plan.name} (${plan.price.toLocaleString("fr-FR")} FCFA). Dossier ${job.submissionReference}. Référence Bizzi : ${job.paymentReference}. Elle est liée au contact ${job.contactPhone || "non renseigné"} pour la traçabilité. ${remoteMessage}`);
+    renderJobOfferStatus(`Offre reçue avec forfait ${plan.name} (${plan.price.toLocaleString("fr-FR")} FCFA). Dossier ${job.submissionReference}. Référence Bizzis : ${job.paymentReference}. Elle est liée au contact ${job.contactPhone || "non renseigné"} pour la traçabilité. ${remoteMessage}`);
     renderJobs();
     renderAdmin();
     renderLaunchChecklist();
@@ -13233,7 +13233,7 @@ function setupForms() {
       });
       renderProviderIdentityStatus(mode === "existing" ? `
         <strong>Identifiez votre profil</strong>
-        <p>Entrez le même téléphone ou WhatsApp utilisé lors de l'inscription. Bizzi ouvrira directement le renouvellement.</p>
+        <p>Entrez le même téléphone ou WhatsApp utilisé lors de l'inscription. Bizzis ouvrira directement le renouvellement.</p>
       ` : "");
     });
   });
@@ -13245,7 +13245,7 @@ function setupForms() {
     const button = form.querySelector("button[type='submit']");
     const phone = String(new FormData(form).get("providerPhone") || "").trim();
     if (!normalizePhoneForMatch(phone)) {
-      renderProviderIdentityStatus("<strong>Numéro requis</strong><p>Entrez le téléphone ou WhatsApp utilisé pour votre profil Bizzi.</p>");
+      renderProviderIdentityStatus("<strong>Numéro requis</strong><p>Entrez le téléphone ou WhatsApp utilisé pour votre profil Bizzis.</p>");
       return;
     }
     form.dataset.submitting = "true";
@@ -13255,7 +13255,7 @@ function setupForms() {
       provider = upsertRenewalProvider(await fetchPublicProviderByContact(phone, phone));
       if (provider) saveState();
     } catch (error) {
-      renderProviderIdentityStatus(`<strong>Recherche Supabase impossible</strong><p>${safe(friendlySupabaseError(error))}. Bizzi vérifie maintenant les données locales.</p>`);
+      renderProviderIdentityStatus(`<strong>Recherche Supabase impossible</strong><p>${safe(friendlySupabaseError(error))}. Bizzis vérifie maintenant les données locales.</p>`);
     }
     if (!provider) provider = findLocalProviderByPrimaryPhone(phone);
     if (provider) {
@@ -13311,7 +13311,7 @@ function setupForms() {
       return;
     }
     if (data.get("acceptTerms") !== "on") {
-      reportProviderSignupIssue(form, button, "Cochez la certification des informations et l’acceptation des conditions Bizzi.", "acceptTerms");
+      reportProviderSignupIssue(form, button, "Cochez la certification des informations et l’acceptation des conditions Bizzis.", "acceptTerms");
       return;
     }
     const fraudAssessment = globalThis.BizziFraudGuard?.assessProviderSignup?.({
@@ -13399,7 +13399,7 @@ function setupForms() {
       locationLabel: state.userLocation?.shortLabel || area,
       locationFullAddress: state.userLocation?.fullAddress || area,
       rating: 0,
-      description: String(data.get("description") || "").trim() || "Nouveau prestataire Bizzi.",
+      description: String(data.get("description") || "").trim() || "Nouveau prestataire Bizzis.",
       photo: "",
       termsAcceptedAt: new Date().toISOString(),
       status: "approved",
@@ -13662,7 +13662,7 @@ function appHealthChecks(data = {}) {
     {
       label: "Paiement opérationnel",
       ready: paymentAccountsReady || aggregatorReady,
-      detail: aggregatorReady ? "Checkout agrégateur prêt côté backend." : paymentAccountsReady ? "Comptes Mobile Money renseignés." : "Renseigner comptes Bizzi ou activer l'agrégateur.",
+      detail: aggregatorReady ? "Checkout agrégateur prêt côté backend." : paymentAccountsReady ? "Comptes Mobile Money renseignés." : "Renseigner comptes Bizzis ou activer l'agrégateur.",
     },
     {
       label: "Cartographie",
@@ -13726,7 +13726,7 @@ function renderAppHealthDashboard(data = {}) {
         <span>${readyCount}/${checks.length} prêts</span>
       </div>
       <div>
-        <h3>${score >= 80 ? "Bizzi est proche du lancement public" : "Bizzi doit encore sécuriser quelques points"}</h3>
+        <h3>${score >= 80 ? "Bizzis est proche du lancement public" : "Bizzis doit encore sécuriser quelques points"}</h3>
         <p>${nextFix ? `Priorité : ${safe(nextFix.label)} - ${safe(nextFix.detail)}` : "Tous les contrôles locaux sont prêts pour les tests terrain."}</p>
       </div>
     </div>
@@ -13770,7 +13770,7 @@ function renderAppHealthDashboard(data = {}) {
   root.querySelectorAll("[data-health-action='copy-push-procedure']").forEach((button) => {
     button.addEventListener("click", async () => {
       const procedure = [
-        "Activation push Bizzi",
+        "Activation push Bizzis",
         "1. Generer les cles avec outputs/tools/generate-vapid-keys.js.",
         "2. Mettre uniquement la cle publique dans config.js > notifications.vapidPublicKey.",
         "3. Garder la cle privee dans Supabase Secrets, jamais dans l'app publique.",
@@ -13785,7 +13785,7 @@ function renderAppHealthDashboard(data = {}) {
   root.querySelectorAll("[data-health-action='copy-maps-procedure']").forEach((button) => {
     button.addEventListener("click", async () => {
       const procedure = [
-        "Activation carte / distance Bizzi",
+        "Activation carte / distance Bizzis",
         "1. Executer sql-copie-bizzi/81-cartographie-monitoring-v183.sql dans Supabase.",
         "2. Deployer la fonction Supabase : outputs/supabase/functions/map-geocode.",
         "3. Option Mapbox recommandee : creer une cle Mapbox puis renseigner MAPBOX_ACCESS_TOKEN dans Supabase Secrets.",
@@ -13800,13 +13800,13 @@ function renderAppHealthDashboard(data = {}) {
   root.querySelectorAll("[data-health-action='copy-monitoring-procedure']").forEach((button) => {
     button.addEventListener("click", async () => {
       const procedure = [
-        "Activation monitoring Bizzi",
+        "Activation monitoring Bizzis",
         "1. Executer sql-copie-bizzi/81-cartographie-monitoring-v183.sql dans Supabase.",
         "2. Deployer les fonctions Supabase : error-ingest et monitoring-forwarder.",
         "3. Pour Sentry : renseigner BIZZI_MONITORING_PROVIDER=sentry et BIZZI_SENTRY_DSN dans Supabase Secrets.",
         "4. Pour Better Stack/Logtail : renseigner BIZZI_MONITORING_PROVIDER=better_stack, BIZZI_MONITORING_FORWARD_URL et BIZZI_MONITORING_FORWARD_KEY.",
         "5. Garder l'endpoint public error-ingest dans config.js, jamais de secret dans l'app publique.",
-        "6. Tester en declenchant une erreur test, puis ouvrir le dashboard Sentry/Better Stack et l'admin Bizzi.",
+        "6. Tester en declenchant une erreur test, puis ouvrir le dashboard Sentry/Better Stack et l'admin Bizzis.",
       ].join("\\n");
       const copied = await copyTextToClipboard(procedure);
       finishActionButton(button, copied ? "Monitoring copié" : "Copie impossible");
@@ -13878,7 +13878,7 @@ function adminVisibleIssues() {
   const issues = [];
   if (remoteAdminQueue.jobError) issues.push({ level: "warning", label: "Offres emploi Supabase", detail: remoteAdminQueue.jobError });
   if (remoteAdminQueue.eventError) issues.push({ level: "warning", label: "Événements Supabase", detail: remoteAdminQueue.eventError });
-  if (remoteAdminQueue.foodError) issues.push({ level: "warning", label: "Bizzi Food Supabase", detail: remoteAdminQueue.foodError });
+  if (remoteAdminQueue.foodError) issues.push({ level: "warning", label: "Bizzis Food Supabase", detail: remoteAdminQueue.foodError });
   if (runtimeErrors.length) issues.push({ level: "warning", label: "Erreurs navigateur", detail: `${runtimeErrors.length} erreur(s) locale(s) enregistrée(s).` });
   if (localOnlyProviders.length) issues.push({ level: "warning", label: "Prestataires locaux", detail: `${localOnlyProviders.length} profil(s) à synchroniser ou vérifier.` });
   if (localOnlyJobs.length) issues.push({ level: "info", label: "Emplois locaux", detail: `${localOnlyJobs.length} offre(s) à envoyer ou valider dans Supabase.` });
@@ -13983,7 +13983,7 @@ function renderPublicLaunchChecklistDashboard(data = {}) {
     <div class="field-test-summary">
       <div>
         <strong>${stats.done}/${stats.total} point(s) validé(s)</strong>
-        <p>Cochez uniquement après un vrai test. Cette checklist décide si Bizzi peut passer du pilote à l'ouverture publique contrôlée.</p>
+        <p>Cochez uniquement après un vrai test. Cette checklist décide si Bizzis peut passer du pilote à l'ouverture publique contrôlée.</p>
       </div>
       <span class="field-test-score">${stats.complete ? "OK" : safe(CURRENT_RELEASE)}</span>
     </div>
@@ -14047,7 +14047,7 @@ function profitableServices() {
     .filter((payment) => payment.status === "approved")
     .forEach((payment) => {
       const provider = state.providers.find((item) => item.id === payment.providerId);
-      const service = provider?.service || "Service Bizzi";
+      const service = provider?.service || "Service Bizzis";
       byService.set(service, (byService.get(service) || 0) + Number(payment.amount || 0));
     });
   state.deliveryRequests
@@ -14060,7 +14060,7 @@ function revenueSummaryText() {
   const revenue = revenueBreakdown();
   const services = profitableServices();
   return [
-    `Revenus Bizzi - ${new Date().toLocaleDateString("fr-FR")}`,
+    `Revenus Bizzis - ${new Date().toLocaleDateString("fr-FR")}`,
     `Total validé : ${formatMoney(revenue.total)}.`,
     `Prestataires : ${formatMoney(revenue.subscriptionRevenue)}.`,
     `Boosts : ${formatMoney(revenue.boostRevenue)}.`,
@@ -14134,7 +14134,7 @@ function deliveryOperationsSummary() {
 function deliveryOpsText() {
   const ops = deliveryOperationsSummary();
   return [
-    `Suivi livraisons Bizzi - ${new Date().toLocaleDateString("fr-FR")}`,
+    `Suivi livraisons Bizzis - ${new Date().toLocaleDateString("fr-FR")}`,
     `Demandes ouvertes : ${ops.open.length}.`,
     `Paiements non confirmés : ${ops.pendingPayment.length}.`,
     `Payées à dispatcher : ${ops.paidToDispatch.length}.`,
@@ -14142,7 +14142,7 @@ function deliveryOpsText() {
     `Dispatch prêtes : ${ops.dispatchReady.length}.`,
     `Attribuées : ${ops.assigned.length}.`,
     `Terminées : ${ops.closed.length}.`,
-    `Commission Bizzi : ${formatMoney(ops.commission)}.`,
+    `Commission Bizzis : ${formatMoney(ops.commission)}.`,
     `Parts livreurs : ${formatMoney(ops.payout)}.`,
   ].join("\n");
 }
@@ -14158,7 +14158,7 @@ function renderDeliveryAdminDashboard() {
       <div class="commercial-metric"><span>Paiements non confirmés</span><strong>${ops.pendingPayment.length}</strong><p>Anciens cas à vérifier</p></div>
       <div class="commercial-metric"><span>Dispatch à relancer</span><strong>${ops.paidToDispatch.length}</strong><p>Option de secours admin</p></div>
       <div class="commercial-metric"><span>Sans livreur proche</span><strong>${ops.manualReview.length}</strong><p>Course ouverte aux livreurs</p></div>
-      <div class="commercial-metric"><span>Commission Bizzi</span><strong>${safe(formatMoney(ops.commission))}</strong><p>15% validés</p></div>
+      <div class="commercial-metric"><span>Commission Bizzis</span><strong>${safe(formatMoney(ops.commission))}</strong><p>15% validés</p></div>
     </div>
     <div class="commercial-insights">
       <p><strong>Action livraison :</strong> ${nextDelivery ? `${safe(deliveryPipelineInfo(nextDelivery).label)} - ${safe(nextDelivery.pickup)} vers ${safe(nextDelivery.dropoff)}` : "Aucune livraison active."}</p>
@@ -14249,14 +14249,14 @@ function providerConversionCandidates() {
 function conversionMessage(item) {
   const provider = item.provider;
   const status = item.days !== null && item.days >= 0
-    ? `Votre visibilité Bizzi arrive à échéance dans ${item.days} jour(s).`
-    : "Votre visibilité Bizzi doit être renouvelée.";
+    ? `Votre visibilité Bizzis arrive à échéance dans ${item.days} jour(s).`
+    : "Votre visibilité Bizzis doit être renouvelée.";
   return [
     `Bonjour ${provider.fullName},`,
     status,
-    `Vous avez déjà reçu ${item.contactScore} interaction(s) client sur Bizzi.`,
+    `Vous avez déjà reçu ${item.contactScore} interaction(s) client sur Bizzis.`,
     "Pour rester visible et recevoir plus de demandes, choisissez un forfait ou ajoutez un boost.",
-    "Répondez à ce message pour recevoir la référence de paiement Bizzi.",
+    "Répondez à ce message pour recevoir la référence de paiement Bizzis.",
   ].join(" ");
 }
 
@@ -14326,7 +14326,7 @@ function fieldTestStep(label, ready, detail) {
 
 function fieldTestPlanText(provider) {
   return [
-    "Test terrain Bizzi",
+    "Test terrain Bizzis",
     "1. Ouvrir l'application côté client.",
     provider ? `2. Rechercher le service : ${provider.service}.` : "2. Rechercher un service avec au moins un prestataire actif.",
     provider ? `3. Ouvrir la fiche : ${provider.fullName}.` : "3. Ouvrir une fiche prestataire active.",
@@ -14529,12 +14529,12 @@ function renderAdmin() {
         <h3>${safe(provider.fullName)}</h3>
         <p>${safe(providerServicesLabel(provider))} - ${safe(provider.city)} - ${safe(subscriptionLabel(provider))}</p>
         <p>${isVerified(provider) ? "Badge vérifié actif" : provider.verificationStatus === "pending" ? "Vérification en attente" : "Non vérifié"}</p>
-        <p>Fiabilité Bizzi : ${providerReliabilityScore(provider)}/100 - ${safe(reliabilityInfo(provider).label)}</p>
+        <p>Fiabilité Bizzis : ${providerReliabilityScore(provider)}/100 - ${safe(reliabilityInfo(provider).label)}</p>
         <p>Supabase : ${safe(provider.remoteStatus || (provider.remoteId ? "lié" : "local"))}${provider.remoteId ? ` - ${safe(provider.remoteId)}` : ""}</p>
         ${provider.remoteStatus === "local_only" ? `<p class="admin-warning">Ce profil est seulement local. Cliquez sur Envoyer vers Supabase pour le faire apparaître dans les validations officielles.${provider.remoteError ? ` Dernière erreur : ${safe(provider.remoteError)}` : ""}</p>` : ""}
         ${provider.verificationProof ? `<a class="doc-link" href="${safe(provider.verificationProof)}" target="_blank" rel="noreferrer">Voir justificatif${provider.verificationProofName ? ` : ${safe(provider.verificationProofName)}` : ""}</a>` : ""}
         <p>Note client : ${Number(provider.rating || 0).toLocaleString("fr-FR")} / 5 - ${Number(provider.reviewCount || 0)} avis</p>
-        <p>${Number(provider.calls || 0)} ouverture(s) de fiche - ${Number(provider.contactClicks || 0)} contact(s) Bizzi</p>
+        <p>${Number(provider.calls || 0)} ouverture(s) de fiche - ${Number(provider.contactClicks || 0)} contact(s) Bizzis</p>
         <p>Appels ${Number(provider.callClicks || 0)} - WhatsApp ${Number(provider.whatsappClicks || 0)} - Partages ${Number(provider.shareClicks || 0)} - Copies ${Number(provider.copyClicks || 0)}</p>
       </div>
       <div class="admin-actions">
@@ -14567,9 +14567,9 @@ function renderAdmin() {
   `).join("") : `<p>Aucun paiement local en attente. Pour les paiements réels, utilisez Validation Supabase en haut.</p>`;
 
   const deliveryAdminHtml = state.deliveryRequests.length ? `
-    <h3>Livraisons Bizzi</h3>
+    <h3>Livraisons Bizzis</h3>
     ${state.deliveryRequests.slice(0, 30).map((request) => deliveryRequestCard(request, { admin: true })).join("")}
-  ` : `<h3>Livraisons Bizzi</h3><p>Aucune livraison créée pour le moment.</p>`;
+  ` : `<h3>Livraisons Bizzis</h3><p>Aucune livraison créée pour le moment.</p>`;
 
   const expressAdminHtml = openRequests.length ? openRequests.map((request) => {
     const priority = requestPriorityInfo(request);
@@ -14600,7 +14600,7 @@ function renderAdmin() {
         <p>${safe(job.companyName)} - ${safe(job.service)} - ${safe(job.city)}${job.area ? `, ${safe(job.area)}` : ""}</p>
         <p>${safe(job.contractType)}${job.salaryRange ? ` - ${safe(job.salaryRange)}` : ""} - ${safe(job.status)}</p>
         <p><strong>Forfait :</strong> ${safe(job.planName || "Non renseigné")} - ${Number(job.amount || 0).toLocaleString("fr-FR")} ${safe(job.currency || "FCFA")} - ${safe(job.paymentMethod || "")}</p>
-        <p>Référence Bizzi : ${safe(job.paymentReference || "Non renseignée")} - paiement ${safe(job.paymentStatus || "unpaid")}${job.isBoosted ? " - boostée" : ""}</p>
+        <p>Référence Bizzis : ${safe(job.paymentReference || "Non renseignée")} - paiement ${safe(job.paymentStatus || "unpaid")}${job.isBoosted ? " - boostée" : ""}</p>
         <p>${safe(job.description || "Description non renseignée.")}</p>
         <p>Supabase : ${safe(job.remoteStatus || (job.remoteId ? "lié" : "local"))}${job.remoteId ? ` - ${safe(job.remoteId)}` : ""}</p>
       </div>
@@ -14620,11 +14620,11 @@ function renderAdmin() {
         <p>${safe(event.organizerName)} - ${safe(event.category)} - ${safe(event.city)}${event.area ? ` - ${safe(event.area)}` : ""} - ${safe(eventDateLabel(event))}</p>
         <p>${safe(eventLocationLabel(event))}${event.address ? ` - ${safe(event.address)}` : ""}</p>
         <p><strong>Forfait visibilité :</strong> ${safe(event.planName || "Non renseigné")} - ${Number(event.amount || 0).toLocaleString("fr-FR")} ${safe(event.currency || "FCFA")} - ${safe(event.paymentMethod || "")}</p>
-        <p>Référence Bizzi : ${safe(event.paymentReference || "Non renseignée")} - paiement ${safe(event.paymentStatus || "unpaid")}${event.isSponsored ? " - sponsorisé" : ""}${event.isPremium ? " - premium" : ""}</p>
+        <p>Référence Bizzis : ${safe(event.paymentReference || "Non renseignée")} - paiement ${safe(event.paymentStatus || "unpaid")}${event.isSponsored ? " - sponsorisé" : ""}${event.isPremium ? " - premium" : ""}</p>
         <p>Zone : rayon ${Number(event.visibilityRadiusKm || 25).toLocaleString("fr-FR")} km${Number.isFinite(event.latitude) && Number.isFinite(event.longitude) ? ` - GPS ${event.latitude}, ${event.longitude}` : ""}</p>
         <p>Stats : ${Number(event.clickCount || 0)} clic(s), ${Number(event.detailViewCount || 0)} ouverture(s), ${Number(event.ticketClickCount || 0)} billet(s), ${Number(event.contactClickCount || 0)} contact(s).</p>
         <p>${safe(event.description || "Description non renseignée.")}</p>
-        <p>Billetterie externe : ${safe(event.ticketUrl || "non renseignée")} - Bizzi ne vend pas les billets.</p>
+        <p>Billetterie externe : ${safe(event.ticketUrl || "non renseignée")} - Bizzis ne vend pas les billets.</p>
         <p>Supabase : ${safe(event.remoteStatus || (event.remoteId ? "lié" : "local"))}${event.remoteId ? ` - ${safe(event.remoteId)}` : ""}</p>
       </div>
       <div class="admin-actions">
@@ -14662,7 +14662,7 @@ function renderAdmin() {
         <p>${safe(place.city)}${place.area ? ` - ${safe(place.area)}` : ""} - ${safe(place.ownerName)} - ${safe(place.contactPhone)}</p>
         <p><strong>Offre :</strong> ${safe(place.planName)} - ${Number(place.amount || 0).toLocaleString("fr-FR")} FCFA - paiement ${safe(place.paymentStatus)}</p>
         <p>Statut : ${safe(place.status)}${place.visibilityEndsAt ? ` - visible jusqu’au ${new Date(place.visibilityEndsAt).toLocaleString("fr-FR")}` : " - période non démarrée"}</p>
-        <p>Supabase : ${safe(place.remoteStatus || (place.remoteId ? "lié" : "local"))}${place.adminGrant ? " - offert par Bizzi" : ""}</p>
+        <p>Supabase : ${safe(place.remoteStatus || (place.remoteId ? "lié" : "local"))}${place.adminGrant ? " - offert par Bizzis" : ""}</p>
       </div>
       <div class="admin-actions">
         ${place.status === "pending" ? `<button class="primary" type="button" data-exception-publish="${safe(place.id)}">Valider 30 jours</button>` : ""}
@@ -14742,7 +14742,7 @@ function renderAdmin() {
       if (!provider) return;
       provider.verificationStatus = "verified";
       provider.verifiedAt = new Date().toISOString();
-      provider.verificationNote = "Profil vérifié par l'admin Bizzi.";
+      provider.verificationNote = "Profil vérifié par l'admin Bizzis.";
       saveState();
       renderAdmin();
       renderProviders();
@@ -15271,7 +15271,7 @@ function renderLaunchChecklist() {
     {
       label: "Connexion Supabase",
       ready: supabaseConfigured(),
-      detail: supabaseConfigured() ? "La base est branchée à Bizzi." : "Configurer l'URL et la clé publique Supabase.",
+      detail: supabaseConfigured() ? "La base est branchée à Bizzis." : "Configurer l'URL et la clé publique Supabase.",
     },
     {
       label: "Catalogue public",
@@ -15299,7 +15299,7 @@ function renderLaunchChecklist() {
       detail: publicProviders.length ? `${publicProviders.length} prestataire(s) visible(s) côté client.` : "Importer le public après validation pour afficher le prestataire.",
     },
     {
-      label: "Contacts Bizzi",
+      label: "Contacts Bizzis",
       ready: hasContacts,
       detail: hasContacts ? "Au moins une action client a été enregistrée." : "Ouvrir une fiche côté client puis tester un contact.",
     },
@@ -15369,7 +15369,7 @@ function renderProductionStatus() {
     {
       label: "Domaine et email officiel",
       ready: officialReady,
-      detail: officialReady ? `${bizziConfig.official.domain} et ${officialEmail("contactEmail")} sont configurés.` : "Renseigner le domaine officiel et l'email de contact Bizzi.",
+      detail: officialReady ? `${bizziConfig.official.domain} et ${officialEmail("contactEmail")} sont configurés.` : "Renseigner le domaine officiel et l'email de contact Bizzis.",
     },
     {
       label: "Import public Supabase",
@@ -15393,7 +15393,7 @@ function renderProductionStatus() {
         ? "Wave, Orange Money et MTN Money sont configurés avec API."
         : paymentAccountsReady
           ? "Comptes dédiés renseignés, validation manuelle active pour le lancement."
-          : "Renseigner des comptes dédiés Bizzi pour Wave, Orange Money et MTN Money.",
+          : "Renseigner des comptes dédiés Bizzis pour Wave, Orange Money et MTN Money.",
     },
     {
       label: "Accès administrateur",
@@ -15401,9 +15401,9 @@ function renderProductionStatus() {
       detail: adminReady ? "Entrée admin dédiée et validations protégées par connexion Supabase." : "Désactiver le PIN public et garder l'accès admin sur admin-access.html.",
     },
     {
-      label: "Contact officiel Bizzi",
+      label: "Contact officiel Bizzis",
       ready: socialReady,
-      detail: socialReady ? "Au moins un canal officiel Bizzi est renseigné." : "Ajouter au moins un canal officiel Bizzi pour les partages et le support.",
+      detail: socialReady ? "Au moins un canal officiel Bizzis est renseigné." : "Ajouter au moins un canal officiel Bizzis pour les partages et le support.",
     },
   ];
   const readyCount = checks.filter((item) => item.ready).length;
@@ -15412,7 +15412,7 @@ function renderProductionStatus() {
   document.querySelector("#productionStatus").innerHTML = `
     <div class="production-head">
       <div>
-        <strong>${safe(bizziConfig.appName || "Bizzi")} ${safe(bizziConfig.version || "V45")}</strong>
+        <strong>${safe(bizziConfig.appName || "Bizzis")} ${safe(bizziConfig.version || "V45")}</strong>
         <p>Mode ${safe(bizziConfig.mode || "local")} - ${safe(paymentMode)} - ${readyCount}/${checks.length} points prêts</p>
       </div>
       <span class="production-pill ${allReady ? "ready" : "pending"}">${allReady ? "Prêt publication" : "Pré-production"}</span>
@@ -15420,7 +15420,7 @@ function renderProductionStatus() {
     <div class="production-checklist">
       ${checks.map((item) => productionChecklistItem(item.label, item.ready, item.detail)).join("")}
     </div>
-    <p class="production-note">${allReady ? "Les paramètres essentiels sont prêts pour les tests finaux." : "Ces points sont des réglages à finaliser progressivement. Ils ne bloquent pas l'utilisation publique de Bizzi."}</p>
+    <p class="production-note">${allReady ? "Les paramètres essentiels sont prêts pour les tests finaux." : "Ces points sont des réglages à finaliser progressivement. Ils ne bloquent pas l'utilisation publique de Bizzis."}</p>
   `;
 }
 
@@ -15501,7 +15501,7 @@ function replaceState(nextState) {
 
 function exportData() {
   const payload = {
-    app: "Bizzi",
+    app: "Bizzis",
     version: bizziConfig.version || "V304",
     exportedAt: new Date().toISOString(),
     state,
@@ -15610,7 +15610,7 @@ function exportRevenueCsv() {
 }
 
 function exportDeliveriesCsv() {
-  const headers = ["Statut", "Paiement", "Départ", "Arrivée", "Colis", "Distance", "Montant", "Commission Bizzi", "Part livreur", "Référence", "Client", "Livreur", "Créé le"];
+  const headers = ["Statut", "Paiement", "Départ", "Arrivée", "Colis", "Distance", "Montant", "Commission Bizzis", "Part livreur", "Référence", "Client", "Livreur", "Créé le"];
   const rows = state.deliveryRequests.map((request) => [
     deliveryPipelineInfo(request).label,
     request.paymentStatus || "",
@@ -15716,7 +15716,7 @@ function importData(file) {
       const parsed = JSON.parse(reader.result);
       const importedState = parsed.state || parsed;
       if (!Array.isArray(importedState.providers) || !Array.isArray(importedState.categories)) {
-        throw new Error("Format Bizzi invalide");
+        throw new Error("Format Bizzis invalide");
       }
       replaceState(importedState);
     } catch {
@@ -15732,7 +15732,7 @@ function renderTestDataStatus(message = "") {
   if (!root) return;
   const testProviders = state.providers.filter((item) => item.testData || String(item.id || "").startsWith("test-v234-")).length;
   root.innerHTML = message
-    ? `<strong>Données de test Bizzi</strong><p>${safe(message)}</p>`
+    ? `<strong>Données de test Bizzis</strong><p>${safe(message)}</p>`
     : `<strong>${testProviders} profil(s) métier test actif(s)</strong><p>Ces éléments restent uniquement sur cet appareil et ne sont jamais synchronisés vers Supabase.</p>`;
 }
 
@@ -15764,7 +15764,7 @@ function installCompleteTestData(button = null) {
     state.testDataVersion = snapshot.testDataVersion;
     saveState();
     captureBizziError(error, { module: "test_data_install" });
-    renderTestDataStatus("Création impossible sur cet appareil. Libérez un peu d’espace du navigateur, rechargez Bizzi puis réessayez.");
+    renderTestDataStatus("Création impossible sur cet appareil. Libérez un peu d’espace du navigateur, rechargez Bizzis puis réessayez.");
     finishActionButton(button, "Réessayer");
   }
 }
@@ -15834,7 +15834,7 @@ function setupDataTools() {
     event.currentTarget.value = "";
   });
   document.querySelector("#resetDemo")?.addEventListener("click", () => {
-    if (!confirm("Réinitialiser les données locales Bizzi ?")) return;
+    if (!confirm("Réinitialiser les données locales Bizzis ?")) return;
     replaceState(structuredClone(seed));
   });
 }
@@ -16104,7 +16104,7 @@ function boot() {
 try {
   boot();
 } catch (error) {
-  console.error("Bizzi boot error", error);
+  console.error("Bizzis boot error", error);
   captureBizziError(error, { module: "boot" });
   window.__bizziCssReady = true;
   window.__bizziAppReady = true;

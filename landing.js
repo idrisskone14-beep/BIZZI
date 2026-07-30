@@ -60,7 +60,7 @@
       return;
     }
     saveIdentity(name, phone);
-    if (status) status.textContent = "Bienvenue dans Bizzi ! Ouverture de l’application…";
+    if (status) status.textContent = "Bienvenue dans Bizzis ! Ouverture de l’application…";
     window.setTimeout(() => globalThis.location.assign(APP_URL), 350);
   });
 }());

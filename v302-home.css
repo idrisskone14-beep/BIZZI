@@ -643,6 +643,18 @@ body.bizzi-ready #view-home.active .premium-paths {
   padding: 0 !important;
 }
 
+@media (min-width: 640px) {
+  .premium-paths-priority .premium-path-grid-emoji {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (min-width: 1000px) {
+  .premium-paths-priority .premium-path-grid-emoji {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
 .premium-paths-priority .premium-path-grid-emoji button,
 .premium-paths-priority .premium-path-grid-emoji button:last-child {
   min-height: 0 !important;

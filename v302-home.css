@@ -634,6 +634,58 @@ body.bizzi-ready #view-home.active .premium-paths {
   }
 }
 
+.premium-paths-priority .premium-path-grid-emoji {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  grid-auto-flow: row !important;
+  overflow: visible !important;
+  scroll-snap-type: none !important;
+  padding: 0 !important;
+}
+
+.premium-paths-priority .premium-path-grid-emoji button,
+.premium-paths-priority .premium-path-grid-emoji button:last-child {
+  min-height: 0 !important;
+  grid-template-columns: 1fr !important;
+  grid-template-rows: auto auto !important;
+  justify-items: center !important;
+  text-align: center !important;
+  padding: 26px 14px 22px !important;
+  gap: 14px !important;
+}
+
+.premium-path-emoji {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  font-size: 32px;
+  background: rgba(8, 36, 92, .06);
+}
+
+.premium-path-emoji.coral { background: rgba(255, 90, 62, .12); }
+.premium-path-emoji.orange { background: rgba(255, 149, 0, .14); }
+.premium-path-emoji.green { background: rgba(20, 168, 105, .12); }
+.premium-path-emoji.purple { background: rgba(139, 92, 246, .12); }
+.premium-path-emoji.blue { background: rgba(0, 122, 255, .12); }
+.premium-path-emoji.gold { background: rgba(230, 168, 20, .14); }
+
+.premium-path-grid-emoji button strong {
+  display: grid;
+  gap: 4px;
+  padding-left: 0;
+  font-size: 17px;
+}
+
+.premium-path-grid-emoji button strong small {
+  display: block !important;
+  color: rgba(8, 36, 92, .52);
+  font-weight: 600;
+  font-size: 12.5px;
+  letter-spacing: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .home-instant-actions button,
   .premium-paths-priority .premium-path-grid button,

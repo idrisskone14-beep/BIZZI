@@ -10,6 +10,14 @@ begin
   if not exists (select from pg_roles where rolname = 'service_role') then
     create role service_role nologin noinherit bypassrls;
   end if;
+  -- storage-api's migrations grant privileges to a role literally named
+  -- "postgres" (Supabase's own hosted Postgres always has one). Managed
+  -- providers like Neon don't create this role by default, so the
+  -- "buckets-objects-grants" migration fails with "role postgres does
+  -- not exist" unless we create a stand-in here.
+  if not exists (select from pg_roles where rolname = 'postgres') then
+    create role postgres nologin noinherit;
+  end if;
 end $$;
 
 grant anon to current_user;

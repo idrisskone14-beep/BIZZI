@@ -1,0 +1,49 @@
+_format_version: "2.1"
+_transform: true
+
+services:
+  - name: rest-v1
+    url: http://bizzi-rest:3000
+    routes:
+      - name: rest-v1-route
+        strip_path: true
+        paths:
+          - /rest/v1
+    plugins:
+      - name: cors
+      - name: key-auth
+        config:
+          key_names:
+            - apikey
+          hide_credentials: false
+
+  - name: storage-v1
+    url: http://bizzi-storage:5000
+    routes:
+      - name: storage-v1-route
+        strip_path: true
+        paths:
+          - /storage/v1
+    plugins:
+      - name: cors
+      - name: key-auth
+        config:
+          key_names:
+            - apikey
+          hide_credentials: false
+
+consumers:
+  - username: anon
+  - username: service_role
+
+keyauth_credentials:
+  - consumer: anon
+    key: __ANON_KEY__
+  - consumer: service_role
+    key: __SERVICE_ROLE_KEY__
+
+acls:
+  - consumer: anon
+    group: anon
+  - consumer: service_role
+    group: admin

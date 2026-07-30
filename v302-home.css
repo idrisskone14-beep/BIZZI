@@ -676,6 +676,7 @@ body.bizzi-ready #view-home.active .premium-paths {
   background: rgba(8, 36, 92, .06);
 }
 
+.premium-path-emoji.teal { background: rgba(13, 166, 158, .12); }
 .premium-path-emoji.coral { background: rgba(255, 90, 62, .12); }
 .premium-path-emoji.orange { background: rgba(255, 149, 0, .14); }
 .premium-path-emoji.green { background: rgba(20, 168, 105, .12); }

@@ -60,7 +60,32 @@
     restartClass(document.querySelector("#pageTitle"), "motion-title-enter");
     const activeNavigation = document.querySelectorAll(`.nav-link.active,.bottom-link.active`);
     activeNavigation.forEach((node) => restartClass(node, "motion-nav-active"));
+    positionNavIndicators();
     requestAnimationFrame(() => revealItems(view, 12));
+  }
+
+  function positionNavIndicators() {
+    document.querySelectorAll(".side-nav,.bottom-nav").forEach((nav) => {
+      const indicator = nav.querySelector(":scope > .nav-active-indicator");
+      if (!indicator) return;
+      const active = nav.querySelector(".nav-link.active,.bottom-link.active");
+      if (!active) {
+        indicator.style.opacity = "0";
+        return;
+      }
+      const navRect = nav.getBoundingClientRect();
+      const btnRect = active.getBoundingClientRect();
+      indicator.style.width = `${btnRect.width}px`;
+      indicator.style.height = `${btnRect.height}px`;
+      indicator.style.transform = `translate(${btnRect.left - navRect.left}px, ${btnRect.top - navRect.top}px)`;
+      indicator.style.opacity = "1";
+    });
+  }
+
+  let resizeTimer = null;
+  function schedulePositionNavIndicators() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(positionNavIndicators, 120);
   }
 
   function refreshActiveSurface() {
@@ -122,11 +147,15 @@
     document.documentElement.classList.add("bizzi-motion-ready");
     observeRenderedItems();
     bindPressFeedback();
+    positionNavIndicators();
+    window.addEventListener("resize", schedulePositionNavIndicators, { passive: true });
+    window.addEventListener("load", positionNavIndicators);
   }
 
   globalThis.BizziMotion = Object.freeze({
     init,
     viewChanged,
+    positionNavIndicators,
     refreshActiveSurface,
     revealItems,
     motionAllowed,

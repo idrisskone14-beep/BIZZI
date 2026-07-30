@@ -198,4 +198,8 @@ html[data-motion-direction="back"] .view.motion-view-enter {
     transition: none !important;
     transform: none !important;
   }
+
+  .nav-active-indicator {
+    transition: opacity .12s ease !important;
+  }
 }

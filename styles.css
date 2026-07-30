@@ -248,13 +248,29 @@ textarea:focus-visible {
 }
 
 .side-nav {
+  position: relative;
   display: grid;
   align-content: start;
   gap: var(--space-1);
 }
 
+.nav-active-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), #ff8a54 62%, var(--sun));
+  box-shadow: 0 12px 28px rgba(0,0,0,.18);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform .32s cubic-bezier(.2,.8,.2,1), width .32s cubic-bezier(.2,.8,.2,1), height .32s cubic-bezier(.2,.8,.2,1), opacity .2s ease;
+}
+
 .nav-link,
 .bottom-link {
+  position: relative;
+  z-index: 1;
   min-height: 42px;
   border-radius: 8px;
   padding: 0 14px;
@@ -262,6 +278,7 @@ textarea:focus-visible {
   background: transparent;
   text-align: left;
   font-weight: 850;
+  transition: color .22s ease;
 }
 
 .sidebar .nav-link {
@@ -271,8 +288,6 @@ textarea:focus-visible {
 .nav-link.active,
 .bottom-link.active {
   color: white;
-  background: linear-gradient(135deg, var(--accent), #ff8a54 62%, var(--sun));
-  box-shadow: 0 12px 28px rgba(0,0,0,.18);
 }
 
 .sidebar .nav-link:not(.active):hover {
@@ -4170,6 +4185,10 @@ p {
     background: white;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
+  }
+
+  .bottom-nav .nav-active-indicator {
+    border-radius: 12px;
   }
 
   .bottom-link {

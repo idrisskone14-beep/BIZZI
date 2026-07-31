@@ -10258,8 +10258,8 @@ async function showLocalDeliveryNotification(request, matches, options = {}) {
     if (registration?.showNotification) {
       await registration.showNotification(title, {
         body,
-        icon: "assets/icon-192-v302.png",
-        badge: "assets/icon-192-v302.png",
+        icon: "assets/icon-192-v305.png",
+        badge: "assets/icon-192-v305.png",
         data: { url: `${location.origin}${location.pathname}#provider`, deliveryId: request.id },
       });
       return;
@@ -10267,7 +10267,7 @@ async function showLocalDeliveryNotification(request, matches, options = {}) {
   } catch {
   }
   try {
-    const notification = new Notification(title, { body, icon: "assets/icon-192-v302.png" });
+    const notification = new Notification(title, { body, icon: "assets/icon-192-v305.png" });
     notification.onclick = () => {
       window.focus();
       setView("provider");

@@ -55,9 +55,9 @@ const ASSETS = [
   "./admin-access.html",
   "./manifest.webmanifest",
   "./assets/logo-v302.png",
-  "./assets/icon-192-v302.png",
-  "./assets/icon-512-v302.png",
-  "./assets/apple-touch-icon-v302.png",
+  "./assets/icon-192-v305.png",
+  "./assets/icon-512-v305.png",
+  "./assets/apple-touch-icon-v305.png",
   "./assets/journey-life-v302.svg"
 ];
 
@@ -146,8 +146,8 @@ self.addEventListener("push", (event) => {
   const title = payload.title || "Bizzi";
   const options = {
     body: payload.body || "Nouvelle activité Bizzi",
-    icon: "./assets/icon-192-v302.png",
-    badge: "./assets/icon-192-v302.png",
+    icon: "./assets/icon-192-v305.png",
+    badge: "./assets/icon-192-v305.png",
     data: { url: payload.url || "./index.html#provider" },
   };
   event.waitUntil(self.registration.showNotification(title, options));

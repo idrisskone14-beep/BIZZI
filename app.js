@@ -11105,6 +11105,7 @@ function renderProviders() {
     `;
     list.querySelector("[data-go='delivery']")?.addEventListener("click", () => setView("delivery"));
     list.querySelector("[data-international-parcel]")?.addEventListener("click", openDeliverySearch);
+    globalThis.BizziProvidersMap?.update?.([]);
     return;
   }
   const ignoreLocation = Boolean(
@@ -11169,6 +11170,7 @@ function renderProviders() {
   list.querySelectorAll("[data-open-profile]").forEach((button) => {
     button.addEventListener("click", () => openProfile(button.dataset.openProfile));
   });
+  globalThis.BizziProvidersMap?.update?.(providers);
 }
 
 function eventPosterHtml(event, large = false) {
@@ -16034,6 +16036,29 @@ function initNavigation() {
   window.addEventListener("pageshow", openViewFromLocation);
 }
 
+function setupProvidersViewToggle() {
+  const listButton = document.querySelector("#providersViewList");
+  const mapButton = document.querySelector("#providersViewMap");
+  const listEl = document.querySelector("#providersList");
+  const mapEl = document.querySelector("#providersMap");
+  if (!listButton || !mapButton || !listEl || !mapEl) return;
+  function activate(mode) {
+    const isMap = mode === "map";
+    listButton.classList.toggle("selected", !isMap);
+    listButton.setAttribute("aria-selected", String(!isMap));
+    mapButton.classList.toggle("selected", isMap);
+    mapButton.setAttribute("aria-selected", String(isMap));
+    listEl.hidden = isMap;
+    mapEl.hidden = !isMap;
+    if (isMap) {
+      renderProviders();
+      globalThis.BizziProvidersMap?.invalidate?.();
+    }
+  }
+  listButton.addEventListener("click", () => activate("list"));
+  mapButton.addEventListener("click", () => activate("map"));
+}
+
 function boot() {
   globalThis.BizziPerformance?.markReady?.("bizzi_boot_start");
   applySubscriptionRules();
@@ -16041,6 +16066,7 @@ function boot() {
   renderCityOptions();
   renderCategories();
   setupGeolocation();
+  setupProvidersViewToggle();
   renderServices();
   renderProviders();
   renderDelivery();

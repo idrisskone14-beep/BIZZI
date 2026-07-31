@@ -86,6 +86,7 @@
   <link rel="stylesheet" href="location-intelligence.css?v=304">
   <link rel="stylesheet" href="motion-system.css?v=304">
   <link rel="stylesheet" href="mobile-layout-v297.css?v=304">
+  <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
   <noscript><link rel="stylesheet" href="styles.css?v=304"><link rel="stylesheet" href="mobile-forms.css?v=304"></noscript>
 </head>
 <body>
@@ -654,7 +655,12 @@
           <h2>Prestataires près de vous</h2>
           <span id="resultCount" class="tag">0 résultat</span>
         </div>
+        <div class="providers-view-toggle" role="tablist" aria-label="Affichage des résultats">
+          <button type="button" id="providersViewList" class="selected" role="tab" aria-selected="true" data-providers-view="list">☰ Liste</button>
+          <button type="button" id="providersViewMap" role="tab" aria-selected="false" data-providers-view="map">⌖ Carte</button>
+        </div>
         <div id="providersList" class="providers-list"></div>
+        <div id="providersMap" class="providers-map" hidden></div>
       </section>
 
       <section id="view-jobs" class="view">
@@ -1312,6 +1318,8 @@
   <script src="js/admin-dashboard.js?v=240"></script>
   <script src="js/geo-precision.js?v=304"></script>
   <script src="js/maps-provider.js?v=304"></script>
+  <script src="assets/vendor/leaflet/leaflet.js"></script>
+  <script src="js/providers-map.js?v=304"></script>
   <script src="js/network-lite.js?v=240"></script>
   <script src="js/voice-access.js?v=240"></script>
   <script src="js/ai-voice.js?v=240"></script>

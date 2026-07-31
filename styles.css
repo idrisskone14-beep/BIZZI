@@ -2083,6 +2083,72 @@ p {
   gap: var(--space-2);
 }
 
+.providers-view-toggle {
+  display: inline-flex;
+  gap: 6px;
+  padding: 4px;
+  margin-bottom: var(--space-2);
+  border-radius: 12px;
+  background: #eef2f8;
+  width: fit-content;
+}
+
+.providers-view-toggle button {
+  min-height: 34px;
+  padding: 0 16px;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.providers-view-toggle button.selected {
+  color: white;
+  background: linear-gradient(135deg, var(--accent), #ff8a54 62%, var(--sun));
+  box-shadow: 0 8px 18px rgba(242,90,74,.28);
+}
+
+.providers-map {
+  height: 440px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(18,42,74,.12);
+}
+
+.providers-map-popup {
+  display: grid;
+  gap: 4px;
+  min-width: 170px;
+}
+
+.providers-map-popup strong {
+  color: var(--ink);
+}
+
+.providers-map-popup p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.providers-map-popup button {
+  margin-top: 4px;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 9px;
+  color: white;
+  background: var(--accent);
+  font-weight: 800;
+  font-size: 12px;
+}
+
+@media (max-width: 560px) {
+  .providers-map {
+    height: 360px;
+  }
+}
+
 .job-offers-list {
   margin-top: 2px;
 }

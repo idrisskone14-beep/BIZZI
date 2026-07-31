@@ -49,21 +49,21 @@
     }
     globalThis.renderFood?.();
     globalThis.setView?.("food");
-    globalThis.renderSearchAssistantStatus?.(`<strong>${options.voice ? "Voix reconnue" : "Recherche comprise"} : Bizzis Food</strong><p>Les résultats affichent uniquement des adresses et spécialités Food.</p>`);
+    globalThis.renderSearchAssistantStatus?.(`<strong>${options.voice ? "Voix reconnue" : "Recherche comprise"} : Zeyds Food</strong><p>Les résultats affichent uniquement des adresses et spécialités Food.</p>`);
   }
 
   function route(prompt = "", options = {}) {
     function routeExceptionPlaces() {
       globalThis.renderExceptionPlaces?.();
       globalThis.setView?.("exception-places");
-      globalThis.renderSearchAssistantStatus?.(`<strong>${options.voice ? "Voix reconnue" : "Recherche comprise"} : lieux d’exception</strong><p>Bizzis affiche les sites touristiques, resorts, lodges et endroits insolites.</p>`);
+      globalThis.renderSearchAssistantStatus?.(`<strong>${options.voice ? "Voix reconnue" : "Recherche comprise"} : lieux d’exception</strong><p>Zeyds affiche les sites touristiques, resorts, lodges et endroits insolites.</p>`);
       globalThis.setTimeout?.(() => document.querySelector("#exceptionPlacesList")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0);
     }
     const intent = globalThis.BizziAssistantParser?.intent?.(prompt);
     if (intent === "life") {
       globalThis.setView?.("life");
       globalThis.BizziLife?.open?.(prompt, { autoCreate: true });
-      globalThis.renderSearchAssistantStatus?.(`<strong>${options.voice ? "Voix reconnue" : "Projet compris"} : Bizzis Life</strong><p>Bizzis a organisé les services et les prochaines étapes.</p>`);
+      globalThis.renderSearchAssistantStatus?.(`<strong>${options.voice ? "Voix reconnue" : "Projet compris"} : Zeyds Life</strong><p>Zeyds a organisé les services et les prochaines étapes.</p>`);
       return true;
     }
     if (intent === "events") {

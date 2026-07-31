@@ -1,7 +1,7 @@
 window.BizziConfig = {
   mode: "production",
   version: "V215",
-  appName: "Bizzis",
+  appName: "Zeyds",
   country: "Côte d'Ivoire",
   currency: "FCFA",
   official: {

@@ -33,7 +33,7 @@
         ["DJ / Animateur", "Animer la réception avec mesure"],
         ["Serveur / Serveuse", "Assurer le service des invités"],
         ["Location d'articles d'événements", "Prévoir tables, chaises et accessoires"],
-        ["Bizzi Livraison", "Acheminer les commandes et éléments de décoration"],
+        ["Zeyds Livraison", "Acheminer les commandes et éléments de décoration"],
       ],
       tasks: ["Fixer la date, les lieux et la liste des invités", "Définir le budget et le style de la réception", "Choisir restauration, décoration et photo", "Confirmer le matériel et les livraisons", "Vérifier le programme final avec la famille"],
     },

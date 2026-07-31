@@ -1,7 +1,7 @@
 {
   "id": "/bizzi-app/",
-  "name": "Bizzis",
-  "short_name": "Bizzis",
+  "name": "Zeyds",
+  "short_name": "Zeyds",
   "description": "Application de services géolocalisés pour trouver rapidement un prestataire local.",
   "start_url": "./index.html?v=304",
   "scope": "./",
@@ -45,7 +45,7 @@
       ]
     },
     {
-      "name": "Bizzis Food",
+      "name": "Zeyds Food",
       "short_name": "Food",
       "url": "./index.html?v=304#food",
       "icons": [

@@ -26,7 +26,7 @@
     },
     {
       id: "standard",
-      title: "Choix recommandé par Bizzis",
+      title: "Choix recommandé par Zeyds",
       description: "Disponibilité, proximité, vérification et qualité équilibrées.",
     },
     {
@@ -107,7 +107,7 @@
         ["Photographe", "Couvrir l’événement"],
         ["Location d'articles d'événements", "Prévoir tables, chaises et matériel"],
         ["Serveur / Serveuse", "Assurer le service"],
-        ["Bizzi Livraison", "Acheminer les commandes"],
+        ["Zeyds Livraison", "Acheminer les commandes"],
       ],
       tasks: ["Définir la date, le nombre d’invités et le budget", "Choisir le lieu", "Demander les devis prioritaires", "Confirmer les prestataires", "Vérifier le déroulé la veille"],
     },
@@ -138,7 +138,7 @@
         ["Remorquage / Dépannage auto", "Déplacer le véhicule si nécessaire"],
         ["Vulcanisateur / Pneus", "Intervenir en cas de problème de pneu"],
         ["Garage automobile", "Effectuer une réparation en atelier"],
-        ["Bizzi Livraison", "Acheminer une pièce urgente"],
+        ["Zeyds Livraison", "Acheminer une pièce urgente"],
         ["Chauffeur", "Prévoir un transport alternatif"],
       ],
       tasks: ["Partager la position du véhicule", "Décrire les symptômes", "Choisir l’intervention adaptée", "Confirmer le devis", "Valider la réparation"],
@@ -169,7 +169,7 @@
         ["Carreleur", "Poser les revêtements"],
         ["Décorateur", "Finaliser l’aménagement"],
         ["Nettoyage maison / bureau", "Livrer un espace propre"],
-        ["Bizzi Livraison", "Acheminer les matériaux"],
+        ["Zeyds Livraison", "Acheminer les matériaux"],
       ],
       tasks: ["Faire le diagnostic", "Demander et comparer les devis", "Sélectionner les prestataires", "Planifier les travaux", "Suivre l’avancement", "Effectuer la validation finale"],
     },
@@ -181,7 +181,7 @@
       services: [
         ["Chauffeur", "Réserver un trajet ponctuel"],
         ["Location de véhicules", "Choisir un véhicule adapté"],
-        ["Bizzi Livraison", "Acheminer des bagages si nécessaire"],
+        ["Zeyds Livraison", "Acheminer des bagages si nécessaire"],
       ],
       tasks: ["Renseigner l’aéroport et l’adresse de départ", "Préciser l’heure du vol et les bagages", "Choisir le véhicule", "Confirmer l’heure de départ", "Activer le rappel"],
     },
@@ -423,10 +423,10 @@
       return [{ project, message }];
     }).slice(0, 3);
     if (!reminders.length) {
-      panel.innerHTML = `<div><span>Assistant proactif</span><strong>Vos prochains rappels apparaîtront ici.</strong></div><p>Ajoutez une date à un projet pour que Bizzis vous accompagne au bon moment.</p>`;
+      panel.innerHTML = `<div><span>Assistant proactif</span><strong>Vos prochains rappels apparaîtront ici.</strong></div><p>Ajoutez une date à un projet pour que Zeyds vous accompagne au bon moment.</p>`;
       return;
     }
-    panel.innerHTML = `<div class="life-proactive-title"><span>À ne pas oublier</span><strong>Bizzis veille sur vos projets.</strong></div><div class="life-proactive-items">${reminders.map(({ project, message }) => `
+    panel.innerHTML = `<div class="life-proactive-title"><span>À ne pas oublier</span><strong>Zeyds veille sur vos projets.</strong></div><div class="life-proactive-items">${reminders.map(({ project, message }) => `
       <button type="button" data-life-open="${safe(project.id)}"><span>${safe(project.icon || "✦")}</span><span><strong>${safe(project.title)}</strong><small>${safe(message)}</small></span><b>→</b></button>
     `).join("")}</div>`;
   }
@@ -440,7 +440,7 @@
       <article class="life-project-summary">
         <div class="life-project-symbol">${safe(project.icon || "✦")}</div>
         <div class="life-project-copy">
-          <span>Projet Bizzis Life</span>
+          <span>Projet Zeyds Life</span>
           <h3>${safe(project.title)}</h3>
           <p>« ${safe(project.goal)} »</p>
           <div class="life-project-meta">
@@ -499,7 +499,7 @@
     if (!container) return;
     const all = projects();
     if (!all.length) {
-      container.innerHTML = `<div class="life-empty"><span>✦</span><strong>Aucun projet pour le moment.</strong><p>Décrivez un objectif : Bizzis construira les étapes et les services utiles.</p></div>`;
+      container.innerHTML = `<div class="life-empty"><span>✦</span><strong>Aucun projet pour le moment.</strong><p>Décrivez un objectif : Zeyds construira les étapes et les services utiles.</p></div>`;
       return;
     }
     container.innerHTML = all.map((project) => `
@@ -571,7 +571,7 @@
     project.lastOpenedService = service.name;
     updateProject(project);
     showReturnBar(project, service);
-    if (service.name === "Bizzi Livraison" || (project.type === "airport" && service.name === "Chauffeur")) {
+    if (service.name === "Zeyds Livraison" || (project.type === "airport" && service.name === "Chauffeur")) {
       bridge.openDelivery?.(project.goal, { projectId: project.id, serviceId: service.id });
       return;
     }

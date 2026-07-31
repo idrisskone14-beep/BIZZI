@@ -73,10 +73,10 @@
         <strong>Montant à payer</strong>
         <span class="tag ${accountReady ? "ok" : "pending"}">${escapeHtml(amountText)}</span>
       </div>
-      <p>${cash ? "Vous paierez en espèces au chauffeur ou au livreur à la fin de la prestation." : "Après paiement, Bizzis ouvre la demande aux livreurs proches. Le contact du livreur reste masqué jusqu'à acceptation."}</p>
+      <p>${cash ? "Vous paierez en espèces au chauffeur ou au livreur à la fin de la prestation." : "Après paiement, Zeyds ouvre la demande aux livreurs proches. Le contact du livreur reste masqué jusqu'à acceptation."}</p>
       <div class="payment-account-card ${accountReady ? "ready" : "todo"}">
-        <span>${cash ? "Paiement à la remise" : `Compte Bizzis ${escapeHtml(method)}`}</span>
-        <strong>${escapeHtml(accountReady ? account : "Compte Bizzis à renseigner")}</strong>
+        <span>${cash ? "Paiement à la remise" : `Compte Zeyds ${escapeHtml(method)}`}</span>
+        <strong>${escapeHtml(accountReady ? account : "Compte Zeyds à renseigner")}</strong>
       </div>
       <div class="payment-copy-actions">
         ${cash ? "" : `<button class="secondary" type="button" data-copy-delivery-payment-account ${accountReady ? "" : "disabled"}>Copier compte</button>`}

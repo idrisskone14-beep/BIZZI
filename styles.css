@@ -247,10 +247,6 @@ textarea:focus-visible {
   box-shadow: 0 12px 26px rgba(0,0,0,.18);
 }
 
-.brand-accent {
-  color: var(--accent);
-}
-
 .side-nav {
   position: relative;
   display: grid;

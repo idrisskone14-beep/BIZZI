@@ -24,6 +24,7 @@ window.BizziConfig = {
       eventPosters: "event-posters",
       foodPhotos: "food-photos",
       exceptionPlacePhotos: "exception-place-photos",
+      requestPhotos: "request-photos",
     },
   },
   payments: {

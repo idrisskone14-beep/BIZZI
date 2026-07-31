@@ -2848,6 +2848,7 @@ function supabaseStorageBucket(key) {
     eventPosters: "event-posters",
     foodPhotos: "food-photos",
     exceptionPlacePhotos: "exception-place-photos",
+    requestPhotos: "request-photos",
   };
   return storage[key] || defaults[key];
 }
@@ -7809,6 +7810,7 @@ function providerContactText(provider) {
     `Bonjour ${provider.fullName}, je vous contacte depuis Zeyds pour votre service : ${provider.service}.`,
     clientName ? `Je m’appelle ${clientName}.` : "",
     clientPhone ? `Mon contact client : ${clientPhone}.` : "",
+    state.searchRequestPhotoUrl ? `Photo du besoin : ${state.searchRequestPhotoUrl}` : "",
   ].filter(Boolean).join(" ");
 }
 
@@ -8851,7 +8853,63 @@ function setupSearchAssistant() {
     voiceButton.title = "Touchez pour utiliser le micro du clavier si ce navigateur ne supporte pas la reconnaissance vocale.";
   }
   voiceButton?.addEventListener("click", () => startSearchVoiceAssistant(voiceButton));
+  setupSearchRequestPhotoAttach();
   renderSearchAssistantStatus();
+}
+
+function renderSearchRequestPhotoPreview() {
+  const preview = document.querySelector("#searchRequestPhotoPreview");
+  const thumb = document.querySelector("#searchRequestPhotoThumb");
+  const status = document.querySelector("#searchRequestPhotoStatus");
+  const button = document.querySelector("#searchRequestPhotoButton");
+  if (!preview || !thumb || !status || !button) return;
+  if (state.searchRequestPhotoUrl) {
+    thumb.src = state.searchRequestPhotoUrl;
+    status.textContent = "Photo jointe";
+    preview.hidden = false;
+    button.hidden = true;
+  } else {
+    preview.hidden = true;
+    button.hidden = false;
+  }
+}
+
+function setupSearchRequestPhotoAttach() {
+  const input = document.querySelector("#searchRequestPhotoInput");
+  const button = document.querySelector("#searchRequestPhotoButton");
+  const removeButton = document.querySelector("#searchRequestPhotoRemove");
+  if (!input || !button || !removeButton) return;
+  button.addEventListener("click", () => input.click());
+  removeButton.addEventListener("click", () => {
+    state.searchRequestPhotoUrl = "";
+    saveState();
+    renderSearchRequestPhotoPreview();
+  });
+  input.addEventListener("change", async () => {
+    const file = input.files?.[0];
+    input.value = "";
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      renderSearchAssistantStatus("<strong>Photo trop lourde</strong><p>Choisissez une image de moins de 5 Mo.</p>");
+      return;
+    }
+    const originalLabel = button.textContent;
+    button.disabled = true;
+    button.textContent = "Envoi de la photo...";
+    const result = await optionalStorageUpload("requestPhotos", "requests", file, { publicUrl: true });
+    button.disabled = false;
+    button.textContent = originalLabel;
+    if (result?.error) {
+      renderSearchAssistantStatus(`<strong>Photo non envoyée</strong><p>${safe(result.error)}</p>`);
+      return;
+    }
+    if (result?.publicUrl) {
+      state.searchRequestPhotoUrl = result.publicUrl;
+      saveState();
+      renderSearchRequestPhotoPreview();
+    }
+  });
+  renderSearchRequestPhotoPreview();
 }
 
 function openHomeQuickSearch(prompt = "") {

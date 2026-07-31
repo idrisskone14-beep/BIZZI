@@ -23,6 +23,7 @@ window.BizziConfig = {
       paymentProofs: "payment-proofs",
       eventPosters: "event-posters",
       foodPhotos: "food-photos",
+      requestPhotos: "request-photos",
     },
   },
   payments: {

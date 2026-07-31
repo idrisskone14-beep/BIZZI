@@ -7,7 +7,8 @@ values
   ('provider-photos', 'provider-photos', true, 5242880, array['image/jpeg', 'image/png', 'image/webp']),
   ('advertisements', 'advertisements', true, 5242880, array['image/jpeg', 'image/png', 'image/webp']),
   ('provider-proofs', 'provider-proofs', false, 8388608, array['image/jpeg', 'image/png', 'image/webp', 'application/pdf']),
-  ('payment-proofs', 'payment-proofs', false, 8388608, array['image/jpeg', 'image/png', 'image/webp', 'application/pdf'])
+  ('payment-proofs', 'payment-proofs', false, 8388608, array['image/jpeg', 'image/png', 'image/webp', 'application/pdf']),
+  ('request-photos', 'request-photos', true, 5242880, array['image/jpeg', 'image/png', 'image/webp'])
 on conflict (id) do update
 set public = excluded.public,
     file_size_limit = excluded.file_size_limit,
@@ -17,7 +18,13 @@ drop policy if exists "public read bizzi public files" on storage.objects;
 create policy "public read bizzi public files"
 on storage.objects for select
 to anon
-using (bucket_id in ('provider-photos', 'advertisements'));
+using (bucket_id in ('provider-photos', 'advertisements', 'request-photos'));
+
+drop policy if exists "public upload request photos" on storage.objects;
+create policy "public upload request photos"
+on storage.objects for insert
+to anon
+with check (bucket_id = 'request-photos');
 
 drop policy if exists "public upload provider photos" on storage.objects;
 create policy "public upload provider photos"

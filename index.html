@@ -621,6 +621,15 @@
             <button class="primary" type="submit">Trouver</button>
             <button class="secondary voice-button" id="searchVoiceButton" type="button" aria-label="Démarrer la recherche vocale" aria-pressed="false">Parler</button>
           </form>
+          <div class="request-photo-attach">
+            <input id="searchRequestPhotoInput" type="file" accept="image/jpeg,image/png,image/webp" capture="environment" hidden>
+            <button type="button" class="secondary" id="searchRequestPhotoButton">📷 Ajouter une photo du besoin</button>
+            <div id="searchRequestPhotoPreview" class="request-photo-preview" hidden>
+              <img id="searchRequestPhotoThumb" alt="Photo jointe">
+              <span id="searchRequestPhotoStatus"></span>
+              <button type="button" id="searchRequestPhotoRemove" aria-label="Retirer la photo">✕</button>
+            </div>
+          </div>
           <div id="searchAssistantStatus" class="status-box compact"></div>
         </section>
         <details class="advanced-search-panel" open>

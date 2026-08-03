@@ -3976,6 +3976,16 @@ p {
   background: #fff1ef;
 }
 
+.status-box.sync-warning {
+  border-color: #f2b0a8;
+  border-width: 2px;
+  background: #fff1ef;
+}
+
+.status-box.sync-warning strong {
+  color: #a4331c;
+}
+
 .status-box.admin-status-ok {
   border-color: #9fd9bd;
   background: #effcf6;

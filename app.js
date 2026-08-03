@@ -7359,7 +7359,7 @@ async function syncCreatedProviderToSupabase(provider, files = {}) {
     provider.remoteError = friendlySupabaseError(error);
     await localFileHydration.catch(() => {});
     refreshProviderCreationViews();
-    renderProviderStatus(`Profil créé sur cet appareil. Synchronisation Supabase à reprendre depuis l'admin : ${safe(provider.remoteError)}`);
+    renderProviderStatus(`<strong>Profil non synchronisé.</strong><p>Il reste pour l'instant visible uniquement sur cet appareil, pas encore pour vos clients. ${safe(provider.remoteError)} Réessayez avec une bonne connexion, ou recommencez la création du profil.</p>`);
   }
 }
 
@@ -12779,11 +12779,17 @@ function renderProviderStatus(message = "") {
     ? `<p>Dernier paiement : ${safe(targetPayment.status)} - ${safe(targetPayment.plan)} - ${targetPayment.amount.toLocaleString("fr-FR")} FCFA</p>`
     : "";
   const renewalLine = target ? `<p>${safe(subscriptionLabel(target))}${renewalStatus(target) ? ` - ${safe(renewalStatus(target))}` : ""}</p>` : "";
+  const isLocalOnly = target?.remoteStatus === "local_only";
+  status.classList.toggle("sync-warning", isLocalOnly);
+  const syncWarningLine = isLocalOnly
+    ? `<p><strong>Profil non synchronisé :</strong> visible uniquement sur cet appareil, invisible pour les clients. ${safe(target.remoteError || "")} Réessayez avec une bonne connexion, ou recommencez la création du profil.</p>`
+    : "";
   status.innerHTML = message || `
     <strong>Statut prestataire</strong>
     <p>${target ? `${safe(target.fullName)} - ${target.visibility === "active" ? "visible" : "en attente"}` : "Aucun prestataire disponible pour un paiement."}</p>
     ${renewalLine}
     ${paymentLine}
+    ${syncWarningLine}
   `;
   renderProviderDashboardStats();
   renderProviderRequestHistory();

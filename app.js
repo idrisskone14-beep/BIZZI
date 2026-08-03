@@ -14085,7 +14085,14 @@ function setupForms() {
       renderHomeDiscovery();
       window.setTimeout(async () => {
         try {
-          const message = await syncAdditionalProviderService(existingLocalProvider, service);
+          // Un profil local jamais synchronise (echec reseau precedent, service
+          // avant reveil Render, etc.) n'a pas de remoteId : syncAdditionalProviderService
+          // se contente alors de dire "sera envoye plus tard" sans jamais rien
+          // envoyer. On relance ici la creation complete plutot que de rester
+          // bloque indefiniment sur cet appareil.
+          const message = remoteProviderId(existingLocalProvider)
+            ? await syncAdditionalProviderService(existingLocalProvider, service)
+            : await submitProviderToSupabase(existingLocalProvider, {});
           renderProviderStatus(`Service ${safe(service)} ajouté au profil ${safe(existingLocalProvider.fullName)}. Dossier ${safe(existingLocalProvider.lastServiceSubmissionReference)}. ${safe(message)}`);
         } catch (error) {
           renderProviderStatus(`Service ${safe(service)} conservé sur cet appareil. Synchronisation Supabase à reprendre : ${safe(friendlySupabaseError(error))}`);

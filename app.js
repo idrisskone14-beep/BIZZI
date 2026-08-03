@@ -4,6 +4,19 @@ function isoDaysFromNow(days) {
   return date.toISOString();
 }
 
+// Les positions GPS (navigator.geolocation, location-intelligence.js) portent
+// un timestamp epoch en millisecondes (nombre, souvent transporte en string
+// via un champ de formulaire cache). Postgres attend un timestamptz valide :
+// envoyer "1785709298873" tel quel echoue avec "date/time field out of range".
+function toIsoTimestamp(value) {
+  if (!value) return null;
+  if (typeof value === "string" && /^\d+$/.test(value.trim())) {
+    value = Number(value);
+  }
+  const date = typeof value === "number" ? new Date(value) : new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date.toISOString();
+}
+
 function addMonthsFromNow(months) {
   const date = new Date();
   date.setMonth(date.getMonth() + months);
@@ -6383,7 +6396,7 @@ async function submitExceptionPlaceToSupabase(place, files = {}) {
     latitude: place.latitude,
     longitude: place.longitude,
     location_accuracy: place.locationAccuracy || null,
-    location_timestamp: place.locationTimestamp || null,
+    location_timestamp: toIsoTimestamp(place.locationTimestamp),
     location_label: place.locationLabel || null,
     location_full_address: place.locationFullAddress || null,
     description: place.description,
@@ -6463,7 +6476,7 @@ async function submitFoodPlaceToSupabase(place, files = {}) {
     latitude: place.latitude,
     longitude: place.longitude,
     location_accuracy: place.locationAccuracy || null,
-    location_timestamp: place.locationTimestamp || null,
+    location_timestamp: toIsoTimestamp(place.locationTimestamp),
     location_label: place.locationLabel || null,
     location_full_address: place.locationFullAddress || null,
     average_budget: place.averageBudget || null,
@@ -7226,7 +7239,7 @@ async function submitProviderToSupabase(provider, files = {}) {
     latitude: provider.lat || null,
     longitude: provider.lng || null,
     location_accuracy: provider.locationAccuracy || null,
-    location_timestamp: provider.locationTimestamp || null,
+    location_timestamp: toIsoTimestamp(provider.locationTimestamp),
     location_label: provider.locationLabel || null,
     location_full_address: provider.locationFullAddress || null,
     status: "pending",
@@ -7670,7 +7683,7 @@ async function submitDeliveryRequestToSupabase(request) {
     pickup_latitude: pickupPoint?.lat || null,
     pickup_longitude: pickupPoint?.lng || null,
     pickup_accuracy: request.pickupAccuracy || null,
-    pickup_location_timestamp: request.pickupLocationTimestamp || null,
+    pickup_location_timestamp: toIsoTimestamp(request.pickupLocationTimestamp),
     pickup_location_label: request.pickupLocationLabel || request.pickup || null,
     pickup_location_full_address: request.pickupLocationFullAddress || request.pickup || null,
     dropoff_latitude: dropoffPoint?.lat || null,

@@ -398,18 +398,6 @@ body:has(#view-home.active) {
   place-items: center;
 }
 
-.provider-live-badge {
-  position: absolute;
-  left: 8px;
-  top: 8px;
-  padding: 5px 8px;
-  border-radius: 999px;
-  color: #086247;
-  background: rgba(235, 255, 247, .94);
-  font-size: 9px;
-  font-weight: 950;
-}
-
 .provider-card-main {
   min-width: 0;
   display: grid;
@@ -430,6 +418,11 @@ body:has(#view-home.active) {
   font-size: 19px;
 }
 
+.provider-verified-check {
+  font-size: 14px;
+  vertical-align: middle;
+}
+
 .provider-card-service {
   margin: 0;
   color: #607087;
@@ -437,52 +430,25 @@ body:has(#view-home.active) {
   line-height: 1.4;
 }
 
-.provider-rating-row {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 7px;
-}
-
-.provider-rating-row strong {
-  color: #a95708;
-  font-size: 13px;
-}
-
-.provider-rating-row > span:not(.tag) {
+.provider-card-rating-line {
+  margin: 0;
   color: #667386;
-  font-size: 11px;
+  font-size: 12px;
+  font-weight: 800;
 }
 
-.provider-rating-row .tag {
-  padding: 5px 7px;
-  font-size: 9px;
+.provider-card-availability {
+  margin: 0;
+  color: #086247;
+  font-size: 12px;
+  font-weight: 800;
 }
 
-.provider-facts {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 7px;
-}
-
-.provider-facts span {
-  min-width: 0;
-  padding: 9px;
-  border-radius: 12px;
-  background: #f5f7fa;
-  display: grid;
-  gap: 3px;
-}
-
-.provider-facts small {
-  color: #7a8798;
-  font-size: 9px;
-}
-
-.provider-facts strong {
-  overflow-wrap: anywhere;
-  color: #102845;
-  font-size: 11px;
+.provider-card-price {
+  margin: 0;
+  color: #092753;
+  font-size: 13px;
+  font-weight: 950;
 }
 
 .provider-card-premium .card-actions {
@@ -638,14 +604,6 @@ body.bizzi-ready #view-home.active .premium-paths {
   .provider-card-media > .provider-photo,
   .provider-card-media > .avatar {
     min-height: 124px;
-  }
-
-  .provider-facts {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .provider-facts span:first-child {
-    grid-column: 1 / -1;
   }
 }
 

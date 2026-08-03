@@ -11884,31 +11884,22 @@ function providerCard(provider) {
   }
 
   const reviews = Number(provider.reviewCount || 0);
-  const reliability = reliabilityInfo(provider);
+  const available = providerCurrentAvailability(provider);
   return `
     <article class="provider-card provider-card-premium" data-provider-card="${safe(provider.id)}" tabindex="0" role="button" aria-label="Voir le profil de ${safe(provider.fullName)}">
       <div class="provider-card-media">
         ${providerMedia(provider)}
-        ${providerCurrentAvailability(provider) ? `<span class="provider-live-badge">Disponible</span>` : ""}
       </div>
       <div class="provider-card-main">
         <div class="provider-card-title">
-          <h3>${safe(provider.fullName)}</h3>
+          <h3>${safe(provider.fullName)}${isVerified(provider) ? ` <span class="provider-verified-check" title="Vérifié Zeyds">✅</span>` : ""}</h3>
           ${providerBoostBadge(provider)}
         </div>
-        <p class="provider-card-service">${safe(providerServicesLabel(provider))} · ${safe(provider.area || provider.city)}</p>
-        <div class="provider-rating-row">
-          <strong>★ ${Number(provider.rating || 0).toLocaleString("fr-FR", { maximumFractionDigits: 1 })}</strong>
-          <span>${reviews} avis</span>
-          ${verificationBadge(provider)}
-          <span class="tag reliability ${safe(reliability.className)}">${safe(reliability.label)}</span>
-          ${renewal ? `<span class="tag bad">${safe(renewal)}</span>` : ""}
-        </div>
-        <div class="provider-facts">
-          <span><small>Distance</small><strong>${safe(distanceLabel(provider))}</strong></span>
-          <span><small>Arrivée estimée</small><strong>${safe(providerArrivalEstimate(provider))}</strong></span>
-          <span><small>Prix moyen</small><strong>${safe(providerAveragePriceLabel(provider))}</strong></span>
-        </div>
+        <p class="provider-card-service">${safe(providerServicesLabel(provider))}</p>
+        <p class="provider-card-rating-line">★ ${Number(provider.rating || 0).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} (${reviews}) · ${safe(distanceLabel(provider))}</p>
+        ${available ? `<p class="provider-card-availability">🟢 Disponible maintenant</p>` : ""}
+        <p class="provider-card-price">${safe(providerAveragePriceLabel(provider))}</p>
+        ${renewal ? `<span class="tag bad">${safe(renewal)}</span>` : ""}
         <div class="card-actions">
           <button class="primary" type="button" data-open-profile="${safe(provider.id)}">Voir le profil</button>
         </div>

@@ -145,14 +145,6 @@
   #view-home .provider-card-media > .avatar {
     min-height: 124px;
   }
-
-  #view-home .provider-facts {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  #view-home .provider-facts span:first-child {
-    grid-column: 1 / -1;
-  }
 }
 
 @media (max-width: 380px) {

@@ -1526,6 +1526,7 @@ function normalizeState(draft) {
       wrongNumberFeedback: Number(provider.wrongNumberFeedback || 0),
       reviewCount: Number(provider.reviewCount || 0),
       socialViews: Number(provider.socialViews || 0),
+      servicePrice: Number(provider.servicePrice ?? provider.service_price ?? 0) || null,
     };
   });
   const providerDeduplication = dedupeEntityRecords(draft.providers, "provider");
@@ -2008,6 +2009,7 @@ function selectProviderForRenewal(provider, message = "") {
   renderProviderStatus(message || `Profil identifié : ${safe(provider.fullName)}. Choisissez un forfait puis envoyez la référence de paiement.`);
   renderProviderDeliveryQueue();
   renderProviderServiceQueue();
+  populateProviderEditForm(provider);
   renderProviderIdentityStatus(`
     <strong>Profil retrouvé</strong>
     <p>${safe(provider.fullName)} - ${safe(provider.service || "Métier à préciser")} - ${safe(provider.phone || "contact déjà enregistré")}.</p>
@@ -7746,6 +7748,21 @@ async function acceptDeliveryRequestInSupabase(request, provider) {
   return "Acceptation publiée dans Supabase.";
 }
 
+async function updateProviderInSupabase(provider, changedFields = {}) {
+  if (!supabaseConfigured()) return "Modifications gardées en local : Supabase non configuré.";
+  const remoteId = remoteProviderId(provider);
+  if (!remoteId) return "Modifications gardées en local (profil non encore synchronisé Supabase).";
+  const rows = await supabaseRequest(`providers?id=eq.${encodeURIComponent(remoteId)}`, {
+    method: "PATCH",
+    headers: { Prefer: "return=representation" },
+    body: { ...changedFields, updated_at: new Date().toISOString() },
+  });
+  if (!Array.isArray(rows) || rows.length === 0) {
+    throw new Error("Supabase n'autorise pas encore la modification de fiche prestataire (droits d'écriture à activer côté base)");
+  }
+  return "Modifications synchronisées avec Supabase.";
+}
+
 async function submitServiceRequestToSupabase(request) {
   if (!supabaseConfigured()) return "Demande gardée en local : Supabase non configuré.";
   if (request.remoteId) return "Demande déjà liée à Supabase.";
@@ -9256,6 +9273,24 @@ function providerReviews(providerId) {
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 }
 
+function providerStatsSummary(provider) {
+  const reviews = providerReviews(provider.id);
+  const ratingAverage = reviews.length
+    ? Math.round((reviews.reduce((sum, item) => sum + Number(item.rating || 0), 0) / reviews.length) * 10) / 10
+    : 0;
+  return {
+    profileViews: Number(provider.calls || 0),
+    contactClicks: Number(provider.contactClicks || 0),
+    callClicks: Number(provider.callClicks || 0),
+    whatsappClicks: Number(provider.whatsappClicks || 0),
+    shareClicks: Number(provider.shareClicks || 0),
+    copyClicks: Number(provider.copyClicks || 0),
+    reviewCount: reviews.length,
+    ratingAverage,
+    reliability: reliabilityInfo(provider),
+  };
+}
+
 function submitReview(provider, rating, message) {
   const value = Math.max(1, Math.min(5, Number(rating) || 5));
   const review = {
@@ -10730,6 +10765,20 @@ function providerDeliveryRequests(provider) {
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 }
 
+function providerDeliveryHistory(provider) {
+  if (!provider) return [];
+  return state.deliveryRequests
+    .filter((request) => request.assignedProviderId === provider.id && ["closed", "cancelled"].includes(request.status))
+    .sort((a, b) => new Date(b.closedAt || b.createdAt) - new Date(a.closedAt || a.createdAt));
+}
+
+function providerDeliveryEarnings(provider) {
+  if (!provider) return 0;
+  return state.deliveryRequests
+    .filter((request) => request.assignedProviderId === provider.id && request.paymentStatus === "approved")
+    .reduce((sum, request) => sum + Number(request.providerPayout || 0), 0);
+}
+
 function renderProviderDeliveryQueue() {
   const root = document.querySelector("#providerDeliveryQueue");
   const count = document.querySelector("#providerDeliveryCount");
@@ -10794,6 +10843,18 @@ function providerActiveServiceRequests(provider) {
   return state.serviceRequests
     .filter((request) => request.assignedProviderId === provider.id && ["accepted", "in_progress"].includes(request.status))
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+}
+
+function providerServiceRequestHistory(provider) {
+  if (!provider) return [];
+  return state.serviceRequests
+    .filter((request) => request.assignedProviderId === provider.id && ["completed", "declined", "cancelled"].includes(request.status))
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+}
+
+function providerCompletedServiceRequestCount(provider) {
+  if (!provider) return 0;
+  return state.serviceRequests.filter((request) => request.assignedProviderId === provider.id && request.status === "completed").length;
 }
 
 function serviceRequestCard(request, options = {}) {
@@ -11476,7 +11537,11 @@ function renderProviders() {
     && providerDirectoryState.signature === directoryRequest.signature
     && providerDirectoryState.mode !== "local";
   const providerSource = directoryActive
-    ? dedupeProviderDirectoryItems([...providerDirectoryState.items, ...state.providers.filter(durableLocalProvider)])
+    ? dedupeProviderDirectoryItems([
+        ...state.providers.filter((provider) => provider.id === state.identifiedProviderId),
+        ...providerDirectoryState.items,
+        ...state.providers.filter(durableLocalProvider),
+      ])
     : state.providers;
   ensureProviderDirectorySearch();
   renderVerifiedServicePanel();
@@ -12583,6 +12648,96 @@ function setupReportForms() {
   });
 }
 
+function populateProviderEditForm(provider) {
+  const form = document.querySelector("#providerEditForm");
+  if (!form || !provider) return;
+  if (form.elements.fullName) form.elements.fullName.value = provider.fullName || "";
+  if (form.elements.city) form.elements.city.value = provider.city || "";
+  if (form.elements.area) form.elements.area.value = provider.area || "";
+  if (form.elements.description) form.elements.description.value = provider.description || "";
+  if (form.elements.servicePrice) form.elements.servicePrice.value = provider.servicePrice || "";
+}
+
+function setupProviderEditForm() {
+  const form = document.querySelector("#providerEditForm");
+  if (!form || form.dataset.bound === "true") return;
+  form.dataset.bound = "true";
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (form.dataset.submitting === "true") return;
+    const provider = currentPaymentProvider();
+    const button = form.querySelector("button[type='submit']");
+    const status = document.querySelector("#providerEditStatus");
+    if (!provider) {
+      if (status) {
+        status.hidden = false;
+        status.innerHTML = `<strong>Aucun prestataire identifié</strong><p>Identifiez-vous d'abord avec votre numéro de téléphone.</p>`;
+      }
+      return;
+    }
+    form.dataset.submitting = "true";
+    setBusyButton(button, true, "Enregistrement...");
+    const data = new FormData(form);
+    // Only fields with a confirmed matching column in the real Supabase "providers"
+    // table go into changedFields (sent as one PATCH). Postgrest rejects the whole
+    // request if any key is unknown, so servicePrice (a brand-new local-only field
+    // with no remote column yet) is sent as a separate, independently-caught PATCH
+    // below rather than risking the other fields too.
+    const changedFields = {};
+    const fullName = String(data.get("fullName") || "").trim();
+    if (fullName) {
+      provider.fullName = fullName;
+      changedFields.full_name = fullName;
+    }
+    const city = String(data.get("city") || "").trim();
+    if (city) provider.city = city;
+    const area = String(data.get("area") || "").trim();
+    provider.area = area;
+    changedFields.neighborhood = area;
+    const description = String(data.get("description") || "").trim();
+    provider.description = description;
+    changedFields.description = description;
+    const priceValue = Number(data.get("servicePrice"));
+    provider.servicePrice = Number.isFinite(priceValue) && priceValue > 0 ? priceValue : null;
+    let photoWarning = "";
+    const photoFile = data.get("photo");
+    if (photoFile?.size) {
+      const upload = await optionalStorageUpload("providerPhotos", "providers", photoFile, { publicUrl: true });
+      if (upload.publicUrl) {
+        provider.photo = upload.publicUrl;
+        changedFields.photo_url = upload.publicUrl;
+        provider.verificationStatus = "pending";
+        changedFields.is_verified = false;
+      } else if (upload.error) {
+        photoWarning = ` Photo non envoyée : ${upload.error}.`;
+      }
+    }
+    saveState();
+    let remoteMessage = "";
+    try {
+      remoteMessage = await updateProviderInSupabase(provider, changedFields);
+    } catch (error) {
+      remoteMessage = `Modifications gardées en local : ${friendlySupabaseError(error)}.`;
+      provider.remoteStatus = "local_only";
+      saveState();
+    }
+    let priceWarning = "";
+    try {
+      await updateProviderInSupabase(provider, { service_price: provider.servicePrice });
+    } catch {
+      priceWarning = " Le prix reste local uniquement (colonne service_price absente de la table providers Supabase).";
+    }
+    form.dataset.submitting = "false";
+    finishActionButton(button, "Enregistrer les modifications");
+    renderProviderStatus();
+    renderProviders();
+    if (status) {
+      status.hidden = false;
+      status.innerHTML = `<strong>Profil mis à jour</strong><p>${safe(remoteMessage)}${safe(photoWarning)}${safe(priceWarning)}</p>`;
+    }
+  });
+}
+
 function renderAd() {
   state.ads = [];
 }
@@ -12601,6 +12756,78 @@ function renderProviderStatus(message = "") {
     <p>${target ? `${safe(target.fullName)} - ${target.visibility === "active" ? "visible" : "en attente"}` : "Aucun prestataire disponible pour un paiement."}</p>
     ${renewalLine}
     ${paymentLine}
+  `;
+  renderProviderDashboardStats();
+  renderProviderRequestHistory();
+  renderProviderEarnings();
+}
+
+function renderProviderDashboardStats() {
+  const root = document.querySelector("#providerDashboardStats");
+  if (!root) return;
+  const provider = currentPaymentProvider();
+  if (!provider) {
+    root.innerHTML = `<p>Identifiez-vous comme prestataire pour voir vos statistiques.</p>`;
+    return;
+  }
+  const stats = providerStatsSummary(provider);
+  root.innerHTML = `
+    <div class="commercial-grid">
+      <div class="commercial-metric">
+        <span>Vues de fiche</span>
+        <strong>${stats.profileViews}</strong>
+        <p>Nombre de fois où votre profil a été ouvert</p>
+      </div>
+      <div class="commercial-metric">
+        <span>Contacts reçus</span>
+        <strong>${stats.contactClicks}</strong>
+        <p>Appels ${stats.callClicks} · WhatsApp ${stats.whatsappClicks} · Partages ${stats.shareClicks} · Copies ${stats.copyClicks}</p>
+      </div>
+      <div class="commercial-metric">
+        <span>Note clients</span>
+        <strong>${stats.reviewCount ? stats.ratingAverage.toLocaleString("fr-FR") : "-"}/5</strong>
+        <p>${stats.reviewCount} avis</p>
+      </div>
+      <div class="commercial-metric">
+        <span>Fiabilité Zeyds</span>
+        <strong>${stats.reliability.score}/100</strong>
+        <p>${safe(stats.reliability.label)} · ${providerCompletedServiceRequestCount(provider)} prestation(s) de service terminée(s)</p>
+      </div>
+    </div>
+  `;
+}
+
+function renderProviderRequestHistory() {
+  const deliveryRoot = document.querySelector("#providerDeliveryHistoryList");
+  const serviceRoot = document.querySelector("#providerServiceHistoryList");
+  const provider = currentPaymentProvider();
+  if (deliveryRoot) {
+    const history = provider ? providerDeliveryHistory(provider) : [];
+    deliveryRoot.innerHTML = history.length
+      ? history.map((request) => deliveryRequestCard(request, { providerId: provider.id })).join("")
+      : `<article class="delivery-request-card empty"><h3>Aucune livraison terminée</h3><p>Vos missions clôturées apparaîtront ici.</p></article>`;
+  }
+  if (serviceRoot) {
+    const history = provider ? providerServiceRequestHistory(provider) : [];
+    serviceRoot.innerHTML = history.length
+      ? history.map((request) => serviceRequestCard(request, { providerId: provider.id })).join("")
+      : `<article class="delivery-request-card empty"><h3>Aucune demande de service terminée</h3><p>Vos demandes traitées apparaîtront ici.</p></article>`;
+  }
+}
+
+function renderProviderEarnings() {
+  const root = document.querySelector("#providerEarningsPanel");
+  if (!root) return;
+  const provider = currentPaymentProvider();
+  if (!provider) {
+    root.innerHTML = `<p>Identifiez-vous comme prestataire pour voir vos gains.</p>`;
+    return;
+  }
+  const earnings = providerDeliveryEarnings(provider);
+  const completedServices = providerCompletedServiceRequestCount(provider);
+  root.innerHTML = `
+    <p><strong>${safe(formatMoney(earnings))}</strong> gagnés sur les livraisons payées et confirmées.</p>
+    <p>${completedServices} prestation(s) de service terminée(s) (paiement hors app pour l'instant).</p>
   `;
 }
 
@@ -16530,6 +16757,7 @@ function boot() {
   renderCategories();
   setupGeolocation();
   setupProvidersViewToggle();
+  setupProviderEditForm();
   renderServices();
   renderProviders();
   renderDelivery();

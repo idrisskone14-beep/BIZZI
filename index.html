@@ -812,6 +812,47 @@
             <p>Si vous avez déjà un profil Zeyds, utilisez exactement le téléphone principal donné à l'inscription.</p>
           </div>
         </section>
+        <section class="panel provider-dashboard-panel" id="providerDashboard">
+          <div class="section-head">
+            <h2>Mon tableau de bord</h2>
+          </div>
+          <div id="providerDashboardStats"></div>
+          <h3>Mes gains</h3>
+          <div id="providerEarningsPanel"></div>
+          <h3>Abonnement</h3>
+          <div id="providerStatus" class="status-box"></div>
+          <div class="delivery-provider-box">
+            <div class="section-head">
+              <h3>Livraisons à accepter</h3>
+              <span id="providerDeliveryCount" class="tag">0</span>
+            </div>
+            <button class="secondary" id="enableDeliveryAlerts" type="button">Activer alertes locales</button>
+            <button class="secondary" id="enableCourierLive" type="button">Activer disponibilité livreur live</button>
+            <div id="providerDeliveryQueue" class="delivery-request-list"></div>
+          </div>
+          <div class="delivery-provider-box service-request-provider-box">
+            <div class="section-head">
+              <h3>Demandes de service reçues</h3>
+              <span id="providerServiceRequestCount" class="tag">0</span>
+            </div>
+            <div id="providerServiceRequestQueue" class="delivery-request-list"></div>
+          </div>
+          <h3>Historique des livraisons</h3>
+          <div id="providerDeliveryHistoryList" class="delivery-request-list"></div>
+          <h3>Historique des demandes de service</h3>
+          <div id="providerServiceHistoryList" class="delivery-request-list"></div>
+          <h3>Modifier mon profil</h3>
+          <form class="form" id="providerEditForm">
+            <label>Nom complet<input name="fullName" type="text" maxlength="80" placeholder="Votre nom"></label>
+            <label>Ville<input name="city" type="text" placeholder="Votre ville"></label>
+            <label>Commune / quartier<input name="area" type="text" placeholder="Ex: Yopougon, Riviera 3"></label>
+            <label>Description<textarea name="description" rows="3" maxlength="400" placeholder="Décrivez votre service"></textarea></label>
+            <label>Prix de départ (FCFA) <span class="optional-label">(optionnel)</span><input name="servicePrice" type="number" min="0" step="100" placeholder="Ex: 5000"></label>
+            <label>Nouvelle photo <span class="optional-label">(optionnel)</span><input name="photo" type="file" accept="image/*"></label>
+            <button class="primary" type="submit">Enregistrer les modifications</button>
+            <div id="providerEditStatus" class="status-box compact" hidden></div>
+          </form>
+        </section>
         <div class="provider-layout">
           <section class="panel provider-create-panel">
             <div class="section-head">
@@ -885,23 +926,6 @@
               <label>Preuve de paiement<input name="proof" type="file" accept="image/*,application/pdf"></label>
               <button class="primary" type="submit">Envoyer pour validation admin</button>
             </form>
-            <div id="providerStatus" class="status-box"></div>
-            <div class="delivery-provider-box">
-              <div class="section-head">
-                <h3>Livraisons à accepter</h3>
-                <span id="providerDeliveryCount" class="tag">0</span>
-              </div>
-              <button class="secondary" id="enableDeliveryAlerts" type="button">Activer alertes locales</button>
-              <button class="secondary" id="enableCourierLive" type="button">Activer disponibilité livreur live</button>
-              <div id="providerDeliveryQueue" class="delivery-request-list"></div>
-            </div>
-            <div class="delivery-provider-box service-request-provider-box">
-              <div class="section-head">
-                <h3>Demandes de service reçues</h3>
-                <span id="providerServiceRequestCount" class="tag">0</span>
-              </div>
-              <div id="providerServiceRequestQueue" class="delivery-request-list"></div>
-            </div>
           </section>
         </div>
       </section>

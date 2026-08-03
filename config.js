@@ -13,6 +13,10 @@ window.BizziConfig = {
     providersEmail: "prestataires@bizzi-africa.com",
     supportWhatsapp: "+225 07 59 95 81 21",
   },
+  restBackend: {
+    url: "https://bizzi-gateway.onrender.com",
+    anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzg1NDM3NDAxLCJleHAiOjIxMDA3OTc0MDF9.rkYbqdw1bG0U5FwTmTRPDqIoCtwaNTWO35oOOKhtpwk",
+  },
   supabase: {
     url: "https://hqqppxnvorcnvksulhna.supabase.co",
     anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxcXBweG52b3JjbnZrc3VsaG5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3NjA1MzEsImV4cCI6MjA5ODMzNjUzMX0.pMTb34CHKpaIRjVa975JtwBsC6iouwoFxxBEbjsnYNM",

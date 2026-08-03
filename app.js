@@ -2480,8 +2480,36 @@ function supabaseConfigured() {
   return hasProductionValue(bizziConfig.supabase?.url) && hasProductionValue(bizziConfig.supabase?.anonKey);
 }
 
-function supabaseRestUrl(resource) {
-  const baseUrl = String(bizziConfig.supabase?.url || "").replace(/\/+$/, "");
+// Le CRUD tables/vues (providers, services, avis...) tourne desormais sur le
+// gateway auto-heberge (PostgREST + Neon) plutot que sur Supabase. Les appels
+// admin (avec un accessToken issu du vrai Supabase Auth) et le Storage
+// (photos) restent sur Supabase, qui n'a pas d'equivalent cote gateway.
+function restBackendConfigured() {
+  return hasProductionValue(bizziConfig.restBackend?.url) && hasProductionValue(bizziConfig.restBackend?.anonKey);
+}
+
+function activeRestBaseUrl(accessToken = "") {
+  if (restBackendConfigured() && !accessToken) {
+    return String(bizziConfig.restBackend.url).replace(/\/+$/, "");
+  }
+  return supabaseBaseUrl();
+}
+
+function activeRestHeaders(extra = {}, accessToken = "") {
+  if (restBackendConfigured() && !accessToken) {
+    const key = bizziConfig.restBackend.anonKey || "";
+    return {
+      apikey: key,
+      Authorization: `Bearer ${key}`,
+      "X-Bizzi-Client-Token": BizziPrivacy.token(),
+      ...extra,
+    };
+  }
+  return supabaseApiHeaders(extra, accessToken);
+}
+
+function supabaseRestUrl(resource, accessToken = "") {
+  const baseUrl = activeRestBaseUrl(accessToken);
   const cleanResource = String(resource || "").replace(/^\/+/, "").replace(/ /g, "%20");
   try {
     return new URL(cleanResource, `${baseUrl}/rest/v1/`).toString();
@@ -2542,17 +2570,17 @@ function withTimeout(promise, ms, message) {
 }
 
 async function supabaseRequest(resource, options = {}) {
-  if (!supabaseConfigured()) {
+  if (!supabaseConfigured() && !restBackendConfigured()) {
     throw new Error("Configuration Supabase absente");
   }
-  const headers = supabaseApiHeaders({
+  const headers = activeRestHeaders({
     Accept: "application/json",
     ...(options.headers || {}),
   }, options.accessToken || "");
   if (options.body) {
     headers["Content-Type"] = "application/json";
   }
-  const response = await fetchWithTimeout(supabaseRestUrl(resource), {
+  const response = await fetchWithTimeout(supabaseRestUrl(resource, options.accessToken || ""), {
     method: options.method || "GET",
     headers,
     body: options.body ? JSON.stringify(options.body) : undefined,
@@ -2625,12 +2653,12 @@ async function supabaseAdminRequest(resource, options = {}) {
 }
 
 async function supabaseRpc(name, payload = {}, options = {}) {
-  if (!supabaseConfigured()) {
+  if (!supabaseConfigured() && !restBackendConfigured()) {
     throw new Error("Configuration Supabase absente");
   }
-  const response = await fetchWithTimeout(`${supabaseBaseUrl()}/rest/v1/rpc/${name}`, {
+  const response = await fetchWithTimeout(`${activeRestBaseUrl(options.accessToken || "")}/rest/v1/rpc/${name}`, {
     method: "POST",
-    headers: supabaseApiHeaders({
+    headers: activeRestHeaders({
       Accept: "application/json",
       "Content-Type": "application/json",
       Prefer: options.prefer || "return=minimal",

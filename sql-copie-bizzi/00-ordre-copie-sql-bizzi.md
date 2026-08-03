@@ -138,6 +138,7 @@ Le fichier `77-rapports-revenus-livraisons-v174.sql` ajoute les rapports revenus
 
 - `90-services-confiance-sos-v203.sql` ajoute les services confiance, SOS et les nouveaux metiers.
 - `91-bizzi-food-v204.sql` ajoute Bizzi Food : bonnes adresses, specialites, vue publique et bucket `food-photos`.
+- `101-demandes-service-directes-v303.sql` ajoute la table `service_requests` (demande directe a un prestataire -> accepte -> suit -> note), sans paiement in-app. A executer seulement si vous voulez activer la synchronisation distante de ce module ; l'app fonctionne deja en local sans cette table.
 
 ## Si la creation prestataire affiche une erreur RLS
 

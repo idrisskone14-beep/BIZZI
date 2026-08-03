@@ -117,6 +117,7 @@ const DELIVERY_SERVICES = [
 ];
 
 const DELIVERY_COMMISSION_RATE = 0.15;
+const SERVICE_REQUEST_COMMISSION_RATE = 0.15;
 const DELIVERY_PENALTY_COMMISSION_RATE = 0.18;
 const DELIVERY_PENALTY_COURSE_COUNT = 3;
 const DELIVERY_GEO_DATA = globalThis.BizziCIGeo || {};
@@ -455,6 +456,7 @@ const seed = {
   payments: [],
   requests: [],
   deliveryRequests: [],
+  serviceRequests: [],
   eventPromotions: [],
   exceptionPlaces: [
     {
@@ -1360,6 +1362,49 @@ function normalizeDeliveryRequest(request = {}) {
   };
 }
 
+function normalizeServiceRequest(request = {}) {
+  const amount = Math.max(0, Math.round(Number(request.amount ?? 0)));
+  const commissionRate = Number(request.commissionRate ?? SERVICE_REQUEST_COMMISSION_RATE);
+  const bizziCommission = Math.round(Number(request.bizziCommission ?? amount * commissionRate));
+  const providerPayout = Math.max(0, Math.round(Number(request.providerPayout ?? amount - bizziCommission)));
+  return {
+    id: request.id || `svc${Date.now()}${Math.floor(Math.random() * 1000)}`,
+    remoteId: request.remoteId || "",
+    remoteStatus: request.remoteStatus || "",
+    clientDeviceToken: String(request.clientDeviceToken || request.client_access_token || ""),
+    clientName: normalizeClientName(request.clientName || request.customerName || request.customer_name || ""),
+    phone: String(request.phone || "").trim(),
+    service: canonicalServiceName(request.service || ""),
+    city: String(request.city || "").trim() || "Toute la Côte d'Ivoire",
+    area: String(request.area || "").trim(),
+    notes: String(request.notes || request.issueDescription || request.issue_description || "").trim(),
+    photoUrl: String(request.photoUrl || request.photo_url || "").trim(),
+    amount,
+    currency: request.currency || bizziConfig.currency || "FCFA",
+    commissionRate,
+    bizziCommission,
+    providerPayout,
+    paymentReference: String(request.paymentReference || "").trim(),
+    paymentStatus: request.paymentStatus || (amount > 0 ? "pending" : "unpaid"),
+    paidAt: request.paidAt || null,
+    payoutStatus: request.payoutStatus || "pending",
+    assignedProviderId: request.assignedProviderId || "",
+    assignedProviderName: request.assignedProviderName || "",
+    assignedProviderPhone: request.assignedProviderPhone || "",
+    status: request.status || "pending_acceptance",
+    acceptedAt: request.acceptedAt || null,
+    startedAt: request.startedAt || null,
+    completedAt: request.completedAt || null,
+    declinedAt: request.declinedAt || null,
+    declineReason: String(request.declineReason || "").trim(),
+    cancellationReason: request.cancellationReason || "",
+    cancelledBy: request.cancelledBy || "",
+    cancelledAt: request.cancelledAt || null,
+    reviewSubmitted: Boolean(request.reviewSubmitted),
+    createdAt: request.createdAt || new Date().toISOString(),
+  };
+}
+
 function normalizeState(draft) {
   draft.categories = syncCategoriesWithSeed(draft.categories);
   draft.selectedCategory = canonicalCategoryName(draft.selectedCategory || seed.selectedCategory);
@@ -1428,6 +1473,7 @@ function normalizeState(draft) {
     verifiedMatchCount: Number(request.verifiedMatchCount || 0),
   })) : [];
   draft.deliveryRequests = Array.isArray(draft.deliveryRequests) ? draft.deliveryRequests.map(normalizeDeliveryRequest).filter((request) => !request.remoteId || BizziPrivacy.owns(request.clientDeviceToken)) : [];
+  draft.serviceRequests = Array.isArray(draft.serviceRequests) ? draft.serviceRequests.map(normalizeServiceRequest).filter((request) => !request.remoteId || BizziPrivacy.owns(request.clientDeviceToken)) : [];
   draft.eventPromotions = Array.isArray(draft.eventPromotions) ? draft.eventPromotions.map(normalizeEventPromotion) : [];
   draft.exceptionPlaces = Array.isArray(draft.exceptionPlaces) ? draft.exceptionPlaces.map(normalizeExceptionPlace) : [];
   draft.foodPlaces = Array.isArray(draft.foodPlaces) ? draft.foodPlaces.map(normalizeFoodPlace) : [];
@@ -1501,6 +1547,10 @@ function normalizeState(draft) {
     assignedProviderId: remapProviderId(request.assignedProviderId),
     matchedProviderIds: [...new Set((request.matchedProviderIds || []).map(remapProviderId).filter(Boolean))],
   })), "delivery").items;
+  draft.serviceRequests = dedupeEntityRecords(draft.serviceRequests.map((request) => ({
+    ...request,
+    assignedProviderId: remapProviderId(request.assignedProviderId),
+  })), "service_request").items;
   draft.reviews = dedupeEntityRecords(draft.reviews.map((review) => ({
     ...review,
     providerId: remapProviderId(review.providerId),
@@ -1957,6 +2007,7 @@ function selectProviderForRenewal(provider, message = "") {
   renderPaymentProviderOptions();
   renderProviderStatus(message || `Profil identifié : ${safe(provider.fullName)}. Choisissez un forfait puis envoyez la référence de paiement.`);
   renderProviderDeliveryQueue();
+  renderProviderServiceQueue();
   renderProviderIdentityStatus(`
     <strong>Profil retrouvé</strong>
     <p>${safe(provider.fullName)} - ${safe(provider.service || "Métier à préciser")} - ${safe(provider.phone || "contact déjà enregistré")}.</p>
@@ -7695,6 +7746,84 @@ async function acceptDeliveryRequestInSupabase(request, provider) {
   return "Acceptation publiée dans Supabase.";
 }
 
+async function submitServiceRequestToSupabase(request) {
+  if (!supabaseConfigured()) return "Demande gardée en local : Supabase non configuré.";
+  if (request.remoteId) return "Demande déjà liée à Supabase.";
+  request.clientDeviceToken ||= BizziPrivacy.token();
+  const requestId = randomUuid();
+  const provider = state.providers.find((item) => item.id === request.assignedProviderId);
+  const payload = {
+    id: requestId,
+    client_access_token: request.clientDeviceToken,
+    customer_name: request.clientName || null,
+    customer_phone: request.phone || null,
+    service_name: request.service || null,
+    city_name: request.city || null,
+    area: request.area || null,
+    notes: request.notes || null,
+    photo_url: request.photoUrl || null,
+    assigned_provider_id: remoteProviderId(provider) || null,
+    assigned_provider_name: request.assignedProviderName || null,
+    assigned_provider_phone: request.assignedProviderPhone || null,
+    status: "pending_acceptance",
+    created_at: request.createdAt,
+  };
+  await supabaseInsert("service_requests", payload);
+  request.remoteId = requestId;
+  request.remoteStatus = "linked";
+  const message = "Demande envoyée vers Supabase.";
+  markRemoteWrite(message);
+  return message;
+}
+
+async function acceptServiceRequestInSupabase(request, provider) {
+  if (!request?.remoteId || !remoteProviderId(provider)) return "Acceptation locale enregistrée.";
+  try {
+    await supabaseRpc("bizzi_accept_service_request", {
+      p_service_request_id: request.remoteId,
+      p_provider_id: remoteProviderId(provider),
+      p_provider_name: provider.fullName,
+      p_provider_phone: provider.phone,
+    });
+  } catch (rpcError) {
+    await supabaseRequest(`service_requests?id=eq.${encodeURIComponent(request.remoteId)}&status=eq.pending_acceptance`, {
+      method: "PATCH",
+      headers: { Prefer: "return=minimal" },
+      body: {
+        status: "accepted",
+        assigned_provider_id: remoteProviderId(provider),
+        assigned_provider_name: provider.fullName,
+        assigned_provider_phone: provider.phone,
+        accepted_at: new Date().toISOString(),
+      },
+    });
+  }
+  request.remoteStatus = "linked";
+  return "Acceptation publiée dans Supabase.";
+}
+
+async function declineServiceRequestInSupabase(request) {
+  if (!request?.remoteId) return "Refus local enregistré.";
+  try {
+    await supabaseRpc("bizzi_decline_service_request", {
+      p_service_request_id: request.remoteId,
+      p_reason: request.declineReason || "",
+    });
+  } catch (rpcError) {
+    await supabaseRequest(`service_requests?id=eq.${encodeURIComponent(request.remoteId)}`, {
+      method: "PATCH",
+      headers: { Prefer: "return=minimal" },
+      body: {
+        status: "declined",
+        decline_reason: request.declineReason || null,
+        declined_at: new Date().toISOString(),
+      },
+    });
+  }
+  request.remoteStatus = "linked";
+  return "Refus publié dans Supabase.";
+}
+
 async function cancelDeliveryByClientInSupabase(request, reason) {
   if (!request?.remoteId) return "Annulation locale enregistrée.";
   const customerCheck = request.paymentReference || request.phone || "";
@@ -9148,6 +9277,14 @@ function submitReview(provider, rating, message) {
   return review;
 }
 
+function submitServiceRequestReview(request, provider, rating, message) {
+  const review = submitReview(provider, rating, message);
+  review.serviceRequestId = request.id;
+  request.reviewSubmitted = true;
+  saveState();
+  return review;
+}
+
 function contactActionMessage(provider, action) {
   const phone = provider.phone || "numéro indisponible";
   const messages = {
@@ -10196,6 +10333,27 @@ function openDeliveryRequests() {
     });
 }
 
+function clientServiceRequests() {
+  const clientDigits = normalizeContactDigits(currentClientPhone());
+  if (!clientDigits) return [];
+  return state.serviceRequests
+    .filter((request) => normalizeContactDigits(request.phone) === clientDigits)
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+}
+
+function renderMyServiceRequests() {
+  const panel = document.querySelector("#myServiceRequestsPanel");
+  const root = document.querySelector("#myServiceRequestsList");
+  const count = document.querySelector("#myServiceRequestsCount");
+  if (!panel || !root || !count) return;
+  const requests = clientServiceRequests();
+  count.textContent = String(requests.length);
+  panel.hidden = requests.length === 0;
+  if (!requests.length) return;
+  root.innerHTML = requests.map((request) => serviceRequestCard(request, {})).join("");
+  setupServiceRequestReviewForms();
+}
+
 async function requestDeliveryAlertPermission(button = null) {
   const provider = currentPaymentProvider();
   if (globalThis.BizziPushClient?.supported?.() && bizziConfig.notifications?.enabled && bizziConfig.notifications?.vapidPublicKey) {
@@ -10613,6 +10771,180 @@ function renderProviderDeliveryQueue() {
   `;
   bindDeliveryRequestActions(root);
   notifyProviderDeliveryRequests(requests).catch(() => null);
+}
+
+function serviceRequestPipelineLabel(request = {}) {
+  if (request.status === "completed") return { label: "Terminée", tone: "ok" };
+  if (request.status === "declined") return { label: "Refusée par le prestataire", tone: "bad" };
+  if (request.status === "cancelled") return { label: "Annulée", tone: "bad" };
+  if (request.status === "in_progress") return { label: "En cours", tone: "ok" };
+  if (request.status === "accepted") return { label: "Acceptée, en attente de démarrage", tone: "ok" };
+  return { label: "En attente d'acceptation", tone: "pending" };
+}
+
+function providerServiceRequests(provider) {
+  if (!provider) return [];
+  return state.serviceRequests
+    .filter((request) => request.assignedProviderId === provider.id && request.status === "pending_acceptance")
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+}
+
+function providerActiveServiceRequests(provider) {
+  if (!provider) return [];
+  return state.serviceRequests
+    .filter((request) => request.assignedProviderId === provider.id && ["accepted", "in_progress"].includes(request.status))
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+}
+
+function serviceRequestCard(request, options = {}) {
+  const isProviderView = Boolean(options.providerId);
+  const pipeline = serviceRequestPipelineLabel(request);
+  const canAcceptOrDecline = isProviderView && request.status === "pending_acceptance";
+  const canAdvance = isProviderView && ["accepted", "in_progress"].includes(request.status);
+  const nextStage = request.status === "accepted" ? "in_progress" : request.status === "in_progress" ? "completed" : "";
+  const nextStageLabel = request.status === "accepted" ? "Démarrer la prestation" : "Marquer comme terminée";
+  const showReviewPrompt = !isProviderView && request.status === "completed" && !request.reviewSubmitted;
+  return `
+    <article class="delivery-request-card">
+      <div>
+        <div class="delivery-card-head">
+          <h3>${safe(request.service || "Service")}</h3>
+          <span class="tag ${safe(pipeline.tone)}">${safe(pipeline.label)}</span>
+        </div>
+        ${isProviderView && request.clientName ? `<p><strong>Client :</strong> ${safe(request.clientName)}${request.phone ? ` - ${safe(request.phone)}` : ""}</p>` : ""}
+        ${!isProviderView && request.assignedProviderName ? `<p><strong>Prestataire :</strong> ${safe(request.assignedProviderName)}${request.status !== "pending_acceptance" && request.assignedProviderPhone ? ` - ${safe(request.assignedProviderPhone)}` : ""}</p>` : ""}
+        <p>${safe(request.city)}${request.area ? `, ${safe(request.area)}` : ""}</p>
+        ${request.notes ? `<p>${safe(request.notes)}</p>` : ""}
+        ${request.photoUrl ? `<a class="doc-link" href="${safe(request.photoUrl)}" target="_blank" rel="noreferrer">Voir la photo du besoin</a>` : ""}
+        ${request.declineReason ? `<p><strong>Motif du refus :</strong> ${safe(request.declineReason)}</p>` : ""}
+        <p>Demande envoyée le ${new Date(request.createdAt).toLocaleString("fr-FR")}</p>
+        ${showReviewPrompt ? `
+          <form class="form review-form" data-service-review-request="${safe(request.id)}">
+            <h3>Comment s'est passée cette prestation ?</h3>
+            <label>Note
+              <select name="rating">
+                <option value="5">5 - Excellent</option>
+                <option value="4">4 - Bien</option>
+                <option value="3">3 - Moyen</option>
+                <option value="2">2 - Décevant</option>
+                <option value="1">1 - Mauvaise expérience</option>
+              </select>
+            </label>
+            <label>Commentaire<textarea name="message" rows="2" maxlength="180" placeholder="Exemple : ponctuel, travail soigné"></textarea></label>
+            <button class="secondary" type="submit">Envoyer l'avis</button>
+          </form>
+        ` : ""}
+      </div>
+      <div class="delivery-card-actions">
+        ${canAcceptOrDecline ? `<button class="primary" type="button" data-accept-service="${safe(request.id)}" data-provider-id="${safe(options.providerId)}">Accepter</button>` : ""}
+        ${canAcceptOrDecline ? `<button class="secondary" type="button" data-decline-service="${safe(request.id)}" data-provider-id="${safe(options.providerId)}">Refuser</button>` : ""}
+        ${canAdvance ? `<button class="primary" type="button" data-advance-service="${safe(request.id)}" data-next-stage="${safe(nextStage)}">${safe(nextStageLabel)}</button>` : ""}
+      </div>
+    </article>
+  `;
+}
+
+function renderProviderServiceQueue() {
+  const root = document.querySelector("#providerServiceRequestQueue");
+  const count = document.querySelector("#providerServiceRequestCount");
+  if (!root || !count) return;
+  const provider = currentPaymentProvider();
+  const pending = providerServiceRequests(provider);
+  const active = providerActiveServiceRequests(provider);
+  const requests = [...pending, ...active];
+  count.textContent = String(pending.length);
+  if (!provider) {
+    root.innerHTML = `
+      <article class="delivery-request-card empty">
+        <h3>Aucun profil prestataire sélectionné</h3>
+        <p>Créez ou sélectionnez un prestataire pour voir les demandes de service.</p>
+      </article>
+    `;
+    return;
+  }
+  root.innerHTML = requests.length ? requests.map((request) => serviceRequestCard(request, { providerId: provider.id })).join("") : `
+    <article class="delivery-request-card empty">
+      <h3>Aucune demande pour le moment</h3>
+      <p>Les demandes envoyées directement à votre profil apparaîtront ici.</p>
+    </article>
+  `;
+  bindServiceRequestActions(root);
+}
+
+async function acceptServiceRequest(requestId, providerId, button = null) {
+  const request = state.serviceRequests.find((item) => item.id === requestId);
+  const provider = state.providers.find((item) => item.id === providerId);
+  if (!request || !provider || request.status !== "pending_acceptance") return;
+  setBusyButton(button, true, "Acceptation...");
+  request.status = "accepted";
+  request.assignedProviderId = provider.id;
+  request.assignedProviderName = provider.fullName;
+  request.assignedProviderPhone = provider.phone;
+  request.acceptedAt = new Date().toISOString();
+  saveState();
+  let remoteMessage = "";
+  try {
+    remoteMessage = await acceptServiceRequestInSupabase(request, provider);
+  } catch (error) {
+    request.remoteStatus = "local_only";
+    remoteMessage = `Acceptation locale : ${friendlySupabaseError(error)}.`;
+    saveState();
+  }
+  renderMyServiceRequests();
+  renderProviderServiceQueue();
+  renderProviderStatus(`Demande acceptée. Client : ${safe(request.clientName || "non renseigné")}. Contact : ${safe(request.phone || "non renseigné")}. ${safe(remoteMessage)}`);
+  finishActionButton(button, "Acceptée");
+}
+
+async function declineServiceRequest(requestId, providerId, button = null) {
+  const request = state.serviceRequests.find((item) => item.id === requestId);
+  const provider = state.providers.find((item) => item.id === providerId);
+  if (!request || !provider || request.status !== "pending_acceptance") return;
+  const reason = window.prompt("Motif du refus (optionnel) : indisponible, hors zone, service non proposé...") || "";
+  setBusyButton(button, true, "Envoi...");
+  request.status = "declined";
+  request.declinedAt = new Date().toISOString();
+  request.declineReason = reason.trim();
+  saveState();
+  try {
+    await declineServiceRequestInSupabase(request, provider);
+  } catch (error) {
+    request.remoteStatus = "local_only";
+    saveState();
+  }
+  renderMyServiceRequests();
+  renderProviderServiceQueue();
+  finishActionButton(button, "Refusée");
+}
+
+function advanceServiceRequestStage(requestId, nextStage, button = null) {
+  const request = state.serviceRequests.find((item) => item.id === requestId);
+  if (!request || !nextStage) return;
+  request.status = nextStage;
+  if (nextStage === "in_progress") request.startedAt = new Date().toISOString();
+  if (nextStage === "completed") request.completedAt = new Date().toISOString();
+  saveState();
+  renderMyServiceRequests();
+  renderProviderServiceQueue();
+  finishActionButton(button, "Mis à jour");
+}
+
+function bindServiceRequestActions(root = document) {
+  root.querySelectorAll("[data-accept-service]").forEach((button) => {
+    if (button.dataset.bound === "true") return;
+    button.dataset.bound = "true";
+    button.addEventListener("click", () => acceptServiceRequest(button.dataset.acceptService, button.dataset.providerId, button));
+  });
+  root.querySelectorAll("[data-decline-service]").forEach((button) => {
+    if (button.dataset.bound === "true") return;
+    button.dataset.bound = "true";
+    button.addEventListener("click", () => declineServiceRequest(button.dataset.declineService, button.dataset.providerId, button));
+  });
+  root.querySelectorAll("[data-advance-service]").forEach((button) => {
+    if (button.dataset.bound === "true") return;
+    button.dataset.bound = "true";
+    button.addEventListener("click", () => advanceServiceRequestStage(button.dataset.advanceService, button.dataset.nextStage, button));
+  });
 }
 
 function startDeliveryAlertPolling() {
@@ -11954,6 +12286,8 @@ function openProfile(id) {
         <p>Score calculé avec vérification Zeyds, avis clients, retours de contact, activité et abonnement actif.</p>
       </div>
       <a class="primary call-link" href="tel:${provider.phone.replace(/\s/g, "")}" data-lead-action="call">Appeler ${provider.phone}</a>
+      <button class="primary call-link" type="button" data-request-service="${safe(provider.id)}">Demander ce service sur Zeyds</button>
+      <div id="profileServiceRequestStatus" class="status-box compact" hidden></div>
       ${whatsappUrl ? `<a class="secondary call-link" href="${safe(whatsappUrl)}" target="_blank" rel="noreferrer" data-lead-action="whatsapp">Contacter sur WhatsApp</a>` : ""}
       ${routeLink}
       <div class="share-row">
@@ -12056,6 +12390,10 @@ function setupProfileActions(provider) {
     });
   });
 
+  document.querySelectorAll("[data-request-service]").forEach((button) => {
+    button.addEventListener("click", () => requestServiceFromProvider(provider, button));
+  });
+
   bindContactFeedbackButtons(provider);
 }
 
@@ -12072,6 +12410,44 @@ function bindContactFeedbackButtons(provider) {
       }
     });
   });
+}
+
+async function requestServiceFromProvider(provider, button = null) {
+  const clientPhone = requireClientPhoneForAccess("demander ce service");
+  if (!clientPhone) return;
+  const clientName = currentClientName();
+  setBusyButton(button, true, "Envoi...");
+  const request = normalizeServiceRequest({
+    clientName,
+    phone: clientPhone,
+    service: provider.service,
+    city: provider.city,
+    area: provider.area,
+    photoUrl: state.searchRequestPhotoUrl || "",
+    assignedProviderId: provider.id,
+    assignedProviderName: provider.fullName,
+    assignedProviderPhone: provider.phone,
+  });
+  state.serviceRequests.unshift(request);
+  saveState();
+  let remoteMessage = "";
+  try {
+    remoteMessage = await submitServiceRequestToSupabase(request, provider);
+  } catch (error) {
+    request.remoteStatus = "local_only";
+    remoteMessage = `Demande gardée en local : ${friendlySupabaseError(error)}.`;
+    saveState();
+  }
+  renderMyServiceRequests();
+  finishActionButton(button, "Demande envoyée");
+  const status = document.querySelector("#profileServiceRequestStatus");
+  if (status) {
+    status.hidden = false;
+    status.innerHTML = `
+      <strong>Demande envoyée à ${safe(provider.fullName)}</strong>
+      <p>Vous serez notifié dès que le prestataire accepte. Suivez son avancement dans « Mes demandes de service » sur l'onglet Services. ${safe(remoteMessage)}</p>
+    `;
+  }
 }
 
 function setupReviewForms() {
@@ -12121,6 +12497,44 @@ function setupReviewForms() {
       renderProviders();
       renderHomeDiscovery();
       renderSavedProviders();
+    });
+  });
+}
+
+function setupServiceRequestReviewForms() {
+  document.querySelectorAll("[data-service-review-request]").forEach((form) => {
+    if (form.dataset.bound === "true") return;
+    form.dataset.bound = "true";
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const currentForm = event.currentTarget;
+      if (currentForm.dataset.submitting === "true") return;
+      const button = currentForm.querySelector("button[type='submit']");
+      const data = new FormData(currentForm);
+      const request = state.serviceRequests.find((item) => item.id === currentForm.dataset.serviceReviewRequest);
+      const provider = request ? state.providers.find((item) => item.id === request.assignedProviderId) : null;
+      if (!request || !provider) {
+        currentForm.insertAdjacentHTML("beforeend", `<div class="status-box"><strong>Avis impossible</strong><p>Demande ou prestataire introuvable. Rechargez la page puis réessayez.</p></div>`);
+        return;
+      }
+      currentForm.dataset.submitting = "true";
+      setBusyButton(button, true, "Envoi...");
+      const review = submitServiceRequestReview(request, provider, data.get("rating"), data.get("message"));
+      currentForm.innerHTML = `
+        <div class="status-box" role="status" aria-live="polite">
+          <strong>Merci pour votre avis</strong>
+          <p>Votre retour aide Zeyds à mettre en avant les prestataires fiables.</p>
+        </div>
+      `;
+      try {
+        await submitReviewToSupabase(review, provider);
+      } catch {
+        review.remoteStatus = "local_only";
+        saveState();
+      }
+      renderAdmin();
+      renderProviders();
+      renderMyServiceRequests();
     });
   });
 }
@@ -16119,6 +16533,8 @@ function boot() {
   renderServices();
   renderProviders();
   renderDelivery();
+  renderMyServiceRequests();
+  renderProviderServiceQueue();
   renderFood();
   renderExceptionPlaces();
   renderEvents();

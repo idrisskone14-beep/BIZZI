@@ -694,6 +694,10 @@ p {
   gap: var(--space-2);
 }
 
+.service-request-provider-box {
+  margin-top: 16px;
+}
+
 .delivery-request-list {
   display: grid;
   gap: var(--space-2);

@@ -632,6 +632,13 @@
           </div>
           <div id="searchAssistantStatus" class="status-box compact"></div>
         </section>
+        <section class="panel my-service-requests-panel" id="myServiceRequestsPanel" hidden>
+          <div class="section-head">
+            <h2>Mes demandes de service</h2>
+            <span id="myServiceRequestsCount" class="tag ok">0</span>
+          </div>
+          <div id="myServiceRequestsList" class="delivery-request-list"></div>
+        </section>
         <details class="advanced-search-panel" open>
           <summary>Filtres avancés · affiner la recherche</summary>
           <div class="toolbar">
@@ -887,6 +894,13 @@
               <button class="secondary" id="enableDeliveryAlerts" type="button">Activer alertes locales</button>
               <button class="secondary" id="enableCourierLive" type="button">Activer disponibilité livreur live</button>
               <div id="providerDeliveryQueue" class="delivery-request-list"></div>
+            </div>
+            <div class="delivery-provider-box service-request-provider-box">
+              <div class="section-head">
+                <h3>Demandes de service reçues</h3>
+                <span id="providerServiceRequestCount" class="tag">0</span>
+              </div>
+              <div id="providerServiceRequestQueue" class="delivery-request-list"></div>
             </div>
           </section>
         </div>

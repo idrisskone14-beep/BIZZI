@@ -17085,6 +17085,16 @@ function initNavigation() {
       setView(button.dataset.go);
     });
   });
+  document.querySelectorAll("[data-provider-shortcut]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const mode = button.dataset.providerShortcut === "existing" ? "existing" : "new";
+      setView("provider");
+      setProviderEntryMode(mode, {
+        focus: mode === "existing" ? ".provider-entry-panel" : ".provider-create-panel",
+        resetForm: mode === "new",
+      });
+    });
+  });
   document.querySelector("#deliveryGeoButton")?.addEventListener("click", () => document.querySelector("#geoButton")?.click());
   document.querySelector("#deliverySearchButton")?.addEventListener("click", openDeliverySearch);
   document.querySelector("#deliveryRequestButton")?.addEventListener("click", prefillDeliveryRequest);

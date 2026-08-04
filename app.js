@@ -842,6 +842,7 @@ function emptyRemoteAdminQueue() {
     providerSearchQuery: "",
     providerSearchResults: [],
     isAdmin: null,
+    isSuperAdmin: null,
     publicProviderCount: null,
   };
 }
@@ -4228,6 +4229,370 @@ function renderRemoteAdminPanel() {
 
 }
 
+let superAdminState = {
+  loaded: false,
+  admins: [],
+  auditEvents: [],
+  auditOffset: 0,
+  auditHasMore: false,
+  settings: [],
+  directoryTab: "providers",
+  directorySearch: "",
+};
+const SUPER_ADMIN_AUDIT_PAGE_SIZE = 20;
+let superAdminProviderDirectoryState = { items: [], cursor: null, hasMore: false, loading: false, signature: "" };
+let superAdminClientDirectoryState = { items: [], cursor: null, hasMore: false, loading: false, signature: "" };
+let superAdminDirectorySearchTimer = 0;
+
+function adminRoleLabel(role) {
+  const labels = { admin: "Admin", owner: "Owner", super_admin: "Super admin" };
+  return labels[String(role || "").toLowerCase()] || role || "Admin";
+}
+
+async function fetchSuperAdminAdmins() {
+  try {
+    const rows = await supabaseRpc("admin_list_admins", {}, { accessToken: requireAdminAccessToken(), prefer: "return=representation" });
+    return Array.isArray(rows) ? rows : [];
+  } catch {
+    return [];
+  }
+}
+
+async function fetchSuperAdminAuditEvents(offset = 0) {
+  try {
+    const rows = await supabaseAdminRequest(`admin_audit_events?select=id,action,target_id,success,error_message,payload,actor_email,created_at&order=created_at.desc&limit=${SUPER_ADMIN_AUDIT_PAGE_SIZE}&offset=${offset}`);
+    return Array.isArray(rows) ? rows : [];
+  } catch {
+    return [];
+  }
+}
+
+async function fetchSuperAdminSettings() {
+  try {
+    const rows = await supabaseRpc("admin_list_platform_settings", {}, { accessToken: requireAdminAccessToken(), prefer: "return=representation" });
+    return Array.isArray(rows) ? rows : [];
+  } catch {
+    return [];
+  }
+}
+
+async function logSuperAdminAction(action, targetId = "", success = true, errorMessage = "", payload = {}) {
+  try {
+    await supabaseRpc("admin_log_action", {
+      p_action: action,
+      p_target_id: targetId || null,
+      p_success: success,
+      p_error_message: errorMessage || null,
+      p_payload: payload || {},
+    }, { accessToken: requireAdminAccessToken() });
+  } catch {
+    // Le journal d'audit ne doit jamais bloquer l'action principale.
+  }
+}
+
+async function loadSuperAdminData() {
+  const [admins, auditEvents, settings] = await Promise.all([
+    fetchSuperAdminAdmins(),
+    fetchSuperAdminAuditEvents(0),
+    fetchSuperAdminSettings(),
+  ]);
+  superAdminState.admins = admins;
+  superAdminState.auditEvents = auditEvents;
+  superAdminState.auditOffset = auditEvents.length;
+  superAdminState.auditHasMore = auditEvents.length === SUPER_ADMIN_AUDIT_PAGE_SIZE;
+  superAdminState.settings = settings;
+  renderSuperAdminAdminsList();
+  renderSuperAdminAuditList();
+  renderSuperAdminSettings();
+  loadSuperAdminDirectoryPage({ reset: true });
+}
+
+function renderSuperAdminPanel() {
+  const panel = document.querySelector("#superAdminPanel");
+  if (!panel) return;
+  const signedIn = Boolean(adminAuthSession?.accessToken);
+  const isSuperAdmin = signedIn && remoteAdminQueue.isSuperAdmin === true;
+  panel.hidden = !isSuperAdmin;
+  if (!isSuperAdmin) {
+    superAdminState.loaded = false;
+    return;
+  }
+  if (!superAdminState.loaded) {
+    superAdminState.loaded = true;
+    loadSuperAdminData();
+    return;
+  }
+  renderSuperAdminAdminsList();
+  renderSuperAdminAuditList();
+  renderSuperAdminSettings();
+  renderSuperAdminDirectory();
+}
+
+function renderSuperAdminAdminsList() {
+  const root = document.querySelector("#superAdminAdminsList");
+  if (!root) return;
+  root.innerHTML = superAdminState.admins.length ? superAdminState.admins.map((admin) => `
+    <div class="admin-item">
+      <div>
+        <h3>${safe(admin.full_name)} ${admin.is_active ? "" : `<span class="tag bad">Inactif</span>`}</h3>
+        <p>${safe(admin.email || "Email non lié (auth_user_id introuvable dans Supabase Auth)")}</p>
+        <p>Rôle actuel : ${safe(adminRoleLabel(admin.role))}</p>
+        <p>UID : ${safe(admin.auth_user_id)}</p>
+      </div>
+      <div class="admin-actions">
+        <select data-super-admin-role-select="${safe(admin.auth_user_id)}">
+          <option value="admin" ${admin.role === "admin" ? "selected" : ""}>Admin</option>
+          <option value="owner" ${admin.role === "owner" ? "selected" : ""}>Owner</option>
+          <option value="super_admin" ${admin.role === "super_admin" ? "selected" : ""}>Super admin</option>
+        </select>
+        <button class="secondary" type="button" data-super-admin-change-role="${safe(admin.auth_user_id)}" data-admin-name="${safe(admin.full_name)}">Changer le rôle</button>
+        <button class="${admin.is_active ? "secondary" : "primary"}" type="button" data-super-admin-toggle-active="${safe(admin.auth_user_id)}" data-next-active="${admin.is_active ? "false" : "true"}" data-admin-name="${safe(admin.full_name)}">${admin.is_active ? "Désactiver" : "Réactiver"}</button>
+      </div>
+    </div>
+  `).join("") : `<p>Aucun admin trouvé.</p>`;
+}
+
+function renderSuperAdminAuditList() {
+  const root = document.querySelector("#superAdminAuditList");
+  const loadMoreButton = document.querySelector("#superAdminAuditLoadMore");
+  if (!root) return;
+  root.innerHTML = superAdminState.auditEvents.length ? superAdminState.auditEvents.map((event) => `
+    <div class="admin-item">
+      <div>
+        <h3>${safe(event.action)} ${event.success ? `<span class="tag ok">OK</span>` : `<span class="tag bad">Échec</span>`}</h3>
+        <p>${safe(event.actor_email || "Auteur inconnu")} · ${new Date(event.created_at).toLocaleString("fr-FR")}</p>
+        ${event.target_id ? `<p>Cible : ${safe(event.target_id)}</p>` : ""}
+        ${event.error_message ? `<p class="admin-warning">${safe(event.error_message)}</p>` : ""}
+      </div>
+    </div>
+  `).join("") : `<p>Aucun événement journalisé pour l'instant.</p>`;
+  if (loadMoreButton) loadMoreButton.hidden = !superAdminState.auditHasMore;
+}
+
+function renderSuperAdminSettings() {
+  const root = document.querySelector("#superAdminSettings");
+  if (!root) return;
+  const productionUnlocked = superAdminState.settings.find((item) => item.key === "production_unlocked");
+  const isUnlocked = productionUnlocked?.value === true;
+  root.innerHTML = `
+    <div class="admin-item">
+      <div>
+        <h3>Production débloquée</h3>
+        <p>${isUnlocked ? "Activé" : "Désactivé"}${productionUnlocked?.updated_by_email ? ` · dernière modification par ${safe(productionUnlocked.updated_by_email)}` : ""}</p>
+      </div>
+      <div class="admin-actions">
+        <button class="${isUnlocked ? "secondary" : "primary"}" type="button" data-super-admin-set-setting="production_unlocked" data-setting-value="${isUnlocked ? "false" : "true"}">${isUnlocked ? "Désactiver" : "Activer"}</button>
+      </div>
+    </div>
+  `;
+}
+
+function superAdminDirectorySignature() {
+  return JSON.stringify({ tab: superAdminState.directoryTab, search: superAdminState.directorySearch });
+}
+
+async function loadSuperAdminDirectoryPage({ reset = true } = {}) {
+  const isProviders = superAdminState.directoryTab === "providers";
+  const directoryState = isProviders ? superAdminProviderDirectoryState : superAdminClientDirectoryState;
+  if (!reset && (!directoryState.hasMore || directoryState.loading)) return;
+  const signature = superAdminDirectorySignature();
+  directoryState.loading = true;
+  renderSuperAdminDirectory();
+  try {
+    const cursor = reset ? {} : (directoryState.cursor || {});
+    const result = isProviders
+      ? await supabaseRpc("admin_list_all_providers", {
+        p_search: superAdminState.directorySearch,
+        p_after: cursor,
+        p_limit: 30,
+      }, { accessToken: requireAdminAccessToken(), prefer: "return=representation" })
+      : await supabaseRpc("admin_list_all_clients", {
+        p_search: superAdminState.directorySearch,
+        p_after: cursor,
+        p_limit: 30,
+      }, { accessToken: requireAdminAccessToken(), prefer: "return=representation" });
+    const payload = Array.isArray(result) ? result[0] : result;
+    directoryState.items = reset ? (payload?.items || []) : [...directoryState.items, ...(payload?.items || [])];
+    directoryState.cursor = payload?.next_cursor || null;
+    directoryState.hasMore = Boolean(payload?.has_more);
+    directoryState.signature = signature;
+  } catch (error) {
+    renderAdminRemoteStatus(`Annuaire super admin : ${friendlySupabaseError(error)}`, true);
+  } finally {
+    directoryState.loading = false;
+    renderSuperAdminDirectory();
+  }
+}
+
+function renderSuperAdminDirectory() {
+  const root = document.querySelector("#superAdminDirectoryList");
+  const loadMoreButton = document.querySelector("#superAdminDirectoryLoadMore");
+  const tabButtons = document.querySelectorAll("[data-super-admin-directory-tab]");
+  if (!root) return;
+  tabButtons.forEach((button) => {
+    button.setAttribute("aria-pressed", button.dataset.superAdminDirectoryTab === superAdminState.directoryTab ? "true" : "false");
+  });
+  const isProviders = superAdminState.directoryTab === "providers";
+  const directoryState = isProviders ? superAdminProviderDirectoryState : superAdminClientDirectoryState;
+  root.innerHTML = directoryState.items.length ? directoryState.items.map((item) => isProviders ? `
+    <div class="admin-item">
+      <div>
+        <h3>${safe(item.full_name)}</h3>
+        <p>${safe(item.phone)}${item.email ? ` · ${safe(item.email)}` : ""}</p>
+        <p>${safe(item.service_name)} · ${safe(item.city_name || "Ville inconnue")}${item.commune_name ? ` (${safe(item.commune_name)})` : ""}</p>
+        <p>Statut : ${safe(item.status)} · Visibilité : ${safe(item.visibility_status)}${item.is_verified ? " · Vérifié" : ""}</p>
+      </div>
+    </div>
+  ` : `
+    <div class="admin-item">
+      <div>
+        <h3>${safe(item.full_name)}</h3>
+        <p>${safe(item.phone)}</p>
+        <p>${item.total_count} demande(s) : ${item.delivery_count} livraison(s), ${item.service_count} service(s), ${item.express_count} express</p>
+        <p>Dernière activité : ${new Date(item.last_seen).toLocaleDateString("fr-FR")}</p>
+      </div>
+    </div>
+  `).join("") : (directoryState.loading ? `<p>Chargement...</p>` : `<p>Aucun résultat.</p>`);
+  if (loadMoreButton) loadMoreButton.hidden = !directoryState.hasMore;
+}
+
+async function createOrUpdateSuperAdmin(authUserId, fullName, role, button = null) {
+  setBusyButton(button, true, "Enregistrement...");
+  try {
+    await supabaseRpc("admin_upsert_admin_profile", {
+      target_auth_user_id: authUserId,
+      p_full_name: fullName,
+      p_role: role,
+    }, { accessToken: requireAdminAccessToken(), prefer: "return=representation" });
+    await logSuperAdminAction("admin_upsert_admin_profile", authUserId, true, "", { full_name: fullName, role });
+    superAdminState.admins = await fetchSuperAdminAdmins();
+    renderSuperAdminAdminsList();
+    renderSuperAdminAuditList();
+    renderAdminRemoteStatus(`Admin ${safe(fullName)} enregistré avec le rôle ${safe(adminRoleLabel(role))}.`, true);
+    finishActionButton(button, "Enregistré");
+  } catch (error) {
+    await logSuperAdminAction("admin_upsert_admin_profile", authUserId, false, friendlySupabaseError(error), { full_name: fullName, role });
+    renderAdminRemoteStatus(`Impossible d'enregistrer cet admin : ${friendlySupabaseError(error)}`, true);
+    finishActionButton(button, "Erreur");
+  }
+}
+
+async function setSuperAdminActive(authUserId, isActive, adminName = "", button = null) {
+  setBusyButton(button, true, isActive ? "Réactivation..." : "Désactivation...");
+  try {
+    await supabaseRpc("admin_set_admin_active", {
+      target_auth_user_id: authUserId,
+      p_is_active: isActive,
+    }, { accessToken: requireAdminAccessToken(), prefer: "return=representation" });
+    await logSuperAdminAction("admin_set_admin_active", authUserId, true, "", { is_active: isActive });
+    superAdminState.admins = await fetchSuperAdminAdmins();
+    renderSuperAdminAdminsList();
+    renderSuperAdminAuditList();
+    renderAdminRemoteStatus(`${safe(adminName || "Cet admin")} ${isActive ? "réactivé" : "désactivé"}.`, true);
+    finishActionButton(button, isActive ? "Réactivé" : "Désactivé");
+  } catch (error) {
+    await logSuperAdminAction("admin_set_admin_active", authUserId, false, friendlySupabaseError(error), { is_active: isActive });
+    renderAdminRemoteStatus(`Action impossible : ${friendlySupabaseError(error)}`, true);
+    finishActionButton(button, "Erreur");
+  }
+}
+
+async function setSuperAdminSetting(key, value, button = null) {
+  setBusyButton(button, true, "Enregistrement...");
+  try {
+    await supabaseRpc("admin_set_platform_setting", { p_key: key, p_value: value }, { accessToken: requireAdminAccessToken(), prefer: "return=representation" });
+    await logSuperAdminAction("admin_set_platform_setting", key, true, "", { value });
+    superAdminState.settings = await fetchSuperAdminSettings();
+    renderSuperAdminSettings();
+    renderSuperAdminAuditList();
+    renderAdminRemoteStatus(`Réglage ${safe(key)} mis à jour.`, true);
+    finishActionButton(button, "Enregistré");
+  } catch (error) {
+    await logSuperAdminAction("admin_set_platform_setting", key, false, friendlySupabaseError(error), { value });
+    renderAdminRemoteStatus(`Réglage impossible à modifier : ${friendlySupabaseError(error)}`, true);
+    finishActionButton(button, "Erreur");
+  }
+}
+
+function setupSuperAdminActionDelegation() {
+  const panel = document.querySelector("#superAdminPanel");
+  if (!panel || panel.dataset.bound === "true") return;
+  panel.dataset.bound = "true";
+
+  document.querySelector("#superAdminCreateForm")?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const button = form.querySelector("button[type='submit']");
+    const data = new FormData(form);
+    const authUserId = String(data.get("authUserId") || "").trim();
+    const fullName = String(data.get("fullName") || "").trim();
+    const role = String(data.get("role") || "admin");
+    if (!authUserId || !fullName) {
+      renderAdminRemoteStatus("UID Supabase et nom complet requis.", true);
+      return;
+    }
+    await createOrUpdateSuperAdmin(authUserId, fullName, role, button);
+    form.reset();
+  });
+
+  document.querySelector("#superAdminAuditLoadMore")?.addEventListener("click", async (event) => {
+    const button = event.currentTarget;
+    setBusyButton(button, true, "Chargement...");
+    const more = await fetchSuperAdminAuditEvents(superAdminState.auditOffset);
+    superAdminState.auditEvents = [...superAdminState.auditEvents, ...more];
+    superAdminState.auditOffset += more.length;
+    superAdminState.auditHasMore = more.length === SUPER_ADMIN_AUDIT_PAGE_SIZE;
+    renderSuperAdminAuditList();
+    finishActionButton(button, "Voir plus d'événements");
+  });
+
+  document.querySelector("#superAdminDirectoryLoadMore")?.addEventListener("click", () => {
+    loadSuperAdminDirectoryPage({ reset: false });
+  });
+
+  document.querySelector("#superAdminDirectorySearch")?.addEventListener("input", (event) => {
+    const value = event.currentTarget.value;
+    window.clearTimeout(superAdminDirectorySearchTimer);
+    superAdminDirectorySearchTimer = window.setTimeout(() => {
+      superAdminState.directorySearch = value;
+      loadSuperAdminDirectoryPage({ reset: true });
+    }, 250);
+  });
+
+  panel.addEventListener("click", (event) => {
+    const roleButton = event.target.closest("[data-super-admin-change-role]");
+    if (roleButton) {
+      const authUserId = roleButton.dataset.superAdminChangeRole;
+      const adminName = roleButton.dataset.adminName || "";
+      const select = panel.querySelector(`[data-super-admin-role-select="${CSS.escape(authUserId)}"]`);
+      const role = select?.value || "admin";
+      const admin = superAdminState.admins.find((item) => item.auth_user_id === authUserId);
+      createOrUpdateSuperAdmin(authUserId, admin?.full_name || adminName, role, roleButton);
+      return;
+    }
+    const tabButton = event.target.closest("[data-super-admin-directory-tab]");
+    if (tabButton) {
+      superAdminState.directoryTab = tabButton.dataset.superAdminDirectoryTab;
+      loadSuperAdminDirectoryPage({ reset: true });
+      return;
+    }
+    const toggleButton = event.target.closest("[data-super-admin-toggle-active]");
+    if (toggleButton) {
+      const authUserId = toggleButton.dataset.superAdminToggleActive;
+      const nextActive = toggleButton.dataset.nextActive === "true";
+      const adminName = toggleButton.dataset.adminName || "";
+      setSuperAdminActive(authUserId, nextActive, adminName, toggleButton);
+      return;
+    }
+    const settingButton = event.target.closest("[data-super-admin-set-setting]");
+    if (settingButton) {
+      const key = settingButton.dataset.superAdminSetSetting;
+      const value = settingButton.dataset.settingValue === "true";
+      setSuperAdminSetting(key, value, settingButton);
+    }
+  });
+}
+
 function setupAdminRemoteActionDelegation() {
   if (adminRemoteActionsReady) return;
   const adminContent = document.querySelector("#adminContent");
@@ -4406,6 +4771,14 @@ async function fetchRemotePendingExceptionPlaces() {
 async function checkRemoteAdminRole() {
   try {
     return await supabaseRpc("is_admin", {}, { accessToken: requireAdminAccessToken() });
+  } catch {
+    return null;
+  }
+}
+
+async function checkSuperAdminRole() {
+  try {
+    return await supabaseRpc("is_super_admin", {}, { accessToken: requireAdminAccessToken() });
   } catch {
     return null;
   }
@@ -4731,8 +5104,9 @@ async function loadSupabaseAdminQueue(button = null) {
     let eventError = "";
     let foodError = "";
     let exceptionPlaceError = "";
-    const [isAdmin, publicProviders, publicProviderCount, payments, providers, recentProviders, requests, jobs, events, foods, exceptionPlaces] = await Promise.all([
+    const [isAdmin, isSuperAdmin, publicProviders, publicProviderCount, payments, providers, recentProviders, requests, jobs, events, foods, exceptionPlaces] = await Promise.all([
       checkRemoteAdminRole(),
+      checkSuperAdminRole(),
       fetchPublicProvidersForAdminDiagnostic(),
       fetchPublicProviderCount(),
       supabaseAdminRequest("payments?select=id,amount,currency,method,transaction_reference,admin_note,status,created_at,provider_id,providers(full_name,phone),subscription_plans(name,price,duration_months)&status=eq.pending&order=created_at.asc&limit=200"),
@@ -4788,11 +5162,13 @@ async function loadSupabaseAdminQueue(button = null) {
       providerSearchQuery: "",
       providerSearchResults: [],
       isAdmin,
+      isSuperAdmin,
       publicProviderCount: Number.isFinite(publicProviderCount)
         ? publicProviderCount
         : (Array.isArray(publicProviders) ? publicProviders.length : null),
     };
     renderRemoteAdminPanel();
+    renderSuperAdminPanel();
     renderLaunchChecklist();
     const adminWarning = remoteAdminQueue.isAdmin === false
       ? " Votre compte Supabase est connecté mais pas reconnu comme admin Zeyds : exécutez sql-copie-bizzi/20-correction-admin-file-vide.sql."
@@ -15481,6 +15857,7 @@ function renderAdmin() {
   renderProductionStatus();
   renderSupabaseStatus();
   renderRemoteAdminPanel();
+  renderSuperAdminPanel();
   renderLaunchChecklist();
 
   document.querySelectorAll("[data-admin-verify]").forEach((button) => {
@@ -16525,6 +16902,7 @@ function removeCompleteTestData() {
 
 function setupDataTools() {
   setupAdminRemoteActionDelegation();
+  setupSuperAdminActionDelegation();
   document.querySelectorAll("[data-admin-jump]").forEach((button) => {
     button.addEventListener("click", () => {
       const target = document.querySelector(button.dataset.adminJump);
@@ -16548,6 +16926,7 @@ function setupDataTools() {
     saveAdminAuthSession(null);
     remoteAdminQueue = emptyRemoteAdminQueue();
     renderRemoteAdminPanel();
+    renderSuperAdminPanel();
     renderLaunchChecklist();
     renderAdminRemoteStatus("Compte admin Supabase déconnecté.", true);
   });
@@ -16561,6 +16940,7 @@ function setupDataTools() {
       const session = await supabaseAuthSignIn(String(data.get("email") || "").trim(), String(data.get("password") || ""));
       form.reset();
       renderRemoteAdminPanel();
+      renderSuperAdminPanel();
       renderAdminRemoteStatus(`Connexion réussie : ${session.email}. Cliquez sur Charger validations Supabase quand vous voulez actualiser la file.`, true);
       finishActionButton(button, "Connecté");
     } catch (error) {

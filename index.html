@@ -1088,6 +1088,49 @@
             <div id="remoteFoods" class="admin-list"></div>
             <div id="remoteExceptionPlaces" class="admin-list"></div>
           </section>
+          <section class="panel super-admin-panel" id="superAdminPanel" hidden>
+            <div class="section-head">
+              <h2>Super Admin</h2>
+              <span class="tag">Réservé owner / super_admin</span>
+            </div>
+            <p>Gestion des administrateurs, journal d'audit, réglages sensibles et annuaire complet. Visible uniquement si votre compte a le rôle <code>owner</code> ou <code>super_admin</code>.</p>
+            <div id="superAdminStatus" class="sync-status" role="status" aria-live="polite"></div>
+
+            <h3>Gestion des administrateurs</h3>
+            <form id="superAdminCreateForm" class="form compact">
+              <label>UID Supabase Auth (Dashboard → Authentication → Users)<input name="authUserId" type="text" placeholder="ex : 3fa85f64-5717-4562-b3fc-2c963f66afa6" required></label>
+              <label>Nom complet<input name="fullName" type="text" placeholder="Nom de l'admin" required></label>
+              <label>Rôle
+                <select name="role">
+                  <option value="admin">Admin</option>
+                  <option value="owner">Owner</option>
+                  <option value="super_admin">Super admin</option>
+                </select>
+              </label>
+              <button class="primary" type="submit">Ajouter / mettre à jour cet admin</button>
+            </form>
+            <div id="superAdminAdminsList" class="admin-list"></div>
+
+            <h3>Journal d'audit</h3>
+            <div id="superAdminAuditList" class="admin-list"></div>
+            <div class="admin-actions">
+              <button class="secondary" id="superAdminAuditLoadMore" type="button" hidden>Voir plus d'événements</button>
+            </div>
+
+            <h3>Réglages plateforme sensibles</h3>
+            <div id="superAdminSettings" class="admin-list"></div>
+
+            <h3>Annuaire complet</h3>
+            <div class="admin-actions">
+              <button class="secondary" type="button" data-super-admin-directory-tab="providers" aria-pressed="true">Prestataires</button>
+              <button class="secondary" type="button" data-super-admin-directory-tab="clients" aria-pressed="false">Clients</button>
+            </div>
+            <label>Rechercher<input id="superAdminDirectorySearch" type="search" placeholder="Nom, téléphone, email..."></label>
+            <div id="superAdminDirectoryList" class="admin-list"></div>
+            <div class="admin-actions">
+              <button class="secondary" id="superAdminDirectoryLoadMore" type="button" hidden>Voir plus</button>
+            </div>
+          </section>
           <section class="panel launch-checklist-panel">
             <h2>Recette lancement</h2>
             <div id="launchChecklist" class="launch-checklist"></div>

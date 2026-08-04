@@ -624,31 +624,9 @@
         </div>
 
         <div class="service-search-panel">
-          <section class="search-assistant-panel" id="searchAssistantPanel">
-            <div class="section-head">
-              <div>
-                <p class="eyebrow">Recherche intelligente</p>
-                <h2>Décrivez votre besoin</h2>
-              </div>
-              <span class="tag ok">Texte ou voix</span>
-            </div>
-            <form id="searchAssistantForm" class="search-assistant-form">
-              <input id="searchAssistantInput" name="prompt" type="search" maxlength="260" placeholder="Ex: je veux livrer un colis de Cocody à Marcory maintenant">
-              <input id="searchClientNameInput" name="clientName" type="text" required autocomplete="nickname" maxlength="40" placeholder="Votre prénom ou pseudo">
-              <input id="searchClientPhoneInput" name="clientPhone" type="tel" inputmode="tel" required placeholder="Votre WhatsApp ou téléphone">
-              <button class="primary" type="submit">Trouver</button>
-              <button class="secondary voice-button" id="searchVoiceButton" type="button" aria-label="Démarrer la recherche vocale" aria-pressed="false">Parler</button>
-            </form>
-            <div class="request-photo-attach">
-              <input id="searchRequestPhotoInput" type="file" accept="image/jpeg,image/png,image/webp" capture="environment" hidden>
-              <button type="button" class="secondary" id="searchRequestPhotoButton">📷 Ajouter une photo du besoin</button>
-              <div id="searchRequestPhotoPreview" class="request-photo-preview" hidden>
-                <img id="searchRequestPhotoThumb" alt="Photo jointe">
-                <span id="searchRequestPhotoStatus"></span>
-                <button type="button" id="searchRequestPhotoRemove" aria-label="Retirer la photo">✕</button>
-              </div>
-            </div>
-            <div id="searchAssistantStatus" class="status-box compact"></div>
+          <section class="search-assistant-panel" id="searchAssistantPanel" hidden>
+            <input id="searchAssistantInput" name="prompt" type="search" maxlength="260">
+            <div id="searchAssistantStatus"></div>
           </section>
           <section class="panel my-service-requests-panel" id="myServiceRequestsPanel" hidden>
             <div class="section-head">

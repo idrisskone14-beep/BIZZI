@@ -2191,8 +2191,67 @@ const titles = {
   legal: "Documents légaux",
 };
 
+const TOGGLEABLE_TABS = {
+  life: "tab_life",
+  "exception-places": "tab_exception_places",
+  delivery: "tab_delivery",
+  food: "tab_food",
+  events: "tab_events",
+  search: "tab_search",
+  jobs: "tab_jobs",
+  provider: "tab_provider",
+};
+let platformFeatureFlags = {};
+
+function isTabEnabled(viewName) {
+  const key = TOGGLEABLE_TABS[viewName];
+  if (!key) return true;
+  return platformFeatureFlags[key] !== false;
+}
+
+async function fetchPlatformFeatureFlags() {
+  if (!hasProductionValue(bizziConfig.supabase?.url) || !hasProductionValue(bizziConfig.supabase?.anonKey)) return {};
+  try {
+    // Appel direct a Supabase (pas activeRestBaseUrl) : public_get_feature_flags
+    // n'existe que sur Supabase, pas sur le gateway Neon.
+    const response = await fetchWithTimeout(`${supabaseBaseUrl()}/rest/v1/rpc/public_get_feature_flags`, {
+      method: "POST",
+      headers: supabaseApiHeaders({ "Content-Type": "application/json" }),
+      body: JSON.stringify({}),
+    }, SUPABASE_REQUEST_TIMEOUT_MS);
+    if (!response.ok) return {};
+    const data = await response.json();
+    return data && typeof data === "object" && !Array.isArray(data) ? data : {};
+  } catch {
+    return {};
+  }
+}
+
+function applyPlatformFeatureFlags() {
+  Object.entries(TOGGLEABLE_TABS).forEach(([viewName, key]) => {
+    const enabled = platformFeatureFlags[key] !== false;
+    document.querySelectorAll(`[data-view="${viewName}"]`).forEach((el) => { el.hidden = !enabled; });
+    document.querySelectorAll(`[data-go="${viewName}"]`).forEach((el) => { el.hidden = !enabled; });
+  });
+  document.querySelectorAll("[data-provider-shortcut]").forEach((el) => {
+    el.hidden = !isTabEnabled("provider");
+  });
+  const activeName = Object.entries(views).find(([, element]) => element?.classList.contains("active"))?.[0];
+  if (activeName && !isTabEnabled(activeName)) {
+    setView("home");
+  }
+}
+
+async function loadAndApplyPlatformFeatureFlags() {
+  platformFeatureFlags = await fetchPlatformFeatureFlags();
+  applyPlatformFeatureFlags();
+}
+
 function setView(name) {
   const previousName = Object.entries(views).find(([, element]) => element?.classList.contains("active"))?.[0] || "";
+  if (TOGGLEABLE_TABS[name] && !isTabEnabled(name)) {
+    name = "home";
+  }
   if (name === "admin" && !canOpenAdmin()) {
     history.replaceState(null, "", "#home");
     name = "home";
@@ -4304,6 +4363,7 @@ async function loadSuperAdminData() {
   renderSuperAdminAdminsList();
   renderSuperAdminAuditList();
   renderSuperAdminSettings();
+  renderSuperAdminTabsList();
   loadSuperAdminDirectoryPage({ reset: true });
 }
 
@@ -4325,6 +4385,7 @@ function renderSuperAdminPanel() {
   renderSuperAdminAdminsList();
   renderSuperAdminAuditList();
   renderSuperAdminSettings();
+  renderSuperAdminTabsList();
   renderSuperAdminDirectory();
 }
 
@@ -4385,6 +4446,26 @@ function renderSuperAdminSettings() {
       </div>
     </div>
   `;
+}
+
+function renderSuperAdminTabsList() {
+  const root = document.querySelector("#superAdminTabsList");
+  if (!root) return;
+  root.innerHTML = Object.entries(TOGGLEABLE_TABS).map(([viewName, key]) => {
+    const setting = superAdminState.settings.find((item) => item.key === key);
+    const isEnabled = setting?.value !== false;
+    return `
+      <div class="admin-item">
+        <div>
+          <h3>${safe(titles[viewName] || viewName)} ${isEnabled ? `<span class="tag ok">Actif</span>` : `<span class="tag bad">Désactivé</span>`}</h3>
+          ${setting?.updated_by_email ? `<p>Dernière modification par ${safe(setting.updated_by_email)}</p>` : ""}
+        </div>
+        <div class="admin-actions">
+          <button class="${isEnabled ? "secondary" : "primary"}" type="button" data-super-admin-set-setting="${safe(key)}" data-setting-value="${isEnabled ? "false" : "true"}">${isEnabled ? "Désactiver" : "Activer"}</button>
+        </div>
+      </div>
+    `;
+  }).join("");
 }
 
 function superAdminDirectorySignature() {
@@ -4504,7 +4585,9 @@ async function setSuperAdminSetting(key, value, button = null) {
     await logSuperAdminAction("admin_set_platform_setting", key, true, "", { value });
     superAdminState.settings = await fetchSuperAdminSettings();
     renderSuperAdminSettings();
+    renderSuperAdminTabsList();
     renderSuperAdminAuditList();
+    if (key.startsWith("tab_")) loadAndApplyPlatformFeatureFlags();
     renderAdminRemoteStatus(`Réglage ${safe(key)} mis à jour.`, true);
     finishActionButton(button, "Enregistré");
   } catch (error) {
@@ -17251,6 +17334,7 @@ function boot() {
       syncSupabasePublicData().catch(() => null);
     }, 800);
   }
+  loadAndApplyPlatformFeatureFlags();
   requestAnimationFrame(() => {
     window.setTimeout(() => {
       window.__bizziAppReady = true;

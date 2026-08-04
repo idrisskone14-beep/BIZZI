@@ -10548,6 +10548,7 @@ function renderServices() {
     const categorySelect = document.querySelector("#categorySelect");
     if (categorySelect) categorySelect.value = category.name;
   }
+  if (!grid) return;
   const query = document.querySelector("#searchInput").value.trim();
   const normalizedQuery = normalizeAssistantText(query);
   const exactMatch = query ? inferAssistantService(query) : null;

@@ -12092,11 +12092,17 @@ function renderProviders() {
       })
       .map((item) => item.provider);
   }
-  document.querySelector("#resultCount").textContent = `${providers.length} prestataire${providers.length > 1 ? "s" : ""}`;
+  const resultCountEl = document.querySelector("#resultCount");
+  resultCountEl.textContent = `${providers.length} prestataire${providers.length > 1 ? "s" : ""}`;
+  if (globalThis.BizziMotion?.motionAllowed?.()) {
+    resultCountEl.classList.remove("motion-surface-change");
+    void resultCountEl.offsetWidth;
+    resultCountEl.classList.add("motion-surface-change");
+  }
   const loadingState = providerDirectoryState.loading && providerDirectoryState.pendingSignature === directoryRequest.signature;
   const emptyState = loadingState ? `
     <article class="provider-card">
-      <h3>Recherche en cours...</h3>
+      <h3 class="provider-search-loading">Recherche en cours...</h3>
     </article>
   ` : `
     <article class="provider-card">
@@ -12110,6 +12116,7 @@ function renderProviders() {
     </div>
   ` : "";
   list.innerHTML = `${providers.length ? providers.map(providerCard).join("") : emptyState}${pagination}`;
+  globalThis.BizziMotion?.revealItems?.(list, Math.max(providers.length, 1));
 
   list.querySelector("[data-provider-directory-more]")?.addEventListener("click", () => loadProviderDirectoryPage({ reset: false }));
   list.querySelectorAll("[data-provider-card]").forEach((card) => {

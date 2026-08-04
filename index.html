@@ -137,6 +137,7 @@
           <button class="provider-shortcut-button" type="button" data-provider-shortcut="new">🧰 S’inscrire</button>
           <button class="provider-shortcut-button" type="button" data-provider-shortcut="existing">🔑 Déjà prestataire</button>
           <button id="installButton" type="button" hidden data-i18n="install">Installer</button>
+          <span id="topbarAvatar" class="topbar-avatar" aria-hidden="true">?</span>
           <select id="languageSelect" aria-label="Langue">
             <option value="fr">Français simple</option>
             <option value="nouchi">Nouchi (bêta)</option>
@@ -608,78 +609,156 @@
       </section>
 
       <section id="view-search" class="view">
-        <section class="search-assistant-panel" id="searchAssistantPanel">
-          <div class="section-head">
-            <div>
-              <p class="eyebrow">Recherche intelligente</p>
-              <h2>Décrivez votre besoin</h2>
-            </div>
-            <span class="tag ok">Texte ou voix</span>
+        <section class="service-hero">
+          <div class="service-hero-copy">
+            <p class="eyebrow">Services Zeyds</p>
+            <h2>Dis-nous ce qu'il te faut.</h2>
+            <p class="service-hero-subtitle">Ça vient vers toi.</p>
           </div>
-          <form id="searchAssistantForm" class="search-assistant-form">
-            <input id="searchAssistantInput" name="prompt" type="search" maxlength="260" placeholder="Ex: je veux livrer un colis de Cocody à Marcory maintenant">
-            <input id="searchClientNameInput" name="clientName" type="text" required autocomplete="nickname" maxlength="40" placeholder="Votre prénom ou pseudo">
-            <input id="searchClientPhoneInput" name="clientPhone" type="tel" inputmode="tel" required placeholder="Votre WhatsApp ou téléphone">
-            <button class="primary" type="submit">Trouver</button>
-            <button class="secondary voice-button" id="searchVoiceButton" type="button" aria-label="Démarrer la recherche vocale" aria-pressed="false">Parler</button>
-          </form>
-          <div class="request-photo-attach">
-            <input id="searchRequestPhotoInput" type="file" accept="image/jpeg,image/png,image/webp" capture="environment" hidden>
-            <button type="button" class="secondary" id="searchRequestPhotoButton">📷 Ajouter une photo du besoin</button>
-            <div id="searchRequestPhotoPreview" class="request-photo-preview" hidden>
-              <img id="searchRequestPhotoThumb" alt="Photo jointe">
-              <span id="searchRequestPhotoStatus"></span>
-              <button type="button" id="searchRequestPhotoRemove" aria-label="Retirer la photo">✕</button>
-            </div>
-          </div>
-          <div id="searchAssistantStatus" class="status-box compact"></div>
-          <button type="button" class="secondary publish-need-link" data-go="request">Publier mon besoin — plusieurs prestataires vous répondent</button>
+          <span class="service-hero-badge">Simple · ciblé · sécurisé</span>
         </section>
-        <section class="panel my-service-requests-panel" id="myServiceRequestsPanel" hidden>
-          <div class="section-head">
-            <h2>Mes demandes de service</h2>
-            <span id="myServiceRequestsCount" class="tag ok">0</span>
-          </div>
-          <div id="myServiceRequestsList" class="delivery-request-list"></div>
-        </section>
-        <details class="advanced-search-panel" open>
-          <summary>Filtres avancés · affiner la recherche</summary>
-          <div class="toolbar">
-            <input id="searchInput" type="search" placeholder="Rechercher : plombier, coiffure, mécanicien...">
-            <select id="categorySelect" aria-label="Catégorie"></select>
-            <select id="radiusSelect" aria-label="Distance">
-              <option value="5">Autour de moi : 5 km</option>
-              <option value="10" selected>Autour de moi : 10 km</option>
-              <option value="25">Autour de moi : 25 km</option>
-              <option value="50">Autour de moi : 50 km</option>
-              <option value="0">Toutes les distances</option>
-            </select>
-            <button class="secondary" id="resetProviderFilters" type="button">Tout afficher</button>
-          </div>
-        </details>
-        <section class="verified-service-panel" id="verifiedServicePanel">
-          <div class="verified-service-copy">
-            <span class="verified-service-badge">Service vérifié Zeyds</span>
-            <h2>Prestataires vérifiés</h2>
-          </div>
-          <label class="verified-service-toggle">
-            <input id="verifiedOnly" type="checkbox">
-            <span class="verified-toggle-mark">✓</span>
-            <span id="verifiedServiceAction">Afficher les vérifiés</span>
-          </label>
-          <span id="verifiedServiceCount" class="tag verified">0 vérifié</span>
-        </section>
-        <div id="servicesGrid" class="services-grid"></div>
-        <div class="section-head">
-          <h2>Prestataires près de vous</h2>
-          <span id="resultCount" class="tag">0 résultat</span>
+
+        <div class="service-entry-tabs" role="tablist" aria-label="Choix Services">
+          <button class="service-entry-tab selected" type="button" data-service-entry="search" aria-selected="true">Je cherche</button>
+          <button class="service-entry-tab" type="button" data-service-entry="publish" aria-selected="false">Je publie mon besoin</button>
         </div>
-        <div class="providers-view-toggle" role="tablist" aria-label="Affichage des résultats">
-          <button type="button" id="providersViewList" class="selected" role="tab" aria-selected="true" data-providers-view="list">☰ Liste</button>
-          <button type="button" id="providersViewMap" role="tab" aria-selected="false" data-providers-view="map">⌖ Carte</button>
+
+        <div class="service-search-panel">
+          <section class="search-assistant-panel" id="searchAssistantPanel">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Recherche intelligente</p>
+                <h2>Décrivez votre besoin</h2>
+              </div>
+              <span class="tag ok">Texte ou voix</span>
+            </div>
+            <form id="searchAssistantForm" class="search-assistant-form">
+              <input id="searchAssistantInput" name="prompt" type="search" maxlength="260" placeholder="Ex: je veux livrer un colis de Cocody à Marcory maintenant">
+              <input id="searchClientNameInput" name="clientName" type="text" required autocomplete="nickname" maxlength="40" placeholder="Votre prénom ou pseudo">
+              <input id="searchClientPhoneInput" name="clientPhone" type="tel" inputmode="tel" required placeholder="Votre WhatsApp ou téléphone">
+              <button class="primary" type="submit">Trouver</button>
+              <button class="secondary voice-button" id="searchVoiceButton" type="button" aria-label="Démarrer la recherche vocale" aria-pressed="false">Parler</button>
+            </form>
+            <div class="request-photo-attach">
+              <input id="searchRequestPhotoInput" type="file" accept="image/jpeg,image/png,image/webp" capture="environment" hidden>
+              <button type="button" class="secondary" id="searchRequestPhotoButton">📷 Ajouter une photo du besoin</button>
+              <div id="searchRequestPhotoPreview" class="request-photo-preview" hidden>
+                <img id="searchRequestPhotoThumb" alt="Photo jointe">
+                <span id="searchRequestPhotoStatus"></span>
+                <button type="button" id="searchRequestPhotoRemove" aria-label="Retirer la photo">✕</button>
+              </div>
+            </div>
+            <div id="searchAssistantStatus" class="status-box compact"></div>
+          </section>
+          <section class="panel my-service-requests-panel" id="myServiceRequestsPanel" hidden>
+            <div class="section-head">
+              <h2>Mes demandes de service</h2>
+              <span id="myServiceRequestsCount" class="tag ok">0</span>
+            </div>
+            <div id="myServiceRequestsList" class="delivery-request-list"></div>
+          </section>
+          <details class="advanced-search-panel" open>
+            <summary>Filtres avancés · affiner la recherche</summary>
+            <div class="toolbar">
+              <input id="searchInput" type="search" placeholder="Rechercher : plombier, coiffure, mécanicien...">
+              <select id="categorySelect" aria-label="Catégorie"></select>
+              <select id="radiusSelect" aria-label="Distance">
+                <option value="5">Autour de moi : 5 km</option>
+                <option value="10" selected>Autour de moi : 10 km</option>
+                <option value="25">Autour de moi : 25 km</option>
+                <option value="50">Autour de moi : 50 km</option>
+                <option value="0">Toutes les distances</option>
+              </select>
+              <button class="secondary" id="resetProviderFilters" type="button">Tout afficher</button>
+            </div>
+          </details>
+          <section class="verified-service-panel" id="verifiedServicePanel">
+            <div class="verified-service-copy">
+              <span class="verified-service-badge">Service vérifié Zeyds</span>
+              <h2>Prestataires vérifiés</h2>
+            </div>
+            <label class="verified-service-toggle">
+              <input id="verifiedOnly" type="checkbox">
+              <span class="verified-toggle-mark">✓</span>
+              <span id="verifiedServiceAction">Afficher les vérifiés</span>
+            </label>
+            <span id="verifiedServiceCount" class="tag verified">0 vérifié</span>
+          </section>
+          <div id="servicesGrid" class="services-grid"></div>
+          <div class="section-head">
+            <h2>Prestataires près de vous</h2>
+            <span id="resultCount" class="tag">0 résultat</span>
+          </div>
+          <div class="providers-view-toggle" role="tablist" aria-label="Affichage des résultats">
+            <button type="button" id="providersViewList" class="selected" role="tab" aria-selected="true" data-providers-view="list">☰ Liste</button>
+            <button type="button" id="providersViewMap" role="tab" aria-selected="false" data-providers-view="map">⌖ Carte</button>
+          </div>
+          <div id="providersList" class="providers-list"></div>
+          <div id="providersMap" class="providers-map" hidden></div>
         </div>
-        <div id="providersList" class="providers-list"></div>
-        <div id="providersMap" class="providers-map" hidden></div>
+
+        <div class="service-publish-panel">
+          <div class="request-layout">
+            <section class="panel">
+              <div class="section-head">
+                <h2>Demande express</h2>
+                <span class="tag ok">Sans compte</span>
+              </div>
+              <p>Décrivez le besoin, Zeyds prévient les prestataires correspondants qui pourront vous répondre directement.</p>
+              <form id="requestForm" class="form mobile-step-form" data-mobile-form="request" autocomplete="off" novalidate>
+                <div class="mobile-progress" aria-hidden="true">
+                  <strong data-mobile-progress-label>Étape 1 sur 4</strong>
+                  <span data-mobile-progress-text>De quoi avez-vous besoin ?</span>
+                </div>
+                <fieldset class="mobile-form-step active" data-mobile-step="1" data-step-title="De quoi avez-vous besoin ?">
+                  <label>Service recherché<select name="service" id="requestService"></select></label>
+                  <label>Décrivez votre besoin<textarea name="message" rows="3" maxlength="220" placeholder="Ex : fuite sous l'évier, besoin d'un plombier disponible aujourd'hui"></textarea></label>
+                  <div class="mobile-step-actions"><button class="primary" type="button" data-mobile-next>Continuer vers le lieu</button></div>
+                </fieldset>
+                <fieldset class="mobile-form-step" data-mobile-step="2" data-step-title="Où ?">
+                  <label>Ville / commune<input name="city" placeholder="Ex: Cocody, Bouaké, Man..." required></label>
+                  <label>Quartier ou repère<input name="area" placeholder="Ex: Riviera 2, Belleville, centre-ville"></label>
+                  <div class="mobile-step-actions"><button class="secondary" type="button" data-mobile-prev>Retour</button><button class="primary" type="button" data-mobile-next>Continuer vers la date</button></div>
+                </fieldset>
+                <fieldset class="mobile-form-step" data-mobile-step="3" data-step-title="Quand et budget">
+                  <label>Urgence
+                    <select name="urgency">
+                      <option value="today">Aujourd'hui</option>
+                      <option value="24h">Dans les 24h</option>
+                      <option value="week">Cette semaine</option>
+                      <option value="quote">Je veux comparer les prix</option>
+                    </select>
+                  </label>
+                  <label>Votre budget (facultatif)<input name="budget" placeholder="Ex : 15 000 - 25 000 FCFA, ou laissez vide"></label>
+                  <div class="mobile-step-actions"><button class="secondary" type="button" data-mobile-prev>Retour</button><button class="primary" type="button" data-mobile-next>Continuer</button></div>
+                </fieldset>
+                <fieldset class="mobile-form-step" data-mobile-step="4" data-step-title="Photo et contact">
+                  <label>Photo du besoin (facultatif)<input name="photo" type="file" accept="image/*"></label>
+                  <label>Votre WhatsApp ou téléphone<input name="phone" required placeholder="+225 07 00 00 00 00"></label>
+                  <div class="mobile-step-actions"><button class="secondary" type="button" data-mobile-prev>Retour</button><button class="primary" type="submit">Publier ma demande</button></div>
+                </fieldset>
+              </form>
+            </section>
+
+            <section class="panel">
+              <div class="section-head">
+                <h2>Réponse Zeyds</h2>
+                <span class="tag">Matching</span>
+              </div>
+              <div id="requestStatus" class="status-box"></div>
+              <div id="requestMatches" class="request-matches"></div>
+            </section>
+
+            <section class="panel" id="myProposalsPanel" hidden>
+              <div class="section-head">
+                <h2>Propositions reçues</h2>
+                <span id="myProposalsCount" class="tag ok">0</span>
+              </div>
+              <p class="hint">Comparez les propositions des prestataires et choisissez celle qui vous convient.</p>
+              <div id="myProposalsList" class="delivery-request-list"></div>
+            </section>
+          </div>
+        </div>
       </section>
 
       <section id="view-jobs" class="view">
@@ -745,69 +824,6 @@
               <button class="primary" type="submit">Payer et envoyer l'offre</button>
             </form>
             <div id="jobOfferStatus" class="status-box"></div>
-          </section>
-        </div>
-      </section>
-
-      <section id="view-request" class="view">
-        <div class="request-layout">
-          <section class="panel">
-            <div class="section-head">
-              <h2>Demande express</h2>
-              <span class="tag ok">Sans compte</span>
-            </div>
-            <p>Décrivez le besoin, Zeyds prévient les prestataires correspondants qui pourront vous répondre directement.</p>
-            <form id="requestForm" class="form mobile-step-form" data-mobile-form="request" autocomplete="off" novalidate>
-              <div class="mobile-progress" aria-hidden="true">
-                <strong data-mobile-progress-label>Étape 1 sur 4</strong>
-                <span data-mobile-progress-text>De quoi avez-vous besoin ?</span>
-              </div>
-              <fieldset class="mobile-form-step active" data-mobile-step="1" data-step-title="De quoi avez-vous besoin ?">
-                <label>Service recherché<select name="service" id="requestService"></select></label>
-                <label>Décrivez votre besoin<textarea name="message" rows="3" maxlength="220" placeholder="Ex : fuite sous l'évier, besoin d'un plombier disponible aujourd'hui"></textarea></label>
-                <div class="mobile-step-actions"><button class="primary" type="button" data-mobile-next>Continuer vers le lieu</button></div>
-              </fieldset>
-              <fieldset class="mobile-form-step" data-mobile-step="2" data-step-title="Où ?">
-                <label>Ville / commune<input name="city" placeholder="Ex: Cocody, Bouaké, Man..." required></label>
-                <label>Quartier ou repère<input name="area" placeholder="Ex: Riviera 2, Belleville, centre-ville"></label>
-                <div class="mobile-step-actions"><button class="secondary" type="button" data-mobile-prev>Retour</button><button class="primary" type="button" data-mobile-next>Continuer vers la date</button></div>
-              </fieldset>
-              <fieldset class="mobile-form-step" data-mobile-step="3" data-step-title="Quand et budget">
-                <label>Urgence
-                  <select name="urgency">
-                    <option value="today">Aujourd'hui</option>
-                    <option value="24h">Dans les 24h</option>
-                    <option value="week">Cette semaine</option>
-                    <option value="quote">Je veux comparer les prix</option>
-                  </select>
-                </label>
-                <label>Votre budget (facultatif)<input name="budget" placeholder="Ex : 15 000 - 25 000 FCFA, ou laissez vide"></label>
-                <div class="mobile-step-actions"><button class="secondary" type="button" data-mobile-prev>Retour</button><button class="primary" type="button" data-mobile-next>Continuer</button></div>
-              </fieldset>
-              <fieldset class="mobile-form-step" data-mobile-step="4" data-step-title="Photo et contact">
-                <label>Photo du besoin (facultatif)<input name="photo" type="file" accept="image/*"></label>
-                <label>Votre WhatsApp ou téléphone<input name="phone" required placeholder="+225 07 00 00 00 00"></label>
-                <div class="mobile-step-actions"><button class="secondary" type="button" data-mobile-prev>Retour</button><button class="primary" type="submit">Publier ma demande</button></div>
-              </fieldset>
-            </form>
-          </section>
-
-          <section class="panel">
-            <div class="section-head">
-              <h2>Réponse Zeyds</h2>
-              <span class="tag">Matching</span>
-            </div>
-            <div id="requestStatus" class="status-box"></div>
-            <div id="requestMatches" class="request-matches"></div>
-          </section>
-
-          <section class="panel" id="myProposalsPanel" hidden>
-            <div class="section-head">
-              <h2>Propositions reçues</h2>
-              <span id="myProposalsCount" class="tag ok">0</span>
-            </div>
-            <p class="hint">Comparez les propositions des prestataires et choisissez celle qui vous convient.</p>
-            <div id="myProposalsList" class="delivery-request-list"></div>
           </section>
         </div>
       </section>

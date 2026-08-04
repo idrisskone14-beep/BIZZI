@@ -289,6 +289,7 @@ const seed = {
   providerEntryMode: "new",
   recentProviderSignups: [],
   selectedJobEntryMode: "search",
+  selectedServiceEntryMode: "search",
   selectedJobPlanId: "job_1_day",
   selectedJobPayment: "Wave",
   selectedEventPlanId: "standard",
@@ -1433,6 +1434,7 @@ function normalizeState(draft) {
     "signup",
   ).items.slice(0, 12);
   draft.selectedJobEntryMode = draft.selectedJobEntryMode === "publish" ? "publish" : "search";
+  draft.selectedServiceEntryMode = draft.selectedServiceEntryMode === "publish" ? "publish" : "search";
   draft.selectedJobPlanId = JOB_OFFER_PLANS.some((plan) => plan.id === draft.selectedJobPlanId) ? draft.selectedJobPlanId : "job_1_day";
   draft.selectedJobPayment = (bizziConfig.payments?.methods || ["Wave", "Orange Money", "MTN Money"]).includes(draft.selectedJobPayment) ? draft.selectedJobPayment : "Wave";
   draft.selectedEventPlanId = EVENT_PROMOTION_PLANS.some((plan) => plan.id === draft.selectedEventPlanId) ? draft.selectedEventPlanId : "standard";
@@ -1955,6 +1957,42 @@ function setJobEntryMode(mode = "search", options = {}) {
   }
 }
 
+function activateServicePublishMode() {
+  const phoneField = document.querySelector("#requestForm [name='phone']");
+  if (phoneField && !phoneField.value && state.clientPhone) phoneField.value = state.clientPhone;
+  fetchMyProposals().catch(() => null);
+}
+
+function renderServiceEntryMode() {
+  const mode = state.selectedServiceEntryMode === "publish" ? "publish" : "search";
+  const view = document.querySelector("#view-search");
+  if (!view) return;
+  view.classList.toggle("service-mode-publish", mode === "publish");
+  view.classList.toggle("service-mode-search", mode !== "publish");
+  view.querySelectorAll("[data-service-entry]").forEach((button) => {
+    const selected = button.dataset.serviceEntry === mode;
+    button.classList.toggle("selected", selected);
+    button.setAttribute("aria-selected", selected ? "true" : "false");
+  });
+}
+
+function setServiceEntryMode(mode = "search", options = {}) {
+  state.selectedServiceEntryMode = mode === "publish" ? "publish" : "search";
+  saveState();
+  renderServiceEntryMode();
+  if (state.selectedServiceEntryMode === "publish") activateServicePublishMode();
+  if (options.focus) {
+    document.querySelector(options.focus)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
+function renderTopbarAvatar() {
+  const avatar = document.querySelector("#topbarAvatar");
+  if (!avatar) return;
+  const name = String(state.clientName || "").trim();
+  avatar.textContent = name ? name[0].toUpperCase() : "?";
+}
+
 function renderDeliveryEntryMode() {
   const mode = state.selectedDeliveryEntryMode === "courier" ? "courier" : "request";
   const view = document.querySelector("#view-delivery");
@@ -2177,7 +2215,6 @@ const views = {
   eventDetail: document.querySelector("#view-event-detail"),
   search: document.querySelector("#view-search"),
   jobs: document.querySelector("#view-jobs"),
-  request: document.querySelector("#view-request"),
   profile: document.querySelector("#view-profile"),
   provider: document.querySelector("#view-provider"),
   admin: document.querySelector("#view-admin"),
@@ -2194,7 +2231,6 @@ const titles = {
   eventDetail: "Détail événement",
   search: "Rechercher un service",
   jobs: "Emplois & missions",
-  request: "Demande express",
   profile: "Fiche prestataire",
   provider: "Espace prestataire",
   admin: "Administration",
@@ -2258,6 +2294,11 @@ async function loadAndApplyPlatformFeatureFlags() {
 }
 
 function setView(name) {
+  if (name === "request") {
+    name = "search";
+    state.selectedServiceEntryMode = "publish";
+    saveState();
+  }
   const previousName = Object.entries(views).find(([, element]) => element?.classList.contains("active"))?.[0] || "";
   if (TOGGLEABLE_TABS[name] && !isTabEnabled(name)) {
     name = "home";
@@ -2286,6 +2327,7 @@ function setView(name) {
   document.querySelector("#pageTitle").textContent = titles[name] || "Zeyds";
   globalThis.BizziMotion?.viewChanged?.({ from: previousName, to: name, view: views[name] });
   window.scrollTo(0, 0);
+  renderTopbarAvatar();
   if (name === "home") renderHomeDiscovery();
   if (name === "life") globalThis.BizziLife?.render?.();
   if (name === "exception-places") renderExceptionPlaces();
@@ -2295,11 +2337,10 @@ function setView(name) {
     renderDelivery();
   }
   if (name === "food") renderFood();
-  if (name === "search") renderProviders();
-  if (name === "request") {
-    const phoneField = document.querySelector("#requestForm [name='phone']");
-    if (phoneField && !phoneField.value && state.clientPhone) phoneField.value = state.clientPhone;
-    fetchMyProposals().catch(() => null);
+  if (name === "search") {
+    renderProviders();
+    renderServiceEntryMode();
+    if (state.selectedServiceEntryMode === "publish") activateServicePublishMode();
   }
   if (name === "provider") refreshProviderRequestsAndOpportunities().catch(() => null);
   if (name === "jobs") renderJobs();
@@ -11837,7 +11878,7 @@ function startServiceRequestPolling() {
   window.setInterval(() => {
     if (document.visibilityState === "hidden") return;
     if (views.provider?.classList.contains("active")) refreshProviderRequestsAndOpportunities().catch(() => null);
-    if (views.request?.classList.contains("active")) fetchMyProposals().catch(() => null);
+    if (views.search?.classList.contains("active") && state.selectedServiceEntryMode === "publish") fetchMyProposals().catch(() => null);
   }, 45000);
 }
 
@@ -17579,6 +17620,16 @@ function initNavigation() {
       const mode = button.dataset.jobEntry === "publish" ? "publish" : "search";
       setJobEntryMode(mode, { focus: mode === "publish" ? ".job-publish-panel" : ".job-search-panel" });
     });
+  });
+  document.querySelectorAll("[data-service-entry]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const mode = button.dataset.serviceEntry === "publish" ? "publish" : "search";
+      setServiceEntryMode(mode, { focus: mode === "publish" ? ".service-publish-panel" : ".service-search-panel" });
+    });
+  });
+  document.querySelector("#globalVoiceFloating")?.addEventListener("click", (event) => {
+    setView("search");
+    startGlobalVoiceAssistant(event.currentTarget);
   });
   document.querySelectorAll("[data-delivery-entry]").forEach((button) => {
     button.addEventListener("click", () => {

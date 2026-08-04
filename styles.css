@@ -452,6 +452,13 @@ p {
   display: none;
 }
 
+.location-pill button.provider-shortcut-button {
+  background: linear-gradient(135deg, #ff6716, #ff8d2f);
+  box-shadow: 0 6px 16px rgba(255, 103, 22, .35);
+  padding: 0 14px;
+  letter-spacing: .01em;
+}
+
 .geo-status {
   grid-column: 2;
   justify-self: end;

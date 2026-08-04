@@ -633,6 +633,7 @@
             </div>
           </div>
           <div id="searchAssistantStatus" class="status-box compact"></div>
+          <button type="button" class="secondary publish-need-link" data-go="request">Publier mon besoin — plusieurs prestataires vous répondent</button>
         </section>
         <section class="panel my-service-requests-panel" id="myServiceRequestsPanel" hidden>
           <div class="section-head">
@@ -755,22 +756,39 @@
               <h2>Demande express</h2>
               <span class="tag ok">Sans compte</span>
             </div>
-            <p>Décrivez le besoin, Zeyds trouve les prestataires actifs et prépare un message WhatsApp clair.</p>
-            <form id="requestForm" class="form">
-              <label>Service recherché<select name="service" id="requestService"></select></label>
-              <label>Ville / commune<input name="city" placeholder="Ex: Cocody, Bouaké, Man..." required></label>
-              <label>Quartier ou repère<input name="area" placeholder="Ex: Riviera 2, Belleville, centre-ville"></label>
-              <label>Urgence
-                <select name="urgency">
-                  <option value="today">Aujourd'hui</option>
-                  <option value="24h">Dans les 24h</option>
-                  <option value="week">Cette semaine</option>
-                  <option value="quote">Je veux comparer les prix</option>
-                </select>
-              </label>
-              <label>Description du besoin<textarea name="message" rows="3" maxlength="220" placeholder="Ex: fuite sous l'évier, besoin d'un plombier disponible aujourd'hui"></textarea></label>
-              <label>Votre WhatsApp ou téléphone<input name="phone" required placeholder="+225 07 00 00 00 00"></label>
-              <button class="primary" type="submit">Trouver les bons prestataires</button>
+            <p>Décrivez le besoin, Zeyds prévient les prestataires correspondants qui pourront vous répondre directement.</p>
+            <form id="requestForm" class="form mobile-step-form" data-mobile-form="request" autocomplete="off" novalidate>
+              <div class="mobile-progress" aria-hidden="true">
+                <strong data-mobile-progress-label>Étape 1 sur 4</strong>
+                <span data-mobile-progress-text>De quoi avez-vous besoin ?</span>
+              </div>
+              <fieldset class="mobile-form-step active" data-mobile-step="1" data-step-title="De quoi avez-vous besoin ?">
+                <label>Service recherché<select name="service" id="requestService"></select></label>
+                <label>Décrivez votre besoin<textarea name="message" rows="3" maxlength="220" placeholder="Ex : fuite sous l'évier, besoin d'un plombier disponible aujourd'hui"></textarea></label>
+                <div class="mobile-step-actions"><button class="primary" type="button" data-mobile-next>Continuer vers le lieu</button></div>
+              </fieldset>
+              <fieldset class="mobile-form-step" data-mobile-step="2" data-step-title="Où ?">
+                <label>Ville / commune<input name="city" placeholder="Ex: Cocody, Bouaké, Man..." required></label>
+                <label>Quartier ou repère<input name="area" placeholder="Ex: Riviera 2, Belleville, centre-ville"></label>
+                <div class="mobile-step-actions"><button class="secondary" type="button" data-mobile-prev>Retour</button><button class="primary" type="button" data-mobile-next>Continuer vers la date</button></div>
+              </fieldset>
+              <fieldset class="mobile-form-step" data-mobile-step="3" data-step-title="Quand et budget">
+                <label>Urgence
+                  <select name="urgency">
+                    <option value="today">Aujourd'hui</option>
+                    <option value="24h">Dans les 24h</option>
+                    <option value="week">Cette semaine</option>
+                    <option value="quote">Je veux comparer les prix</option>
+                  </select>
+                </label>
+                <label>Votre budget (facultatif)<input name="budget" placeholder="Ex : 15 000 - 25 000 FCFA, ou laissez vide"></label>
+                <div class="mobile-step-actions"><button class="secondary" type="button" data-mobile-prev>Retour</button><button class="primary" type="button" data-mobile-next>Continuer</button></div>
+              </fieldset>
+              <fieldset class="mobile-form-step" data-mobile-step="4" data-step-title="Photo et contact">
+                <label>Photo du besoin (facultatif)<input name="photo" type="file" accept="image/*"></label>
+                <label>Votre WhatsApp ou téléphone<input name="phone" required placeholder="+225 07 00 00 00 00"></label>
+                <div class="mobile-step-actions"><button class="secondary" type="button" data-mobile-prev>Retour</button><button class="primary" type="submit">Publier ma demande</button></div>
+              </fieldset>
             </form>
           </section>
 
@@ -781,6 +799,15 @@
             </div>
             <div id="requestStatus" class="status-box"></div>
             <div id="requestMatches" class="request-matches"></div>
+          </section>
+
+          <section class="panel" id="myProposalsPanel" hidden>
+            <div class="section-head">
+              <h2>Propositions reçues</h2>
+              <span id="myProposalsCount" class="tag ok">0</span>
+            </div>
+            <p class="hint">Comparez les propositions des prestataires et choisissez celle qui vous convient.</p>
+            <div id="myProposalsList" class="delivery-request-list"></div>
           </section>
         </div>
       </section>
@@ -831,6 +858,14 @@
             <button class="secondary" id="enableDeliveryAlerts" type="button">Activer alertes locales</button>
             <button class="secondary" id="enableCourierLive" type="button">Activer disponibilité livreur live</button>
             <div id="providerDeliveryQueue" class="delivery-request-list"></div>
+          </div>
+          <div class="delivery-provider-box service-request-provider-box">
+            <div class="section-head">
+              <h3>Opportunités près de vous</h3>
+              <span id="providerOpportunitiesCount" class="tag">0</span>
+            </div>
+            <p class="hint">Des clients ont publié un besoin qui correspond à votre métier. Envoyez une proposition pour être mis en avant.</p>
+            <div id="providerOpportunitiesQueue" class="delivery-request-list"></div>
           </div>
           <div class="delivery-provider-box service-request-provider-box">
             <div class="section-head">

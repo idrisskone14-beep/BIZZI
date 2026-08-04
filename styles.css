@@ -487,6 +487,15 @@ p {
   gap: var(--space-3);
 }
 
+#myProposalsPanel {
+  grid-column: 1 / -1;
+}
+
+.proposals-group-title {
+  font-weight: 600;
+  margin: var(--space-2) 0 var(--space-1);
+}
+
 .delivery-layout {
   margin-bottom: var(--space-3);
 }

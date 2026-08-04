@@ -470,6 +470,8 @@ const seed = {
   requests: [],
   deliveryRequests: [],
   serviceRequests: [],
+  proposalOpportunities: [],
+  myProposals: [],
   eventPromotions: [],
   exceptionPlaces: [
     {
@@ -1487,7 +1489,15 @@ function normalizeState(draft) {
     verifiedMatchCount: Number(request.verifiedMatchCount || 0),
   })) : [];
   draft.deliveryRequests = Array.isArray(draft.deliveryRequests) ? draft.deliveryRequests.map(normalizeDeliveryRequest).filter((request) => !request.remoteId || BizziPrivacy.owns(request.clientDeviceToken)) : [];
-  draft.serviceRequests = Array.isArray(draft.serviceRequests) ? draft.serviceRequests.map(normalizeServiceRequest).filter((request) => !request.remoteId || BizziPrivacy.owns(request.clientDeviceToken)) : [];
+  const identifiedProviderRaw = draft.providers.find((provider) => provider.id === draft.identifiedProviderId);
+  draft.serviceRequests = Array.isArray(draft.serviceRequests) ? draft.serviceRequests.map(normalizeServiceRequest).filter((request) => (
+    !request.remoteId
+    || BizziPrivacy.owns(request.clientDeviceToken)
+    || request.assignedProviderId === draft.identifiedProviderId
+    || (identifiedProviderRaw?.phone && phonesMatch(request.assignedProviderPhone, identifiedProviderRaw.phone))
+  )) : [];
+  draft.proposalOpportunities = Array.isArray(draft.proposalOpportunities) ? draft.proposalOpportunities : [];
+  draft.myProposals = Array.isArray(draft.myProposals) ? draft.myProposals : [];
   draft.eventPromotions = Array.isArray(draft.eventPromotions) ? draft.eventPromotions.map(normalizeEventPromotion) : [];
   draft.exceptionPlaces = Array.isArray(draft.exceptionPlaces) ? draft.exceptionPlaces.map(normalizeExceptionPlace) : [];
   draft.foodPlaces = Array.isArray(draft.foodPlaces) ? draft.foodPlaces.map(normalizeFoodPlace) : [];
@@ -2286,6 +2296,12 @@ function setView(name) {
   }
   if (name === "food") renderFood();
   if (name === "search") renderProviders();
+  if (name === "request") {
+    const phoneField = document.querySelector("#requestForm [name='phone']");
+    if (phoneField && !phoneField.value && state.clientPhone) phoneField.value = state.clientPhone;
+    fetchMyProposals().catch(() => null);
+  }
+  if (name === "provider") refreshProviderRequestsAndOpportunities().catch(() => null);
   if (name === "jobs") renderJobs();
   if (name === "events") renderEvents();
   if (name === "eventDetail") renderEventDetail();
@@ -8071,9 +8087,10 @@ function isMissingPriorityColumnError(error) {
   return /priority_score|priority_label|matched_count|schema cache|column/i.test(message);
 }
 
-async function submitExpressRequestToSupabase(request) {
+async function submitExpressRequestToSupabase(request, files = {}) {
   if (!supabaseConfigured()) return "Demande gardée en local : Supabase non configuré.";
   if (request.remoteId) return "Demande déjà liée à Supabase.";
+  request.clientDeviceToken ||= BizziPrivacy.token();
   const requestId = randomUuid();
   const serviceId = await supabaseIdByName("services", request.service, remoteLookupCache.services);
   const cityId = await supabaseIdByName("cities", request.city, remoteLookupCache.cities);
@@ -8082,6 +8099,12 @@ async function submitExpressRequestToSupabase(request) {
   const matchedProviderIds = matches
     .map(remoteProviderId)
     .filter(Boolean);
+  let photoWarning = "";
+  if (files.photoFile?.size) {
+    const upload = await optionalStorageUpload("requestPhotos", "requests", files.photoFile, { publicUrl: true });
+    if (upload.publicUrl) request.photoUrl = upload.publicUrl;
+    else if (upload.error) photoWarning = ` Photo non envoyée : ${upload.error}.`;
+  }
   const payload = {
     id: requestId,
     service_id: serviceId,
@@ -8093,6 +8116,9 @@ async function submitExpressRequestToSupabase(request) {
     message: request.message || null,
     customer_name: request.clientName || null,
     customer_phone: request.phone || null,
+    client_access_token: request.clientDeviceToken,
+    budget: request.budget || null,
+    photo_url: request.photoUrl || null,
     matched_provider_ids: matchedProviderIds,
     priority_score: priority.score,
     priority_label: priority.label,
@@ -8109,6 +8135,9 @@ async function submitExpressRequestToSupabase(request) {
     delete legacyPayload.priority_score;
     delete legacyPayload.priority_label;
     delete legacyPayload.matched_count;
+    delete legacyPayload.client_access_token;
+    delete legacyPayload.budget;
+    delete legacyPayload.photo_url;
     await supabaseInsert("express_requests", legacyPayload);
   }
   request.remoteId = requestId;
@@ -10890,6 +10919,105 @@ function renderMyServiceRequests() {
   setupServiceRequestReviewForms();
 }
 
+async function fetchMyProposals() {
+  const remoteIds = state.requests.map((request) => request.remoteId).filter(Boolean);
+  if (!remoteIds.length) {
+    state.myProposals = [];
+    renderMyProposals();
+    return;
+  }
+  try {
+    const rows = await supabaseFetch(`express_request_proposals?express_request_id=in.(${remoteIds.join(",")})&order=amount.asc`);
+    state.myProposals = Array.isArray(rows) ? rows : [];
+    saveState();
+  } catch {
+    // Garde les propositions déjà connues si la requête échoue.
+  }
+  renderMyProposals();
+}
+
+function myProposalsForRequest(remoteRequestId) {
+  return (state.myProposals || []).filter((proposal) => proposal.express_request_id === remoteRequestId);
+}
+
+function proposalCard(proposal, hasSelection) {
+  return `
+    <article class="delivery-request-card">
+      <div>
+        <div class="delivery-card-head">
+          <h3>${safe(proposal.provider_name || "Prestataire")}</h3>
+          <span class="tag ok">${safe(Number(proposal.amount || 0).toLocaleString("fr-FR"))} ${safe(proposal.currency || "FCFA")}</span>
+        </div>
+        ${proposal.message ? `<p>${safe(proposal.message)}</p>` : ""}
+        ${proposal.availability ? `<p><strong>Disponibilité :</strong> ${safe(proposal.availability)}</p>` : ""}
+      </div>
+      <div class="delivery-card-actions">
+        ${proposal.status === "selected"
+          ? `<span class="tag ok">Prestataire choisi</span>`
+          : hasSelection
+            ? ""
+            : `<button class="primary" type="button" data-select-proposal="${safe(proposal.id)}">Choisir ce prestataire</button>`}
+      </div>
+    </article>
+  `;
+}
+
+function renderMyProposals() {
+  const panel = document.querySelector("#myProposalsPanel");
+  const root = document.querySelector("#myProposalsList");
+  const count = document.querySelector("#myProposalsCount");
+  if (!panel || !root || !count) return;
+  const requestsWithProposals = state.requests
+    .filter((request) => request.remoteId)
+    .map((request) => ({ request, proposals: myProposalsForRequest(request.remoteId) }))
+    .filter((entry) => entry.proposals.length);
+  const totalProposals = requestsWithProposals.reduce((sum, entry) => sum + entry.proposals.length, 0);
+  count.textContent = String(totalProposals);
+  panel.hidden = requestsWithProposals.length === 0;
+  if (!requestsWithProposals.length) return;
+  root.innerHTML = requestsWithProposals.map(({ request, proposals }) => {
+    const hasSelection = proposals.some((proposal) => proposal.status === "selected");
+    return `
+      <div class="proposals-group">
+        <p class="proposals-group-title">${safe(request.service)} - ${safe(request.city)}</p>
+        ${proposals.map((proposal) => proposalCard(proposal, hasSelection)).join("")}
+      </div>
+    `;
+  }).join("");
+  bindMyProposalActions(root);
+}
+
+async function selectProposal(proposalId, button = null) {
+  if (!window.confirm("Choisir ce prestataire ? Les autres propositions reçues seront automatiquement refusées.")) return;
+  setBusyButton(button, true, "Sélection...");
+  try {
+    const row = await supabaseRpc("client_select_proposal", {
+      p_proposal_id: proposalId,
+      p_client_access_token: BizziPrivacy.token(),
+    }, { prefer: "return=representation" });
+    const created = Array.isArray(row) ? row[0] : row;
+    if (created?.id) {
+      const mission = serviceRequestFromSupabase(created);
+      state.serviceRequests = [mission, ...state.serviceRequests.filter((item) => item.id !== mission.id)];
+    }
+    saveState();
+    await fetchMyProposals();
+    renderMyServiceRequests();
+    finishActionButton(button, "Choisi");
+  } catch (error) {
+    window.alert(`Impossible de choisir cette proposition : ${friendlySupabaseError(error)}`);
+    finishActionButton(button, "Choisir ce prestataire");
+  }
+}
+
+function bindMyProposalActions(root = document) {
+  root.querySelectorAll("[data-select-proposal]").forEach((button) => {
+    if (button.dataset.bound === "true") return;
+    button.dataset.bound = "true";
+    button.addEventListener("click", () => selectProposal(button.dataset.selectProposal, button));
+  });
+}
+
 async function requestDeliveryAlertPermission(button = null) {
   const provider = currentPaymentProvider();
   if (globalThis.BizziPushClient?.supported?.() && bizziConfig.notifications?.enabled && bizziConfig.notifications?.vapidPublicKey) {
@@ -11509,11 +11637,207 @@ function bindServiceRequestActions(root = document) {
   });
 }
 
+function opportunityCard(opportunity) {
+  const alreadyProposed = Boolean(opportunity.already_proposed);
+  return `
+    <article class="delivery-request-card">
+      <div>
+        <div class="delivery-card-head">
+          <h3>${safe(opportunity.service_name || "Service")}</h3>
+          <span class="tag pending">${safe(requestUrgencyLabel(opportunity.urgency))}</span>
+        </div>
+        <p>${safe(opportunity.city_name || "")}${opportunity.area ? `, ${safe(opportunity.area)}` : ""}</p>
+        ${opportunity.message ? `<p>${safe(opportunity.message)}</p>` : ""}
+        <p>Publiée le ${new Date(opportunity.created_at).toLocaleString("fr-FR")}</p>
+      </div>
+      ${alreadyProposed ? `
+        <p class="tag ok">Proposition envoyée, en attente du client</p>
+      ` : `
+        <form class="form proposal-form" data-proposal-form="${safe(opportunity.id)}">
+          <label>Votre prix (FCFA)<input name="amount" type="number" min="0" step="500" required placeholder="Ex : 15000"></label>
+          <label>Message pour le client<textarea name="message" rows="2" maxlength="220" placeholder="Ex : disponible aujourd'hui, 5 ans d'expérience"></textarea></label>
+          <label>Disponibilité<input name="availability" maxlength="60" placeholder="Ex : aujourd'hui dès 14h"></label>
+          <button class="primary" type="submit">Envoyer ma proposition</button>
+        </form>
+      `}
+    </article>
+  `;
+}
+
+function renderProviderOpportunitiesQueue() {
+  const root = document.querySelector("#providerOpportunitiesQueue");
+  const count = document.querySelector("#providerOpportunitiesCount");
+  if (!root || !count) return;
+  const provider = currentPaymentProvider();
+  const opportunities = Array.isArray(state.proposalOpportunities) ? state.proposalOpportunities : [];
+  count.textContent = String(opportunities.filter((item) => !item.already_proposed).length);
+  if (!provider) {
+    root.innerHTML = `
+      <article class="delivery-request-card empty">
+        <h3>Aucun profil prestataire sélectionné</h3>
+        <p>Créez ou sélectionnez un prestataire pour voir les opportunités.</p>
+      </article>
+    `;
+    return;
+  }
+  root.innerHTML = opportunities.length ? opportunities.map(opportunityCard).join("") : `
+    <article class="delivery-request-card empty">
+      <h3>Aucune opportunité pour le moment</h3>
+      <p>Les besoins publiés par des clients qui correspondent à votre métier apparaîtront ici.</p>
+    </article>
+  `;
+  bindProviderOpportunityActions(root);
+}
+
+async function submitProviderProposal(expressRequestId, form, button) {
+  const provider = currentPaymentProvider();
+  if (!provider?.phone) return;
+  const data = new FormData(form);
+  const amount = Number(data.get("amount") || 0);
+  if (!amount || amount <= 0) {
+    window.alert("Indiquez un prix pour envoyer votre proposition.");
+    return;
+  }
+  setBusyButton(button, true, "Envoi...");
+  try {
+    await supabaseRpc("provider_submit_proposal", {
+      p_express_request_id: expressRequestId,
+      p_provider_phone: provider.phone,
+      p_amount: amount,
+      p_message: String(data.get("message") || "").trim(),
+      p_availability: String(data.get("availability") || "").trim(),
+    });
+    const opportunity = state.proposalOpportunities.find((item) => item.id === expressRequestId);
+    if (opportunity) opportunity.already_proposed = true;
+    saveState();
+    renderProviderOpportunitiesQueue();
+    renderProviderStatus("Proposition envoyée au client.");
+  } catch (error) {
+    window.alert(`Impossible d'envoyer la proposition : ${friendlySupabaseError(error)}`);
+    finishActionButton(button, "Envoyer ma proposition");
+  }
+}
+
+function bindProviderOpportunityActions(root = document) {
+  root.querySelectorAll("[data-proposal-form]").forEach((form) => {
+    if (form.dataset.bound === "true") return;
+    form.dataset.bound = "true";
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      submitProviderProposal(form.dataset.proposalForm, form, form.querySelector("button[type='submit']"));
+    });
+  });
+}
+
 function startDeliveryAlertPolling() {
   if (!supabaseConfigured()) return;
   window.setInterval(() => {
     if (!state.deliveryAlertsEnabled || document.visibilityState === "hidden" || !views.provider?.classList.contains("active")) return;
     syncSupabasePublicData(null, { silent: true }).catch(() => null);
+  }, 45000);
+}
+
+// Convertit une ligne brute Supabase (snake_case) vers le format attendu
+// par normalizeServiceRequest (camelCase) — necessaire car les demandes
+// recues via provider_list_service_requests() n'ont jamais transite par
+// requestServiceFromProvider() (qui construit deja le format local).
+// Convertit un id prestataire brut Supabase/Neon (sans prefixe) vers le
+// format local : soit l'id du prestataire deja connu localement (creation
+// locale synchronisee), soit "sb-<uuid>" par convention (cf. remoteProviderId
+// / providerFromSupabase) pour un prestataire connu uniquement a distance.
+function localProviderIdFromRemote(remoteId, remotePhone) {
+  if (!remoteId) return "";
+  const known = state.providers.find((provider) => (
+    remoteProviderId(provider) === remoteId || (remotePhone && phonesMatch(provider.phone, remotePhone))
+  ));
+  return known?.id || `sb-${remoteId}`;
+}
+
+function serviceRequestFromSupabase(row = {}) {
+  return normalizeServiceRequest({
+    id: row.id,
+    remoteId: row.id,
+    remoteStatus: "linked",
+    clientDeviceToken: row.client_access_token,
+    clientName: row.customer_name,
+    phone: row.customer_phone,
+    service: row.service_name,
+    city: row.city_name,
+    area: row.area,
+    notes: row.notes,
+    photoUrl: row.photo_url,
+    amount: row.amount,
+    currency: row.currency,
+    commissionRate: row.commission_rate,
+    bizziCommission: row.bizzi_commission,
+    providerPayout: row.provider_payout,
+    paymentReference: row.payment_reference,
+    paymentStatus: row.payment_status,
+    paidAt: row.paid_at,
+    payoutStatus: row.payout_status,
+    assignedProviderId: localProviderIdFromRemote(row.assigned_provider_id, row.assigned_provider_phone),
+    assignedProviderName: row.assigned_provider_name,
+    assignedProviderPhone: row.assigned_provider_phone,
+    status: row.status,
+    acceptedAt: row.accepted_at,
+    startedAt: row.started_at,
+    completedAt: row.completed_at,
+    declinedAt: row.declined_at,
+    declineReason: row.decline_reason,
+    cancellationReason: row.cancellation_reason,
+    cancelledBy: row.cancelled_by,
+    cancelledAt: row.cancelled_at,
+    reviewSubmitted: row.review_submitted,
+    createdAt: row.created_at,
+  });
+}
+
+async function fetchProviderServiceRequestsRemote(phone) {
+  if ((!supabaseConfigured() && !restBackendConfigured()) || !phone) return [];
+  try {
+    const rows = await supabaseRpc("provider_list_service_requests", { provider_phone: phone });
+    return Array.isArray(rows) ? rows.map(serviceRequestFromSupabase) : [];
+  } catch {
+    return [];
+  }
+}
+
+async function fetchProviderProposalOpportunities(phone) {
+  if ((!supabaseConfigured() && !restBackendConfigured()) || !phone) return [];
+  try {
+    const rows = await supabaseRpc("provider_list_proposal_opportunities", { provider_phone: phone });
+    return Array.isArray(rows) ? rows : [];
+  } catch {
+    return [];
+  }
+}
+
+async function refreshProviderRequestsAndOpportunities() {
+  const provider = currentPaymentProvider();
+  if (!provider?.phone) return;
+  const [remoteRequests, opportunities] = await Promise.all([
+    fetchProviderServiceRequestsRemote(provider.phone),
+    fetchProviderProposalOpportunities(provider.phone),
+  ]);
+  if (remoteRequests.length) {
+    const remoteIds = new Set(remoteRequests.map((request) => request.id));
+    state.serviceRequests = [
+      ...remoteRequests,
+      ...state.serviceRequests.filter((request) => !remoteIds.has(request.id)),
+    ];
+  }
+  state.proposalOpportunities = opportunities;
+  saveState();
+  renderProviderServiceQueue();
+  renderProviderOpportunitiesQueue();
+}
+
+function startServiceRequestPolling() {
+  if (!supabaseConfigured() && !restBackendConfigured()) return;
+  window.setInterval(() => {
+    if (document.visibilityState === "hidden") return;
+    if (views.provider?.classList.contains("active")) refreshProviderRequestsAndOpportunities().catch(() => null);
+    if (views.request?.classList.contains("active")) fetchMyProposals().catch(() => null);
   }, 45000);
 }
 
@@ -13928,6 +14252,64 @@ function setupMobileFormWizards() {
 
 function setupForms() {
   setupMobileFormWizards();
+  document.querySelector("#requestForm")?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    if (form.dataset.submitting === "true") return;
+    const button = form.querySelector("button[type='submit']");
+    const status = document.querySelector("#requestStatus");
+    const data = new FormData(form);
+    const service = canonicalServiceName(data.get("service"));
+    const city = String(data.get("city") || "").trim();
+    const phone = String(data.get("phone") || "").trim();
+    if (isPlaceholderServiceName(service)) {
+      if (status) status.innerHTML = `<p>Choisissez un métier avant de publier votre demande.</p>`;
+      return;
+    }
+    if (!cityIsSpecific(city)) {
+      if (status) status.innerHTML = `<p>Indiquez une ville avant de publier votre demande.</p>`;
+      return;
+    }
+    if (!isValidContactPhone(phone)) {
+      if (status) status.innerHTML = `<p>${safe(contactValidationMessage("téléphone ou WhatsApp"))}</p>`;
+      return;
+    }
+    form.dataset.submitting = "true";
+    setBusyButton(button, true, "Publication...");
+    rememberClientPhone(phone);
+    const request = {
+      id: `req${Date.now()}`,
+      service,
+      city,
+      area: String(data.get("area") || "").trim(),
+      urgency: String(data.get("urgency") || "today"),
+      message: String(data.get("message") || "").trim(),
+      budget: String(data.get("budget") || "").trim(),
+      phone,
+      clientName: state.clientName || "",
+      createdAt: new Date().toISOString(),
+      status: "open",
+    };
+    state.requests.unshift(request);
+    saveState();
+    renderExpressRequestResult(request);
+    setView("request");
+    try {
+      const message = await submitExpressRequestToSupabase(request, { photoFile: data.get("photo") });
+      renderExpressRequestResult(request);
+      markRemoteWrite(message);
+    } catch (error) {
+      request.remoteStatus = "local_only";
+      request.remoteError = friendlySupabaseError(error);
+      if (status) {
+        status.innerHTML += `<p><strong>Publiée sur cet appareil.</strong> Synchronisation à reprendre : ${safe(request.remoteError)}</p>`;
+      }
+    }
+    form.dataset.submitting = "false";
+    finishActionButton(button, "Publier ma demande");
+    form.reset();
+    globalThis.BizziMobileForms?.reset?.(form);
+  });
   const renderDeliveryPaymentOptionsSmooth = debounce(renderDeliveryPaymentOptions, 120);
   document.querySelector("#deliveryRequestType")?.addEventListener("change", () => {
     updateDeliveryRequestTypeUi();
@@ -17322,6 +17704,7 @@ function boot() {
   setupAdminAccess();
   setupDataTools();
   startDeliveryAlertPolling();
+  startServiceRequestPolling();
   renderProviderStatus();
   renderFoodStatus();
   renderEventStatus();

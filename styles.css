@@ -63,63 +63,6 @@ body {
   flex: none;
 }
 
-.global-voice-dock {
-  position: fixed;
-  right: var(--space-3);
-  bottom: var(--space-3);
-  z-index: 20;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 8px;
-}
-
-.global-voice-status {
-  max-width: 280px;
-  padding: 10px 14px;
-  border-radius: 12px;
-  background: #fff;
-  color: var(--ink);
-  box-shadow: 0 14px 30px rgba(8,36,92,.18);
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.global-voice-floating {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 48px;
-  padding: 0 20px;
-  border: 0;
-  border-radius: 999px;
-  background: linear-gradient(135deg, var(--accent), #ff8d2f);
-  color: #fff;
-  font-weight: 900;
-  box-shadow: 0 14px 30px rgba(242,90,74,.32);
-  cursor: pointer;
-  touch-action: manipulation;
-}
-
-.global-voice-floating span {
-  font-size: 10px;
-}
-
-.global-voice-floating.is-listening {
-  animation: bizziVoicePulse 1.4s ease-in-out infinite;
-}
-
-@keyframes bizziVoicePulse {
-  0%, 100% { box-shadow: 0 14px 30px rgba(242,90,74,.32); }
-  50% { box-shadow: 0 14px 30px rgba(242,90,74,.6); }
-}
-
-@media (max-width: 920px) {
-  .global-voice-dock {
-    bottom: 78px;
-  }
-}
-
 .data-lite *,
 .data-lite *::before,
 .data-lite *::after {

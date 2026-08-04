@@ -30,8 +30,8 @@
 
   function decorate(card) {
     if (!card || card.dataset.aiServiceDecorated === "true" || isLiteMode()) return;
-    const serviceName = card.dataset.service || card.dataset.homeService;
-    const art = card.querySelector(".service-art, .quick-art");
+    const serviceName = card.dataset.homeService;
+    const art = card.querySelector(".quick-art");
     if (!serviceName || !art) return;
 
     card.dataset.aiServiceDecorated = "true";
@@ -53,14 +53,14 @@
 
   function refresh(root) {
     if (isLiteMode()) return;
-    (root || document).querySelectorAll?.(".service-card[data-service], .quick-service[data-home-service]").forEach(decorate);
+    (root || document).querySelectorAll?.(".quick-service[data-home-service]").forEach(decorate);
   }
 
   const observer = new MutationObserver((records) => {
     for (const record of records) {
       for (const node of record.addedNodes) {
         if (!(node instanceof Element)) continue;
-        if (node.matches(".service-card[data-service], .quick-service[data-home-service]")) decorate(node);
+        if (node.matches(".quick-service[data-home-service]")) decorate(node);
         refresh(node);
       }
     }

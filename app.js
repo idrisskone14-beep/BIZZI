@@ -8651,6 +8651,29 @@ function providerAveragePriceLabel(provider = {}) {
   return price ? `Dès ${formatMoney(price)}` : "Sur devis";
 }
 
+const SERVICE_PRICE_ESTIMATE_MIN_SAMPLES = 3;
+
+async function fetchAndRenderRequestPriceHint(serviceName) {
+  const hint = document.querySelector("#requestPriceHint");
+  if (!hint) return;
+  if (isPlaceholderServiceName(serviceName)) {
+    hint.hidden = true;
+    return;
+  }
+  try {
+    const estimate = await supabaseRpc("bizzi_service_price_estimate", { p_service_name: serviceName });
+    const sampleCount = Number(estimate?.sample_count || 0);
+    if (sampleCount < SERVICE_PRICE_ESTIMATE_MIN_SAMPLES) {
+      hint.hidden = true;
+      return;
+    }
+    hint.hidden = false;
+    hint.textContent = `💡 Les prestataires de ce métier facturent en général entre ${formatMoney(estimate.min_amount)} et ${formatMoney(estimate.max_amount)}.`;
+  } catch {
+    hint.hidden = true;
+  }
+}
+
 const PROVIDER_RESPONSE_TIME_MIN_SAMPLES = 3;
 
 function providerResponseTimeLabel(provider = {}) {
@@ -14310,6 +14333,9 @@ function setupMobileFormWizards() {
 
 function setupForms() {
   setupMobileFormWizards();
+  document.querySelector("#requestService")?.addEventListener("change", (event) => {
+    fetchAndRenderRequestPriceHint(canonicalServiceName(event.currentTarget.value));
+  });
   document.querySelector("#requestForm")?.addEventListener("submit", async (event) => {
     event.preventDefault();
     const form = event.currentTarget;

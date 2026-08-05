@@ -713,6 +713,17 @@ p {
   font-weight: 800;
 }
 
+.price-hint {
+  margin: -6px 0 4px;
+  padding: 10px 12px;
+  border: 1px solid rgba(5,139,131,.22);
+  border-radius: 8px;
+  background: #f0fbf8;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 750;
+}
+
 #view-delivery.delivery-mode-request .delivery-courier-panel,
 #view-delivery.delivery-mode-courier .delivery-client-panel {
   display: none;

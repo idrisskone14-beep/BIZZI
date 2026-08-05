@@ -6299,6 +6299,8 @@ function providerFromSupabase(row, index, options = {}) {
     deliveryCancelCount: Number(row.delivery_cancel_count || 0),
     deliveryPenaltyReason: row.delivery_penalty_reason || "",
     calls: Number(row.call_count || 0),
+    avgResponseSeconds: Number(row.avg_response_seconds) || null,
+    responseSampleCount: Number(row.response_sample_count || 0),
     contactClicks: 0,
     reviewCount: Number(row.review_count || 0),
     callClicks: 0,
@@ -8647,6 +8649,17 @@ function providerArrivalEstimate(provider = {}) {
 function providerAveragePriceLabel(provider = {}) {
   const price = providerServicePrice(provider);
   return price ? `Dès ${formatMoney(price)}` : "Sur devis";
+}
+
+const PROVIDER_RESPONSE_TIME_MIN_SAMPLES = 3;
+
+function providerResponseTimeLabel(provider = {}) {
+  const seconds = Number(provider.avgResponseSeconds);
+  const samples = Number(provider.responseSampleCount || 0);
+  if (!Number.isFinite(seconds) || seconds <= 0 || samples < PROVIDER_RESPONSE_TIME_MIN_SAMPLES) return null;
+  if (seconds < 3600) return `Répond en ~${Math.max(1, Math.round(seconds / 60))} min`;
+  if (seconds < 86400) return `Répond en ~${Math.round(seconds / 3600)}h`;
+  return `Répond en ~${Math.round(seconds / 86400)} j`;
 }
 
 function assistantTrafficMultiplier(date = new Date()) {
@@ -13156,6 +13169,7 @@ function providerCard(provider) {
 
   const reviews = Number(provider.reviewCount || 0);
   const available = providerCurrentAvailability(provider);
+  const responseLabel = providerResponseTimeLabel(provider);
   return `
     <article class="provider-card provider-card-premium" data-provider-card="${safe(provider.id)}" tabindex="0" role="button" aria-label="Voir le profil de ${safe(provider.fullName)}">
       <div class="provider-card-media">
@@ -13169,6 +13183,7 @@ function providerCard(provider) {
         <p class="provider-card-service">${safe(providerServicesLabel(provider))}</p>
         <p class="provider-card-rating-line">★ ${Number(provider.rating || 0).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} (${reviews}) · ${safe(distanceLabel(provider))}</p>
         ${available ? `<p class="provider-card-availability">🟢 Disponible maintenant</p>` : ""}
+        ${responseLabel ? `<p class="provider-card-response-time">⚡ ${safe(responseLabel)}</p>` : ""}
         <p class="provider-card-price">${safe(providerAveragePriceLabel(provider))}</p>
         ${renewal ? `<span class="tag bad">${safe(renewal)}</span>` : ""}
         <div class="card-actions">
@@ -13215,6 +13230,7 @@ function openProfile(id) {
         <span class="tag">${safe(distanceLabel(provider))}</span>
         <span class="tag">${safe(provider.rating)}/5</span>
         <span class="tag">${safe(provider.city)}</span>
+        ${providerResponseTimeLabel(provider) ? `<span class="tag">⚡ ${safe(providerResponseTimeLabel(provider))}</span>` : ""}
         ${verificationBadge(provider)}
         ${reliabilityBadge(provider)}
         ${providerBoostBadge(provider)}

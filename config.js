@@ -74,8 +74,8 @@ window.BizziConfig = {
     browserFallback: true,
   },
   notifications: {
-    enabled: false,
-    vapidPublicKey: "",
+    enabled: true,
+    vapidPublicKey: "BFsmlYLLFeStWOvvaU47YXn5CKyGIsyztoxeZsOj8h4hl9WAX31ERNzrfC8wPSyr6YkyJPDca3nybcp-iLOHl-4",
     subscribeEndpoint: "https://hqqppxnvorcnvksulhna.supabase.co/functions/v1/push-subscribe",
     notifyEndpoint: "https://hqqppxnvorcnvksulhna.supabase.co/functions/v1/push-notify",
   },

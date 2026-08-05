@@ -8130,6 +8130,34 @@ function isMissingPriorityColumnError(error) {
   return /priority_score|priority_label|matched_count|schema cache|column/i.test(message);
 }
 
+async function sendPushNotification(payload) {
+  const endpoint = bizziConfig.notifications?.notifyEndpoint;
+  if (!endpoint || !bizziConfig.notifications?.enabled) return;
+  try {
+    const anonKey = bizziConfig.supabase?.anonKey || "";
+    await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", apikey: anonKey, Authorization: `Bearer ${anonKey}` },
+      body: JSON.stringify(payload),
+    });
+  } catch {
+    // Best-effort : le sondage 45s reste le filet de sécurité si le push échoue.
+  }
+}
+
+function notifyMatchedProvidersOfOpportunity(request, matches) {
+  matches.forEach((provider) => {
+    if (!provider.phone) return;
+    sendPushNotification({
+      owner_type: "provider",
+      phone: provider.phone,
+      title: "Nouvelle opportunité Zeyds",
+      body: `${request.service} à ${request.city}${request.area ? `, ${request.area}` : ""}`,
+      url: "./index.html#provider",
+    });
+  });
+}
+
 async function submitExpressRequestToSupabase(request, files = {}) {
   if (!supabaseConfigured()) return "Demande gardée en local : Supabase non configuré.";
   if (request.remoteId) return "Demande déjà liée à Supabase.";
@@ -8185,6 +8213,7 @@ async function submitExpressRequestToSupabase(request, files = {}) {
   }
   request.remoteId = requestId;
   request.remoteStatus = "open";
+  notifyMatchedProvidersOfOpportunity(request, matches);
   const message = "Demande express envoyée vers Supabase.";
   markRemoteWrite(message);
   return message;
@@ -14382,6 +14411,9 @@ function setupForms() {
       const message = await submitExpressRequestToSupabase(request, { photoFile: data.get("photo") });
       renderExpressRequestResult(request);
       markRemoteWrite(message);
+      if (globalThis.BizziPushClient?.supported?.() && bizziConfig.notifications?.enabled && bizziConfig.notifications?.vapidPublicKey) {
+        globalThis.BizziPushClient.subscribe({ ownerType: "client", phone: request.phone }).catch(() => null);
+      }
     } catch (error) {
       request.remoteStatus = "local_only";
       request.remoteError = friendlySupabaseError(error);

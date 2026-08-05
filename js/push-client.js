@@ -27,9 +27,10 @@
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(cfg.vapidPublicKey),
     });
+    const anonKey = globalThis.BizziConfig?.supabase?.anonKey || "";
     const response = await fetch(cfg.subscribeEndpoint, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", apikey: anonKey, Authorization: `Bearer ${anonKey}` },
       body: JSON.stringify({
         owner_type: owner.ownerType || "provider",
         provider_id: owner.providerId || "",

@@ -2340,6 +2340,7 @@ function setView(name) {
   if (name === "search") {
     renderProviders();
     renderServiceEntryMode();
+    refreshClientServiceRequests().catch(() => null);
     if (state.selectedServiceEntryMode === "publish") activateServicePublishMode();
   }
   if (name === "provider") refreshProviderRequestsAndOpportunities().catch(() => null);
@@ -8395,51 +8396,35 @@ async function submitServiceRequestToSupabase(request) {
 }
 
 async function acceptServiceRequestInSupabase(request, provider) {
-  if (!request?.remoteId || !remoteProviderId(provider)) return "Acceptation locale enregistrée.";
-  try {
-    await supabaseRpc("bizzi_accept_service_request", {
-      p_service_request_id: request.remoteId,
-      p_provider_id: remoteProviderId(provider),
-      p_provider_name: provider.fullName,
-      p_provider_phone: provider.phone,
-    });
-  } catch (rpcError) {
-    await supabaseRequest(`service_requests?id=eq.${encodeURIComponent(request.remoteId)}&status=eq.pending_acceptance`, {
-      method: "PATCH",
-      headers: { Prefer: "return=minimal" },
-      body: {
-        status: "accepted",
-        assigned_provider_id: remoteProviderId(provider),
-        assigned_provider_name: provider.fullName,
-        assigned_provider_phone: provider.phone,
-        accepted_at: new Date().toISOString(),
-      },
-    });
-  }
+  if (!request?.remoteId || !provider?.phone) return "Acceptation locale enregistrée.";
+  await supabaseRpc("provider_accept_service_request", {
+    p_service_request_id: request.remoteId,
+    p_provider_phone: provider.phone,
+  });
   request.remoteStatus = "linked";
-  return "Acceptation publiée dans Supabase.";
+  return "Acceptation publiée.";
 }
 
-async function declineServiceRequestInSupabase(request) {
-  if (!request?.remoteId) return "Refus local enregistré.";
-  try {
-    await supabaseRpc("bizzi_decline_service_request", {
-      p_service_request_id: request.remoteId,
-      p_reason: request.declineReason || "",
-    });
-  } catch (rpcError) {
-    await supabaseRequest(`service_requests?id=eq.${encodeURIComponent(request.remoteId)}`, {
-      method: "PATCH",
-      headers: { Prefer: "return=minimal" },
-      body: {
-        status: "declined",
-        decline_reason: request.declineReason || null,
-        declined_at: new Date().toISOString(),
-      },
-    });
-  }
+async function declineServiceRequestInSupabase(request, provider) {
+  if (!request?.remoteId || !provider?.phone) return "Refus local enregistré.";
+  await supabaseRpc("provider_decline_service_request", {
+    p_service_request_id: request.remoteId,
+    p_provider_phone: provider.phone,
+    p_reason: request.declineReason || "",
+  });
   request.remoteStatus = "linked";
-  return "Refus publié dans Supabase.";
+  return "Refus publié.";
+}
+
+async function advanceServiceRequestStageInSupabase(request, provider, nextStage) {
+  if (!request?.remoteId || !provider?.phone) return "Mise à jour locale enregistrée.";
+  await supabaseRpc("provider_advance_service_request", {
+    p_service_request_id: request.remoteId,
+    p_provider_phone: provider.phone,
+    p_next_status: nextStage,
+  });
+  request.remoteStatus = "linked";
+  return "Mise à jour publiée.";
 }
 
 async function cancelDeliveryByClientInSupabase(request, reason) {
@@ -11635,7 +11620,7 @@ function serviceRequestCard(request, options = {}) {
       <div class="delivery-card-actions">
         ${canAcceptOrDecline ? `<button class="primary" type="button" data-accept-service="${safe(request.id)}" data-provider-id="${safe(options.providerId)}">Accepter</button>` : ""}
         ${canAcceptOrDecline ? `<button class="secondary" type="button" data-decline-service="${safe(request.id)}" data-provider-id="${safe(options.providerId)}">Refuser</button>` : ""}
-        ${canAdvance ? `<button class="primary" type="button" data-advance-service="${safe(request.id)}" data-next-stage="${safe(nextStage)}">${safe(nextStageLabel)}</button>` : ""}
+        ${canAdvance ? `<button class="primary" type="button" data-advance-service="${safe(request.id)}" data-provider-id="${safe(options.providerId)}" data-next-stage="${safe(nextStage)}">${safe(nextStageLabel)}</button>` : ""}
       </div>
     </article>
   `;
@@ -11714,13 +11699,21 @@ async function declineServiceRequest(requestId, providerId, button = null) {
   finishActionButton(button, "Refusée");
 }
 
-function advanceServiceRequestStage(requestId, nextStage, button = null) {
+async function advanceServiceRequestStage(requestId, providerId, nextStage, button = null) {
   const request = state.serviceRequests.find((item) => item.id === requestId);
+  const provider = state.providers.find((item) => item.id === providerId);
   if (!request || !nextStage) return;
+  setBusyButton(button, true, "Mise à jour...");
   request.status = nextStage;
   if (nextStage === "in_progress") request.startedAt = new Date().toISOString();
   if (nextStage === "completed") request.completedAt = new Date().toISOString();
   saveState();
+  try {
+    await advanceServiceRequestStageInSupabase(request, provider, nextStage);
+  } catch (error) {
+    request.remoteStatus = "local_only";
+    saveState();
+  }
   renderMyServiceRequests();
   renderProviderServiceQueue();
   finishActionButton(button, "Mis à jour");
@@ -11740,7 +11733,7 @@ function bindServiceRequestActions(root = document) {
   root.querySelectorAll("[data-advance-service]").forEach((button) => {
     if (button.dataset.bound === "true") return;
     button.dataset.bound = "true";
-    button.addEventListener("click", () => advanceServiceRequestStage(button.dataset.advanceService, button.dataset.nextStage, button));
+    button.addEventListener("click", () => advanceServiceRequestStage(button.dataset.advanceService, button.dataset.providerId, button.dataset.nextStage, button));
   });
 }
 
@@ -11919,6 +11912,29 @@ async function fetchProviderProposalOpportunities(phone) {
   }
 }
 
+async function fetchClientServiceRequestsRemote(token) {
+  if ((!supabaseConfigured() && !restBackendConfigured()) || !token) return [];
+  try {
+    const rows = await supabaseFetch(`service_requests?client_access_token=eq.${encodeURIComponent(token)}&order=created_at.desc&limit=50`);
+    return Array.isArray(rows) ? rows.map(serviceRequestFromSupabase) : [];
+  } catch {
+    return [];
+  }
+}
+
+async function refreshClientServiceRequests() {
+  const remoteRequests = await fetchClientServiceRequestsRemote(BizziPrivacy.token());
+  if (remoteRequests.length) {
+    const remoteIds = new Set(remoteRequests.map((request) => request.id));
+    state.serviceRequests = [
+      ...remoteRequests,
+      ...state.serviceRequests.filter((request) => !remoteIds.has(request.id)),
+    ];
+    saveState();
+  }
+  renderMyServiceRequests();
+}
+
 async function refreshProviderRequestsAndOpportunities() {
   const provider = currentPaymentProvider();
   if (!provider?.phone) return;
@@ -11944,7 +11960,10 @@ function startServiceRequestPolling() {
   window.setInterval(() => {
     if (document.visibilityState === "hidden") return;
     if (views.provider?.classList.contains("active")) refreshProviderRequestsAndOpportunities().catch(() => null);
-    if (views.search?.classList.contains("active") && state.selectedServiceEntryMode === "publish") fetchMyProposals().catch(() => null);
+    if (views.search?.classList.contains("active")) {
+      refreshClientServiceRequests().catch(() => null);
+      if (state.selectedServiceEntryMode === "publish") fetchMyProposals().catch(() => null);
+    }
   }, 45000);
 }
 

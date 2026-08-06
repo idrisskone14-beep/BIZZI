@@ -1,4 +1,4 @@
-const CACHE_NAME = "bizzi-v304-27";
+const CACHE_NAME = "bizzi-v304-28";
 const OFFLINE_URL = "./offline.html";
 const NAVIGATION_TIMEOUT_MS = 4500;
 const ASSETS = [

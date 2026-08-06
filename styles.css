@@ -3332,12 +3332,7 @@ p {
 }
 
 #view-provider.provider-mode-existing .provider-create-panel,
-#view-provider.provider-mode-new .provider-renew-panel,
 #view-provider.provider-mode-new .provider-dashboard-panel {
-  display: none;
-}
-
-#view-provider.provider-mode-new .provider-identify-form {
   display: none;
 }
 

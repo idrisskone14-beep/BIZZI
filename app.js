@@ -2089,7 +2089,7 @@ function selectProviderForRenewal(provider, message = "") {
   saveState();
   renderProviderEntryMode();
   renderPaymentProviderOptions();
-  renderProviderStatus(message || `Profil identifié : ${safe(provider.fullName)}. Choisissez un forfait puis envoyez la référence de paiement.`);
+  renderProviderStatus(message || `Profil identifié : ${safe(provider.fullName)}.`);
   renderProviderDeliveryQueue();
   renderProviderServiceQueue();
   populateProviderEditForm(provider);
@@ -15328,12 +15328,12 @@ function setupForms() {
     }
     if (!provider) provider = findLocalProviderByPrimaryPhone(phone);
     if (provider) {
-      selectProviderForRenewal(provider, `Profil identifié : ${safe(provider.fullName)}. Choisissez votre forfait, puis envoyez la référence de paiement.`);
+      selectProviderForRenewal(provider, `Profil identifié : ${safe(provider.fullName)}.`);
       finishActionButton(button, "Profil trouvé");
     } else {
       renderProviderIdentityStatus(`
         <strong>Aucun profil retrouvé</strong>
-        <p>Si vous êtes nouveau, cliquez sur Je m'inscris. Si vous aviez déjà un compte, vérifiez le numéro ou rechargez les prestataires Supabase.</p>
+        <p>Si vous êtes nouveau, utilisez le formulaire d'inscription plus bas. Si vous aviez déjà un compte, vérifiez le numéro ou rechargez les prestataires Supabase.</p>
       `);
       finishActionButton(button, "Non trouvé");
     }

@@ -14579,6 +14579,7 @@ function renderJobPaymentOptions() {
 function renderPaymentInstructions() {
   syncProviderPricingButtons();
   const box = document.querySelector("#paymentInstructions");
+  if (!box) return;
   const method = state.selectedPayment;
   const account = bizziConfig.payments?.accounts?.[method] || "A renseigner";
   const accountReady = hasProductionValue(account);
@@ -15565,7 +15566,7 @@ function setupForms() {
     syncSupabasePublicData(event.currentTarget);
   });
 
-  document.querySelector("#paymentForm").addEventListener("submit", async (event) => {
+  document.querySelector("#paymentForm")?.addEventListener("submit", async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
     if (form.dataset.submitting === "true") return;

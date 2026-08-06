@@ -1007,40 +1007,6 @@
               </fieldset>
             </form>
           </section>
-
-          <section class="panel provider-renew-panel">
-            <h2>Forfaits visibilité</h2>
-            <div class="plans">
-              <button class="plan selected" data-plan="1 mois" data-price="3000"><strong>1 mois</strong><span>3 000 FCFA</span></button>
-              <button class="plan" data-plan="3 mois" data-price="4500"><strong>3 mois</strong><span>4 500 FCFA</span></button>
-              <button class="plan" data-plan="6 mois" data-price="6500"><strong>6 mois</strong><span>6 500 FCFA</span></button>
-            </div>
-            <h3>Option boost</h3>
-            <div class="boosts">
-              <button class="boost-plan selected" data-boost="none" data-price="0" data-days="0"><strong>Sans boost</strong><span>0 FCFA</span></button>
-              <button class="boost-plan recommended" data-boost="boost_7" data-price="1000" data-days="7"><strong>Boost 1 semaine</strong><span>1 000 FCFA · recommandé</span></button>
-              <button class="boost-plan" data-boost="boost_30" data-price="2000" data-days="30"><strong>Boost 1 mois</strong><span>2 000 FCFA · visibilité max</span></button>
-            </div>
-            <h3>Paiement accepté</h3>
-            <p class="payment-mode-note">Paiement manuel sécurisé : le prestataire paie sur le compte Zeyds indiqué, ajoute la référence, puis l'admin valide la visibilité.</p>
-            <div class="payment-grid">
-              <button class="pay selected" data-method="Wave">Wave</button>
-              <button class="pay" data-method="Orange Money">Orange Money</button>
-              <button class="pay" data-method="MTN Money">MTN Money</button>
-            </div>
-            <div id="paymentInstructions" class="payment-instructions"></div>
-            <form id="paymentForm" class="form compact">
-              <div class="payment-provider-tools">
-                <button class="secondary" id="paymentProviderSync" type="button">Recharger prestataires Supabase</button>
-              </div>
-              <label class="provider-target-label">Prestataire à renouveler<select name="providerId" id="paymentProviderSelect"></select></label>
-              <div id="paymentProviderQuickPick" class="payment-provider-picks"></div>
-              <div id="paymentTargetNote" class="payment-target-note"></div>
-              <label>Référence transaction<input name="reference" required autocomplete="off" placeholder="Ex: WV-2026-001"></label>
-              <label>Preuve de paiement<input name="proof" type="file" accept="image/*,application/pdf"></label>
-              <button class="primary" type="submit">Envoyer pour validation admin</button>
-            </form>
-          </section>
         </div>
       </section>
 

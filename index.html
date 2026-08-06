@@ -630,7 +630,7 @@
 
         <div class="service-entry-tabs" role="tablist" aria-label="Choix Services">
           <button class="service-entry-tab selected" type="button" data-service-entry="search" aria-selected="true">Je cherche</button>
-          <button class="service-entry-tab" type="button" data-service-entry="publish" aria-selected="false">Je publie mon besoin</button>
+          <button class="service-entry-tab" type="button" data-go="provider">🧰 Je propose</button>
         </div>
 
         <div class="service-search-panel">
@@ -684,69 +684,6 @@
           <div id="providersMap" class="providers-map" hidden></div>
         </div>
 
-        <div class="service-publish-panel">
-          <div class="request-layout">
-            <section class="panel">
-              <div class="section-head">
-                <h2>Demande express</h2>
-                <span class="tag ok">Sans compte</span>
-              </div>
-              <p>Décrivez le besoin, Zeyds prévient les prestataires correspondants qui pourront vous répondre directement.</p>
-              <form id="requestForm" class="form mobile-step-form" data-mobile-form="request" autocomplete="off" novalidate>
-                <div class="mobile-progress" aria-hidden="true">
-                  <strong data-mobile-progress-label>Étape 1 sur 4</strong>
-                  <span data-mobile-progress-text>De quoi avez-vous besoin ?</span>
-                </div>
-                <fieldset class="mobile-form-step active" data-mobile-step="1" data-step-title="De quoi avez-vous besoin ?">
-                  <label>Service recherché<select name="service" id="requestService"></select></label>
-                  <p id="requestPriceHint" class="price-hint" hidden></p>
-                  <label>Décrivez votre besoin<textarea name="message" rows="3" maxlength="220" placeholder="Ex : fuite sous l'évier, besoin d'un plombier disponible aujourd'hui"></textarea></label>
-                  <div class="mobile-step-actions"><button class="primary" type="button" data-mobile-next>Continuer vers le lieu</button></div>
-                </fieldset>
-                <fieldset class="mobile-form-step" data-mobile-step="2" data-step-title="Où ?">
-                  <label>Ville / commune<input name="city" placeholder="Ex: Cocody, Bouaké, Man..." required></label>
-                  <label>Quartier ou repère<input name="area" placeholder="Ex: Riviera 2, Belleville, centre-ville"></label>
-                  <div class="mobile-step-actions"><button class="secondary" type="button" data-mobile-prev>Retour</button><button class="primary" type="button" data-mobile-next>Continuer vers la date</button></div>
-                </fieldset>
-                <fieldset class="mobile-form-step" data-mobile-step="3" data-step-title="Quand et budget">
-                  <label>Urgence
-                    <select name="urgency">
-                      <option value="today">Aujourd'hui</option>
-                      <option value="24h">Dans les 24h</option>
-                      <option value="week">Cette semaine</option>
-                      <option value="quote">Je veux comparer les prix</option>
-                    </select>
-                  </label>
-                  <label>Votre budget (facultatif)<input name="budget" placeholder="Ex : 15 000 - 25 000 FCFA, ou laissez vide"></label>
-                  <div class="mobile-step-actions"><button class="secondary" type="button" data-mobile-prev>Retour</button><button class="primary" type="button" data-mobile-next>Continuer</button></div>
-                </fieldset>
-                <fieldset class="mobile-form-step" data-mobile-step="4" data-step-title="Photo et contact">
-                  <label>Photo du besoin (facultatif)<input name="photo" type="file" accept="image/*"></label>
-                  <label>Votre WhatsApp ou téléphone<input name="phone" required placeholder="+225 07 00 00 00 00"></label>
-                  <div class="mobile-step-actions"><button class="secondary" type="button" data-mobile-prev>Retour</button><button class="primary" type="submit">Publier ma demande</button></div>
-                </fieldset>
-              </form>
-            </section>
-
-            <section class="panel">
-              <div class="section-head">
-                <h2>Réponse Zeyds</h2>
-                <span class="tag">Matching</span>
-              </div>
-              <div id="requestStatus" class="status-box"></div>
-              <div id="requestMatches" class="request-matches"></div>
-            </section>
-
-            <section class="panel" id="myProposalsPanel" hidden>
-              <div class="section-head">
-                <h2>Propositions reçues</h2>
-                <span id="myProposalsCount" class="tag ok">0</span>
-              </div>
-              <p class="hint">Comparez les propositions des prestataires et choisissez celle qui vous convient.</p>
-              <div id="myProposalsList" class="delivery-request-list"></div>
-            </section>
-          </div>
-        </div>
       </section>
 
       <section id="view-jobs" class="view">

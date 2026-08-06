@@ -14,6 +14,7 @@
     ".life-template-card",
     ".life-checklist-item",
     ".delivery-request-card",
+    ".commercial-metric",
   ].join(",");
   const TAB_SELECTOR = [
     "[data-delivery-kind]",

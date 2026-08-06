@@ -2308,9 +2308,7 @@ function applyPlatformFeatureFlags() {
     document.querySelectorAll(`[data-view="${viewName}"]`).forEach((el) => { el.hidden = !enabled; });
     document.querySelectorAll(`[data-go="${viewName}"]`).forEach((el) => { el.hidden = !enabled; });
   });
-  document.querySelectorAll("[data-provider-shortcut]").forEach((el) => {
-    el.hidden = !isTabEnabled("provider");
-  });
+  updateProviderShortcutVisibility();
   const activeName = Object.entries(views).find(([, element]) => element?.classList.contains("active"))?.[0];
   if (activeName && !isTabEnabled(activeName)) {
     setView("home");
@@ -14042,7 +14040,15 @@ function renderAd() {
   state.ads = [];
 }
 
+function updateProviderShortcutVisibility() {
+  const alreadyRegistered = Boolean(identifiedProvider());
+  document.querySelectorAll("[data-provider-shortcut]").forEach((el) => {
+    el.hidden = !isTabEnabled("provider") || alreadyRegistered;
+  });
+}
+
 function renderProviderStatus(message = "") {
+  updateProviderShortcutVisibility();
   const status = document.querySelector("#providerStatus");
   const target = currentPaymentProvider();
   const targetPayment = target ? [...state.payments].reverse().find((payment) => payment.providerId === target.id) : null;

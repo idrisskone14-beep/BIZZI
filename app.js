@@ -1997,10 +1997,13 @@ function setServiceEntryMode(mode = "search", options = {}) {
 
 function renderTopbarAvatar() {
   const avatar = document.querySelector("#topbarAvatar");
-  if (!avatar) return;
+  const loginButton = document.querySelector("#homeLoginButton");
   const name = String(state.clientName || "").trim();
-  avatar.textContent = name ? name[0].toUpperCase() : "?";
-  avatar.setAttribute("aria-label", name ? "Voir mon profil client" : "Se connecter à mon espace client");
+  if (avatar) {
+    avatar.textContent = name ? name[0].toUpperCase() : "?";
+    avatar.setAttribute("aria-label", name ? "Voir mon profil client" : "Se connecter à mon espace client");
+  }
+  if (loginButton) loginButton.hidden = Boolean(name);
 }
 
 function openClientSpaceEntry() {
@@ -11304,6 +11307,7 @@ function setupClientProfile() {
   document.querySelector("#clientLogoutButton")?.addEventListener("click", clientLogout);
 
   document.querySelector("#topbarAvatar")?.addEventListener("click", openClientSpaceEntry);
+  document.querySelector("#homeLoginButton")?.addEventListener("click", openClientSpaceEntry);
 }
 
 function renderMyServiceRequests() {

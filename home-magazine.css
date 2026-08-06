@@ -65,6 +65,20 @@
   font-size: 8px;
 }
 
+.home-login-button {
+  height: 38px;
+  margin-left: auto;
+  padding: 0 16px;
+  flex: 0 0 auto;
+  border: none;
+  border-radius: 999px;
+  color: var(--brand-strong);
+  background: #fff;
+  font-weight: 900;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
 .home-context-prompt {
   margin: 9px 0 0 !important;
   color: rgba(255, 255, 255, .72) !important;

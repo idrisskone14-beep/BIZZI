@@ -211,6 +211,15 @@
             </div>
           </section>
 
+          <section id="homeActivitySummarySection" class="panel home-section premium-home-section" aria-labelledby="homeActivitySummaryTitle" style="display:none">
+            <div class="section-head premium-section-head">
+              <div><p class="premium-overline">Votre suivi Zeyds</p><h2 id="homeActivitySummaryTitle">Demandes en cours</h2></div>
+              <button class="premium-text-link" type="button" data-go="activities">Voir tout →</button>
+            </div>
+            <div id="homeActivityMetrics" class="commercial-grid"></div>
+            <div id="homeRecentActivities" class="delivery-request-list"></div>
+          </section>
+
           <section id="homeRecommendationsSection" class="home-magazine-section home-recommendations" aria-labelledby="homeRecommendationsTitle">
             <div class="home-magazine-head">
               <div><span>Selon votre ville et vos besoins</span><h2 id="homeRecommendationsTitle">Recommandés pour vous</h2></div>
@@ -809,6 +818,79 @@
       <section id="view-profile" class="view">
         <button class="back-button" data-go="search">← Retour aux résultats</button>
         <div id="profileContent"></div>
+      </section>
+
+      <section id="view-activities" class="view">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Mes activités</p>
+            <h2>Toutes vos demandes</h2>
+          </div>
+          <span id="activitiesCount" class="tag ok">0</span>
+        </div>
+        <div id="activitiesList" class="delivery-request-list"></div>
+      </section>
+
+      <section id="view-messages" class="view">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Messages</p>
+            <h2>Vos conversations</h2>
+          </div>
+        </div>
+        <article class="delivery-request-card empty">
+          <h3>Messagerie bientôt disponible</h3>
+          <p>Vous pourrez bientôt discuter directement avec vos prestataires depuis Zeyds. En attendant, contactez-les via WhatsApp depuis leurs fiches.</p>
+        </article>
+      </section>
+
+      <section id="view-favorites" class="view">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Favoris</p>
+            <h2>Vos adresses préférées</h2>
+          </div>
+        </div>
+        <article class="delivery-request-card empty">
+          <h3>Favoris bientôt disponibles</h3>
+          <p>Vous pourrez bientôt enregistrer vos prestataires, restaurants, lieux et événements préférés ici.</p>
+        </article>
+      </section>
+
+      <section id="view-client-profile" class="view">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Mon profil</p>
+            <h2 id="clientProfileGreeting">Bonjour</h2>
+          </div>
+        </div>
+        <form class="form" id="clientProfileForm">
+          <label>Nom<input name="clientName" maxlength="40" placeholder="Votre prénom ou pseudo"></label>
+          <label>Téléphone<input name="clientPhone" type="tel" inputmode="tel" placeholder="+225 07 00 00 00 00"></label>
+          <label>Email (facultatif)<input name="clientEmail" type="email" placeholder="vous@exemple.com"></label>
+          <label>Commune (facultatif)<input name="clientCommune" placeholder="Ex : Cocody, Yopougon, Bouaké..."></label>
+          <button class="primary" type="submit">Enregistrer</button>
+        </form>
+        <div id="clientProfileStatus" class="status-box compact"></div>
+
+        <div class="client-profile-menu">
+          <button type="button" data-client-menu="addresses">📍 Mes adresses</button>
+          <button type="button" data-client-menu="notifications">🔔 Notifications</button>
+          <button type="button" data-client-menu="help">🆘 Centre d'aide</button>
+          <button type="button" data-client-menu="settings">⚙️ Paramètres</button>
+          <button type="button" data-go="provider">🧰 Espace prestataire</button>
+          <button type="button" data-go="legal">📄 Mentions légales</button>
+          <button type="button" class="danger" id="clientLogoutButton">🚪 Déconnexion</button>
+        </div>
+
+        <div id="clientAddressesPanel" class="client-profile-panel" hidden>
+          <h3>Mes adresses</h3>
+          <form id="clientAddressForm" class="form">
+            <input name="address" placeholder="Ex : Riviera 2, derrière la pharmacie..." maxlength="120">
+            <button class="secondary" type="submit">Ajouter</button>
+          </form>
+          <div id="clientAddressesList" class="delivery-request-list"></div>
+        </div>
       </section>
 
       <section id="view-provider" class="view">
@@ -1420,12 +1502,10 @@
   <nav class="bottom-nav" aria-label="Navigation mobile">
     <div class="nav-active-indicator" aria-hidden="true"></div>
     <button class="bottom-link active" data-view="home"><span class="bottom-link-icon" aria-hidden="true">🏠</span><span class="bottom-link-label">Accueil</span></button>
-    <button class="bottom-link life-link" data-view="life"><span class="bottom-link-icon" aria-hidden="true">✦</span><span class="bottom-link-label">Life</span></button>
-    <button class="bottom-link exception-link" data-view="exception-places"><span class="bottom-link-icon" aria-hidden="true">📍</span><span class="bottom-link-label">Lieux</span></button>
-    <button class="bottom-link delivery-link" data-view="delivery"><span class="bottom-link-icon" aria-hidden="true">🛵</span><span class="bottom-link-label">Livraison et course</span></button>
-    <button class="bottom-link food-link" data-view="food"><span class="bottom-link-icon" aria-hidden="true">🍔</span><span class="bottom-link-label">Food</span></button>
-    <button class="bottom-link" data-view="search"><span class="bottom-link-icon" aria-hidden="true">🔧</span><span class="bottom-link-label">Services</span></button>
-    <button class="bottom-link" data-view="provider"><span class="bottom-link-icon" aria-hidden="true">🧰</span><span class="bottom-link-label">Pro</span></button>
+    <button class="bottom-link" data-view="activities"><span class="bottom-link-icon" aria-hidden="true">📋</span><span class="bottom-link-label">Activités</span></button>
+    <button class="bottom-link" data-view="messages"><span class="bottom-link-icon" aria-hidden="true">💬</span><span class="bottom-link-label">Messages</span></button>
+    <button class="bottom-link" data-view="favorites"><span class="bottom-link-icon" aria-hidden="true">♡</span><span class="bottom-link-label">Favoris</span></button>
+    <button class="bottom-link" data-view="client-profile"><span class="bottom-link-icon" aria-hidden="true">👤</span><span class="bottom-link-label">Profil</span></button>
   </nav>
 
   <script src="js/storage-safe.js?v=240"></script>

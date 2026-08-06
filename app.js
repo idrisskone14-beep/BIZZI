@@ -302,6 +302,9 @@ const seed = {
   selectedExceptionPayment: "Wave",
   clientName: "",
   clientPhone: "",
+  clientEmail: "",
+  clientCommune: "",
+  clientAddresses: [],
   selectedDeliveryPayment: "Wave",
   selectedDeliveryEntryMode: "request",
   deliveryAlertsEnabled: false,
@@ -1458,6 +1461,12 @@ function normalizeState(draft) {
   draft.notifiedDeliveryRequestIds = [...new Set(Array.isArray(draft.notifiedDeliveryRequestIds) ? draft.notifiedDeliveryRequestIds.filter(Boolean) : [])];
   draft.clientName = String(draft.clientName || "").trim().slice(0, 40);
   draft.clientPhone = String(draft.clientPhone || "").trim();
+  draft.clientEmail = String(draft.clientEmail || "").trim().slice(0, 80);
+  draft.clientCommune = String(draft.clientCommune || "").trim().slice(0, 60);
+  draft.clientAddresses = (Array.isArray(draft.clientAddresses) ? draft.clientAddresses : [])
+    .filter((item) => typeof item === "string" && item.trim())
+    .map((item) => item.trim().slice(0, 120))
+    .slice(0, 20);
   const normalizedPlan = providerPlanByName(draft.selectedPlan?.name);
   draft.selectedPlan = { name: normalizedPlan.name, price: normalizedPlan.price };
   draft.selectedBoost = PROVIDER_BOOST_OPTIONS.some((boost) => boost.id === draft.selectedBoost) ? draft.selectedBoost : "none";
@@ -2219,6 +2228,10 @@ const views = {
   provider: document.querySelector("#view-provider"),
   admin: document.querySelector("#view-admin"),
   legal: document.querySelector("#view-legal"),
+  activities: document.querySelector("#view-activities"),
+  messages: document.querySelector("#view-messages"),
+  favorites: document.querySelector("#view-favorites"),
+  "client-profile": document.querySelector("#view-client-profile"),
 };
 
 const titles = {
@@ -2235,6 +2248,10 @@ const titles = {
   provider: "Espace prestataire",
   admin: "Administration",
   legal: "Documents légaux",
+  activities: "Mes activités",
+  messages: "Messages",
+  favorites: "Favoris",
+  "client-profile": "Mon profil",
 };
 
 const TOGGLEABLE_TABS = {
@@ -2307,10 +2324,14 @@ function setView(name) {
     history.replaceState(null, "", "#home");
     name = "home";
   }
-  if (["search", "delivery"].includes(name) && !clientIdentityReady()) {
+  if (["search", "delivery", "activities", "client-profile"].includes(name) && !clientIdentityReady()) {
     const reason = name === "delivery"
       ? "accéder aux courses et livraisons"
-      : "accéder à la recherche de services";
+      : name === "activities"
+        ? "voir vos activités"
+        : name === "client-profile"
+          ? "accéder à votre profil"
+          : "accéder à la recherche de services";
     openClientAccessGate(name, reason);
     return false;
   }
@@ -2337,6 +2358,11 @@ function setView(name) {
     renderDelivery();
   }
   if (name === "food") renderFood();
+  if (name === "activities") {
+    refreshClientServiceRequests().then(renderActivities).catch(() => null);
+    renderActivities();
+  }
+  if (name === "client-profile") renderClientProfile();
   if (name === "search") {
     renderProviders();
     renderServiceEntryMode();
@@ -2516,7 +2542,7 @@ function closeClientAccessGate() {
 function openClientAccessGate(targetView = "search", reason = "continuer", onSuccess = null) {
   const dialog = document.querySelector("#clientAccessDialog");
   if (!dialog) return false;
-  pendingClientAccessView = ["search", "delivery"].includes(targetView) ? targetView : "search";
+  pendingClientAccessView = ["search", "delivery", "activities", "client-profile"].includes(targetView) ? targetView : "search";
   pendingClientAccessAction = typeof onSuccess === "function" ? onSuccess : null;
   const nameInput = document.querySelector("#clientAccessNameInput");
   const phoneInput = document.querySelector("#clientAccessPhoneInput");
@@ -10998,6 +11024,277 @@ function clientServiceRequests() {
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 }
 
+const ACTIVITY_STATUS_LABELS = {
+  pending: "En attente",
+  accepted: "Acceptée",
+  in_progress: "En cours",
+  completed: "Terminée",
+  cancelled: "Annulée",
+};
+
+const ACTIVITY_STATUS_TONES = {
+  pending: "pending",
+  accepted: "ok",
+  in_progress: "ok",
+  completed: "ok",
+  cancelled: "bad",
+};
+
+function serviceRequestActivityBucket(request = {}) {
+  if (request.status === "completed") return "completed";
+  if (["declined", "cancelled"].includes(request.status)) return "cancelled";
+  if (request.status === "in_progress") return "in_progress";
+  if (request.status === "accepted") return "accepted";
+  return "pending";
+}
+
+function deliveryRequestActivityBucket(request = {}) {
+  if (request.status === "cancelled") return "cancelled";
+  if (request.deliveryStage === "delivered" || request.status === "closed") return "completed";
+  if (request.status === "assigned") {
+    return ["picked_up", "en_route"].includes(request.deliveryStage) ? "in_progress" : "accepted";
+  }
+  return "pending";
+}
+
+function clientDeliveryRequests() {
+  const clientDigits = normalizeContactDigits(currentClientPhone());
+  if (!clientDigits) return [];
+  return state.deliveryRequests
+    .filter((request) => normalizeContactDigits(request.phone) === clientDigits)
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+}
+
+function serviceRequestToActivity(request) {
+  return {
+    id: request.id,
+    kind: "service",
+    title: request.service || "Service",
+    date: request.createdAt,
+    providerName: request.assignedProviderName || "",
+    amount: null,
+    bucket: serviceRequestActivityBucket(request),
+    raw: request,
+  };
+}
+
+function deliveryRequestToActivity(request) {
+  const words = deliveryMissionWords(request);
+  const amount = Number(request.amount);
+  return {
+    id: request.id,
+    kind: "delivery",
+    title: words.title,
+    date: request.createdAt,
+    providerName: request.assignedProviderName || "",
+    amount: Number.isFinite(amount) && amount > 0 ? amount : null,
+    bucket: deliveryRequestActivityBucket(request),
+    raw: request,
+  };
+}
+
+function clientActivities() {
+  return [
+    ...clientServiceRequests().map(serviceRequestToActivity),
+    ...clientDeliveryRequests().map(deliveryRequestToActivity),
+  ].sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+}
+
+function activityCard(activity) {
+  const dateLabel = activity.date ? new Date(activity.date).toLocaleString("fr-FR") : "";
+  const amountLabel = Number.isFinite(activity.amount) ? formatMoney(activity.amount) : "";
+  return `
+    <article class="delivery-request-card">
+      <div>
+        <div class="delivery-card-head">
+          <h3>${safe(activity.title)}</h3>
+          <span class="tag ${safe(ACTIVITY_STATUS_TONES[activity.bucket])}">${safe(ACTIVITY_STATUS_LABELS[activity.bucket])}</span>
+        </div>
+        <p>${safe(dateLabel)}</p>
+        ${activity.providerName ? `<p><strong>Prestataire :</strong> ${safe(activity.providerName)}</p>` : ""}
+        ${amountLabel ? `<p><strong>Montant :</strong> ${safe(amountLabel)}</p>` : ""}
+      </div>
+      <div class="delivery-card-actions">
+        <button class="secondary" type="button" data-activity-toggle="${safe(activity.id)}">Voir les détails</button>
+      </div>
+      <div class="activity-detail" data-activity-detail="${safe(activity.id)}" style="grid-column:1/-1;margin-top:10px;padding-top:10px;border-top:1px dashed rgba(8,36,92,.15)" hidden>
+        ${activity.kind === "delivery" ? deliveryRequestCard(activity.raw, {}) : serviceRequestCard(activity.raw, {})}
+      </div>
+    </article>
+  `;
+}
+
+function bindActivityToggles(root) {
+  root?.querySelectorAll("[data-activity-toggle]").forEach((button) => {
+    if (button.dataset.bound === "true") return;
+    button.dataset.bound = "true";
+    button.addEventListener("click", () => {
+      const detail = root.querySelector(`[data-activity-detail="${button.dataset.activityToggle}"]`);
+      if (!detail) return;
+      detail.hidden = !detail.hidden;
+      button.textContent = detail.hidden ? "Voir les détails" : "Masquer les détails";
+    });
+  });
+}
+
+function renderActivities() {
+  const root = document.querySelector("#activitiesList");
+  const count = document.querySelector("#activitiesCount");
+  if (!root || !count) return;
+  const activities = clientActivities();
+  count.textContent = String(activities.length);
+  if (!activities.length) {
+    root.innerHTML = `<article class="delivery-request-card empty"><h3>Aucune activité pour le moment</h3><p>Vos services, courses et livraisons demandés apparaîtront ici.</p></article>`;
+    return;
+  }
+  root.innerHTML = activities.map(activityCard).join("");
+  bindActivityToggles(root);
+  bindDeliveryRequestActions(root);
+  setupServiceRequestReviewForms();
+}
+
+function renderClientAddresses() {
+  const root = document.querySelector("#clientAddressesList");
+  if (!root) return;
+  if (!state.clientAddresses.length) {
+    root.innerHTML = `<article class="delivery-request-card empty"><h3>Aucune adresse enregistrée</h3><p>Ajoutez une adresse pour la retrouver rapidement lors de vos prochaines demandes.</p></article>`;
+    return;
+  }
+  root.innerHTML = state.clientAddresses.map((address, index) => `
+    <article class="delivery-request-card">
+      <div><p>${safe(address)}</p></div>
+      <div class="delivery-card-actions">
+        <button class="secondary" type="button" data-remove-client-address="${index}">Retirer</button>
+      </div>
+    </article>
+  `).join("");
+  root.querySelectorAll("[data-remove-client-address]").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.clientAddresses.splice(Number(button.dataset.removeClientAddress), 1);
+      saveState();
+      renderClientAddresses();
+    });
+  });
+}
+
+function renderClientProfile() {
+  const greeting = document.querySelector("#clientProfileGreeting");
+  if (greeting) greeting.textContent = state.clientName ? `Bonjour ${state.clientName}` : "Bonjour";
+  const form = document.querySelector("#clientProfileForm");
+  if (form) {
+    if (form.elements.clientName) form.elements.clientName.value = state.clientName || "";
+    if (form.elements.clientPhone) form.elements.clientPhone.value = state.clientPhone || "";
+    if (form.elements.clientEmail) form.elements.clientEmail.value = state.clientEmail || "";
+    if (form.elements.clientCommune) form.elements.clientCommune.value = state.clientCommune || "";
+  }
+  renderClientAddresses();
+}
+
+async function requestClientNotificationPermission(button) {
+  const status = document.querySelector("#clientProfileStatus");
+  if (globalThis.BizziPushClient?.supported?.() && bizziConfig.notifications?.enabled && bizziConfig.notifications?.vapidPublicKey) {
+    try {
+      await globalThis.BizziPushClient.subscribe({ ownerType: "client", phone: state.clientPhone || "" });
+      if (status) status.textContent = "Notifications activées.";
+      finishActionButton(button, "Notifications actives");
+      return;
+    } catch (error) {
+      captureBizziError(error, { module: "push-subscribe-client" });
+    }
+  }
+  if (!("Notification" in window)) {
+    if (status) status.textContent = "Les notifications ne sont pas disponibles sur ce navigateur.";
+    return;
+  }
+  const permission = Notification.permission === "default" ? await Notification.requestPermission() : Notification.permission;
+  if (status) status.textContent = permission === "granted" ? "Notifications activées sur cet appareil." : "Notifications non activées.";
+  finishActionButton(button, permission === "granted" ? "Notifications actives" : "Non activées");
+}
+
+function clientLogout() {
+  state.clientName = "";
+  state.clientPhone = "";
+  saveState();
+  ["#searchClientNameInput", "#deliveryClientNameInput", "#clientAccessNameInput"].forEach((selector) => {
+    const input = document.querySelector(selector);
+    if (input) input.value = "";
+  });
+  ["#searchClientPhoneInput", "#deliveryRequestForm [name='phone']", "#clientAccessPhoneInput"].forEach((selector) => {
+    const input = document.querySelector(selector);
+    if (input) input.value = "";
+  });
+  renderTopbarAvatar();
+  setView("home");
+  openClientAccessGate("client-profile", "accéder à votre profil");
+}
+
+function setupClientProfile() {
+  const form = document.querySelector("#clientProfileForm");
+  const status = document.querySelector("#clientProfileStatus");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const data = new FormData(form);
+    const name = normalizeClientName(data.get("clientName"));
+    const phone = String(data.get("clientPhone") || "").trim();
+    if (!isValidClientName(name)) {
+      if (status) status.textContent = "Ajoutez un prénom ou un pseudo d’au moins 2 caractères.";
+      return;
+    }
+    if (!isValidContactPhone(phone)) {
+      if (status) status.textContent = contactValidationMessage("numéro de téléphone");
+      return;
+    }
+    rememberClientIdentity(name, phone);
+    state.clientEmail = String(data.get("clientEmail") || "").trim().slice(0, 80);
+    state.clientCommune = String(data.get("clientCommune") || "").trim().slice(0, 60);
+    saveState();
+    if (status) status.textContent = "Profil enregistré.";
+    renderClientProfile();
+    renderTopbarAvatar();
+  });
+
+  document.querySelector("#clientAddressForm")?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const addressForm = event.currentTarget;
+    const data = new FormData(addressForm);
+    const address = String(data.get("address") || "").trim();
+    if (!address) return;
+    state.clientAddresses.push(address.slice(0, 120));
+    saveState();
+    addressForm.reset();
+    renderClientAddresses();
+  });
+
+  document.querySelectorAll("[data-client-menu]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const key = button.dataset.clientMenu;
+      if (key === "addresses") {
+        const panel = document.querySelector("#clientAddressesPanel");
+        if (panel) panel.hidden = !panel.hidden;
+        return;
+      }
+      if (key === "notifications") {
+        requestClientNotificationPermission(button);
+        return;
+      }
+      if (key === "help") {
+        const supportWhatsapp = String(bizziConfig.official?.supportWhatsapp || "").trim();
+        if (supportWhatsapp) {
+          window.open(`https://wa.me/${supportWhatsapp.replace(/[^\d]/g, "")}`, "_blank", "noreferrer");
+        } else if (status) {
+          status.textContent = "Support WhatsApp non configuré.";
+        }
+        return;
+      }
+      if (key === "settings" && status) {
+        status.textContent = "Réglages : bientôt disponibles.";
+      }
+    });
+  });
+
+  document.querySelector("#clientLogoutButton")?.addEventListener("click", clientLogout);
+}
+
 function renderMyServiceRequests() {
   const panel = document.querySelector("#myServiceRequestsPanel");
   const root = document.querySelector("#myServiceRequestsList");
@@ -12298,7 +12595,34 @@ function prefillDeliveryRequest() {
   }, 80);
 }
 
+function renderHomeActivitySummary() {
+  const section = document.querySelector("#homeActivitySummarySection");
+  const metricsRoot = document.querySelector("#homeActivityMetrics");
+  const recentRoot = document.querySelector("#homeRecentActivities");
+  if (!section || !metricsRoot || !recentRoot) return;
+  if (!clientIdentityReady()) {
+    section.style.display = "none";
+    return;
+  }
+  const activities = clientActivities();
+  const pending = activities.filter((activity) => ["pending", "accepted"].includes(activity.bucket)).length;
+  const inProgress = activities.filter((activity) => activity.bucket === "in_progress").length;
+  section.style.display = "";
+  metricsRoot.innerHTML = `
+    <div class="commercial-metric"><span>En attente</span><strong>${pending}</strong><p>Demandes pas encore démarrées</p></div>
+    <div class="commercial-metric"><span>En cours</span><strong>${inProgress}</strong><p>Services et livraisons en cours</p></div>
+  `;
+  const recent = activities.slice(0, 3);
+  recentRoot.innerHTML = recent.length
+    ? recent.map(activityCard).join("")
+    : `<article class="delivery-request-card empty"><h3>Aucune activité récente</h3><p>Vos prochaines demandes apparaîtront ici.</p></article>`;
+  bindActivityToggles(recentRoot);
+  bindDeliveryRequestActions(recentRoot);
+  setupServiceRequestReviewForms();
+}
+
 function renderHomeDiscovery() {
+  renderHomeActivitySummary();
   applyEventExpirationRules();
   applyExceptionPlaceExpirationRules();
   const foodRoot = document.querySelector("#featuredFood");
@@ -17833,6 +18157,7 @@ function boot() {
   setupForms();
   setupSearchAssistant();
   setupClientAccessGate();
+  setupClientProfile();
   setupHomeQuickSearch();
   globalThis.BizziLife?.init?.({
     setView,

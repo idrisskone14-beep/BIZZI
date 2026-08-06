@@ -56,11 +56,14 @@ body {
   width: 30px;
   height: 30px;
   border-radius: 50%;
+  border: none;
+  padding: 0;
   background: var(--brand);
   color: #fff;
   font-weight: 900;
   font-size: 13px;
   flex: none;
+  cursor: pointer;
 }
 
 .data-lite *,

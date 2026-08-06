@@ -2000,6 +2000,15 @@ function renderTopbarAvatar() {
   if (!avatar) return;
   const name = String(state.clientName || "").trim();
   avatar.textContent = name ? name[0].toUpperCase() : "?";
+  avatar.setAttribute("aria-label", name ? "Voir mon profil client" : "Se connecter à mon espace client");
+}
+
+function openClientSpaceEntry() {
+  if (clientIdentityReady()) {
+    setView("client-profile");
+    return;
+  }
+  openClientAccessGate("client-profile", "accéder à votre espace client");
 }
 
 function renderDeliveryEntryMode() {
@@ -11293,6 +11302,8 @@ function setupClientProfile() {
   });
 
   document.querySelector("#clientLogoutButton")?.addEventListener("click", clientLogout);
+
+  document.querySelector("#topbarAvatar")?.addEventListener("click", openClientSpaceEntry);
 }
 
 function renderMyServiceRequests() {

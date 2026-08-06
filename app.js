@@ -1882,7 +1882,13 @@ function renderProviderCreateStatus(message = "", type = "info") {
 }
 
 function reportProviderSignupIssue(form, button, message, fieldName = "") {
-  renderProviderCreateStatus(message, "error");
+  const status = form.querySelector(".status-box");
+  if (status) {
+    status.hidden = false;
+    status.classList.add("error");
+    status.classList.remove("success");
+    status.innerHTML = `<strong>À corriger</strong><p>${safe(message)}</p>`;
+  }
   renderProviderStatus(message);
   form.dataset.submitting = "false";
   finishActionButton(button, "Corriger");
@@ -1893,6 +1899,183 @@ function reportProviderSignupIssue(form, button, message, fieldName = "") {
       window.setTimeout(() => field.select(), 180);
     }
   }
+}
+
+function closeProviderQuickSignup() {
+  const dialog = document.querySelector("#providerQuickSignupDialog");
+  if (!dialog) return;
+  if (typeof dialog.close === "function" && dialog.open) dialog.close();
+  dialog.removeAttribute("open");
+}
+
+function openProviderQuickSignup() {
+  const dialog = document.querySelector("#providerQuickSignupDialog");
+  const form = document.querySelector("#providerQuickSignupForm");
+  if (!dialog || !form) return;
+  form.reset();
+  form.dataset.submitting = "false";
+  const status = document.querySelector("#providerQuickSignupStatus");
+  if (status) {
+    status.hidden = true;
+    status.classList.remove("error", "success");
+    status.innerHTML = "";
+  }
+  if (typeof dialog.showModal === "function") {
+    if (!dialog.open) dialog.showModal();
+  } else {
+    dialog.setAttribute("open", "");
+  }
+}
+
+function setupProviderQuickSignup() {
+  document.querySelector("#openProviderQuickSignup")?.addEventListener("click", openProviderQuickSignup);
+  document.querySelector("#closeProviderQuickSignupDialog")?.addEventListener("click", closeProviderQuickSignup);
+  const dialog = document.querySelector("#providerQuickSignupDialog");
+  dialog?.addEventListener("cancel", (event) => {
+    event.preventDefault();
+    closeProviderQuickSignup();
+  });
+
+  document.querySelector("#providerQuickSignupForm")?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    if (form.dataset.submitting === "true") return;
+    const button = form.querySelector("button[type='submit']");
+    form.dataset.submitting = "true";
+    setBusyButton(button, true, "Création...");
+    try {
+      const data = new FormData(form);
+      const fullName = String(data.get("fullName") || "").trim();
+      const phone = String(data.get("phone") || "").trim();
+      const service = canonicalServiceName(data.get("service"));
+      const providerCity = String(data.get("providerCity") || "").trim();
+      const area = String(data.get("area") || "").trim();
+      if (!fullName) {
+        reportProviderSignupIssue(form, button, "Renseignez votre nom avant de créer le profil.", "fullName");
+        return;
+      }
+      if (!isValidContactPhone(phone)) {
+        reportProviderSignupIssue(form, button, contactValidationMessage("téléphone prestataire"), "phone");
+        return;
+      }
+      if (isPlaceholderServiceName(service)) {
+        reportProviderSignupIssue(form, button, "Choisissez un métier avant de créer le profil.", "service");
+        return;
+      }
+      if (!cityIsSpecific(providerCity)) {
+        reportProviderSignupIssue(form, button, "Ville requise.", "providerCity");
+        return;
+      }
+      if (!area) {
+        reportProviderSignupIssue(form, button, "Indiquez commune ou quartier.", "area");
+        return;
+      }
+      if (data.get("acceptTerms") !== "on") {
+        reportProviderSignupIssue(form, button, "Cochez la certification des informations et l’acceptation des conditions Zeyds.", "acceptTerms");
+        return;
+      }
+      const existingLocalProvider = findLocalProviderByPrimaryPhone(phone);
+      if (existingLocalProvider) {
+        reportProviderSignupIssue(form, button, `Ce numéro est déjà associé au profil ${existingLocalProvider.fullName}. Utilisez « Déjà prestataire » dans votre espace prestataire pour le retrouver.`, "phone");
+        return;
+      }
+      const fraudAssessment = globalThis.BizziFraudGuard?.assessProviderSignup?.({
+        phone,
+        whatsapp: phone,
+        service,
+        city: providerCity,
+      }, state.providers);
+      const baseCoordinates = cityCoordinates(providerCity);
+      const coordinates = state.userLocation || {
+        lat: baseCoordinates.lat + (Math.random() - 0.5) * 0.04,
+        lng: baseCoordinates.lng + (Math.random() - 0.5) * 0.04,
+      };
+      const provider = {
+        id: `p${Date.now()}`,
+        initials: initials(fullName),
+        fullName,
+        phone,
+        whatsapp: phone,
+        social: { whatsapp: phone },
+        service,
+        services: [service],
+        city: providerCity,
+        area,
+        distance: "Nouveau",
+        distanceKm: state.userLocation ? 0 : distanceBetweenKm(baseCoordinates, coordinates),
+        lat: coordinates.lat,
+        lng: coordinates.lng,
+        locationPrecision: state.userLocation ? "gps" : "area_estimate",
+        locationAccuracy: state.userLocation?.accuracy || null,
+        locationTimestamp: state.userLocation?.timestamp || "",
+        locationLabel: state.userLocation?.shortLabel || area,
+        locationFullAddress: state.userLocation?.fullAddress || area,
+        rating: 0,
+        description: "Nouveau prestataire Zeyds.",
+        photo: "",
+        termsAcceptedAt: new Date().toISOString(),
+        status: "approved",
+        visibility: "active",
+        verificationStatus: "none",
+        verificationProof: "",
+        verificationProofName: "",
+        verificationNote: "",
+        verifiedAt: null,
+        trialEndsAt: isoDaysFromNow(30),
+        subscriptionEndsAt: null,
+        calls: 0,
+        socialViews: 0,
+        remoteStatus: "syncing",
+        submissionReference: generateSubmissionReference("PRO", phone),
+        signupRisk: fraudAssessment?.risk || "low",
+        signupSignals: fraudAssessment?.signals || [],
+      };
+      state.providers.push(provider);
+      state.identifiedProviderId = provider.id;
+      state.selectedPaymentProviderId = provider.id;
+      state.recentProviderSignups = [
+        { fullName, phone, service, city: providerCity, area, createdAt: provider.termsAcceptedAt },
+        ...(state.recentProviderSignups || []).filter((item) => !phonesMatch(item.phone, phone)),
+      ].slice(0, 12);
+      saveState();
+      globalThis.BizziFraudGuard?.rememberSignup?.(provider);
+      renderProviderEntryMode();
+      renderPaymentProviderOptions();
+      renderProviderDeliveryQueue();
+      renderProviderStatus();
+      renderAdmin();
+      renderAd();
+      renderHomeDiscovery();
+      if (localOnlyBrowserTestMode()) {
+        provider.remoteStatus = "local_only";
+        saveState();
+      } else {
+        window.setTimeout(() => syncCreatedProviderToSupabase(provider, {}), 0);
+      }
+      const status = form.querySelector(".status-box");
+      if (status) {
+        status.hidden = false;
+        status.classList.add("success");
+        status.classList.remove("error");
+        status.innerHTML = `<strong>Profil créé</strong><p>Bienvenue ${safe(fullName)} ! Votre profil est actif gratuitement pendant 30 jours.</p>`;
+      }
+      finishActionButton(button, "Profil créé");
+      window.setTimeout(() => closeProviderQuickSignup(), 1800);
+    } catch (error) {
+      const message = friendlySupabaseError(error);
+      captureBizziError(error, { module: "provider_quick_signup" });
+      const status = form.querySelector(".status-box");
+      if (status) {
+        status.hidden = false;
+        status.classList.add("error");
+        status.classList.remove("success");
+        status.innerHTML = `<strong>À corriger</strong><p>Création interrompue : ${safe(message)}. Réessayez.</p>`;
+      }
+      finishActionButton(button, "Réessayer");
+    } finally {
+      form.dataset.submitting = "false";
+    }
+  });
 }
 
 function setProviderEntryMode(mode = "new", options = {}) {
@@ -10530,6 +10713,20 @@ function renderCategories() {
     providerCity.value = cities.includes(preferredCity) ? preferredCity : "Abidjan";
   }
 
+  const providerQuickService = document.querySelector("#providerQuickService");
+  if (providerQuickService) {
+    providerQuickService.innerHTML = `<option value="">Choisir métier</option>${alphabeticalServices().map((service) => `<option>${safe(service.name)}</option>`).join("")}`;
+    providerQuickService.value = "";
+  }
+
+  const providerQuickCity = document.querySelector("#providerQuickCity");
+  if (providerQuickCity) {
+    const cities = NATIONAL_CITIES.filter(cityIsSpecific);
+    const preferredCity = cityIsSpecific(state.selectedCity) ? state.selectedCity : "Abidjan";
+    providerQuickCity.innerHTML = cities.map((city) => `<option>${safe(city)}</option>`).join("");
+    providerQuickCity.value = cities.includes(preferredCity) ? preferredCity : "Abidjan";
+  }
+
   const requestService = document.querySelector("#requestService");
   if (requestService) {
     requestService.innerHTML = `<option value="">Choisir métier</option>${alphabeticalServices().map((service) => `<option>${safe(service.name)}</option>`).join("")}`;
@@ -18180,6 +18377,7 @@ function boot() {
   setupSearchAssistant();
   setupClientAccessGate();
   setupClientProfile();
+  setupProviderQuickSignup();
   setupHomeQuickSearch();
   globalThis.BizziLife?.init?.({
     setView,

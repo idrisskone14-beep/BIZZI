@@ -630,7 +630,7 @@
 
         <div class="service-entry-tabs" role="tablist" aria-label="Choix Services">
           <button class="service-entry-tab selected" type="button" data-service-entry="search" aria-selected="true">Je cherche</button>
-          <button class="service-entry-tab" type="button" data-go="provider">🧰 Je propose</button>
+          <button class="service-entry-tab" type="button" id="openProviderQuickSignup">🧰 Je propose</button>
         </div>
 
         <div class="service-search-panel">
@@ -1372,6 +1372,24 @@
       <div id="clientAccessStatus" class="sync-status" role="status" aria-live="polite"></div>
       <button class="primary" type="submit">Continuer</button>
       <small>Ces informations sont mémorisées sur cet appareil pour simplifier vos prochaines demandes.</small>
+    </form>
+  </dialog>
+
+  <dialog id="providerQuickSignupDialog" class="client-access-dialog" aria-labelledby="providerQuickSignupTitle">
+    <form id="providerQuickSignupForm" class="form client-access-card">
+      <button id="closeProviderQuickSignupDialog" class="client-access-close" type="button" aria-label="Fermer">×</button>
+      <p class="eyebrow">Devenir prestataire Zeyds</p>
+      <h2 id="providerQuickSignupTitle">Créer mon compte prestataire</h2>
+      <p>Créez votre profil en une minute. 1 mois d'essai gratuit, sans engagement.</p>
+      <label>Nom complet<input name="fullName" required autocomplete="name" placeholder="Ex: Jean Prestataire"></label>
+      <label>Téléphone principal<input name="phone" type="tel" required autocomplete="tel" inputmode="tel" placeholder="+225 07 00 00 00 00"></label>
+      <label>Métier<select name="service" id="providerQuickService" required></select></label>
+      <label>Ville<select name="providerCity" id="providerQuickCity" required></select></label>
+      <label>Commune / quartier<input name="area" required autocomplete="address-level2" placeholder="Ex: Yopougon, Riviera 3"></label>
+      <label class="check-row"><input name="acceptTerms" type="checkbox" required> Je certifie que mes informations sont exactes et j'accepte les conditions Zeyds.</label>
+      <div id="providerQuickSignupStatus" class="status-box compact" aria-live="polite" hidden></div>
+      <button class="primary" type="submit">Créer mon profil</button>
+      <small>Photo et description pourront être ajoutées plus tard depuis votre espace prestataire.</small>
     </form>
   </dialog>
 

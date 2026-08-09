@@ -662,17 +662,17 @@ body.bizzi-ready #view-home.active .premium-paths {
   grid-template-rows: auto auto !important;
   justify-items: center !important;
   text-align: center !important;
-  padding: 26px 14px 22px !important;
-  gap: 14px !important;
+  padding: 14px 10px 12px !important;
+  gap: 8px !important;
 }
 
 .premium-path-emoji {
   display: grid;
   place-items: center;
-  width: 64px;
-  height: 64px;
-  border-radius: 20px;
-  font-size: 32px;
+  width: 44px;
+  height: 44px;
+  border-radius: 15px;
+  font-size: 21px;
   background: rgba(8, 36, 92, .06);
 }
 

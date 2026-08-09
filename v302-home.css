@@ -190,15 +190,15 @@ body:has(#view-home.active) {
 }
 
 .premium-hero-actions {
-  margin-top: 20px;
+  margin-top: 14px;
 }
 
 .premium-cta-voice {
   background: linear-gradient(135deg, #ff6812, #ff8b26);
   border: 1px solid rgba(255, 255, 255, .3);
   box-shadow: 0 14px 34px rgba(255, 104, 18, .38), 0 0 0 1px rgba(255, 255, 255, .08) inset;
-  min-height: 60px;
-  padding: 10px 20px;
+  min-height: 50px;
+  padding: 8px 16px;
   transform: scale(1);
   animation: premiumVoicePulse 2.6s ease-in-out infinite;
 }
@@ -210,9 +210,9 @@ body:has(#view-home.active) {
 }
 
 .premium-cta-voice .premium-mic {
-  width: 34px;
-  height: 34px;
-  font-size: 10px;
+  width: 28px;
+  height: 28px;
+  font-size: 9px;
   background: rgba(255, 255, 255, .25);
   box-shadow: 0 0 0 6px rgba(255, 255, 255, .16);
   animation: premiumMicRing 2.6s ease-in-out infinite;

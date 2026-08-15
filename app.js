@@ -2411,7 +2411,7 @@ function rememberRecentProvider(providerId) {
 
 const views = {
   home: document.querySelector("#view-home"),
-  life: document.querySelector("#view-life"),
+  cash: document.querySelector("#view-cash"),
   "exception-places": document.querySelector("#view-exception-places"),
   delivery: document.querySelector("#view-delivery"),
   food: document.querySelector("#view-food"),
@@ -2431,7 +2431,7 @@ const views = {
 
 const titles = {
   home: "Bienvenue sur Zeyds",
-  life: "Zeyds Life",
+  cash: "Zeyds Cash",
   "exception-places": "Lieux d’exception",
   delivery: "Zeyds Livraison et course",
   food: "Zeyds Food",
@@ -2450,7 +2450,7 @@ const titles = {
 };
 
 const TOGGLEABLE_TABS = {
-  life: "tab_life",
+  cash: "tab_cash",
   "exception-places": "tab_exception_places",
   delivery: "tab_delivery",
   food: "tab_food",
@@ -2543,9 +2543,9 @@ function setView(name) {
   window.scrollTo(0, 0);
   renderTopbarAvatar();
   if (name === "home") renderHomeDiscovery();
-  if (name === "life") globalThis.BizziLife?.render?.();
+  if (name === "cash") globalThis.ZeydsCash?.render?.();
   if (name === "exception-places") renderExceptionPlaces();
-  if (name === "admin") renderAdmin();
+  if (name === "admin") { renderAdmin(); globalThis.ZeydsCash?.renderAdminCash?.(); }
   if (name === "delivery") {
     selectDeliveryService({ clearSearch: true });
     renderDelivery();
@@ -18379,15 +18379,7 @@ function boot() {
   setupClientProfile();
   setupProviderQuickSignup();
   setupHomeQuickSearch();
-  globalThis.BizziLife?.init?.({
-    setView,
-    inferService: (prompt) => inferAssistantService(prompt)?.name || "",
-    openService: (serviceName, options) => selectServiceAndSearch(serviceName, options),
-    openDelivery: (prompt) => {
-      if (!requireClientPhoneForAccess("organiser ce trajet")) return;
-      applyAssistantDeliveryPrompt(prompt);
-    },
-  });
+  globalThis.ZeydsCash?.init?.({ setView });
   initNavigation();
   setupInstallPrompt();
   setupSocialSharing();

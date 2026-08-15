@@ -83,14 +83,10 @@
   function intent(prompt = "") {
     const text = normalize(prompt);
     if (
-      /\b(organiser|preparer|planifier)\b.*\b(anniversaire|mariage|demenagement|renovation)\b/.test(text)
-      || /\b(je demenage|demenagement|demenager|renover|renovation)\b/.test(text)
-      || /\b(voiture|vehicule)\b.*\b(panne|depannage)\b/.test(text)
-      || /\b(panne|depannage)\b.*\b(voiture|vehicule)\b/.test(text)
-      || /\b(nounou|baby sitter|babysitter)\b.*\b(ce soir|demain|urgent|maintenant)\b/.test(text)
-      || /\b(aller|trajet|depart)\b.*\b(aeroport)\b/.test(text)
-      || /\b(aeroport)\b.*\b(demain|matin|soir|vol|bagage)\b/.test(text)
-    ) return "life";
+      /\b(zeyds cash|cash|publier un besoin|je cherche quelqu un|je connais quelqu un|recompense|gagner|gains|besoin avec recompense|poster un besoin)\b/.test(text)
+      || /\b(publie|publier)\b.*\b(besoin|recherche|annonce)\b/.test(text)
+      || /\b(besoin)\b.*\b(recompense|payer|gagner)\b/.test(text)
+    ) return "cash";
     if (/\b(evenement|event|concert|spectacle|festival|conference|billet|soiree|show|humour|theatre)\b/.test(text)) return "events";
     if (/\b(food|restaurant|resto|maquis|garba|attieke|attiéké|poulet|braise|braisé|alloco|placali|kedjenou|grillade|escargot|escargots|manger|plat|repas|dejeuner|déjeuner|diner|dîner|traiteur)\b/.test(text)) return "food";
     if (/\b(emploi|travail|job|mission|recrute|recrutement|stage|cv|embauche)\b/.test(text)) return "jobs";

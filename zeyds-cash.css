@@ -1,0 +1,1132 @@
+/* ============================================================
+   ZEYDS CASH — Styles
+   "Tu cherches ? Publie. Tu trouves ? Tu gagnes."
+   Design mobile-first, épuré, réutilise le design system Zeyds.
+   ============================================================ */
+
+/* ---- Shell ------------------------------------------------- */
+#view-cash {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.cash-shell {
+  width: 100%;
+  min-width: 0;
+  display: grid;
+  gap: 20px;
+}
+
+/* ---- Hero -------------------------------------------------- */
+.cash-hero {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding: clamp(28px, 5vw, 58px);
+  border-radius: 32px;
+  color: #fff;
+  background:
+    radial-gradient(circle at 88% 14%, rgba(255, 127, 30, .38), transparent 30%),
+    radial-gradient(circle at 6% 90%, rgba(255, 200, 0, .14), transparent 32%),
+    linear-gradient(140deg, #071225 0%, #0c2544 58%, #102f4b 100%);
+  box-shadow: 0 32px 90px rgba(5, 26, 55, .26);
+}
+
+.cash-hero::before {
+  content: "";
+  position: absolute;
+  width: 360px;
+  height: 360px;
+  right: -130px;
+  top: -160px;
+  border: 1px solid rgba(255, 255, 255, .10);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 60px rgba(255, 255, 255, .03),
+    0 0 0 120px rgba(255, 255, 255, .016);
+}
+
+.cash-hero-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #ffc36a;
+}
+
+.cash-hero-brand span {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgba(255, 193, 60, .18);
+  font-size: 15px;
+}
+
+.cash-hero-tagline {
+  margin: 0 0 6px;
+  font-size: clamp(28px, 5.5vw, 52px);
+  font-weight: 950;
+  line-height: 1.0;
+  letter-spacing: -.04em;
+  color: #fff;
+}
+
+.cash-hero-sub {
+  margin: 0 0 24px;
+  font-size: 15px;
+  color: rgba(255, 255, 255, .65);
+  max-width: 520px;
+}
+
+.cash-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.cash-hero-cta {
+  min-height: 50px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 14px;
+  color: #fff;
+  background: linear-gradient(135deg, #f46614, #ff9c38);
+  box-shadow: 0 10px 24px rgba(255, 103, 22, .32);
+  font-weight: 900;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.cash-hero-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 32px rgba(255, 103, 22, .42);
+}
+
+.cash-hero-cta-ghost {
+  min-height: 50px;
+  padding: 0 20px;
+  border: 1px solid rgba(255, 255, 255, .28);
+  border-radius: 14px;
+  color: #fff;
+  background: rgba(255, 255, 255, .07);
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background .15s ease;
+}
+
+.cash-hero-cta-ghost:hover {
+  background: rgba(255, 255, 255, .13);
+}
+
+.cash-hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, .10);
+}
+
+.cash-stat {
+  display: grid;
+  gap: 2px;
+}
+
+.cash-stat strong {
+  font-size: 22px;
+  font-weight: 950;
+  color: #ff9c38;
+  letter-spacing: -.02em;
+}
+
+.cash-stat span {
+  font-size: 11px;
+  color: rgba(255, 255, 255, .52);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  font-weight: 700;
+}
+
+/* ---- Filter bar ------------------------------------------- */
+.cash-filter-bar {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-inline: contain;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.cash-filter-bar::-webkit-scrollbar { display: none; }
+
+.cash-filter-chip {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid rgba(8, 36, 92, .14);
+  border-radius: 999px;
+  background: #fff;
+  color: #2c3e6b;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background .14s ease, border-color .14s ease, color .14s ease;
+}
+
+.cash-filter-chip:hover {
+  border-color: rgba(244, 102, 20, .4);
+}
+
+.cash-filter-chip.active,
+.cash-filter-chip[aria-pressed="true"] {
+  background: #f46614;
+  border-color: #f46614;
+  color: #fff;
+}
+
+.cash-filter-divider {
+  width: 1px;
+  min-height: 36px;
+  background: rgba(8, 36, 92, .1);
+  flex-shrink: 0;
+}
+
+/* ---- Section head ------------------------------------------ */
+.cash-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.cash-section-head h2,
+.cash-section-head h3 {
+  margin: 0;
+  font-size: clamp(18px, 2.4vw, 24px);
+  font-weight: 950;
+  letter-spacing: -.02em;
+  color: #10233f;
+}
+
+.cash-count-badge {
+  display: grid;
+  place-items: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: #f46614;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+/* ---- Need cards -------------------------------------------- */
+.cash-need-card {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid rgba(8, 36, 92, .09);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(8, 36, 92, .05);
+  cursor: pointer;
+  transition: box-shadow .16s ease, border-color .16s ease, transform .16s ease;
+}
+
+.cash-need-card:hover,
+.cash-need-card:focus {
+  border-color: rgba(244, 102, 20, .32);
+  box-shadow: 0 8px 28px rgba(8, 36, 92, .10);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.cash-need-card.cash-card-done {
+  opacity: .72;
+}
+
+.cash-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.cash-cat-chip {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(8, 36, 92, .07);
+  color: #2c3e6b;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+.cash-reward-badge {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(20, 168, 105, .12);
+  color: #0e7a53;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.cash-free-badge {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(0, 122, 255, .09);
+  color: #0056b3;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.cash-status-resolved {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(20, 168, 105, .12);
+  color: #0e7a53;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.cash-status-closed {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(8, 36, 92, .08);
+  color: #7e8794;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.cash-card-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: -.015em;
+  color: #10233f;
+  line-height: 1.25;
+}
+
+.cash-card-desc {
+  margin: 0;
+  font-size: 13px;
+  color: #5a6270;
+  line-height: 1.5;
+}
+
+.cash-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+  color: #7e8794;
+}
+
+.cash-sols-pill {
+  margin-left: auto;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: rgba(244, 102, 20, .10);
+  color: #c04c0a;
+  font-weight: 800;
+  font-size: 11px;
+}
+
+/* ---- Feed wrapper ------------------------------------------ */
+#cashFeed {
+  display: grid;
+  gap: 12px;
+}
+
+.cash-empty {
+  display: grid;
+  place-items: center;
+  gap: 10px;
+  padding: 44px 20px;
+  border: 1px dashed rgba(8, 36, 92, .14);
+  border-radius: 20px;
+  text-align: center;
+  color: #7e8794;
+}
+
+.cash-empty span {
+  font-size: 36px;
+}
+
+.cash-empty strong {
+  font-size: 16px;
+  color: #10233f;
+}
+
+.cash-empty p {
+  margin: 0;
+  font-size: 13px;
+}
+
+/* ---- Need detail ------------------------------------------- */
+#cashNeedDetail {
+  display: grid;
+  gap: 20px;
+}
+
+#cashNeedDetail[hidden] { display: none !important; }
+
+.cash-detail-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cash-back-btn {
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid rgba(8, 36, 92, .12);
+  border-radius: 12px;
+  background: #fff;
+  color: #10233f;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background .14s ease;
+}
+
+.cash-back-btn:hover { background: #f5f7fb; }
+
+.cash-report-link {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 0;
+  background: transparent;
+  color: #9ca3af;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.cash-detail-hero {
+  display: grid;
+  gap: 14px;
+  padding: clamp(20px, 4vw, 34px);
+  border: 1px solid rgba(8, 36, 92, .09);
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 8px 30px rgba(8, 36, 92, .07);
+}
+
+.cash-detail-hero h2 {
+  margin: 0;
+  font-size: clamp(22px, 4vw, 34px);
+  font-weight: 950;
+  letter-spacing: -.03em;
+  color: #10233f;
+}
+
+.cash-detail-desc {
+  margin: 0;
+  font-size: 15px;
+  color: #4a5568;
+  line-height: 1.6;
+}
+
+.cash-reward-info {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 90% 10%, rgba(255, 193, 0, .14), transparent 50%),
+    rgba(20, 168, 105, .06);
+  border: 1px solid rgba(20, 168, 105, .18);
+}
+
+.cash-reward-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 14px;
+  color: #4a5568;
+}
+
+.cash-reward-row strong {
+  font-size: 15px;
+  font-weight: 900;
+  color: #0e7a53;
+}
+
+.cash-gain-highlight {
+  font-size: 20px !important;
+  color: #14a869 !important;
+}
+
+.cash-payment-providers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  font-size: 12px;
+  color: #7e8794;
+}
+
+.cash-provider-chip {
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: rgba(8, 36, 92, .06);
+  color: #3a4d6e;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.cash-propose-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.cash-propose-btn {
+  flex: 1;
+  min-height: 54px;
+  padding: 12px 14px;
+  border: 1px solid rgba(8, 36, 92, .14);
+  border-radius: 16px;
+  background: #fff;
+  color: #10233f;
+  font-weight: 800;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: border-color .14s ease, background .14s ease;
+}
+
+.cash-propose-btn span { font-size: 20px; }
+
+.cash-propose-btn:hover {
+  border-color: rgba(244, 102, 20, .4);
+  background: #fffaf6;
+}
+
+.cash-propose-accent {
+  background: linear-gradient(135deg, #f46614, #ff9c38);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(244, 102, 20, .28);
+}
+
+.cash-propose-accent:hover {
+  background: linear-gradient(135deg, #e05610, #f58a28);
+  border-color: transparent;
+}
+
+.cash-whatsapp-btn {
+  min-height: 46px;
+  padding: 0 16px;
+  border: 1px solid rgba(37, 211, 102, .32);
+  border-radius: 14px;
+  background: rgba(37, 211, 102, .07);
+  color: #168b61;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background .14s ease;
+  justify-self: start;
+}
+
+.cash-whatsapp-btn:hover { background: rgba(37, 211, 102, .13); }
+
+/* ---- Solutions -------------------------------------------- */
+.cash-solutions-block {
+  display: grid;
+  gap: 12px;
+}
+
+.cash-sols-empty {
+  padding: 20px;
+  border: 1px dashed rgba(8, 36, 92, .12);
+  border-radius: 14px;
+  text-align: center;
+  color: #7e8794;
+  font-size: 14px;
+}
+
+.cash-solutions-list {
+  display: grid;
+  gap: 10px;
+}
+
+.cash-sol-card {
+  display: grid;
+  gap: 8px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: #fff;
+  border: 1px solid rgba(8, 36, 92, .09);
+  box-shadow: 0 3px 12px rgba(8, 36, 92, .04);
+}
+
+.cash-sol-card.cash-sol-accepted {
+  border-color: rgba(20, 168, 105, .3);
+  background: rgba(20, 168, 105, .04);
+}
+
+.cash-sol-card.cash-sol-refused {
+  opacity: .6;
+  border-color: rgba(220, 60, 60, .18);
+}
+
+.cash-sol-card.cash-sol-pending {
+  border-color: rgba(255, 149, 0, .2);
+}
+
+.cash-sol-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.cash-sol-type {
+  font-size: 12px;
+  font-weight: 800;
+  color: #2c3e6b;
+}
+
+.cash-sol-status {
+  font-size: 11px;
+  font-weight: 800;
+  color: #7e8794;
+}
+
+.cash-sol-accepted .cash-sol-status { color: #0e7a53; }
+.cash-sol-refused .cash-sol-status { color: #c0392b; }
+.cash-sol-pending .cash-sol-status { color: #e08520; }
+
+.cash-sol-card p {
+  margin: 0;
+  font-size: 14px;
+  color: #3d4a5c;
+  line-height: 1.5;
+}
+
+.cash-sol-contact {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #0056b3;
+  text-decoration: none;
+}
+
+.cash-sol-meta {
+  display: flex;
+  gap: 10px;
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.cash-sol-need-title {
+  font-size: 14px;
+  font-weight: 900;
+  color: #10233f;
+}
+
+.cash-sol-time { font-size: 12px; color: #9ca3af; }
+
+.cash-sol-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.cash-accept-btn {
+  flex: 1;
+  min-height: 40px;
+  border: 0;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #14a869, #1dcc82);
+  color: #fff;
+  font-weight: 900;
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(20, 168, 105, .28);
+}
+
+.cash-refuse-btn {
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid rgba(8, 36, 92, .14);
+  border-radius: 11px;
+  background: #fff;
+  color: #7e8794;
+  font-weight: 800;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* ---- Personal space --------------------------------------- */
+.cash-personal-tabs {
+  display: flex;
+  gap: 0;
+  border-radius: 16px;
+  background: rgba(8, 36, 92, .06);
+  padding: 4px;
+}
+
+.cash-personal-tab {
+  flex: 1;
+  min-height: 40px;
+  border: 0;
+  border-radius: 13px;
+  background: transparent;
+  color: #5a6270;
+  font-weight: 800;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background .14s ease, color .14s ease;
+  white-space: nowrap;
+}
+
+.cash-personal-tab[aria-selected="true"] {
+  background: #fff;
+  color: #f46614;
+  box-shadow: 0 2px 8px rgba(8, 36, 92, .08);
+}
+
+/* ---- Gains ------------------------------------------------ */
+.cash-gains-total {
+  display: grid;
+  gap: 4px;
+  padding: 20px;
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 90% 10%, rgba(255, 193, 0, .18), transparent 50%),
+    linear-gradient(135deg, #0c2544, #103060);
+  color: #fff;
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.cash-gains-total span {
+  font-size: 12px;
+  color: rgba(255, 255, 255, .6);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.cash-gains-amount {
+  font-size: 32px;
+  font-weight: 950;
+  color: #ffc36a;
+  letter-spacing: -.03em;
+}
+
+.cash-gains-total small {
+  font-size: 11px;
+  color: rgba(255, 255, 255, .46);
+}
+
+.cash-gain-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid rgba(8, 36, 92, .08);
+}
+
+.cash-gain-row strong {
+  font-size: 14px;
+  font-weight: 900;
+  color: #10233f;
+  flex: 1;
+}
+
+/* ---- Publish dialog --------------------------------------- */
+.cash-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: end center;
+  background: rgba(5, 14, 30, .52);
+  padding: 0;
+  backdrop-filter: blur(4px);
+}
+
+.cash-dialog-overlay[hidden] { display: none !important; }
+
+.cash-dialog {
+  width: min(100vw, 560px);
+  max-height: 92dvh;
+  border-radius: 28px 28px 0 0;
+  background: #fff;
+  box-shadow: 0 -24px 70px rgba(5, 14, 30, .26);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+@media (min-width: 600px) {
+  .cash-dialog-overlay { place-items: center; padding: 20px; }
+  .cash-dialog { border-radius: 28px; max-height: 88vh; }
+}
+
+.cash-dialog-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 20px 20px 0;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 1;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(8, 36, 92, .08);
+}
+
+.cash-dialog-head h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 950;
+  color: #10233f;
+}
+
+.cash-dialog-close {
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(8, 36, 92, .06);
+  color: #5a6270;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+.cash-dialog-close:hover { background: rgba(8, 36, 92, .11); }
+
+.cash-dialog-body {
+  padding: 20px;
+  display: grid;
+  gap: 14px;
+}
+
+.cash-form-label {
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #2c3e6b;
+}
+
+.cash-form-label input,
+.cash-form-label textarea,
+.cash-form-label select {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1px solid rgba(8, 36, 92, .16);
+  border-radius: 13px;
+  background: #f8faff;
+  color: #10233f;
+  font: inherit;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition: border-color .14s ease;
+}
+
+.cash-form-label input:focus,
+.cash-form-label textarea:focus,
+.cash-form-label select:focus {
+  outline: 0;
+  border-color: #f46614;
+  background: #fff;
+}
+
+.cash-form-label textarea {
+  min-height: 80px;
+  padding: 12px 14px;
+  resize: vertical;
+}
+
+.cash-reward-toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 800;
+  color: #2c3e6b;
+}
+
+.cash-reward-toggle-row input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  min-height: 0;
+  accent-color: #f46614;
+  cursor: pointer;
+}
+
+.cash-submit-btn {
+  min-height: 54px;
+  border: 0;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #f46614, #ff9c38);
+  color: #fff;
+  font-weight: 900;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 10px 26px rgba(244, 102, 20, .3);
+  transition: transform .15s ease;
+}
+
+.cash-submit-btn:hover { transform: translateY(-1px); }
+
+/* ---- Notif panel ------------------------------------------ */
+.cash-notif-btn-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+#cashNotifBtn {
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid rgba(8, 36, 92, .12);
+  border-radius: 12px;
+  background: #fff;
+  color: #10233f;
+  font-weight: 800;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#cashNotifBadge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: #f46614;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+  display: grid;
+  place-items: center;
+}
+
+.cash-notif-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 80;
+  width: min(320px, 92vw);
+  border: 1px solid rgba(8, 36, 92, .10);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 16px 48px rgba(8, 36, 92, .14);
+  overflow: hidden;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.cash-notif-panel[hidden] { display: none !important; }
+
+.cash-notif-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(8, 36, 92, .06);
+  cursor: pointer;
+  transition: background .12s ease;
+}
+
+.cash-notif-item:last-child { border-bottom: 0; }
+.cash-notif-item:hover { background: #f8faff; }
+
+.cash-notif-item.unread { background: rgba(244, 102, 20, .05); }
+.cash-notif-item.unread .cash-notif-msg { color: #10233f; }
+
+.cash-notif-msg { font-size: 13px; font-weight: 700; color: #3d4a5c; }
+.cash-notif-time { font-size: 11px; color: #9ca3af; }
+
+/* ---- Publish CTA inline ----------------------------------- */
+.cash-publish-cta {
+  min-height: 48px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #f46614, #ff9c38);
+  color: #fff;
+  font-weight: 900;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(244, 102, 20, .28);
+}
+
+/* ---- Admin Cash panel ------------------------------------- */
+.cash-admin-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.cash-admin-stat {
+  display: grid;
+  gap: 2px;
+  padding: 14px;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid rgba(8, 36, 92, .08);
+  text-align: center;
+}
+
+.cash-admin-stat strong {
+  font-size: 22px;
+  font-weight: 950;
+  color: #10233f;
+}
+
+.cash-admin-stat span {
+  font-size: 11px;
+  color: #7e8794;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  font-weight: 700;
+}
+
+.cash-admin-stat.cash-admin-stat-gold strong { color: #e6a814; }
+
+.cash-admin-config {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid rgba(8, 36, 92, .08);
+  margin-bottom: 16px;
+}
+
+.cash-admin-config h4 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 950;
+  color: #10233f;
+}
+
+.cash-admin-config label {
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #2c3e6b;
+}
+
+.cash-admin-config input {
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid rgba(8, 36, 92, .16);
+  border-radius: 11px;
+  background: #f8faff;
+  font: inherit;
+  font-size: 14px;
+}
+
+.cash-admin-needs h4,
+.cash-admin-reports h4 {
+  margin: 0 0 10px;
+  font-size: 15px;
+  font-weight: 950;
+  color: #10233f;
+}
+
+.cash-admin-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 13px;
+  background: #fff;
+  border: 1px solid rgba(8, 36, 92, .07);
+  margin-bottom: 6px;
+}
+
+.cash-admin-row-info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  font-size: 13px;
+  color: #3d4a5c;
+}
+
+.cash-admin-row-info strong {
+  font-weight: 900;
+  color: #10233f;
+}
+
+/* ---- Responsive ------------------------------------------- */
+@media (max-width: 640px) {
+  .cash-hero { border-radius: 22px; }
+  .cash-hero-tagline { font-size: clamp(24px, 8vw, 38px); }
+  .cash-propose-row { flex-direction: column; }
+  .cash-propose-btn { flex: none; }
+  .cash-admin-stats { grid-template-columns: repeat(2, 1fr); }
+  .cash-detail-hero { border-radius: 18px; }
+  .cash-need-card { border-radius: 16px; }
+}
+
+@media (max-width: 400px) {
+  .cash-hero { padding: 20px 16px; }
+  .cash-personal-tab { font-size: 12px; }
+}
+
+/* ---- Animations ------------------------------------------- */
+@keyframes cashFadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.cash-need-card,
+.cash-sol-card {
+  animation: cashFadeUp .22s ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cash-need-card,
+  .cash-sol-card { animation: none; }
+}

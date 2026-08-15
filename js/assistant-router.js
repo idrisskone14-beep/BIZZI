@@ -60,10 +60,10 @@
       globalThis.setTimeout?.(() => document.querySelector("#exceptionPlacesList")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0);
     }
     const intent = globalThis.BizziAssistantParser?.intent?.(prompt);
-    if (intent === "life") {
-      globalThis.setView?.("life");
-      globalThis.BizziLife?.open?.(prompt, { autoCreate: true });
-      globalThis.renderSearchAssistantStatus?.(`<strong>${options.voice ? "Voix reconnue" : "Projet compris"} : Zeyds Life</strong><p>Zeyds a organisé les services et les prochaines étapes.</p>`);
+    if (intent === "cash") {
+      globalThis.setView?.("cash");
+      globalThis.ZeydsCash?.open?.();
+      globalThis.renderSearchAssistantStatus?.(`<strong>${options.voice ? "Voix reconnue" : "Compris"} : Zeyds Cash</strong><p>Publiez votre besoin et recevez des propositions de la communauté.</p>`);
       return true;
     }
     if (intent === "events") {

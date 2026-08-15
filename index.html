@@ -81,7 +81,7 @@
   <link rel="stylesheet" href="v302.css?v=304">
   <link rel="stylesheet" href="v302-home.css?v=304">
   <link rel="stylesheet" href="home-magazine.css?v=304">
-  <link rel="stylesheet" href="bizzi-life.css?v=304">
+  <link rel="stylesheet" href="zeyds-cash.css?v=305">
   <link rel="stylesheet" href="global-assistant.css?v=304">
   <link rel="stylesheet" href="location-intelligence.css?v=304">
   <link rel="stylesheet" href="motion-system.css?v=304">
@@ -107,7 +107,7 @@
       <nav class="side-nav" aria-label="Navigation principale">
         <div class="nav-active-indicator" aria-hidden="true"></div>
         <button class="nav-link active" data-view="home" data-i18n="home">Accueil</button>
-        <button class="nav-link life-link" data-view="life">Zeyds Life</button>
+        <button class="nav-link cash-link" data-view="cash">Zeyds Cash</button>
         <button class="nav-link exception-link" data-view="exception-places">Lieux d’exception</button>
         <button class="nav-link delivery-link" data-view="delivery" data-i18n="delivery">Livraison et course</button>
         <button class="nav-link food-link" data-view="food">Food</button>
@@ -147,9 +147,9 @@
         <p id="geoStatus" class="geo-status">Position manuelle par ville.</p>
       </header>
 
-      <div id="lifeReturnBar" class="life-return-bar" hidden>
-        <button type="button" data-life-return>← Revenir à mon projet Zeyds Life</button>
-        <span id="lifeReturnLabel">Votre checklist et votre progression sont conservées.</span>
+      <div id="cashReturnBar" class="life-return-bar" hidden>
+        <button type="button" data-cash-open-feed>← Revenir à Zeyds Cash</button>
+        <span id="cashReturnLabel">Vos besoins et propositions sont conservés.</span>
       </div>
 
       <section id="view-home" class="view active">
@@ -165,7 +165,7 @@
               <button type="button" data-go="food" aria-label="Ouvrir Food"><span class="premium-path-emoji green" aria-hidden="true">🍔</span><strong>Food<small>Commandez vos repas</small></strong></button>
               <button type="button" data-go="events" aria-label="Ouvrir Événements"><span class="premium-path-emoji purple" aria-hidden="true">📅</span><strong>Événements<small>Sorties &amp; activités</small></strong></button>
               <button type="button" data-go="jobs" aria-label="Ouvrir Emploi"><span class="premium-path-emoji blue" aria-hidden="true">💼</span><strong>Emplois<small>Trouvez votre job</small></strong></button>
-              <button type="button" data-go="life" aria-label="Ouvrir Zeyds Life"><span class="premium-path-emoji gold" aria-hidden="true">✦</span><strong>Zeyds Life<small>Projets &amp; inspiration</small></strong></button>
+              <button type="button" data-go="cash" aria-label="Ouvrir Zeyds Cash"><span class="premium-path-emoji gold" aria-hidden="true">💸</span><strong>Zeyds Cash<small>Besoins &amp; récompenses</small></strong></button>
               <button type="button" data-go="exception-places" aria-label="Ouvrir Lieux d’exception"><span class="premium-path-emoji green" aria-hidden="true">📍</span><strong>Lieux d’exception<small>Adresses uniques</small></strong></button>
             </div>
           </section>
@@ -277,110 +277,161 @@
         </div>
       </section>
 
-      <section id="view-life" class="view">
-        <div class="life-shell">
-          <section class="life-hero" aria-labelledby="lifeTitle">
-            <div class="life-hero-copy">
-              <div class="life-brand"><span aria-hidden="true">✦</span> Zeyds Life</div>
-              <h2 id="lifeTitle">Dis-nous ce que tu veux faire.</h2>
-              <p>Zeyds organise les services autour de toi.</p>
-              <form id="lifeGoalForm" class="life-goal-form">
-                <label for="lifeGoalInput">Votre objectif</label>
-                <textarea id="lifeGoalInput" name="goal" rows="3" maxlength="500" required placeholder="Ex. Je déménage de Yopougon à Cocody samedi prochain."></textarea>
-                <div class="life-goal-fields">
-                  <label>Date souhaitée<input id="lifeTargetDate" name="targetDate" type="date"></label>
-                  <label>Budget prévu<input id="lifeBudget" name="budget" type="number" min="0" step="5000" inputmode="numeric" placeholder="FCFA"></label>
-                  <label>Niveau
-                    <select id="lifeBudgetTier" name="budgetTier">
-                      <option value="standard">Standard</option>
-                      <option value="economy">Économique</option>
-                      <option value="premium">Premium</option>
-                    </select>
-                  </label>
+      <section id="view-cash" class="view">
+        <div class="cash-shell">
+
+          <!-- Hero -->
+          <section class="cash-hero" aria-labelledby="cashTitle">
+            <div class="cash-hero-brand">
+              <span aria-hidden="true">💸</span> Zeyds Cash
+            </div>
+            <h2 id="cashTitle" class="cash-hero-tagline">Tu cherches&nbsp;? Publie.<br>Tu trouves&nbsp;? Tu gagnes.</h2>
+            <p class="cash-hero-sub">Publie un besoin gratuitement ou avec récompense. Propose une solution et gagne en FCFA.</p>
+            <div class="cash-hero-actions">
+              <button class="cash-hero-cta" type="button" data-cash-publish>+ Publier un besoin</button>
+              <button class="cash-hero-cta-ghost" type="button" data-cash-open-personal>Mes recherches &amp; gains</button>
+              <div class="cash-notif-btn-wrap">
+                <button id="cashNotifBtn" type="button" aria-label="Notifications Zeyds Cash">🔔 Notifs <span id="cashNotifBadge" hidden></span></button>
+                <div id="cashNotifPanel" class="cash-notif-panel" hidden aria-live="polite">
+                  <div id="cashNotifList"></div>
                 </div>
-                <button class="life-primary" type="submit">Construire mon projet</button>
-              </form>
-              <div class="life-examples" aria-label="Exemples de projets">
-                <button type="button" data-life-example="Je veux organiser mon anniversaire pour 30 personnes à Cocody.">Anniversaire</button>
-                <button type="button" data-life-example="Je souhaite organiser mon mariage à Abidjan.">Mariage</button>
-                <button type="button" data-life-example="Je déménage de Yopougon à Cocody samedi prochain.">Déménagement</button>
-                <button type="button" data-life-example="Ma voiture est en panne à Marcory.">Panne voiture</button>
-                <button type="button" data-life-example="Je cherche une nounou pour ce soir à Cocody.">Nounou</button>
-                <button type="button" data-life-example="Je veux rénover un appartement de trois pièces.">Rénovation</button>
-                <button type="button" data-life-example="Je dois aller à l’aéroport demain matin.">Aéroport</button>
-                <button type="button" data-life-example="Je veux organiser un afterwork à Cocody.">Afterwork</button>
-                <button type="button" data-life-example="Je veux organiser un défilé de mode à Abidjan.">Défilé de mode</button>
-                <button type="button" data-life-example="Je veux organiser un team building pour mon équipe à Grand-Bassam.">Team building</button>
-                <button type="button" data-life-example="Je veux organiser un baptême à Cocody.">Baptême</button>
-                <button type="button" data-life-example="Je veux organiser un showcase à Abidjan.">Showcase</button>
-                <button type="button" data-life-example="Je veux organiser une conférence de presse au Plateau.">Conférence de presse</button>
               </div>
             </div>
-            <aside class="life-hero-proof" aria-label="Fonctionnement Zeyds Life">
-              <span>01</span><strong>Comprendre</strong>
-              <span>02</span><strong>Organiser</strong>
-              <span>03</span><strong>Réaliser</strong>
-            </aside>
+            <div class="cash-hero-stats" id="cashHeroStats" aria-live="polite"></div>
           </section>
 
-          <section id="lifeProactivePanel" class="life-proactive-panel" aria-live="polite"></section>
-
-          <section id="lifePlanSection" class="life-plan-section" hidden aria-live="polite">
-            <div id="lifeProjectSummary"></div>
-            <div class="life-plan-grid">
-              <section class="life-card">
-                <div class="life-section-head"><div><span>Plan intelligent</span><h3>Services nécessaires</h3></div><strong id="lifeServiceCount">0</strong></div>
-                <div id="lifeServices" class="life-services"></div>
-              </section>
-              <section class="life-card">
-                <div class="life-section-head"><div><span>Suivi</span><h3>Étapes du projet</h3></div><strong id="lifeProgressValue">0 %</strong></div>
-                <div id="lifeTasks" class="life-tasks"></div>
-              </section>
+          <!-- Feed section -->
+          <section id="cashFeedSection" aria-label="Besoins publiés">
+            <div class="cash-section-head">
+              <h2>Besoins du moment</h2>
             </div>
-            <section class="life-card life-recommendation-card">
-              <div class="life-section-head"><div><span>Choix simplifié</span><h3>Votre stratégie de sélection</h3></div></div>
-              <div id="lifeStrategies" class="life-strategies"></div>
-            </section>
+
+            <!-- Filters -->
+            <div class="cash-filter-bar" id="cashFilterBar" role="group" aria-label="Filtres">
+              <button class="cash-filter-chip" type="button" data-cash-filter="rewarded" aria-pressed="false">💰 Avec récompense</button>
+              <div class="cash-filter-divider" role="separator"></div>
+              <button class="cash-filter-chip" type="button" data-cash-filter="category" data-cash-filter-val="Services" aria-pressed="false">Services</button>
+              <button class="cash-filter-chip" type="button" data-cash-filter="category" data-cash-filter-val="Livraison" aria-pressed="false">Livraison</button>
+              <button class="cash-filter-chip" type="button" data-cash-filter="category" data-cash-filter-val="Emploi" aria-pressed="false">Emploi</button>
+              <button class="cash-filter-chip" type="button" data-cash-filter="category" data-cash-filter-val="Logement" aria-pressed="false">Logement</button>
+              <button class="cash-filter-chip" type="button" data-cash-filter="category" data-cash-filter-val="Vente" aria-pressed="false">Vente</button>
+              <button class="cash-filter-chip" type="button" data-cash-filter="category" data-cash-filter-val="Événements" aria-pressed="false">Événements</button>
+              <div class="cash-filter-divider" role="separator"></div>
+              <button class="cash-filter-chip" type="button" data-cash-filter="area" data-cash-filter-val="Cocody" aria-pressed="false">Cocody</button>
+              <button class="cash-filter-chip" type="button" data-cash-filter="area" data-cash-filter-val="Yopougon" aria-pressed="false">Yopougon</button>
+              <button class="cash-filter-chip" type="button" data-cash-filter="area" data-cash-filter-val="Marcory" aria-pressed="false">Marcory</button>
+              <button class="cash-filter-chip" type="button" data-cash-filter="area" data-cash-filter-val="Plateau" aria-pressed="false">Plateau</button>
+              <button class="cash-filter-chip" type="button" data-cash-filter="area" data-cash-filter-val="Abobo" aria-pressed="false">Abobo</button>
+            </div>
+
+            <!-- Feed -->
+            <div id="cashFeed" aria-live="polite" aria-label="Liste des besoins"></div>
           </section>
 
-          <section class="life-lower-grid">
-            <section class="life-card">
-              <div class="life-section-head"><div><span>Vos projets</span><h3>Continuer là où vous étiez</h3></div></div>
-              <div id="lifeProjects" class="life-projects"></div>
-            </section>
-            <section class="life-card">
-              <div class="life-section-head"><div><span>Personnalisation</span><h3>Mes préférences</h3></div></div>
-              <form id="lifePreferencesForm" class="life-preferences">
-                <label>Commune préférée<input name="preferredArea" maxlength="80" placeholder="Cocody, Marcory…"></label>
-                <label>Priorité
-                  <select name="priority">
-                    <option value="balanced">Équilibre</option>
-                    <option value="fast">Rapidité</option>
-                    <option value="discreet">Discrétion</option>
-                    <option value="premium">Haut de gamme</option>
-                  </select>
-                </label>
-                <label>Moyen de paiement
-                  <select name="payment">
-                    <option value="mobile-money">Mobile Money</option>
-                    <option value="cash">Espèces</option>
-                    <option value="card">Carte</option>
-                  </select>
-                </label>
-                <label class="life-check"><input name="verifiedOnly" type="checkbox"> Priorité aux profils vérifiés</label>
-                <button class="secondary" type="submit">Enregistrer</button>
-                <p id="lifePreferencesStatus" role="status"></p>
-              </form>
-            </section>
+          <!-- Need detail (hidden by default) -->
+          <section id="cashNeedDetail" hidden aria-live="polite" aria-label="Détail du besoin"></section>
+
+          <!-- Personal space (hidden by default) -->
+          <section id="cashPersonalSection" hidden aria-label="Mon espace Zeyds Cash">
+            <div class="cash-section-head">
+              <h2>Mon espace</h2>
+              <button class="cash-back-btn" type="button" data-cash-open-feed>← Retour</button>
+            </div>
+            <nav class="cash-personal-tabs" id="cashPersonalTabs" role="tablist">
+              <button class="cash-personal-tab" role="tab" type="button" data-cash-tab="mes-besoins" aria-selected="true">Mes besoins</button>
+              <button class="cash-personal-tab" role="tab" type="button" data-cash-tab="mes-solutions" aria-selected="false">Mes solutions</button>
+              <button class="cash-personal-tab" role="tab" type="button" data-cash-tab="mes-gains" aria-selected="false">Mes gains 💰</button>
+            </nav>
+            <div id="cashPersonalFeed" aria-live="polite"></div>
           </section>
 
-          <section class="life-premium-preview">
-            <div><span>Zeyds Premium</span><h3>Un accompagnement renforcé, quand vous en aurez besoin.</h3></div>
-            <p>Comparaison de devis, assistance prioritaire et avantages fidélité seront activés après validation des conditions commerciales.</p>
-            <span class="life-coming-soon">Bientôt</span>
-          </section>
+        </div><!-- .cash-shell -->
+      </section><!-- #view-cash -->
+
+      <!-- Dialog : Publier un besoin -->
+      <div id="cashPublishDialog" class="cash-dialog-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="cashPublishTitle">
+        <div class="cash-dialog">
+          <div class="cash-dialog-head">
+            <h3 id="cashPublishTitle">Publier un besoin</h3>
+            <button class="cash-dialog-close" type="button" data-cash-close-publish aria-label="Fermer">×</button>
+          </div>
+          <form id="cashPublishForm" class="cash-dialog-body" novalidate>
+            <label class="cash-form-label">
+              Titre du besoin <span aria-hidden="true">*</span>
+              <input name="title" type="text" maxlength="120" required placeholder="Ex. Je cherche un plombier urgent à Cocody">
+            </label>
+            <label class="cash-form-label">
+              Description (optionnel)
+              <textarea name="description" maxlength="600" placeholder="Plus de détails sur votre besoin…" rows="3"></textarea>
+            </label>
+            <label class="cash-form-label">
+              Catégorie
+              <select name="category" required>
+                <option value="Services">Services</option>
+                <option value="Livraison">Livraison</option>
+                <option value="Emploi">Emploi</option>
+                <option value="Logement">Logement</option>
+                <option value="Vente">Vente</option>
+                <option value="Événements">Événements</option>
+                <option value="Autre">Autre</option>
+              </select>
+            </label>
+            <label class="cash-form-label">
+              Commune
+              <select name="area" required>
+                <option value="Toute la ville">Toute la ville</option>
+                <option value="Cocody">Cocody</option>
+                <option value="Yopougon">Yopougon</option>
+                <option value="Marcory">Marcory</option>
+                <option value="Plateau">Plateau</option>
+                <option value="Treichville">Treichville</option>
+                <option value="Adjamé">Adjamé</option>
+                <option value="Abobo">Abobo</option>
+                <option value="Koumassi">Koumassi</option>
+                <option value="Port-Bouët">Port-Bouët</option>
+                <option value="Riviera">Riviera</option>
+                <option value="Angré">Angré</option>
+                <option value="Zone 4">Zone 4</option>
+                <option value="Bingerville">Bingerville</option>
+                <option value="Bouaké">Bouaké</option>
+              </select>
+            </label>
+            <label class="cash-reward-toggle-row">
+              <input id="cashRewardToggle" name="rewardToggle" type="checkbox">
+              Ajouter une récompense en FCFA
+            </label>
+            <div id="cashRewardField" hidden>
+              <label class="cash-form-label">
+                Montant de la récompense (FCFA)
+                <input name="reward" type="number" min="500" max="500000" step="500" inputmode="numeric" placeholder="Ex. 5000">
+              </label>
+              <small style="font-size:12px;color:#7e8794;display:block;margin-top:-8px">Commission Zeyds 10 % déduite au moment du paiement. Compatible Wave, Orange Money, MTN Money, Moov Money.</small>
+            </div>
+            <button class="cash-submit-btn" type="submit">Publier gratuitement</button>
+          </form>
         </div>
-      </section>
+      </div>
+
+      <!-- Dialog : Proposer une solution -->
+      <div id="cashProposeDialog" class="cash-dialog-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="cashProposeTitle">
+        <div class="cash-dialog">
+          <div class="cash-dialog-head">
+            <h3 id="cashProposeTitle"><span id="cashProposeTypeLabel">Proposer une solution</span></h3>
+            <button class="cash-dialog-close" type="button" data-cash-close-propose aria-label="Fermer">×</button>
+          </div>
+          <form id="cashProposeForm" class="cash-dialog-body" novalidate>
+            <label class="cash-form-label">
+              Votre proposition <span aria-hidden="true">*</span>
+              <textarea name="description" maxlength="500" required rows="4" placeholder="Décrivez votre solution…"></textarea>
+            </label>
+            <label class="cash-form-label">
+              Contact (optionnel)
+              <input name="contact" type="tel" placeholder="Ex. 07 00 00 00 00">
+            </label>
+            <button class="cash-submit-btn" type="submit">Envoyer ma proposition</button>
+          </form>
+        </div>
+      </div>
 
       <section id="view-exception-places" class="view">
         <section class="panel exception-directory-hero">
@@ -1058,7 +1109,18 @@
             <button class="secondary" type="button" data-admin-jump="#remoteProviders">Voir validations Supabase</button>
             <button class="secondary" type="button" data-admin-jump="#localProvidersPanel">Voir prestataires locaux</button>
             <button class="secondary" type="button" data-admin-jump="#launchChecklist">Voir recette lancement</button>
+            <button class="secondary" type="button" data-admin-jump="#cashAdminSection">Voir Zeyds Cash</button>
           </div>
+
+          <!-- ======== ZEYDS CASH ADMIN ======== -->
+          <section class="panel" id="cashAdminSection">
+            <div class="section-head">
+              <h2>Zeyds Cash</h2>
+              <span class="tag">Besoins &amp; récompenses</span>
+            </div>
+            <p>Gérez les besoins publiés, les solutions proposées, les récompenses et configurez la commission Zeyds.</p>
+            <div id="cashAdminPanel"></div>
+          </section>
           <section class="panel remote-admin-panel">
             <h2>Validation Supabase</h2>
             <p>C'est ici que se font les validations payantes et les contrôles publiés dans Supabase. Le mois gratuit des nouveaux prestataires est désormais automatique.</p>
@@ -1367,8 +1429,7 @@
   <script src="js/premium-home.js?v=240"></script>
   <script src="js/service-ai-images.js?v=304"></script>
   <script src="js/mobile-form-wizard.js?v=304"></script>
-  <script src="js/bizzi-life-event-templates.js?v=304"></script>
-  <script src="js/bizzi-life.js?v=304"></script>
+  <script src="js/zeyds-cash.js?v=305"></script>
   <script src="js/motion-system.js?v=304"></script>
   <script src="app.js?v=304"></script>
   <script src="js/location-intelligence.js?v=304"></script>

@@ -9,7 +9,7 @@
   width: 100%;
   min-width: 0;
   max-width: 100%;
-  overflow: hidden;
+  /* pas de overflow:hidden — couperait les panneaux absolus (notifs, etc.) */
 }
 
 .cash-shell {
@@ -782,6 +782,7 @@
 
 .cash-dialog {
   width: min(100vw, 560px);
+  max-height: 92vh;
   max-height: 92dvh;
   border-radius: 28px 28px 0 0;
   background: #fff;
@@ -801,6 +802,7 @@
   justify-content: space-between;
   gap: 12px;
   padding: 20px 20px 0;
+  position: -webkit-sticky;
   position: sticky;
   top: 0;
   background: #fff;
@@ -1101,18 +1103,59 @@
 
 /* ---- Responsive ------------------------------------------- */
 @media (max-width: 640px) {
+  /* Layout */
+  .cash-shell { gap: 14px; }
+
+  /* Hero */
   .cash-hero { border-radius: 22px; }
-  .cash-hero-tagline { font-size: clamp(24px, 8vw, 38px); }
+  .cash-hero-tagline { font-size: clamp(22px, 8vw, 36px); }
+  .cash-hero-stats { gap: 12px; margin-top: 16px; }
+
+  /* Hero CTAs — empiler pour éviter le dépassement à 293px de large */
+  .cash-hero-actions { flex-direction: column; }
+  .cash-hero-cta,
+  .cash-hero-cta-ghost { width: 100%; }
+
+  /* Panneau de notifs — position fixed au-dessus de la nav bas */
+  .cash-notif-panel {
+    position: fixed;
+    top: auto;
+    bottom: 86px;
+    left: 13px;
+    right: 13px;
+    width: auto;
+    max-height: 280px;
+    border-radius: 16px;
+  }
+
+  /* Reward row — autoriser le retour à la ligne si texte long */
+  .cash-reward-row { flex-wrap: wrap; }
+
+  /* Propose row — empiler verticalement */
   .cash-propose-row { flex-direction: column; }
   .cash-propose-btn { flex: none; }
+
+  /* Boutons refus/accept — pleine largeur */
+  .cash-refuse-btn { flex: 1; padding: 0 10px; }
+
+  /* Admin stats — 2 colonnes au lieu de 3 */
   .cash-admin-stats { grid-template-columns: repeat(2, 1fr); }
+
+  /* Cards */
   .cash-detail-hero { border-radius: 18px; }
   .cash-need-card { border-radius: 16px; }
+
+  /* En-tête de section — autoriser retour à la ligne */
+  .cash-section-head { flex-wrap: wrap; }
+
+  /* Onglets espace perso */
+  .cash-personal-tab { font-size: 12px; min-height: 38px; }
 }
 
 @media (max-width: 400px) {
-  .cash-hero { padding: 20px 16px; }
-  .cash-personal-tab { font-size: 12px; }
+  .cash-hero { padding: 18px 14px; }
+  .cash-hero-stats { gap: 10px; }
+  .cash-personal-tab { font-size: 11px; }
 }
 
 /* ---- Animations ------------------------------------------- */

@@ -1106,15 +1106,56 @@
   /* Layout */
   .cash-shell { gap: 14px; }
 
-  /* Hero */
-  .cash-hero { border-radius: 22px; }
-  .cash-hero-tagline { font-size: clamp(22px, 8vw, 36px); }
-  .cash-hero-stats { gap: 12px; margin-top: 16px; }
+  /* Hero — padding réduit : 28px → 16px (libère ~60px de hauteur) */
+  .cash-hero {
+    border-radius: 20px;
+    padding: 16px;
+  }
+  .cash-hero-brand { margin-bottom: 10px; }
+  .cash-hero-tagline { font-size: clamp(20px, 7vw, 28px); }
+  .cash-hero-sub {
+    font-size: 13px;
+    margin-bottom: 12px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .cash-hero-stats {
+    gap: 12px;
+    margin-top: 12px;
+    padding-top: 12px;
+  }
+  .cash-stat strong { font-size: 18px; }
 
-  /* Hero CTAs — empiler pour éviter le dépassement à 293px de large */
-  .cash-hero-actions { flex-direction: column; }
-  .cash-hero-cta,
-  .cash-hero-cta-ghost { width: 100%; }
+  /* Actions — grille 2 rangées :
+     Rangée 1 : CTA principal pleine largeur
+     Rangée 2 : bouton fantôme + notifs côte à côte */
+  .cash-hero-actions {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    gap: 8px;
+    flex-direction: unset;
+  }
+  .cash-hero-cta {
+    grid-column: 1 / -1;
+    min-height: 44px;
+    font-size: 14px;
+    width: auto;
+  }
+  .cash-hero-cta-ghost {
+    min-height: 38px;
+    font-size: 13px;
+    padding: 0 12px;
+    width: auto;
+  }
+  #cashNotifBtn {
+    min-height: 38px;
+    padding: 0 12px;
+    font-size: 13px;
+  }
 
   /* Panneau de notifs — position fixed au-dessus de la nav bas */
   .cash-notif-panel {
@@ -1128,24 +1169,24 @@
     border-radius: 16px;
   }
 
-  /* Reward row — autoriser le retour à la ligne si texte long */
+  /* Reward row — retour à la ligne si texte long */
   .cash-reward-row { flex-wrap: wrap; }
 
   /* Propose row — empiler verticalement */
   .cash-propose-row { flex-direction: column; }
   .cash-propose-btn { flex: none; }
 
-  /* Boutons refus/accept — pleine largeur */
+  /* Boutons sol — pleine largeur */
   .cash-refuse-btn { flex: 1; padding: 0 10px; }
 
-  /* Admin stats — 2 colonnes au lieu de 3 */
+  /* Admin stats — 2 colonnes */
   .cash-admin-stats { grid-template-columns: repeat(2, 1fr); }
 
   /* Cards */
   .cash-detail-hero { border-radius: 18px; }
   .cash-need-card { border-radius: 16px; }
 
-  /* En-tête de section — autoriser retour à la ligne */
+  /* En-tête de section */
   .cash-section-head { flex-wrap: wrap; }
 
   /* Onglets espace perso */
@@ -1153,7 +1194,7 @@
 }
 
 @media (max-width: 400px) {
-  .cash-hero { padding: 18px 14px; }
+  .cash-hero { padding: 14px 12px; }
   .cash-hero-stats { gap: 10px; }
   .cash-personal-tab { font-size: 11px; }
 }

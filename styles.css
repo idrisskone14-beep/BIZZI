@@ -4878,3 +4878,17 @@ button[data-go="exception-places"].premium-text-link { display: none !important;
 #view-events,
 #view-event-detail,
 #view-exception-places { display: none !important; }
+
+/* ── Module masqué : Zeyds Cash ───────────────────────────────── */
+
+/* Sidebar nav */
+.nav-link.cash-link { display: none !important; }
+
+/* Home — bouton du grid "Les essentiels" */
+button[data-go="cash"] { display: none !important; }
+
+/* Barre de retour vers Cash (affichée depuis d'autres vues) */
+#cashReturnBar { display: none !important; }
+
+/* Vue complète */
+#view-cash { display: none !important; }

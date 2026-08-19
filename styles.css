@@ -4746,6 +4746,17 @@ body:has(#view-home.active) .topbar { padding: 8px 10px; border-radius: 18px; gr
 body:has(#view-home.active) .topbar > div:first-child,
 body:has(#view-home.active) .geo-status { display: none; }
 body:has(#view-home.active) .location-pill { min-height: 44px; border: 0; background: transparent; }
+
+/* Zeyds Cash mobile — topbar compact (titre + boutons prestataire = redondants avec le hero) */
+@media (max-width: 920px) {
+  body:has(#view-cash.active) .topbar { padding: 6px 8px; border-radius: 14px; gap: 6px; }
+  body:has(#view-cash.active) .topbar > div:first-child,
+  body:has(#view-cash.active) .geo-status { display: none; }
+  body:has(#view-cash.active) .provider-shortcut-button,
+  body:has(#view-cash.active) #languageSelect,
+  body:has(#view-cash.active) #connectionMode { display: none; }
+  body:has(#view-cash.active) .location-pill { border-radius: 10px; min-height: 40px; border: 0; }
+}
 .premium-paths-priority { padding: clamp(22px,3vw,34px); grid-template-columns: minmax(170px,.34fr) minmax(0,1.66fr); gap: 24px; }
 .premium-paths-priority .premium-section-intro h2 { font-size: clamp(25px,2.5vw,36px); }
 .premium-paths-priority .premium-path-grid { grid-template-columns: repeat(3,minmax(150px,1fr)); }

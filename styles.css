@@ -4847,3 +4847,34 @@ body:has(#view-home.active) .location-pill { min-height: 44px; border: 0; backgr
     margin-bottom: 8px;
   }
 }
+
+/* ── Modules masqués : Food, Événements, Lieux d'exception ───────
+   On masque via CSS pour préserver la logique JS existante.
+   Pour réactiver : retirer les règles display:none ci-dessous.
+   ─────────────────────────────────────────────────────────────── */
+
+/* Sidebar nav */
+.nav-link.food-link,
+.nav-link.exception-link,
+.nav-link[data-view="events"] { display: none !important; }
+
+/* Home — boutons du grid "Les essentiels" */
+button[data-go="food"],
+button[data-go="events"],
+button[data-go="exception-places"] { display: none !important; }
+
+/* Home — sections de prévisualisation sur la page d'accueil */
+.premium-events-spotlight,
+#exceptionPlacesSection,
+.premium-monthly-food { display: none !important; }
+
+/* Liens "Voir agenda →" et "Explorer →" pointant vers ces modules */
+button[data-go="events"].premium-outline-action,
+button[data-go="food"].premium-text-link,
+button[data-go="exception-places"].premium-text-link { display: none !important; }
+
+/* Vues complètes */
+#view-food,
+#view-events,
+#view-event-detail,
+#view-exception-places { display: none !important; }

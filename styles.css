@@ -4741,6 +4741,7 @@ p {
 .monthly-clicks { color:#743705;background:#fff0df; }
 
 body:has(#view-home.active) .main { gap: 14px; }
+body:has(#view-cash.active) .main { gap: 10px; }
 body:has(#view-home.active) .topbar { padding: 8px 10px; border-radius: 18px; grid-template-columns: 1fr; }
 body:has(#view-home.active) .topbar > div:first-child,
 body:has(#view-home.active) .geo-status { display: none; }

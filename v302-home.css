@@ -699,6 +699,51 @@ body.bizzi-ready #view-home.active .premium-paths {
   letter-spacing: 0;
 }
 
+/* Compact mobile — les deux sections tiennent sur un seul écran */
+@media (max-width: 760px) {
+  .premium-paths-priority .premium-path-grid-emoji button,
+  .premium-paths-priority .premium-path-grid-emoji button:last-child {
+    padding: 9px 6px 9px !important;
+    gap: 6px !important;
+  }
+
+  .premium-path-emoji {
+    width: 36px;
+    height: 36px;
+    border-radius: 11px;
+    font-size: 18px;
+  }
+
+  .premium-path-grid-emoji button strong {
+    font-size: 13px;
+  }
+
+  .premium-path-grid-emoji button strong small {
+    font-size: 11px;
+  }
+
+  /* Titre "Les essentiels" */
+  #view-home .premium-paths-priority .premium-section-intro {
+    margin-bottom: 10px;
+  }
+
+  #view-home .premium-paths-priority .premium-section-intro h2 {
+    font-size: 17px;
+  }
+
+  /* Bouton vocal — plus compact */
+  #view-home .premium-cta-voice {
+    min-height: 44px;
+    padding: 0 14px;
+  }
+
+  /* Sous-titre de recherche */
+  #view-home .home-context-prompt {
+    font-size: 12px;
+    margin-bottom: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .home-instant-actions button,
   .premium-paths-priority .premium-path-grid button,

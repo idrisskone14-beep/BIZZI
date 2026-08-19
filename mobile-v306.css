@@ -21,11 +21,6 @@ body {
   .main {
     padding-bottom: calc(82px + env(safe-area-inset-bottom, 0px));
   }
-
-  /* Dialogs / overlays : décalage identique */
-  .cash-notif-panel {
-    bottom: calc(86px + env(safe-area-inset-bottom, 0px));
-  }
 }
 
 /* ── 2. Viewport mobile — empêche le zoom iOS au focus ─────────── */
@@ -57,170 +52,11 @@ body {
   }
 }
 
-/* ── 4. ZEYDS CASH — refonte mobile ────────────────────────────── */
-@media (max-width: 920px) {
-
-  /* — Conteneur principal — */
-  #view-cash {
-    min-width: 0;
-    max-width: 100%;
-    overflow-x: hidden;
-  }
-
-  #view-cash .cash-shell {
-    min-width: 0;
-    max-width: 100%;
-  }
-
-  /* — Hero : fond + overflow propre — */
-  #view-cash .cash-hero {
-    overflow: hidden;
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-
-  /* — Filter bar : chips horizontaux scrollables — */
-  #view-cash .cash-filter-bar {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior-inline: contain;
-    scroll-snap-type: x mandatory;
-    scroll-padding-inline: 4px;
-    gap: 8px;
-    padding-bottom: 4px;
-    /* masque la scrollbar sur mobile */
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-  #view-cash .cash-filter-bar::-webkit-scrollbar { display: none; }
-
-  #view-cash .cash-filter-chip {
-    scroll-snap-align: start;
-    flex-shrink: 0;
-    white-space: nowrap;
-    min-height: 36px;
-    padding: 0 13px;
-    font-size: 13px;
-    border-radius: 999px;
-    cursor: pointer;
-    touch-action: manipulation;
-  }
-
-  /* Séparateurs visuels inutiles en scroll horizontal */
-  #view-cash .cash-filter-divider { display: none; }
-
-  /* — Touch targets (min 44 px) — */
-  #view-cash .cash-hero-cta             { min-height: 48px; touch-action: manipulation; }
-  #view-cash .cash-hero-cta-ghost       { min-height: 44px; touch-action: manipulation; }
-  #view-cash #cashNotifBtn              { min-height: 44px; touch-action: manipulation; }
-  #view-cash .cash-filter-chip          { touch-action: manipulation; }
-  #view-cash .cash-back-btn            { min-height: 44px; touch-action: manipulation; }
-  #view-cash .cash-personal-tab        { min-height: 44px; touch-action: manipulation; }
-  #view-cash .cash-propose-btn,
-  #view-cash .cash-propose-accent      { min-height: 52px; touch-action: manipulation; }
-  #view-cash .cash-submit-btn          { min-height: 54px; touch-action: manipulation; }
-  #view-cash .cash-whatsapp-btn        { min-height: 44px; touch-action: manipulation; }
-  #view-cash .cash-publish-cta         { min-height: 48px; touch-action: manipulation; }
-
-  /* — Formulaires 100 % largeur — */
-  #view-cash .cash-form-label input,
-  #view-cash .cash-form-label textarea,
-  #view-cash .cash-form-label select {
-    width: 100%;
-    box-sizing: border-box;
-    font-size: 16px; /* pas de zoom iOS */
-    min-height: 48px;
-  }
-
-  #view-cash .cash-form-label textarea {
-    min-height: 88px;
-  }
-
-  #view-cash .cash-dialog-body {
-    padding: 16px;
-    gap: 14px;
-  }
-
-  /* — Bottom sheet modal (dialog) — */
-  .cash-dialog-overlay {
-    align-items: flex-end;
-    padding: 0;
-  }
-
-  .cash-dialog {
-    width: 100%;
-    max-width: 100%;
-    border-radius: 22px 22px 0 0;
-    max-height: min(92svh, 92vh);
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-  }
-
-  /* — Cartes besoins compactes — */
-  #view-cash .cash-need-card {
-    border-radius: 16px;
-    padding: 14px;
-    gap: 8px;
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-
-  #view-cash .cash-card-title { font-size: 15px; line-height: 1.25; }
-  #view-cash .cash-card-desc  { font-size: 13px; }
-
-  /* — Section head wrappable — */
-  #view-cash .cash-section-head {
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
-  }
-
-  #view-cash .cash-section-head h2,
-  #view-cash .cash-section-head h3 {
-    font-size: 17px;
-    font-weight: 900;
-    letter-spacing: -.02em;
-    min-width: 0;
-  }
-
-  /* — Solutions : colonne verticale — */
-  #view-cash .cash-propose-row { flex-direction: column; gap: 10px; }
-  #view-cash .cash-propose-btn,
-  #view-cash .cash-propose-accent { width: 100%; }
-
-  /* — Gains — */
-  #view-cash .cash-gains-amount { font-size: 28px; }
-
-  /* — Admin stats : 2 colonnes — */
-  #view-cash .cash-admin-stats { grid-template-columns: repeat(2, 1fr); }
-
-  /* — Récompense row — */
-  #view-cash .cash-reward-row { flex-wrap: wrap; gap: 8px; }
-
-  /* — Espace perso tabs — */
-  #view-cash .cash-personal-tabs {
-    gap: 4px;
-    padding: 4px;
-    border-radius: 14px;
-  }
-
-  #view-cash .cash-personal-tab {
-    font-size: 12px;
-    padding: 0 10px;
-    border-radius: 11px;
-  }
-}
-
-/* — 320 px : encore plus compact — */
-@media (max-width: 360px) {
-  #view-cash .cash-hero { padding: 12px 12px 14px; border-radius: 14px; }
-  #view-cash .cash-hero-tagline { font-size: 16px; }
-  #view-cash .cash-filter-chip { padding: 0 10px; font-size: 12px; }
-  #view-cash .cash-need-card { padding: 12px; }
-  #view-cash .cash-card-title { font-size: 14px; }
-  #view-cash .cash-personal-tab { font-size: 11px; }
-}
+/* ── 4. ZEYDS CASH ────────────────────────────────────────────────
+   La responsivité complète du module (mobile-first, bottom sheets,
+   touch targets, safe-area, chips scrollables, etc.) vit désormais
+   directement dans zeyds-cash.css, réécrit mobile-first. On ne
+   duplique plus rien ici pour éviter les conflits de cascade. */
 
 /* ── 5. Formulaires globaux 100 % sur mobile ───────────────────── */
 @media (max-width: 920px) {

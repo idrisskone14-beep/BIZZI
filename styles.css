@@ -3084,9 +3084,12 @@ p {
 .panel {
   padding: var(--space-3);
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   align-content: start;
   gap: var(--space-2);
   background: linear-gradient(180deg, #ffffff, #fffaf3);
+  min-width: 0;
+  max-width: 100%;
 }
 
 .form {

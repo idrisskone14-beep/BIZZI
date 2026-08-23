@@ -82,6 +82,7 @@
   <link rel="stylesheet" href="v302-home.css?v=304">
   <link rel="stylesheet" href="home-magazine.css?v=304">
   <link rel="stylesheet" href="zeyds-cash.css?v=400">
+  <link rel="stylesheet" href="zeyds-jobs.css?v=1">
   <link rel="stylesheet" href="global-assistant.css?v=304">
   <link rel="stylesheet" href="location-intelligence.css?v=304">
   <link rel="stylesheet" href="motion-system.css?v=304">
@@ -739,71 +740,315 @@
       </section>
 
       <section id="view-jobs" class="view">
-        <section class="panel job-entry-panel">
-          <div class="section-head">
-            <div>
-              <p class="eyebrow">Emplois & missions</p>
-              <h2>Que voulez-vous faire ?</h2>
+        <div class="jobs-shell">
+
+          <!-- Hero -->
+          <section class="jobs-hero" aria-labelledby="jobsHeroTitle">
+            <p class="jobs-hero-eyebrow">Emplois &amp; missions</p>
+            <h2 id="jobsHeroTitle" class="jobs-hero-title">ZEYDS JOBS</h2>
+            <p class="jobs-hero-tagline">Trouve un job. Trouve le bon profil.</p>
+            <div class="jobs-hero-ctas">
+              <button type="button" class="jobs-cta-btn jobs-cta-primary" data-jobs-goto="home">
+                <span aria-hidden="true">🔍</span> Trouver un emploi
+              </button>
+              <button type="button" class="jobs-cta-btn" data-jobs-goto="profile">
+                <span aria-hidden="true">🧑‍💼</span> Déposer mon profil
+              </button>
+              <button type="button" class="jobs-cta-btn" data-jobs-goto="recruiter">
+                <span aria-hidden="true">📋</span> Recruter
+              </button>
             </div>
-            <span class="tag ok">Offres vérifiées</span>
-          </div>
-          <div class="job-entry-tabs" role="tablist" aria-label="Choix emplois et missions">
-            <button class="job-entry-tab selected" type="button" data-job-entry="search" aria-selected="true">Vous cherchez un emploi</button>
-            <button class="job-entry-tab" type="button" data-job-entry="publish" aria-selected="false">Publier job / emploi</button>
-          </div>
-          <p class="job-entry-note">Consultez ou publiez une offre.</p>
-        </section>
-        <div class="jobs-layout">
-          <section class="panel job-search-panel">
-            <div class="section-head">
-              <h2>Vous cherchez un emploi</h2>
-              <span id="jobCount" class="tag ok">0 offre</span>
-            </div>
-            <div class="toolbar jobs-toolbar">
-              <input id="jobSearchInput" type="search" placeholder="Rechercher : chauffeur, apprenti, assistant...">
-              <select id="jobServiceFilter" aria-label="Métier recherché"></select>
+          </section>
+
+          <!-- Sub-navigation -->
+          <nav id="jobsSubNav" class="jobs-subnav" aria-label="Navigation Zeyds Jobs">
+            <button type="button" class="jobs-subnav-tab active" data-jobs-goto="home">Accueil</button>
+            <button type="button" class="jobs-subnav-tab" data-jobs-goto="applications">Mes candidatures</button>
+            <button type="button" class="jobs-subnav-tab" data-jobs-goto="favorites">Mes favoris</button>
+            <button type="button" class="jobs-subnav-tab" data-jobs-goto="alerts">Mes alertes</button>
+            <button type="button" class="jobs-subnav-tab" data-jobs-goto="profile">Mon profil</button>
+            <button type="button" class="jobs-subnav-tab" data-jobs-goto="recruiter">Recruter</button>
+          </nav>
+
+          <!-- ============ ÉCRAN : ACCUEIL / RECHERCHE ============ -->
+          <section id="jobsScreenHome" class="jobs-screen" data-jobs-screen="home">
+
+            <div class="jobs-search-bar">
+              <label class="sr-only" for="jobSearchInput">Métier, compétence ou mot-clé</label>
+              <input id="jobSearchInput" type="search" placeholder="Métier, compétence ou mot-clé…" autocomplete="off">
+              <label class="sr-only" for="jobCityFilter">Ville / commune</label>
               <select id="jobCityFilter" aria-label="Ville"></select>
+              <button type="button" class="jobs-search-btn" data-jobs-search>Rechercher</button>
+            </div>
+            <div class="jobs-filter-row">
+              <label class="sr-only" for="jobServiceFilter">Métier recherché</label>
+              <select id="jobServiceFilter" aria-label="Métier recherché"></select>
+              <button type="button" class="jobs-locate-btn" data-jobs-locate title="Utiliser ma position">📍 Près de moi</button>
+            </div>
+            <input type="hidden" id="jobTypeFilter" value="">
+
+            <div class="jobs-type-tabs" role="tablist" aria-label="Type d'opportunité">
+              <button type="button" class="jobs-type-tab active" data-jobs-type="" role="tab" aria-selected="true">Tout</button>
+              <button type="button" class="jobs-type-tab" data-jobs-type="emploi" role="tab" aria-selected="false">Emplois</button>
+              <button type="button" class="jobs-type-tab" data-jobs-type="mission" role="tab" aria-selected="false">Missions</button>
+            </div>
+
+            <div class="jobs-section-head">
+              <h2>Offres disponibles</h2>
+              <span id="jobCount" class="tag ok">0 offre</span>
             </div>
             <div id="jobOffersList" class="job-offers-list"></div>
           </section>
 
-          <section class="panel job-publish-panel">
-            <div class="section-head">
-              <h2>Publier une recherche</h2>
-              <span class="tag">Paiement requis</span>
+          <!-- ============ ÉCRAN : DÉTAIL D'UNE OFFRE ============ -->
+          <section id="jobsScreenDetail" class="jobs-screen" data-jobs-screen="detail" hidden>
+            <div class="jobs-detail-bar">
+              <button type="button" class="jobs-back-btn" data-jobs-goto="home">← Retour</button>
             </div>
-            <form id="jobOfferForm" class="form">
-              <label>Nom entreprise / prestataire<input name="companyName" required placeholder="Ex: Garage Express Yopougon"></label>
-              <label>Type de demandeur<select name="companyType" id="jobCompanyType"></select></label>
-              <label>Téléphone ou WhatsApp<input name="contactPhone" required placeholder="+225 07 00 00 00 00"></label>
-              <label>Email facultatif<input name="contactEmail" type="email" placeholder="contact@entreprise.com"></label>
-              <label>Métier recherché<select name="service" id="jobOfferService"></select></label>
-              <label>Ville / commune<input name="city" required placeholder="Ex: Abidjan, Bouaké, Man"></label>
-              <label>Quartier ou zone<input name="area" placeholder="Ex: Yopougon, Cocody, centre-ville"></label>
-              <label>Titre de l'offre<input name="title" required maxlength="90" placeholder="Ex: Recherche apprenti plombier disponible"></label>
-              <label>Type d'offre
-                <select name="contractType">
-                  <option>Mission ponctuelle</option>
-                  <option>Emploi régulier</option>
-                  <option>Apprentissage / stage</option>
-                  <option>Partenariat</option>
-                </select>
-              </label>
-              <label>Rémunération indicative<input name="salaryRange" placeholder="Ex: À discuter, 80 000 FCFA/mois"></label>
-              <label>Description<textarea name="description" rows="3" maxlength="260" placeholder="Décrivez le profil recherché, les horaires, l'expérience souhaitée."></textarea></label>
-              <div class="job-payment-box">
-                <h3>Forfait de publication</h3>
-                <div id="jobPlans" class="job-plans"></div>
-                <h3>Paiement mobile money</h3>
-                <div id="jobPaymentMethods" class="payment-grid"></div>
-                <div id="jobPaymentInstructions" class="payment-instructions"></div>
-              </div>
-              <button class="primary" type="submit">Payer et envoyer l'offre</button>
-            </form>
-            <div id="jobOfferStatus" class="status-box"></div>
+            <div id="jobsDetailContent"></div>
           </section>
-        </div>
-      </section>
+
+          <!-- ============ ÉCRAN : MON PROFIL CANDIDAT ============ -->
+          <section id="jobsScreenProfile" class="jobs-screen" data-jobs-screen="profile" hidden>
+            <div class="jobs-section-head">
+              <h2>Mon profil candidat</h2>
+            </div>
+            <div class="jobs-profile-completion">
+              <div class="jobs-profile-bar"><div id="jobsProfileBarFill" class="jobs-profile-bar-fill" style="width:0%"></div></div>
+              <span id="jobsProfileCompletionLabel">Profil complété à 0 %</span>
+            </div>
+
+            <form id="jobsProfileForm" class="jobs-form" novalidate>
+              <div class="jobs-form-section">
+                <h3>Informations personnelles</h3>
+                <div class="jobs-form-grid">
+                  <label class="jobs-form-label">Prénom
+                    <input name="firstName" type="text" maxlength="60" placeholder="Ex. Aya">
+                  </label>
+                  <label class="jobs-form-label">Nom
+                    <input name="lastName" type="text" maxlength="60" placeholder="Ex. Kouassi">
+                  </label>
+                  <label class="jobs-form-label">Téléphone
+                    <input name="phone" type="tel" placeholder="+225 07 00 00 00 00">
+                  </label>
+                  <label class="jobs-form-label">WhatsApp
+                    <input name="whatsapp" type="tel" placeholder="+225 07 00 00 00 00">
+                  </label>
+                  <label class="jobs-form-label">Email
+                    <input name="email" type="email" placeholder="prenom@email.com">
+                  </label>
+                  <label class="jobs-form-label">Ville
+                    <input name="city" type="text" placeholder="Ex. Abidjan">
+                  </label>
+                  <label class="jobs-form-label">Commune
+                    <input name="commune" type="text" placeholder="Ex. Cocody">
+                  </label>
+                  <label class="jobs-form-label">Quartier
+                    <input name="district" type="text" placeholder="Ex. Angré">
+                  </label>
+                </div>
+              </div>
+
+              <div class="jobs-form-section">
+                <h3>Profil professionnel</h3>
+                <div class="jobs-form-grid">
+                  <label class="jobs-form-label">Métier principal
+                    <input name="metier" type="text" maxlength="80" placeholder="Ex. Commercial">
+                  </label>
+                  <label class="jobs-form-label">Poste recherché
+                    <input name="posteRecherche" type="text" maxlength="80" placeholder="Ex. Commercial terrain">
+                  </label>
+                  <label class="jobs-form-label">Années d'expérience
+                    <input name="experienceYears" type="number" min="0" max="50" inputmode="numeric" placeholder="Ex. 3">
+                  </label>
+                  <label class="jobs-form-label">Niveau d'études
+                    <select name="educationLevel">
+                      <option value="">Non précisé</option>
+                      <option>Aucun</option>
+                      <option>Certificat / BEPC</option>
+                      <option>BAC</option>
+                      <option>BAC+2</option>
+                      <option>BAC+3</option>
+                      <option>BAC+5 et plus</option>
+                    </select>
+                  </label>
+                  <label class="jobs-form-label">Disponibilité
+                    <select name="availability">
+                      <option value="immediate">Disponible immédiatement</option>
+                      <option value="7j">Disponible sous 7 jours</option>
+                      <option value="30j">Disponible sous 30 jours</option>
+                      <option value="indisponible">Pas disponible actuellement</option>
+                    </select>
+                  </label>
+                  <label class="jobs-form-label">Type de contrat recherché
+                    <select name="contractWanted">
+                      <option value="">Peu importe</option>
+                      <option>CDI</option>
+                      <option>CDD</option>
+                      <option>Stage</option>
+                      <option>Alternance</option>
+                      <option>Freelance</option>
+                      <option>Temps partiel</option>
+                      <option>Mission ponctuelle</option>
+                    </select>
+                  </label>
+                  <label class="jobs-form-label">Prétention salariale (FCFA)
+                    <input name="salaryExpectation" type="number" min="0" step="5000" inputmode="numeric" placeholder="Ex. 150000">
+                  </label>
+                </div>
+                <label class="jobs-form-label jobs-form-label-full">Bio / présentation
+                  <textarea name="bio" rows="3" maxlength="400" placeholder="Présentez-vous en quelques lignes…"></textarea>
+                </label>
+                <label class="jobs-availability-toggle">
+                  <input name="availableForMissions" type="checkbox">
+                  Disponible pour des missions ponctuelles
+                </label>
+              </div>
+
+              <div class="jobs-form-section">
+                <h3>Compétences</h3>
+                <p class="jobs-form-hint">Ajoutez vos compétences une par une (Entrée pour valider).</p>
+                <div class="jobs-skills-input-row">
+                  <input id="jobsSkillInput" type="text" maxlength="40" placeholder="Ex. Vente, Excel, Conduite…">
+                  <button type="button" class="secondary" data-jobs-add-skill>Ajouter</button>
+                </div>
+                <div id="jobsSkillsTags" class="jobs-skills-tags"></div>
+              </div>
+
+              <div class="jobs-form-section">
+                <div class="jobs-form-section-head">
+                  <h3>Expériences</h3>
+                  <button type="button" class="secondary" data-jobs-add-experience>+ Ajouter</button>
+                </div>
+                <div id="jobsExperiencesList" class="jobs-repeatable-list"></div>
+              </div>
+
+              <div class="jobs-form-section">
+                <div class="jobs-form-section-head">
+                  <h3>Formation</h3>
+                  <button type="button" class="secondary" data-jobs-add-education>+ Ajouter</button>
+                </div>
+                <div id="jobsEducationList" class="jobs-repeatable-list"></div>
+              </div>
+
+              <button class="primary jobs-form-submit" type="submit">Enregistrer mon profil</button>
+              <p id="jobsProfileStatus" class="status-box" role="status"></p>
+            </form>
+          </section>
+
+          <!-- ============ ÉCRAN : MES CANDIDATURES ============ -->
+          <section id="jobsScreenApplications" class="jobs-screen" data-jobs-screen="applications" hidden>
+            <div class="jobs-section-head">
+              <h2>Mes candidatures</h2>
+            </div>
+            <div id="jobsApplicationsList" class="jobs-applications-list"></div>
+          </section>
+
+          <!-- ============ ÉCRAN : MES FAVORIS ============ -->
+          <section id="jobsScreenFavorites" class="jobs-screen" data-jobs-screen="favorites" hidden>
+            <div class="jobs-section-head">
+              <h2>Mes offres enregistrées</h2>
+            </div>
+            <div id="jobsFavoritesList" class="job-offers-list"></div>
+          </section>
+
+          <!-- ============ ÉCRAN : MES ALERTES ============ -->
+          <section id="jobsScreenAlerts" class="jobs-screen" data-jobs-screen="alerts" hidden>
+            <div class="jobs-section-head">
+              <h2>Mes alertes emploi</h2>
+            </div>
+            <form id="jobsAlertForm" class="jobs-form jobs-alert-form">
+              <div class="jobs-form-grid">
+                <label class="jobs-form-label">Métier / mot-clé
+                  <input name="keyword" type="text" maxlength="60" placeholder="Ex. Commercial">
+                </label>
+                <label class="jobs-form-label">Ville
+                  <input name="city" type="text" maxlength="60" placeholder="Ex. Cocody">
+                </label>
+                <label class="jobs-form-label">Type de contrat
+                  <select name="contractType">
+                    <option value="">Peu importe</option>
+                    <option>CDI</option>
+                    <option>CDD</option>
+                    <option>Stage</option>
+                    <option>Alternance</option>
+                    <option>Freelance</option>
+                    <option>Mission ponctuelle</option>
+                  </select>
+                </label>
+              </div>
+              <button class="primary" type="submit">Créer l'alerte</button>
+            </form>
+            <div id="jobsAlertsList" class="jobs-alerts-list"></div>
+          </section>
+
+          <!-- ============ ÉCRAN : ESPACE RECRUTEUR ============ -->
+          <section id="jobsScreenRecruiter" class="jobs-screen" data-jobs-screen="recruiter" hidden>
+            <div class="jobs-section-head">
+              <h2>Espace recruteur</h2>
+            </div>
+
+            <div class="jobs-recruiter-identify">
+              <label class="jobs-form-label">Votre numéro (identifiant recruteur)
+                <input id="jobsRecruiterPhone" type="tel" placeholder="+225 07 00 00 00 00">
+              </label>
+              <button type="button" class="secondary" data-jobs-recruiter-save>Valider</button>
+              <p class="jobs-form-hint">Utilisé pour retrouver vos offres et vos candidatures (le même numéro que dans le formulaire de publication).</p>
+            </div>
+
+            <div id="jobsRecruiterKpis" class="jobs-recruiter-kpis"></div>
+
+            <nav class="jobs-recruiter-tabs" role="tablist">
+              <button type="button" class="jobs-recruiter-tab active" data-jobs-recruiter-tab="offers" role="tab" aria-selected="true">Mes offres</button>
+              <button type="button" class="jobs-recruiter-tab" data-jobs-recruiter-tab="applications" role="tab" aria-selected="false">Candidatures</button>
+              <button type="button" class="jobs-recruiter-tab" data-jobs-recruiter-tab="publish" role="tab" aria-selected="false">Publier</button>
+            </nav>
+
+            <div id="jobsRecruiterOffers" class="jobs-recruiter-panel" data-jobs-recruiter-panel="offers"></div>
+
+            <div id="jobsRecruiterApplications" class="jobs-recruiter-panel" data-jobs-recruiter-panel="applications" hidden></div>
+
+            <div id="jobsRecruiterPublish" class="jobs-recruiter-panel" data-jobs-recruiter-panel="publish" hidden>
+              <section class="panel job-publish-panel">
+                <div class="section-head">
+                  <h2>Publier une recherche</h2>
+                  <span class="tag">Paiement requis</span>
+                </div>
+                <form id="jobOfferForm" class="form">
+                  <label>Nom entreprise / prestataire<input name="companyName" required placeholder="Ex: Garage Express Yopougon"></label>
+                  <label>Type de demandeur<select name="companyType" id="jobCompanyType"></select></label>
+                  <label>Téléphone ou WhatsApp<input name="contactPhone" required placeholder="+225 07 00 00 00 00"></label>
+                  <label>Email facultatif<input name="contactEmail" type="email" placeholder="contact@entreprise.com"></label>
+                  <label>Métier recherché<select name="service" id="jobOfferService"></select></label>
+                  <label>Ville / commune<input name="city" required placeholder="Ex: Abidjan, Bouaké, Man"></label>
+                  <label>Quartier ou zone<input name="area" placeholder="Ex: Yopougon, Cocody, centre-ville"></label>
+                  <label>Titre de l'offre<input name="title" required maxlength="90" placeholder="Ex: Recherche apprenti plombier disponible"></label>
+                  <label>Type d'offre
+                    <select name="contractType">
+                      <option>Mission ponctuelle</option>
+                      <option>Emploi régulier</option>
+                      <option>Apprentissage / stage</option>
+                      <option>Partenariat</option>
+                    </select>
+                  </label>
+                  <label>Rémunération indicative<input name="salaryRange" placeholder="Ex: À discuter, 80 000 FCFA/mois"></label>
+                  <label>Description<textarea name="description" rows="3" maxlength="260" placeholder="Décrivez le profil recherché, les horaires, l'expérience souhaitée."></textarea></label>
+                  <div class="job-payment-box">
+                    <h3>Forfait de publication</h3>
+                    <div id="jobPlans" class="job-plans"></div>
+                    <h3>Paiement mobile money</h3>
+                    <div id="jobPaymentMethods" class="payment-grid"></div>
+                    <div id="jobPaymentInstructions" class="payment-instructions"></div>
+                  </div>
+                  <button class="primary" type="submit">Payer et envoyer l'offre</button>
+                </form>
+                <div id="jobOfferStatus" class="status-box"></div>
+              </section>
+            </div>
+          </section>
+
+        </div><!-- .jobs-shell -->
+      </section><!-- #view-jobs -->
 
       <section id="view-profile" class="view">
         <button class="back-button" data-go="search">← Retour aux résultats</button>
@@ -1435,8 +1680,9 @@
   <script src="js/service-ai-images.js?v=304"></script>
   <script src="js/mobile-form-wizard.js?v=304"></script>
   <script src="js/zeyds-cash.js?v=305"></script>
+  <script src="js/zeyds-jobs.js?v=1"></script>
   <script src="js/motion-system.js?v=304"></script>
-  <script src="app.js?v=304"></script>
+  <script src="app.js?v=401"></script>
   <script src="js/location-intelligence.js?v=304"></script>
   <script src="js/home-magazine.js?v=304"></script>
   <script>

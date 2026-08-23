@@ -2563,7 +2563,7 @@ function setView(name) {
     if (state.selectedServiceEntryMode === "publish") activateServicePublishMode();
   }
   if (name === "provider") refreshProviderRequestsAndOpportunities().catch(() => null);
-  if (name === "jobs") renderJobs();
+  if (name === "jobs") { renderJobs(); globalThis.ZeydsJobs?.render?.(); }
   if (name === "events") renderEvents();
   if (name === "eventDetail") renderEventDetail();
   if (location.hash.slice(1) !== name) {
@@ -7538,7 +7538,7 @@ function applyJobExpirationRules() {
   if (changed) saveState();
 }
 
-function jobsMatching(serviceName = "", cityName = "", query = "") {
+function jobsMatching(serviceName = "", cityName = "", query = "", offerType = "") {
   const service = canonicalServiceName(serviceName || "");
   const city = String(cityName || "").trim();
   const normalizedQuery = normalizeAssistantText(query);
@@ -7549,7 +7549,8 @@ function jobsMatching(serviceName = "", cityName = "", query = "") {
     const cityOk = national || jobCity === "Toute la Côte d'Ivoire" || jobCity === city || normalizeAssistantText(job.area).includes(normalizeAssistantText(city));
     const queryOk = !normalizedQuery || [job.title, job.companyName, job.service, job.city, job.area, job.contractType, job.description]
       .some((field) => normalizeAssistantText(field).includes(normalizedQuery));
-    return serviceOk && cityOk && queryOk;
+    const typeOk = !offerType || (offerType === "mission" ? job.contractType === "Mission ponctuelle" : job.contractType !== "Mission ponctuelle");
+    return serviceOk && cityOk && queryOk && typeOk;
   });
 }
 
@@ -13645,7 +13646,8 @@ function renderJobs() {
   const cityFilter = document.querySelector("#jobCityFilter");
   if (!list || !count || !queryInput || !serviceFilter || !cityFilter) return;
 
-  const jobs = jobsMatching(serviceFilter.value, cityFilter.value, queryInput.value);
+  const typeFilter = document.querySelector("#jobTypeFilter");
+  const jobs = jobsMatching(serviceFilter.value, cityFilter.value, queryInput.value, typeFilter?.value || "");
   const localPendingJobs = pendingLocalJobOffers();
   count.textContent = `${jobs.length} publiée${jobs.length > 1 ? "s" : ""}${localPendingJobs.length ? ` · ${localPendingJobs.length} en attente` : ""}`;
   const publishedHtml = jobs.length ? jobs.map(jobCard).join("") : `
@@ -18177,6 +18179,8 @@ function setupGeolocation() {
         foodCityFilter.value = nearestCity;
         state.selectedFoodCity = nearestCity;
       }
+      const jobCityFilter = document.querySelector("#jobCityFilter");
+      if (jobCityFilter && cityIsSpecific(nearestCity)) jobCityFilter.value = nearestCity;
       saveState();
       renderGeoStatus();
       renderProviders();
@@ -18380,6 +18384,7 @@ function boot() {
   setupProviderQuickSignup();
   setupHomeQuickSearch();
   globalThis.ZeydsCash?.init?.({ setView });
+  globalThis.ZeydsJobs?.init?.({ setView, getJobOffers: () => state.jobOffers, renderJobs, jobWhatsAppUrl });
   initNavigation();
   setupInstallPrompt();
   setupSocialSharing();

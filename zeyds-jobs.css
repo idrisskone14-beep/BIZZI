@@ -1,0 +1,987 @@
+/* ============================================================
+   ZEYDS JOBS — Styles (mobile-first)
+   Réutilise les tokens du design system Zeyds (var(--brand),
+   var(--accent), var(--teal), var(--space-*), .primary/.secondary,
+   .tag, .status-box, .panel, .form, .job-card…) — voir styles.css.
+   Architecture responsive : base = smartphone, puis
+   @media(min-width:600px) tablette, @media(min-width:920px) desktop
+   (aligné sur le vrai breakpoint sidebar/bottom-nav de Zeyds).
+   ============================================================ */
+
+#view-jobs,
+#view-jobs *,
+.jobs-screen,
+.jobs-screen * {
+  box-sizing: border-box;
+}
+
+/* ---- Shell --------------------------------------------------- */
+#view-jobs {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.jobs-shell {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+}
+
+/* ---- Hero ------------------------------------------------------ */
+.jobs-hero {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  padding: 18px 16px 20px;
+  border-radius: 18px;
+  color: #fff;
+  background:
+    radial-gradient(circle at 90% 12%, rgba(5, 139, 131, .34), transparent 32%),
+    linear-gradient(140deg, #05132c 0%, #08245c 60%, #0d3270 100%);
+  box-shadow: 0 16px 40px rgba(8, 36, 92, .22);
+}
+
+.jobs-hero-eyebrow {
+  margin: 0 0 6px;
+  font-size: 11.5px;
+  font-weight: 900;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #7fe0d6;
+}
+
+.jobs-hero-title {
+  margin: 0 0 6px;
+  font-size: clamp(24px, 7vw, 40px);
+  font-weight: 950;
+  letter-spacing: -.02em;
+  line-height: 1.05;
+  color: #fff;
+}
+
+.jobs-hero-tagline {
+  margin: 0 0 16px;
+  max-width: 480px;
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, .72);
+}
+
+.jobs-hero-ctas {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.jobs-cta-btn {
+  width: 100%;
+  min-height: 46px;
+  padding: 0 16px;
+  border: 1px solid rgba(255, 255, 255, .24);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, .08);
+  color: #fff;
+  font-weight: 800;
+  font-size: 13.5px;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background .14s ease;
+}
+
+.jobs-cta-btn:hover { background: rgba(255, 255, 255, .15); }
+
+.jobs-cta-primary {
+  border-color: transparent;
+  background: linear-gradient(135deg, #058b83, #0bb3a8);
+  box-shadow: 0 8px 20px rgba(5, 139, 131, .32);
+}
+
+.jobs-cta-primary:hover {
+  background: linear-gradient(135deg, #04756e, #0aa198);
+}
+
+/* ---- Sub-navigation : chips horizontales scrollables ----------- */
+.jobs-subnav {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+  max-width: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 4px;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.jobs-subnav::-webkit-scrollbar { display: none; }
+
+.jobs-subnav-tab {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid rgba(8, 36, 92, .14);
+  border-radius: 999px;
+  background: #fff;
+  color: #2c3e6b;
+  font-size: 12.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background .14s ease, border-color .14s ease, color .14s ease;
+}
+
+.jobs-subnav-tab.active {
+  background: var(--brand, #08245c);
+  border-color: var(--brand, #08245c);
+  color: #fff;
+}
+
+/* ---- Écrans (toggle via [hidden]) ------------------------------ */
+.jobs-screen {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+
+.jobs-screen[hidden] { display: none !important; }
+
+/* ---- Barre de recherche ----------------------------------------- */
+.jobs-search-bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.jobs-search-bar input,
+.jobs-search-bar select {
+  width: 100%;
+  min-width: 0;
+  min-height: 46px;
+  padding: 0 14px;
+  border: 1px solid rgba(8, 36, 92, .16);
+  border-radius: 13px;
+  background: #f8faff;
+  font: inherit;
+  font-size: 16px;
+  color: #10233f;
+  box-sizing: border-box;
+}
+
+.jobs-search-btn {
+  width: 100%;
+  min-height: 46px;
+  border: 0;
+  border-radius: 13px;
+  background: linear-gradient(135deg, #058b83, #0bb3a8);
+  color: #fff;
+  font-weight: 900;
+  font-size: 14px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.jobs-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.jobs-filter-row select {
+  flex: 1 1 160px;
+  min-width: 0;
+  min-height: 42px;
+  padding: 0 12px;
+  border: 1px solid rgba(8, 36, 92, .16);
+  border-radius: 12px;
+  background: #fff;
+  font: inherit;
+  font-size: 13.5px;
+  color: #10233f;
+}
+
+.jobs-locate-btn {
+  flex-shrink: 0;
+  min-height: 42px;
+  padding: 0 14px;
+  border: 1px solid rgba(8, 36, 92, .14);
+  border-radius: 12px;
+  background: #fff;
+  color: #2c3e6b;
+  font-weight: 700;
+  font-size: 12.5px;
+  cursor: pointer;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+
+/* ---- Tabs Emplois / Missions ------------------------------------- */
+.jobs-type-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
+}
+
+.jobs-type-tab {
+  flex: 1 1 auto;
+  min-height: 40px;
+  min-width: 0;
+  padding: 0 14px;
+  border: 1px solid rgba(8, 36, 92, .14);
+  border-radius: 12px;
+  background: #fff;
+  color: #2c3e6b;
+  font-weight: 800;
+  font-size: 13px;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background .14s ease, color .14s ease;
+}
+
+.jobs-type-tab.active {
+  background: var(--teal, #058b83);
+  border-color: var(--teal, #058b83);
+  color: #fff;
+}
+
+/* ---- Section head ------------------------------------------------- */
+.jobs-section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+
+.jobs-section-head h2 {
+  margin: 0;
+  min-width: 0;
+  font-size: clamp(16px, 4.5vw, 20px);
+  font-weight: 900;
+  letter-spacing: -.01em;
+  color: #10233f;
+}
+
+/* Déclutter des cartes offres dans Zeyds Jobs : le bouton "Copier"
+   hérité reste fonctionnel ailleurs mais est superflu ici, où
+   "Voir l'offre" / "Postuler" sont les CTA prioritaires. */
+#jobOffersList .job-actions [data-copy-job],
+#jobsFavoritesList .job-actions [data-copy-job] {
+  display: none;
+}
+
+.jobs-fav-btn {
+  min-width: 44px;
+  font-size: 16px;
+  color: #e6a814;
+}
+
+.jobs-mission-badge {
+  background: rgba(5, 139, 131, .12) !important;
+  color: #04756e !important;
+}
+
+.jobs-match-badge {
+  font-weight: 800;
+}
+
+/* ---- Détail d'une offre --------------------------------------------- */
+.jobs-detail-bar {
+  display: flex;
+  align-items: center;
+}
+
+.jobs-back-btn {
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid rgba(8, 36, 92, .12);
+  border-radius: 12px;
+  background: #fff;
+  color: #10233f;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.jobs-detail-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid rgba(8, 36, 92, .09);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 6px 22px rgba(8, 36, 92, .06);
+}
+
+.jobs-detail-hero h2 {
+  margin: 0;
+  min-width: 0;
+  font-size: clamp(19px, 5.5vw, 28px);
+  font-weight: 950;
+  color: #10233f;
+  word-break: break-word;
+}
+
+.jobs-detail-company {
+  margin: 0;
+  color: #5a6270;
+  font-weight: 700;
+  font-size: 13.5px;
+}
+
+.jobs-detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
+}
+
+.jobs-detail-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  min-width: 0;
+  font-size: 13px;
+  color: #3d4a5c;
+}
+
+.jobs-detail-facts span {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.jobs-detail-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid rgba(8, 36, 92, .08);
+}
+
+.jobs-detail-section h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 900;
+  color: #10233f;
+}
+
+.jobs-detail-section p {
+  margin: 0;
+  font-size: 13.5px;
+  color: #4a5568;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.jobs-detail-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
+
+.jobs-detail-cta-row .primary,
+.jobs-detail-cta-row .secondary {
+  flex: 1 1 140px;
+  min-width: 0;
+  min-height: 48px;
+}
+
+.jobs-whatsapp-link {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---- Empty state ----------------------------------------------------- */
+.jobs-empty {
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  padding: 36px 18px;
+  border: 1px dashed rgba(8, 36, 92, .14);
+  border-radius: 16px;
+  text-align: center;
+  color: #7e8794;
+}
+
+.jobs-empty span { font-size: 32px; }
+.jobs-empty strong { font-size: 15px; color: #10233f; }
+.jobs-empty p { margin: 0; font-size: 13px; }
+
+/* ---- Profil candidat --------------------------------------------------- */
+.jobs-profile-completion {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 6px;
+  min-width: 0;
+}
+
+.jobs-profile-bar {
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(8, 36, 92, .08);
+  overflow: hidden;
+}
+
+.jobs-profile-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #058b83, #0bb3a8);
+  transition: width .3s ease;
+}
+
+#jobsProfileCompletionLabel {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #5a6270;
+}
+
+.jobs-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.jobs-form-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  min-width: 0;
+  max-width: 100%;
+  padding: 14px;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid rgba(8, 36, 92, .08);
+}
+
+.jobs-form-section h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 900;
+  color: #10233f;
+}
+
+.jobs-form-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.jobs-form-hint {
+  margin: 0;
+  font-size: 12px;
+  color: #7e8794;
+}
+
+.jobs-form-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.jobs-form-label {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 6px;
+  width: 100%;
+  min-width: 0;
+  font-size: 13px;
+  font-weight: 800;
+  color: #2c3e6b;
+}
+
+.jobs-form-label-full { grid-column: 1 / -1; }
+
+.jobs-form-label input,
+.jobs-form-label select,
+.jobs-form-label textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 46px;
+  padding: 0 13px;
+  border: 1px solid rgba(8, 36, 92, .16);
+  border-radius: 12px;
+  background: #f8faff;
+  font: inherit;
+  font-size: 16px;
+  color: #10233f;
+  box-sizing: border-box;
+}
+
+.jobs-form-label textarea {
+  min-height: 78px;
+  padding: 10px 13px;
+  resize: vertical;
+}
+
+.jobs-availability-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #2c3e6b;
+}
+
+.jobs-availability-toggle input {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  accent-color: var(--teal, #058b83);
+}
+
+.jobs-form-submit {
+  width: 100%;
+  min-height: 52px;
+}
+
+/* ---- Compétences (tags) --------------------------------------------- */
+.jobs-skills-input-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  min-width: 0;
+}
+
+.jobs-skills-input-row input {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 13px;
+  border: 1px solid rgba(8, 36, 92, .16);
+  border-radius: 12px;
+  background: #f8faff;
+  font: inherit;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.jobs-skills-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  min-width: 0;
+}
+
+.jobs-skill-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 6px 5px 12px;
+  border-radius: 999px;
+  background: rgba(5, 139, 131, .1);
+  color: #04756e;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.jobs-skill-tag button {
+  width: 20px;
+  height: 20px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(4, 117, 110, .14);
+  color: #04756e;
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+/* ---- Expériences / formation (répétables) ---------------------------- */
+.jobs-repeatable-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.jobs-repeatable-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  min-width: 0;
+  max-width: 100%;
+  padding: 12px;
+  border-radius: 13px;
+  background: #f8faff;
+  border: 1px solid rgba(8, 36, 92, .1);
+}
+
+.jobs-remove-row-btn {
+  justify-self: start;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 10px;
+  background: rgba(220, 60, 60, .1);
+  color: #c0392b;
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+/* ---- Mes candidatures -------------------------------------------------- */
+.jobs-applications-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.jobs-application-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 6px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding: 14px;
+  border-radius: 15px;
+  background: #fff;
+  border: 1px solid rgba(8, 36, 92, .09);
+  box-shadow: 0 3px 12px rgba(8, 36, 92, .04);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.jobs-application-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+
+.jobs-application-head h3 {
+  margin: 0;
+  min-width: 0;
+  font-size: 15px;
+  font-weight: 900;
+  color: #10233f;
+  word-break: break-word;
+}
+
+.jobs-application-card p {
+  margin: 0;
+  font-size: 13px;
+  color: #5a6270;
+}
+
+.jobs-application-date {
+  font-size: 11.5px;
+  color: #9ca3af;
+}
+
+.jobs-status-Envoyée { background: rgba(0, 122, 255, .1); color: #0056b3; }
+.jobs-status-Vue { background: rgba(8, 36, 92, .08); color: #3a4d6e; }
+.jobs-status-Présélectionné { background: rgba(255, 149, 0, .12); color: #b06a00; }
+.jobs-status-Entretien { background: rgba(155, 89, 182, .12); color: #7a3d9e; }
+.jobs-status-Retenu { background: rgba(20, 168, 105, .12); color: #0e7a53; }
+.jobs-status-Non-retenu { background: rgba(220, 60, 60, .1); color: #c0392b; }
+
+/* ---- Alertes ------------------------------------------------------------ */
+.jobs-alert-form {
+  padding: 14px;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid rgba(8, 36, 92, .08);
+}
+
+.jobs-alerts-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.jobs-alert-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+  max-width: 100%;
+  padding: 13px 14px;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid rgba(8, 36, 92, .08);
+}
+
+.jobs-alert-card > div {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  flex: 1 1 200px;
+}
+
+.jobs-alert-card strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: #10233f;
+}
+
+/* ---- Espace recruteur ---------------------------------------------------- */
+.jobs-recruiter-identify {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+  padding: 14px;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid rgba(8, 36, 92, .08);
+}
+
+.jobs-recruiter-identify .secondary {
+  min-height: 44px;
+}
+
+.jobs-recruiter-kpis {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.jobs-kpi-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2px;
+  min-width: 0;
+  padding: 14px;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid rgba(8, 36, 92, .08);
+  text-align: center;
+}
+
+.jobs-kpi-card strong {
+  font-size: clamp(18px, 5vw, 24px);
+  font-weight: 950;
+  color: #10233f;
+}
+
+.jobs-kpi-card span {
+  font-size: 10.5px;
+  color: #7e8794;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  font-weight: 700;
+}
+
+.jobs-recruiter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
+}
+
+.jobs-recruiter-tab {
+  flex: 1 1 auto;
+  min-height: 40px;
+  min-width: 0;
+  padding: 0 12px;
+  border: 1px solid rgba(8, 36, 92, .14);
+  border-radius: 12px;
+  background: #fff;
+  color: #2c3e6b;
+  font-weight: 800;
+  font-size: 12.5px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.jobs-recruiter-tab.active {
+  background: var(--brand, #08245c);
+  border-color: var(--brand, #08245c);
+  color: #fff;
+}
+
+.jobs-recruiter-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.jobs-recruiter-panel[hidden] { display: none !important; }
+
+.jobs-recruiter-offer-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+  padding: 12px 14px;
+  border-radius: 13px;
+  background: #fff;
+  border: 1px solid rgba(8, 36, 92, .07);
+}
+
+.jobs-recruiter-offer-row > div {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  flex: 1 1 200px;
+}
+
+.jobs-recruiter-offer-row strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: #10233f;
+}
+
+.jobs-recruiter-offer-meta {
+  font-size: 12px;
+  color: #7e8794;
+}
+
+.jobs-candidate-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  min-width: 0;
+  max-width: 100%;
+  padding: 14px;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid rgba(8, 36, 92, .09);
+}
+
+.jobs-candidate-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px;
+  min-width: 0;
+}
+
+.jobs-candidate-head strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: #10233f;
+}
+
+.jobs-candidate-job {
+  font-size: 12px;
+  color: #7e8794;
+}
+
+.jobs-candidate-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  min-width: 0;
+  font-size: 12.5px;
+  color: #5a6270;
+}
+
+.jobs-candidate-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
+
+.jobs-notes-list {
+  margin: 0;
+  padding-left: 16px;
+  display: grid;
+  gap: 4px;
+  font-size: 12px;
+  color: #5a6270;
+}
+
+.jobs-notes-list small {
+  color: #9ca3af;
+  margin-left: 4px;
+}
+
+/* ============================================================
+   TABLETTE — dès 600px
+   ============================================================ */
+@media (min-width: 600px) {
+  .jobs-hero-ctas {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .jobs-search-bar {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) auto;
+  }
+
+  .jobs-form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .jobs-repeatable-item .jobs-form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .jobs-recruiter-kpis {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* ============================================================
+   DESKTOP — dès 920px
+   ============================================================ */
+@media (min-width: 920px) {
+  .jobs-hero { padding: 30px 34px 34px; border-radius: 24px; }
+
+  .jobs-hero-tagline { font-size: 15px; }
+
+  .jobs-detail-hero { padding: 26px 30px; }
+
+  .jobs-form-section { padding: 20px 22px; }
+}

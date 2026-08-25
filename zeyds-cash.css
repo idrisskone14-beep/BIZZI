@@ -1454,3 +1454,382 @@
   .cash-hero-cta-ghost,
   .cash-submit-btn { transition: none; }
 }
+
+/* ============================================================
+   ZEYDS CASH V2 — moteur de recherche humain remunere
+   Ajouts : prime securisee, wizard de publication, paiement,
+   litiges, notation, portefeuille, credits, reputation.
+   ============================================================ */
+
+.cash-toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(90px + env(safe-area-inset-bottom, 0px));
+  transform: translate(-50%, 12px);
+  z-index: 200;
+  max-width: calc(100vw - 32px);
+  padding: 12px 18px;
+  border-radius: 12px;
+  background: #10233f;
+  color: #fff;
+  font-size: 13.5px;
+  font-weight: 700;
+  text-align: center;
+  box-shadow: 0 12px 30px rgba(8, 36, 92, .28);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s ease, transform .18s ease;
+}
+
+.cash-toast.visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.cash-toast.cash-toast-error {
+  background: #c0392b;
+}
+
+.cash-loading {
+  padding: 28px;
+  text-align: center;
+  color: #7e8794;
+  font-size: 13.5px;
+}
+
+/* ---- Carte mission (feed) — mise en avant du gain --------------- */
+.cash-card-reward {
+  font-size: 15px;
+  font-weight: 950;
+  letter-spacing: -.01em;
+  color: #c04c0a;
+}
+
+.cash-secured-badge {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(20, 168, 105, .12);
+  color: #0e7a53;
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.cash-status-chip {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(8, 36, 92, .07);
+  color: #2c3e6b;
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.cash-solution-cta {
+  width: 100%;
+  min-height: 46px;
+  margin-top: 4px;
+  border: 0;
+  border-radius: 13px;
+  background: linear-gradient(135deg, #0e7a53, #14a869);
+  color: #fff;
+  font-weight: 900;
+  font-size: 13.5px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+/* ---- Bandeau credit ----------------------------------------------- */
+.cash-credit-banner {
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(255, 193, 0, .12);
+  border: 1px solid rgba(255, 193, 0, .3);
+  color: #7a5400;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* ---- Reputation solveur -------------------------------------------- */
+.cash-solver-card {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.cash-solver-name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-weight: 900;
+  font-size: 13.5px;
+  color: #10233f;
+}
+
+.cash-badge {
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.cash-badge-new { background: rgba(8, 36, 92, .07); color: #2c3e6b; }
+.cash-badge-active { background: rgba(8, 36, 92, .07); color: #2c3e6b; }
+.cash-badge-reliable { background: rgba(20, 168, 105, .12); color: #0e7a53; }
+.cash-badge-expert { background: rgba(0, 122, 255, .1); color: #0056b3; }
+.cash-badge-top { background: rgba(255, 193, 0, .18); color: #8a6200; }
+
+.cash-solver-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 11.5px;
+  color: #7e8794;
+}
+
+.cash-sol-detail {
+  font-size: 12.5px;
+  color: #4a5568;
+}
+
+/* ---- Actions de mission (paiement, confirmation, litige) ----------- */
+.cash-mission-actions {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid rgba(8, 36, 92, .09);
+}
+
+.cash-payment-warning {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #8a6200;
+}
+
+/* ---- Wizard de publication ------------------------------------------ */
+.cash-wizard-steps {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 0 0;
+}
+
+.cash-wizard-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(8, 36, 92, .14);
+}
+
+.cash-wizard-dot.active {
+  background: #f46614;
+}
+
+.cash-wizard-step legend {
+  padding: 0;
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: 900;
+  color: #10233f;
+}
+
+.cash-identity-fields {
+  display: grid;
+  gap: 10px;
+  padding: 10px;
+  margin-bottom: 4px;
+  border-radius: 12px;
+  background: rgba(8, 36, 92, .04);
+}
+
+.cash-deadline-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cash-deadline-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: 1px solid rgba(8, 36, 92, .14);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #10233f;
+  cursor: pointer;
+}
+
+.cash-deadline-chip:has(input:checked) {
+  border-color: #f46614;
+  background: rgba(244, 102, 20, .08);
+}
+
+.cash-reward-hint {
+  margin: 0;
+  font-size: 12px;
+  color: #7e8794;
+}
+
+.cash-wizard-nav {
+  display: flex;
+  gap: 10px;
+}
+
+.cash-wizard-nav .cash-submit-btn { flex: 1; }
+
+/* ---- Recapitulatif / paiement ---------------------------------------- */
+.cash-recap-summary {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  background: rgba(8, 36, 92, .04);
+}
+
+.cash-recap-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13.5px;
+  color: #10233f;
+}
+
+#cashRecapEdit {
+  width: 100%;
+  min-height: 46px;
+  margin-bottom: 10px;
+}
+
+.cash-payment-methods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.cash-payment-methods .cash-provider-chip {
+  padding: 8px 14px;
+  font-size: 12.5px;
+  cursor: pointer;
+  border: 1px solid rgba(8, 36, 92, .14);
+}
+
+.cash-payment-methods .cash-provider-chip.active {
+  background: #f46614;
+  color: #fff;
+}
+
+.cash-payment-note {
+  margin: 10px 0;
+  font-size: 12px;
+  color: #7e8794;
+}
+
+#cashPaymentStatus {
+  margin-top: 8px;
+  font-size: 12.5px;
+  color: #c0392b;
+  font-weight: 700;
+}
+
+#cashPaymentCreditOption:not([hidden]) {
+  margin-bottom: 12px;
+}
+
+/* ---- Portefeuille ------------------------------------------------------ */
+.cash-wallet-balance {
+  display: grid;
+  gap: 4px;
+  padding: 18px;
+  margin-bottom: 14px;
+  border-radius: 16px;
+  text-align: center;
+  background: linear-gradient(140deg, #071225, #102f4b);
+  color: #fff;
+}
+
+.cash-wallet-balance span { font-size: 12px; color: rgba(255, 255, 255, .65); }
+.cash-wallet-balance strong { font-size: 28px; font-weight: 950; }
+
+.cash-credits-list {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.cash-credit-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(255, 193, 0, .10);
+  border: 1px solid rgba(255, 193, 0, .25);
+  font-weight: 800;
+  color: #8a6200;
+}
+
+.cash-credit-row small { font-weight: 600; color: #7a5400; }
+
+.cash-gain-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(8, 36, 92, .06);
+  font-size: 13px;
+  color: #4a5568;
+}
+
+/* ---- Notation --------------------------------------------------------- */
+.cash-star-picker {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.cash-star {
+  border: 0;
+  background: none;
+  font-size: 34px;
+  line-height: 1;
+  color: rgba(8, 36, 92, .18);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.cash-star.active { color: #ffb400; }
+
+/* ---- Admin ---------------------------------------------------------- */
+.cash-admin-row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.cash-admin-config label {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #4a5568;
+}
+
+.cash-admin-config input {
+  min-height: 40px;
+  padding: 0 10px;
+  border: 1px solid rgba(8, 36, 92, .14);
+  border-radius: 10px;
+}

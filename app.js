@@ -2720,6 +2720,15 @@ function clientIdentityReady() {
   return Boolean(isValidClientName(currentClientName()) && isValidContactPhone(currentClientPhone()));
 }
 
+// Pont minimal pour les modules charges independamment (comme
+// js/zeyds-cash.js) qui ont besoin de l'identite client memorisee sans
+// dupliquer sa logique de validation/persistance.
+globalThis.BizziIdentity = Object.freeze({
+  get: () => ({ name: state.clientName || "", phone: state.clientPhone || "" }),
+  ready: clientIdentityReady,
+  set: rememberClientIdentity,
+});
+
 let pendingClientAccessView = "";
 let pendingClientAccessAction = null;
 

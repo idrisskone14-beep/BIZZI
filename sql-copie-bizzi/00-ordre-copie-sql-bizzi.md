@@ -140,6 +140,17 @@ Le fichier `77-rapports-revenus-livraisons-v174.sql` ajoute les rapports revenus
 - `91-bizzi-food-v204.sql` ajoute Bizzi Food : bonnes adresses, specialites, vue publique et bucket `food-photos`.
 - `101-demandes-service-directes-v303.sql` ajoute la table `service_requests` (demande directe a un prestataire -> accepte -> suit -> note), sans paiement in-app. A executer seulement si vous voulez activer la synchronisation distante de ce module ; l'app fonctionne deja en local sans cette table.
 
+## ZEYDS Cash (missions remunerees, escrow, wallet, credits, litiges)
+
+A executer sur SUPABASE (SQL Editor), dans cet ordre, apres le socle technique recent (103/104) :
+
+1. `110-zeyds-cash-schema-v305.sql` - tables, ledger, wallet, vue publique du feed.
+2. `111-zeyds-cash-rpc-v305.sql` - toutes les actions demandeur/solveur/admin (RPC security definer).
+3. `112-zeyds-cash-config-v305.sql` - commission, duree credit, bornes de prime (administrables ensuite via le panneau Super Admin existant).
+4. `113-zeyds-cash-demo-data-v305.sql` - optionnel, 7 missions de demonstration.
+
+Contrairement au systeme de propositions de services (101/102/105/109, qui vit sur Neon), ZEYDS Cash est un systeme financier et vit entierement sur Supabase : voir l'en-tete de `110-zeyds-cash-schema-v305.sql` pour le raisonnement complet.
+
 ## Si la creation prestataire affiche une erreur RLS
 
 Executer uniquement le fichier `08-correction-rls-soumission-publique.sql`, puis refaire le test dans Bizzi.

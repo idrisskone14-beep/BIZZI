@@ -81,7 +81,7 @@
   <link rel="stylesheet" href="v302.css?v=304">
   <link rel="stylesheet" href="v302-home.css?v=304">
   <link rel="stylesheet" href="home-magazine.css?v=304">
-  <link rel="stylesheet" href="zeyds-cash.css?v=400">
+  <link rel="stylesheet" href="zeyds-cash.css?v=402">
   <link rel="stylesheet" href="zeyds-jobs.css?v=1">
   <link rel="stylesheet" href="global-assistant.css?v=304">
   <link rel="stylesheet" href="location-intelligence.css?v=304">
@@ -302,6 +302,8 @@
             <div class="cash-hero-stats" id="cashHeroStats" aria-live="polite"></div>
           </section>
 
+          <div id="cashCreditBanner" class="cash-credit-banner" hidden></div>
+
           <!-- Feed section -->
           <section id="cashFeedSection" aria-label="Besoins publiés">
             <div class="cash-section-head">
@@ -342,7 +344,7 @@
             <nav class="cash-personal-tabs" id="cashPersonalTabs" role="tablist">
               <button class="cash-personal-tab" role="tab" type="button" data-cash-tab="mes-besoins" aria-selected="true">Mes besoins</button>
               <button class="cash-personal-tab" role="tab" type="button" data-cash-tab="mes-solutions" aria-selected="false">Mes solutions</button>
-              <button class="cash-personal-tab" role="tab" type="button" data-cash-tab="mes-gains" aria-selected="false">Mes gains 💰</button>
+              <button class="cash-personal-tab" role="tab" type="button" data-cash-tab="portefeuille" aria-selected="false">Portefeuille 💰</button>
             </nav>
             <div id="cashPersonalFeed" aria-live="polite"></div>
           </section>
@@ -350,67 +352,151 @@
         </div><!-- .cash-shell -->
       </section><!-- #view-cash -->
 
-      <!-- Dialog : Publier un besoin -->
+      <!-- Dialog : Publier une mission (parcours en etapes) -->
       <div id="cashPublishDialog" class="cash-dialog-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="cashPublishTitle">
         <div class="cash-dialog">
           <div class="cash-dialog-head">
             <h3 id="cashPublishTitle">Publier un besoin</h3>
             <button class="cash-dialog-close" type="button" data-cash-close-publish aria-label="Fermer">×</button>
           </div>
+          <div class="cash-wizard-steps" id="cashWizardSteps" aria-hidden="true">
+            <span class="cash-wizard-dot" data-wizard-dot="1"></span>
+            <span class="cash-wizard-dot" data-wizard-dot="2"></span>
+            <span class="cash-wizard-dot" data-wizard-dot="3"></span>
+            <span class="cash-wizard-dot" data-wizard-dot="4"></span>
+          </div>
           <form id="cashPublishForm" class="cash-dialog-body" novalidate>
-            <label class="cash-form-label">
-              Titre du besoin <span aria-hidden="true">*</span>
-              <input name="title" type="text" maxlength="120" required placeholder="Ex. Je cherche un plombier urgent à Cocody">
-            </label>
-            <label class="cash-form-label">
-              Description (optionnel)
-              <textarea name="description" maxlength="600" placeholder="Plus de détails sur votre besoin…" rows="3"></textarea>
-            </label>
-            <label class="cash-form-label">
-              Catégorie
-              <select name="category" required>
-                <option value="Services">Services</option>
-                <option value="Livraison">Livraison</option>
-                <option value="Emploi">Emploi</option>
-                <option value="Logement">Logement</option>
-                <option value="Vente">Vente</option>
-                <option value="Événements">Événements</option>
-                <option value="Autre">Autre</option>
-              </select>
-            </label>
-            <label class="cash-form-label">
-              Commune
-              <select name="area" required>
-                <option value="Toute la ville">Toute la ville</option>
-                <option value="Cocody">Cocody</option>
-                <option value="Yopougon">Yopougon</option>
-                <option value="Marcory">Marcory</option>
-                <option value="Plateau">Plateau</option>
-                <option value="Treichville">Treichville</option>
-                <option value="Adjamé">Adjamé</option>
-                <option value="Abobo">Abobo</option>
-                <option value="Koumassi">Koumassi</option>
-                <option value="Port-Bouët">Port-Bouët</option>
-                <option value="Riviera">Riviera</option>
-                <option value="Angré">Angré</option>
-                <option value="Zone 4">Zone 4</option>
-                <option value="Bingerville">Bingerville</option>
-                <option value="Bouaké">Bouaké</option>
-              </select>
-            </label>
-            <label class="cash-reward-toggle-row">
-              <input id="cashRewardToggle" name="rewardToggle" type="checkbox">
-              Ajouter une récompense en FCFA
-            </label>
-            <div id="cashRewardField" hidden>
+            <fieldset class="cash-wizard-step" data-wizard-step="1">
+              <legend>Que cherches-tu ?</legend>
               <label class="cash-form-label">
-                Montant de la récompense (FCFA)
-                <input name="reward" type="number" min="500" max="500000" step="500" inputmode="numeric" placeholder="Ex. 5000">
+                Titre <span aria-hidden="true">*</span>
+                <input name="title" type="text" maxlength="120" required placeholder="Ex. 2 places pour Côte d'Ivoire – Cameroun">
               </label>
-              <small style="font-size:12px;color:#7e8794;display:block;margin-top:-8px">Commission Zeyds 10 % déduite au moment du paiement. Compatible Wave, Orange Money, MTN Money, Moov Money.</small>
+              <label class="cash-form-label">
+                Description (optionnel)
+                <textarea name="description" maxlength="600" placeholder="Plus de détails sur ta demande…" rows="3"></textarea>
+              </label>
+              <label class="cash-form-label">
+                Catégorie
+                <select name="category" required>
+                  <option value="Services">Services</option>
+                  <option value="Livraison">Livraison</option>
+                  <option value="Emploi">Emploi</option>
+                  <option value="Logement">Logement</option>
+                  <option value="Vente">Vente</option>
+                  <option value="Événements">Événements</option>
+                  <option value="Autre">Autre</option>
+                </select>
+              </label>
+              <div id="cashIdentityFields" class="cash-identity-fields" hidden>
+                <label class="cash-form-label">
+                  Ton nom <span aria-hidden="true">*</span>
+                  <input name="identityName" type="text" maxlength="80" placeholder="Ex. Aïcha Koné">
+                </label>
+                <label class="cash-form-label">
+                  Ton téléphone <span aria-hidden="true">*</span>
+                  <input name="identityPhone" type="tel" placeholder="Ex. 07 00 00 00 00">
+                </label>
+              </div>
+            </fieldset>
+
+            <fieldset class="cash-wizard-step" data-wizard-step="2" hidden>
+              <legend>Où ?</legend>
+              <label class="cash-form-label">
+                Commune
+                <select name="area" required>
+                  <option value="Toute la ville">Partout / Peu importe</option>
+                  <option value="Cocody">Cocody</option>
+                  <option value="Yopougon">Yopougon</option>
+                  <option value="Marcory">Marcory</option>
+                  <option value="Plateau">Plateau</option>
+                  <option value="Treichville">Treichville</option>
+                  <option value="Adjamé">Adjamé</option>
+                  <option value="Abobo">Abobo</option>
+                  <option value="Koumassi">Koumassi</option>
+                  <option value="Port-Bouët">Port-Bouët</option>
+                  <option value="Riviera">Riviera</option>
+                  <option value="Angré">Angré</option>
+                  <option value="Zone 4">Zone 4</option>
+                  <option value="Bingerville">Bingerville</option>
+                  <option value="Bouaké">Bouaké</option>
+                </select>
+              </label>
+            </fieldset>
+
+            <fieldset class="cash-wizard-step" data-wizard-step="3" hidden>
+              <legend>Quand en as-tu besoin ?</legend>
+              <div class="cash-deadline-choices" role="radiogroup">
+                <label class="cash-deadline-chip"><input type="radio" name="deadlineType" value="aujourd_hui">Aujourd'hui</label>
+                <label class="cash-deadline-chip"><input type="radio" name="deadlineType" value="demain">Demain</label>
+                <label class="cash-deadline-chip"><input type="radio" name="deadlineType" value="cette_semaine" checked>Cette semaine</label>
+                <label class="cash-deadline-chip"><input type="radio" name="deadlineType" value="urgent">Urgent (24h)</label>
+                <label class="cash-deadline-chip"><input type="radio" name="deadlineType" value="date_personnalisee">Date précise</label>
+              </div>
+              <label class="cash-form-label" id="cashCustomDeadlineField" hidden>
+                Date limite
+                <input name="deadlineAt" type="datetime-local">
+              </label>
+            </fieldset>
+
+            <fieldset class="cash-wizard-step" data-wizard-step="4" hidden>
+              <legend>Combien offres-tu à celui qui trouve ?</legend>
+              <label class="cash-form-label">
+                Prime ZEYDS Cash (FCFA) <span aria-hidden="true">*</span>
+                <input name="reward" type="number" min="500" max="500000" step="500" inputmode="numeric" required placeholder="Ex. 10000">
+              </label>
+              <label class="cash-form-label">
+                Budget du produit/service recherché (optionnel)
+                <input name="serviceBudgetHint" type="number" min="0" step="500" inputmode="numeric" placeholder="Ex. 150000">
+                <small>Ce montant n'est PAS la prime — c'est juste une indication pour les solveurs (ex. budget photographe).</small>
+              </label>
+              <p class="cash-reward-hint">La prime ZEYDS Cash est ce que gagne la personne qui trouve la solution — pas le prix du produit/service.</p>
+            </fieldset>
+
+            <div class="cash-wizard-nav">
+              <button class="secondary" type="button" id="cashWizardBack" hidden>← Retour</button>
+              <button class="cash-submit-btn" type="button" id="cashWizardNext">Continuer</button>
             </div>
-            <button class="cash-submit-btn" type="submit">Publier gratuitement</button>
           </form>
+        </div>
+      </div>
+
+      <!-- Dialog : Recapitulatif avant paiement -->
+      <div id="cashRecapDialog" class="cash-dialog-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="cashRecapTitle">
+        <div class="cash-dialog">
+          <div class="cash-dialog-head">
+            <h3 id="cashRecapTitle">Ta demande</h3>
+            <button class="cash-dialog-close" type="button" data-cash-close-recap aria-label="Fermer">×</button>
+          </div>
+          <div class="cash-dialog-body">
+            <div id="cashRecapSummary" class="cash-recap-summary"></div>
+            <button class="secondary" type="button" id="cashRecapEdit">← Modifier ma demande</button>
+            <button class="cash-submit-btn" type="button" id="cashRecapContinue">Continuer</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dialog : Securiser la prime (paiement) -->
+      <div id="cashPaymentDialog" class="cash-dialog-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="cashPaymentTitle">
+        <div class="cash-dialog">
+          <div class="cash-dialog-head">
+            <h3 id="cashPaymentTitle">Sécuriser la prime</h3>
+            <button class="cash-dialog-close" type="button" data-cash-close-payment aria-label="Fermer">×</button>
+          </div>
+          <div class="cash-dialog-body">
+            <p class="cash-payment-warning">🔒 Ta prime doit être sécurisée avant publication.</p>
+            <div id="cashPaymentCreditOption" hidden></div>
+            <form id="cashPaymentForm" novalidate>
+              <div id="cashPaymentMethods" class="cash-payment-methods" role="radiogroup"></div>
+              <label class="cash-form-label">
+                Référence de la transaction <span aria-hidden="true">*</span>
+                <input name="transactionReference" type="text" maxlength="80" required placeholder="Référence reçue après l'envoi">
+              </label>
+              <p class="cash-payment-note">Envoie le montant via le moyen choisi, puis colle ici la référence de la transaction. Un admin ZEYDS confirme le paiement rapidement — ta mission est publiée dès confirmation.</p>
+              <button class="cash-submit-btn" type="submit">🚀 J'ai payé — Publier ma demande</button>
+            </form>
+            <div id="cashPaymentStatus" role="status"></div>
+          </div>
         </div>
       </div>
 
@@ -418,19 +504,89 @@
       <div id="cashProposeDialog" class="cash-dialog-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="cashProposeTitle">
         <div class="cash-dialog">
           <div class="cash-dialog-head">
-            <h3 id="cashProposeTitle"><span id="cashProposeTypeLabel">Proposer une solution</span></h3>
+            <h3 id="cashProposeTitle">J'ai la solution</h3>
             <button class="cash-dialog-close" type="button" data-cash-close-propose aria-label="Fermer">×</button>
           </div>
           <form id="cashProposeForm" class="cash-dialog-body" novalidate>
+            <div id="cashProposeIdentityFields" class="cash-identity-fields" hidden>
+              <label class="cash-form-label">
+                Ton nom <span aria-hidden="true">*</span>
+                <input name="identityName" type="text" maxlength="80" placeholder="Ex. Koffi N'Guessan">
+              </label>
+              <label class="cash-form-label">
+                Ton téléphone <span aria-hidden="true">*</span>
+                <input name="identityPhone" type="tel" placeholder="Ex. 07 00 00 00 00">
+              </label>
+            </div>
             <label class="cash-form-label">
-              Votre proposition <span aria-hidden="true">*</span>
-              <textarea name="description" maxlength="500" required rows="4" placeholder="Décrivez votre solution…"></textarea>
+              Explique ta solution <span aria-hidden="true">*</span>
+              <textarea name="description" maxlength="500" required rows="4" placeholder="Qui contacter, où trouver, quoi choisir…"></textarea>
             </label>
             <label class="cash-form-label">
-              Contact (optionnel)
+              Contact à transmettre (optionnel)
               <input name="contact" type="tel" placeholder="Ex. 07 00 00 00 00">
             </label>
-            <button class="cash-submit-btn" type="submit">Envoyer ma proposition</button>
+            <label class="cash-form-label">
+              Prix estimé (optionnel)
+              <input name="priceHint" type="number" min="0" step="500" inputmode="numeric" placeholder="Ex. 150000">
+            </label>
+            <label class="cash-form-label">
+              Disponibilité (optionnel)
+              <input name="availability" type="text" maxlength="120" placeholder="Ex. Disponible dès aujourd'hui">
+            </label>
+            <button class="cash-submit-btn" type="submit">Envoyer ma solution</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Dialog : Signaler un probleme / litige -->
+      <div id="cashDisputeDialog" class="cash-dialog-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="cashDisputeTitle">
+        <div class="cash-dialog">
+          <div class="cash-dialog-head">
+            <h3 id="cashDisputeTitle">Signaler un problème</h3>
+            <button class="cash-dialog-close" type="button" data-cash-close-dispute aria-label="Fermer">×</button>
+          </div>
+          <form id="cashDisputeForm" class="cash-dialog-body" novalidate>
+            <label class="cash-form-label">
+              Catégorie du problème
+              <select name="category" required>
+                <option value="solution_incorrecte">Solution incorrecte</option>
+                <option value="non_conforme">Non conforme à la description</option>
+                <option value="injoignable">Personne injoignable</option>
+                <option value="paiement">Litige sur le paiement</option>
+                <option value="autre">Autre</option>
+              </select>
+            </label>
+            <label class="cash-form-label">
+              Décris le problème <span aria-hidden="true">*</span>
+              <textarea name="description" maxlength="600" required rows="4" placeholder="Explique ce qui ne va pas…"></textarea>
+            </label>
+            <button class="cash-submit-btn" type="submit">Envoyer le signalement</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Dialog : Notation -->
+      <div id="cashReviewDialog" class="cash-dialog-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="cashReviewTitle">
+        <div class="cash-dialog">
+          <div class="cash-dialog-head">
+            <h3 id="cashReviewTitle">Comment s'est passée ta mission ?</h3>
+            <button class="cash-dialog-close" type="button" data-cash-close-review aria-label="Fermer">×</button>
+          </div>
+          <form id="cashReviewForm" class="cash-dialog-body" novalidate>
+            <div class="cash-star-picker" id="cashStarPicker" role="radiogroup" aria-label="Note globale">
+              <button type="button" class="cash-star" data-star="1">★</button>
+              <button type="button" class="cash-star" data-star="2">★</button>
+              <button type="button" class="cash-star" data-star="3">★</button>
+              <button type="button" class="cash-star" data-star="4">★</button>
+              <button type="button" class="cash-star" data-star="5">★</button>
+            </div>
+            <input type="hidden" name="rating" value="5">
+            <label class="cash-form-label">
+              Commentaire (optionnel)
+              <textarea name="comment" maxlength="400" rows="3" placeholder="Ton avis sur cette mission…"></textarea>
+            </label>
+            <button class="cash-submit-btn" type="submit">Valider</button>
           </form>
         </div>
       </div>
@@ -1492,10 +1648,6 @@
               <div id="adminReviews" class="admin-list"></div>
             </section>
             <section class="panel">
-              <h2>Zeyds Cash — Besoins &amp; récompenses</h2>
-              <div id="cashAdminPanel"></div>
-            </section>
-            <section class="panel">
               <h2>Données & production</h2>
               <div id="productionStatus" class="status-box"></div>
               <div class="production-docs">
@@ -1679,10 +1831,10 @@
   <script src="js/premium-home.js?v=240"></script>
   <script src="js/service-ai-images.js?v=304"></script>
   <script src="js/mobile-form-wizard.js?v=304"></script>
-  <script src="js/zeyds-cash.js?v=305"></script>
+  <script src="js/zeyds-cash.js?v=306"></script>
   <script src="js/zeyds-jobs.js?v=1"></script>
   <script src="js/motion-system.js?v=304"></script>
-  <script src="app.js?v=401"></script>
+  <script src="app.js?v=402"></script>
   <script src="js/location-intelligence.js?v=304"></script>
   <script src="js/home-magazine.js?v=304"></script>
   <script>

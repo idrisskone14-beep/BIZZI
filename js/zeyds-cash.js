@@ -200,6 +200,12 @@
   let feedFilter = { category: "", area: "", rewarded: false };
   let feedCache = [];
 
+  function favoriteHeartButton(id) {
+    const active = Boolean(globalThis.BizziFavorites?.isFavorite?.("cash", id));
+    const label = active ? "Retirer des favoris" : "Ajouter aux favoris";
+    return `<button class="fav-heart cash-fav-heart${active ? " is-favorite" : ""}" type="button" data-fav-toggle="cash:${safe(id)}" aria-pressed="${active}" aria-label="${label}" title="${label}">${active ? "♥" : "♡"}</button>`;
+  }
+
   function needCard(m) {
     const count = Number(m.active_solutions_count || 0);
     const maxActive = Number(cashSettings.cash_max_active_solutions || 3);
@@ -207,6 +213,7 @@
       <div class="cash-card-tags">
         <span class="cash-cat-chip">${safe(m.category)}</span>
         ${m.secured ? '<span class="cash-secured-badge">🔒 Prime sécurisée</span>' : ""}
+        ${favoriteHeartButton(m.id)}
       </div>
       <div class="cash-card-reward">🔥 ${safe(formatMoney(m.reward_amount))} À GAGNER</div>
       <h3 class="cash-card-title">${safe(m.title)}</h3>
@@ -1067,7 +1074,7 @@
       if (e.target.closest("[data-cash-close-review]")) { document.querySelector("#cashReviewDialog").hidden = true; return; }
 
       const openNeed = e.target.closest("[data-cash-open-need]");
-      if (openNeed && !e.target.closest("button[data-cash-select-solution],button[data-cash-withdraw-solution]")) {
+      if (openNeed && !e.target.closest("button[data-cash-select-solution],button[data-cash-withdraw-solution],[data-fav-toggle]")) {
         const id = openNeed.dataset.cashOpenNeed;
         if (id) { bridge.setView?.("cash"); showDetail(id); }
         return;
@@ -1152,11 +1159,16 @@
     showFeed();
   }
 
+  function openMission(id) {
+    bridge.setView?.("cash");
+    showDetail(id);
+  }
+
   function init(nextBridge = {}) {
     bridge = { ...bridge, ...nextBridge };
     bind();
     render();
   }
 
-  globalThis.ZeydsCash = Object.freeze({ init, open, render, renderAdminCash });
+  globalThis.ZeydsCash = Object.freeze({ init, open, render, renderAdminCash, openMission });
 })();

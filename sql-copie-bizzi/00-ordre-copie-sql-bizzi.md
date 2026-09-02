@@ -151,6 +151,11 @@ A executer sur SUPABASE (SQL Editor), dans cet ordre, apres le socle technique r
 
 Contrairement au systeme de propositions de services (101/102/105/109, qui vit sur Neon), ZEYDS Cash est un systeme financier et vit entierement sur Supabase : voir l'en-tete de `110-zeyds-cash-schema-v305.sql` pour le raisonnement complet.
 
+## Module Favoris (Services + Emplois + Zeyds Cash)
+
+1. `116-favoris-v305.sql` - **a executer sur NEON** : table `favorites` + RPC `favorite_add/remove/list` identifiees par telephone.
+2. `117-zeyds-cash-favoris-lookup-v305.sql` - **a executer sur SUPABASE** : RPC `cash_list_missions_by_ids` pour resoudre les favoris de type "cash" (Cash vit sur Supabase, base physiquement separee de Neon).
+
 ## Si la creation prestataire affiche une erreur RLS
 
 Executer uniquement le fichier `08-correction-rls-soumission-publique.sql`, puis refaire le test dans Bizzi.

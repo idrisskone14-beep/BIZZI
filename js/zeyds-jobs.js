@@ -226,16 +226,30 @@
   /* ------------------------------------------------------------------ */
   /* Favoris                                                              */
   /* ------------------------------------------------------------------ */
+  // Delegue au module Favoris centralise (synchronise avec l'onglet
+  // "Favoris" et Supabase/Neon) au lieu du stockage local d'origine
+  // (FAVORITES_KEY reste inutilise mais n'est pas retire, au cas ou
+  // BizziFavorites ne serait pas charge).
   function getFavorites() {
+    if (globalThis.BizziFavorites?.getAll) {
+      return globalThis.BizziFavorites.getAll()
+        .filter((f) => f.item_type === "job")
+        .map((f) => f.item_id);
+    }
     const v = readJson(FAVORITES_KEY, []);
     return Array.isArray(v) ? v : [];
   }
 
   function isFavorite(jobId) {
+    if (globalThis.BizziFavorites?.isFavorite) return globalThis.BizziFavorites.isFavorite("job", jobId);
     return getFavorites().includes(jobId);
   }
 
   function toggleFavorite(jobId) {
+    if (globalThis.BizziFavorites?.toggle) {
+      globalThis.BizziFavorites.toggle("job", jobId);
+      return globalThis.BizziFavorites.isFavorite("job", jobId);
+    }
     const list = getFavorites();
     const idx = list.indexOf(jobId);
     if (idx >= 0) list.splice(idx, 1);
@@ -1021,5 +1035,5 @@
     showScreen("home");
   }
 
-  globalThis.ZeydsJobs = Object.freeze({ init, open, render });
+  globalThis.ZeydsJobs = Object.freeze({ init, open, render, openDetail });
 })();

@@ -2564,6 +2564,7 @@ function setView(name) {
   }
   if (name === "provider") refreshProviderRequestsAndOpportunities().catch(() => null);
   if (name === "jobs") { renderJobs(); globalThis.ZeydsJobs?.render?.(); }
+  if (name === "favorites") globalThis.BizziFavorites?.render?.();
   if (name === "events") renderEvents();
   if (name === "eventDetail") renderEventDetail();
   if (location.hash.slice(1) !== name) {
@@ -6587,6 +6588,23 @@ function upsertRenewalProvider(provider) {
   }
   state.providers.push(provider);
   return provider;
+}
+
+// Meme role que upsertRenewalProvider, pour les offres emploi : garantit
+// qu'une offre resolue ailleurs (ex. module Favoris) existe bien dans
+// state.jobOffers avant d'ouvrir son detail (js/zeyds-jobs.js lit une
+// reference vivante vers ce tableau, pas un fetch a la demande).
+function upsertJobOfferIntoState(job) {
+  if (!job) return null;
+  const existingIndex = state.jobOffers.findIndex((item) => (
+    (job.remoteId && item.remoteId === job.remoteId) || item.id === job.id
+  ));
+  if (existingIndex >= 0) {
+    state.jobOffers[existingIndex] = { ...state.jobOffers[existingIndex], ...job };
+    return state.jobOffers[existingIndex];
+  }
+  state.jobOffers.push(job);
+  return job;
 }
 
 function reviewFromSupabase(row, providers = []) {
@@ -13759,6 +13777,12 @@ function jobShareText(job) {
   ].filter(Boolean).join("\n");
 }
 
+function favoriteHeartButton(type, id) {
+  const active = Boolean(globalThis.BizziFavorites?.isFavorite?.(type, id));
+  const label = active ? "Retirer des favoris" : "Ajouter aux favoris";
+  return `<button class="fav-heart${active ? " is-favorite" : ""}" type="button" data-fav-toggle="${safe(type)}:${safe(id)}" aria-pressed="${active}" aria-label="${label}" title="${label}">${active ? "♥" : "♡"}</button>`;
+}
+
 function providerCard(provider) {
   const expired = provider.visibility === "expired_blurred";
   const renewal = renewalStatus(provider);
@@ -13795,6 +13819,7 @@ function providerCard(provider) {
         <div class="provider-card-title">
           <h3>${safe(provider.fullName)}${isVerified(provider) ? ` <span class="provider-verified-check" title="Vérifié Zeyds">✅</span>` : ""}</h3>
           ${providerBoostBadge(provider)}
+          ${favoriteHeartButton("service", provider.remoteId)}
         </div>
         <p class="provider-card-service">${safe(providerServicesLabel(provider))}</p>
         <p class="provider-card-rating-line">★ ${Number(provider.rating || 0).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} (${reviews}) · ${safe(distanceLabel(provider))}</p>
@@ -18394,6 +18419,7 @@ function boot() {
   setupHomeQuickSearch();
   globalThis.ZeydsCash?.init?.({ setView });
   globalThis.ZeydsJobs?.init?.({ setView, getJobOffers: () => state.jobOffers, renderJobs, jobWhatsAppUrl });
+  globalThis.BizziFavorites?.init?.();
   initNavigation();
   setupInstallPrompt();
   setupSocialSharing();

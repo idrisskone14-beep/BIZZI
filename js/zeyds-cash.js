@@ -308,7 +308,7 @@
       <p>${safe(s.description)}</p>
       ${s.price_hint ? `<div class="cash-sol-detail">💵 Prix estimé : ${safe(formatMoney(s.price_hint))}</div>` : ""}
       ${s.availability ? `<div class="cash-sol-detail">🕐 ${safe(s.availability)}</div>` : ""}
-      ${s.contact ? `<a class="cash-sol-contact" href="tel:${safe(s.contact)}">📞 ${safe(s.contact)}</a>` : ""}
+      ${s.contact ? `<a class="cash-sol-contact" href="tel:${safe(s.contact)}" data-log-contact="cash:${safe(mission.id)}">📞 ${safe(s.contact)}</a>` : ""}
       <div class="cash-sol-meta">
         <span class="cash-sol-status">${statusLabels[s.status] || s.status}</span>
         <span>🕐 ${safe(timeAgo(s.submitted_at))}</span>

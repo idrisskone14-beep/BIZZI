@@ -453,3 +453,40 @@
   height: 30px;
   font-size: 17px;
 }
+
+/* ---- Messages (journal de contacts) — reutilise les classes .fav-* ---- */
+.fav-loading {
+  padding: 28px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13.5px;
+}
+
+.msg-card { cursor: default; }
+
+.msg-card .fav-card-media,
+.msg-card .fav-card-top {
+  cursor: pointer;
+}
+
+.msg-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.msg-card-actions .fav-card-cta { margin-top: 0; }
+
+.msg-recontact-btn {
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--brand);
+  border-radius: 999px;
+  background: none;
+  color: var(--brand);
+  font-size: 11.5px;
+  font-weight: 800;
+  cursor: pointer;
+  touch-action: manipulation;
+}

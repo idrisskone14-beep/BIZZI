@@ -83,7 +83,7 @@
   <link rel="stylesheet" href="home-magazine.css?v=304">
   <link rel="stylesheet" href="zeyds-cash.css?v=402">
   <link rel="stylesheet" href="zeyds-jobs.css?v=1">
-  <link rel="stylesheet" href="favorites.css?v=2">
+  <link rel="stylesheet" href="favorites.css?v=3">
   <link rel="stylesheet" href="global-assistant.css?v=304">
   <link rel="stylesheet" href="location-intelligence.css?v=304">
   <link rel="stylesheet" href="motion-system.css?v=304">
@@ -1224,16 +1224,19 @@
       </section>
 
       <section id="view-messages" class="view">
-        <div class="section-head">
-          <div>
-            <p class="eyebrow">Messages</p>
-            <h2>Vos conversations</h2>
+        <div class="fav-shell">
+          <div class="fav-header">
+            <h2>Messages</h2>
+            <p class="fav-subtitle">Les prestataires, offres et missions que vous avez contactés récemment.</p>
           </div>
+          <div class="fav-filter-bar" id="msgFilterBar" role="group" aria-label="Filtrer mes contacts">
+            <button class="fav-chip" type="button" data-msg-filter="all" aria-pressed="true">Tous <span data-msg-count="all"></span></button>
+            <button class="fav-chip" type="button" data-msg-filter="service" aria-pressed="false">🔧 Services <span data-msg-count="service"></span></button>
+            <button class="fav-chip" type="button" data-msg-filter="job" aria-pressed="false">💼 Emplois <span data-msg-count="job"></span></button>
+            <button class="fav-chip" type="button" data-msg-filter="cash" aria-pressed="false">💵 Zeyds Cash <span data-msg-count="cash"></span></button>
+          </div>
+          <div id="msgContent" aria-live="polite"></div>
         </div>
-        <article class="delivery-request-card empty">
-          <h3>Messagerie bientôt disponible</h3>
-          <p>Vous pourrez bientôt discuter directement avec vos prestataires depuis Zeyds. En attendant, contactez-les via WhatsApp depuis leurs fiches.</p>
-        </article>
       </section>
 
       <section id="view-favorites" class="view">
@@ -1847,10 +1850,11 @@
   <script src="js/service-ai-images.js?v=304"></script>
   <script src="js/mobile-form-wizard.js?v=304"></script>
   <script src="js/zeyds-favorites.js?v=2"></script>
-  <script src="js/zeyds-cash.js?v=307"></script>
-  <script src="js/zeyds-jobs.js?v=2"></script>
+  <script src="js/zeyds-messages.js?v=1"></script>
+  <script src="js/zeyds-cash.js?v=308"></script>
+  <script src="js/zeyds-jobs.js?v=3"></script>
   <script src="js/motion-system.js?v=304"></script>
-  <script src="app.js?v=403"></script>
+  <script src="app.js?v=404"></script>
   <script src="js/location-intelligence.js?v=304"></script>
   <script src="js/home-magazine.js?v=304"></script>
   <script>

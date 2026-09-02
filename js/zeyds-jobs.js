@@ -527,7 +527,7 @@
           ${applied ? "Candidature envoyée ✓" : expired ? "Offre expirée" : "Postuler maintenant"}
         </button>
         <button type="button" class="secondary" data-jobs-fav="${safe(job.id)}">${favorite ? "★ Enregistrée" : "☆ Enregistrer"}</button>
-        ${whatsappUrl ? `<a class="secondary jobs-whatsapp-link" href="${safe(whatsappUrl)}" target="_blank" rel="noreferrer">💬 WhatsApp</a>` : ""}
+        ${whatsappUrl ? `<a class="secondary jobs-whatsapp-link" href="${safe(whatsappUrl)}" target="_blank" rel="noreferrer" data-log-contact="job:${safe(job.id)}">💬 WhatsApp</a>` : ""}
       </div>
       <p id="jobsApplyStatus" class="status-box" role="status"></p>
     `;
@@ -677,7 +677,7 @@
         </div>
         <div class="job-actions">
           <button type="button" class="secondary" data-jobs-open="${safe(job.id)}">Voir l'offre</button>
-          ${whatsappUrl ? `<a class="primary" href="${safe(whatsappUrl)}" target="_blank" rel="noreferrer">Contacter</a>` : ""}
+          ${whatsappUrl ? `<a class="primary" href="${safe(whatsappUrl)}" target="_blank" rel="noreferrer" data-log-contact="job:${safe(job.id)}">Contacter</a>` : ""}
           <button type="button" class="secondary jobs-fav-btn" data-jobs-fav="${safe(job.id)}">★</button>
         </div>
       </article>

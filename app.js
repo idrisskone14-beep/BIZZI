@@ -2565,6 +2565,7 @@ function setView(name) {
   if (name === "provider") refreshProviderRequestsAndOpportunities().catch(() => null);
   if (name === "jobs") { renderJobs(); globalThis.ZeydsJobs?.render?.(); }
   if (name === "favorites") globalThis.BizziFavorites?.render?.();
+  if (name === "messages") globalThis.BizziMessages?.render?.();
   if (name === "events") renderEvents();
   if (name === "eventDetail") renderEventDetail();
   if (location.hash.slice(1) !== name) {
@@ -13756,7 +13757,7 @@ function jobCard(job) {
         </div>
       </div>
       <div class="job-actions">
-        ${whatsappUrl ? `<a class="primary" href="${safe(whatsappUrl)}" target="_blank" rel="noreferrer">Contacter</a>` : ""}
+        ${whatsappUrl ? `<a class="primary" href="${safe(whatsappUrl)}" target="_blank" rel="noreferrer" data-log-contact="job:${safe(job.id)}">Contacter</a>` : ""}
         <button class="secondary" type="button" data-copy-job="${safe(job.id)}">Copier</button>
       </div>
     </article>
@@ -13950,6 +13951,9 @@ function setupProfileActions(provider) {
     element.addEventListener("click", () => {
       const action = element.dataset.leadAction;
       recordLead(provider, action);
+      if (action === "whatsapp" || action === "call") {
+        globalThis.BizziMessages?.logContact?.("service", provider.remoteId, action === "whatsapp" ? "whatsapp" : "call");
+      }
       const status = document.querySelector("#profileLeadStatus");
       if (status) {
         const message = contactActionMessage(provider, action);
@@ -18420,6 +18424,7 @@ function boot() {
   globalThis.ZeydsCash?.init?.({ setView });
   globalThis.ZeydsJobs?.init?.({ setView, getJobOffers: () => state.jobOffers, renderJobs, jobWhatsAppUrl });
   globalThis.BizziFavorites?.init?.();
+  globalThis.BizziMessages?.init?.();
   initNavigation();
   setupInstallPrompt();
   setupSocialSharing();

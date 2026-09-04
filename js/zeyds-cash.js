@@ -298,14 +298,23 @@
   let currentMissionId = null;
   let currentMissionDetail = null;
 
+  function formatDuration(value, unit) {
+    if (!value || !unit) return "";
+    const n = Number(value);
+    const label = unit === "heures" ? (n === 1 ? "heure" : "heures") : (n === 1 ? "jour" : "jours");
+    return `${n} ${label}`;
+  }
+
   function solutionCard(s, mission) {
     const isMine = Boolean(s.is_mine);
     const isOwner = Boolean(mission.is_owner);
     const statusLabels = { pending: "En attente", selected: "✓ Sélectionnée", rejected: "✗ Non retenue", withdrawn: "Retirée" };
     const statusCls = { pending: "cash-sol-pending", selected: "cash-sol-accepted", rejected: "cash-sol-refused", withdrawn: "cash-sol-refused" };
+    const duration = formatDuration(s.estimated_duration, s.duration_unit);
     return `<div class="cash-sol-card ${statusCls[s.status] || ""}">
       ${solverProfileCard(s.solver_stats, s.solver_name)}
-      <p>${safe(s.description)}</p>
+      ${duration ? `<div class="cash-sol-duration">⏱️ Délai annoncé : <strong>${safe(duration)}</strong></div>` : ""}
+      ${s.description ? `<p>${safe(s.description)}</p>` : ""}
       ${s.price_hint ? `<div class="cash-sol-detail">💵 Prix estimé : ${safe(formatMoney(s.price_hint))}</div>` : ""}
       ${s.availability ? `<div class="cash-sol-detail">🕐 ${safe(s.availability)}</div>` : ""}
       ${s.contact ? `<a class="cash-sol-contact" href="tel:${safe(s.contact)}" data-log-contact="cash:${safe(mission.id)}">📞 ${safe(s.contact)}</a>` : ""}
@@ -315,7 +324,7 @@
       </div>
       ${isOwner && s.status === "pending" && mission.status === "published"
         ? `<div class="cash-sol-actions">
-            <button class="cash-accept-btn" type="button" data-cash-select-solution="${safe(s.id)}" data-cash-mission-id="${safe(mission.id)}">✓ CHOISIR CETTE SOLUTION</button>
+            <button class="cash-accept-btn" type="button" data-cash-select-solution="${safe(s.id)}" data-cash-mission-id="${safe(mission.id)}" data-cash-solver-name="${safe(s.solver_name)}">✓ CHOISIR CETTE SOLUTION</button>
           </div>` : ""}
       ${isMine && s.status === "pending" ? `<button class="secondary" type="button" data-cash-withdraw-solution="${safe(s.id)}">Retirer ma proposition</button>` : ""}
     </div>`;
@@ -377,9 +386,10 @@
       const isOwner = Boolean(mission.is_owner);
       const maxActive = Number(cashSettings.cash_max_active_solutions || 3);
       const activeCount = Number(mission.active_solutions_count || 0);
+      const myPendingSolution = sols.find((s) => s.is_mine && s.status === "pending");
       const canPropose = mission.status === "published" && !isOwner
         && activeCount < maxActive
-        && !(sols.some((s) => s.is_mine && s.status === "pending"));
+        && !myPendingSolution;
 
       panel.innerHTML = `
         <div class="cash-detail-bar">
@@ -404,13 +414,14 @@
             <div class="cash-reward-row"><span>Gain net du solveur (après ${Math.round(commRate * 100)}% ZEYDS)</span><strong class="cash-gain-highlight">${safe(formatMoney(net))}</strong></div>
             ${mission.service_budget_hint ? `<div class="cash-reward-row"><span>Budget indicatif du produit/service</span><strong>${safe(formatMoney(mission.service_budget_hint))}</strong></div>` : ""}
           </div>
-          ${canPropose ? `<button class="cash-solution-cta" type="button" data-cash-propose="${safe(missionId)}">J'AI LA SOLUTION</button>` : ""}
-          ${mission.status === "published" && !isOwner && !canPropose && activeCount >= maxActive ? `<p class="cash-payment-warning">3/3 — Solutions en cours d'examen.</p>` : ""}
+          ${canPropose ? `<button class="cash-solution-cta" type="button" data-cash-propose="${safe(missionId)}">JE PEUX AIDER</button>` : ""}
+          ${myPendingSolution ? `<div class="cash-help-sent-badge">✓ Proposition envoyée</div>` : ""}
+          ${mission.status === "published" && !isOwner && !canPropose && !myPendingSolution && activeCount >= maxActive ? `<p class="cash-payment-warning">3/3 — Solutions en cours d'examen.</p>` : ""}
         </div>
         ${missionActionsBlock(mission)}
         <div class="cash-solutions-block">
           <div class="cash-section-head">
-            <h3>Solutions</h3>
+            <h3>${isOwner ? "Personnes disponibles pour vous aider" : "Solutions"}</h3>
             <span class="cash-count-badge">${activeCount}/${maxActive}</span>
           </div>
           ${!sols.length ? `<p class="cash-sols-empty">Aucune solution encore — sois le premier.</p>` : ""}
@@ -449,9 +460,49 @@
     return labels[t.type] || t.type;
   }
 
+  let mySolutionsCache = [];
+  let solutionsFilter = "all";
+
+  function matchesSolutionsFilter(s) {
+    if (solutionsFilter === "all") return true;
+    if (solutionsFilter === "pending") return s.status === "pending";
+    if (solutionsFilter === "selected") return s.status === "selected";
+    if (solutionsFilter === "in_progress") return s.status === "selected" && ["in_progress", "completion_pending"].includes(s.mission_status);
+    if (solutionsFilter === "completed") return s.mission_status === "completed";
+    if (solutionsFilter === "not_retained") return ["rejected", "withdrawn"].includes(s.status);
+    return true;
+  }
+
+  function mySolutionCard(s) {
+    const duration = formatDuration(s.estimated_duration, s.duration_unit);
+    return `<div class="cash-sol-card" data-cash-open-need="${safe(s.mission_id)}" role="button" tabindex="0">
+      <div class="cash-sol-header">
+        <strong class="cash-sol-need-title">${safe(s.mission_title)}</strong>
+        <span class="cash-status-chip">${safe(statusLabel(s.mission_status))}</span>
+      </div>
+      <div class="cash-sol-meta">
+        ${s.mission_reward_amount ? `<span>💰 ${safe(formatMoney(s.mission_reward_amount))}</span>` : ""}
+        ${duration ? `<span>⏱️ ${safe(duration)}</span>` : ""}
+        <span>🕐 ${safe(timeAgo(s.submitted_at))}</span>
+      </div>
+      ${s.description ? `<p>${safe(s.description)}</p>` : ""}
+    </div>`;
+  }
+
+  function renderMySolutionsList() {
+    const container = document.querySelector("#cashPersonalFeed");
+    if (!container) return;
+    const list = mySolutionsCache.filter(matchesSolutionsFilter);
+    container.innerHTML = !list.length
+      ? `<div class="cash-empty"><span>🤝</span><strong>${mySolutionsCache.length ? "Aucune solution dans cette catégorie." : "Tu n'as encore proposé aucune solution."}</strong></div>`
+      : list.map(mySolutionCard).join("");
+  }
+
   async function renderPersonalSpace() {
     const container = document.querySelector("#cashPersonalFeed");
     if (!container) return;
+    const filterBar = document.querySelector("#cashSolutionsFilterBar");
+    if (filterBar) filterBar.hidden = personalTab !== "mes-solutions";
     if (!identityReady()) {
       container.innerHTML = `<div class="cash-empty"><span>👤</span><strong>Renseigne ton identité pour accéder à ton espace.</strong></div>`;
       return;
@@ -468,17 +519,8 @@
           : missions.map(missionRowCard).join("");
 
       } else if (personalTab === "mes-solutions") {
-        const sols = await rpc("cash_list_my_solutions", { p_phone: phone });
-        container.innerHTML = !sols.length
-          ? `<div class="cash-empty"><span>🤝</span><strong>Tu n'as encore proposé aucune solution.</strong></div>`
-          : sols.map((s) => `<div class="cash-sol-card" data-cash-open-need="${safe(s.mission_id)}" role="button" tabindex="0">
-              <div class="cash-sol-header">
-                <strong class="cash-sol-need-title">${safe(s.mission_title)}</strong>
-                <span class="cash-status-chip">${safe(statusLabel(s.mission_status))}</span>
-              </div>
-              <p>${safe(s.description)}</p>
-              <span class="cash-sol-time">🕐 ${safe(timeAgo(s.submitted_at))}</span>
-            </div>`).join("");
+        mySolutionsCache = await rpc("cash_list_my_solutions", { p_phone: phone });
+        renderMySolutionsList();
 
       } else {
         const [wallet, credits] = await Promise.all([
@@ -680,8 +722,24 @@
   }
 
   /* ------------------------------------------------------------------ */
-  /* Proposer une solution                                                */
+  /* Je peux aider (accepter + delai)                                     */
   /* ------------------------------------------------------------------ */
+  let helpWizardStep = 1;
+  const HELP_WIZARD_STEPS = 2;
+
+  function updateHelpWizardUI() {
+    document.querySelectorAll("#cashProposeForm .cash-wizard-step").forEach((step) => {
+      step.hidden = Number(step.dataset.helpWizardStep) !== helpWizardStep;
+    });
+    document.querySelectorAll("#cashHelpWizardSteps [data-help-wizard-dot]").forEach((dot) => {
+      dot.classList.toggle("active", Number(dot.dataset.helpWizardDot) <= helpWizardStep);
+    });
+    const backBtn = document.querySelector("#cashHelpWizardBack");
+    const nextBtn = document.querySelector("#cashHelpWizardNext");
+    if (backBtn) backBtn.hidden = helpWizardStep === 1;
+    if (nextBtn) nextBtn.textContent = helpWizardStep === HELP_WIZARD_STEPS ? "Confirmer que je peux aider" : "Accepter la mission";
+  }
+
   function showProposeDialog(missionId) {
     const d = document.querySelector("#cashProposeDialog");
     if (!d) return;
@@ -689,8 +747,69 @@
     d.querySelector("#cashProposeForm")?.reset();
     const identityFields = document.querySelector("#cashProposeIdentityFields");
     if (identityFields) identityFields.hidden = identityReady();
+    const rewardEl = document.querySelector("#cashHelpRewardAmount");
+    const mission = currentMissionDetail?.id === missionId ? currentMissionDetail : feedCache.find((m) => m.id === missionId);
+    if (rewardEl) rewardEl.textContent = mission ? formatMoney(mission.reward_amount) : "—";
+    const customFields = document.querySelector("#cashDurationCustomFields");
+    if (customFields) customFields.hidden = true;
+    helpWizardStep = 1;
+    updateHelpWizardUI();
     d.hidden = false;
-    d.querySelector("[name='description']")?.focus();
+  }
+
+  async function submitHelpProposal(form) {
+    const dialog = document.querySelector("#cashProposeDialog");
+    const missionId = dialog.dataset.missionId;
+    const presetEl = form.querySelector("[name='durationPreset']:checked");
+    if (!presetEl) { toast("Choisis un délai", true); return; }
+    let durationValue;
+    let durationUnit;
+    if (presetEl.value === "autre") {
+      durationValue = Number(form.elements.durationCustomValue.value || 0);
+      durationUnit = form.elements.durationCustomUnit.value;
+      if (!durationValue || durationValue <= 0) { toast("Indique un nombre de temps valide", true); return; }
+    } else {
+      const [v, u] = presetEl.value.split(":");
+      durationValue = Number(v);
+      durationUnit = u;
+    }
+    try {
+      await rpc("cash_submit_solution", {
+        p_mission_id: missionId,
+        p_solver_phone: identity().phone,
+        p_solver_name: identity().name,
+        p_description: form.elements.description.value,
+        p_attachments: [],
+        p_contact: "",
+        p_price_hint: null,
+        p_availability: "",
+        p_estimated_duration: durationValue,
+        p_duration_unit: durationUnit,
+      });
+      dialog.hidden = true;
+      const durationLabel = formatDuration(durationValue, durationUnit);
+      const sentDurationEl = document.querySelector("#cashHelpSentDuration");
+      if (sentDurationEl) sentDurationEl.textContent = `Délai annoncé : ${durationLabel}`;
+      document.querySelector("#cashHelpSentDialog").hidden = false;
+      if (currentMissionId) renderNeedDetail(currentMissionId);
+    } catch (error) {
+      toast(errMsg(error), true);
+    }
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Confirmation generique (choisir un solveur / finaliser)              */
+  /* ------------------------------------------------------------------ */
+  function showConfirmDialog(title, message, onConfirm) {
+    const d = document.querySelector("#cashConfirmDialog");
+    if (!d) { onConfirm(); return; }
+    document.querySelector("#cashConfirmTitle").textContent = title;
+    document.querySelector("#cashConfirmMessage").textContent = message;
+    const btn = document.querySelector("#cashConfirmActionBtn");
+    const freshBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(freshBtn, btn);
+    freshBtn.addEventListener("click", () => { d.hidden = true; onConfirm(); }, { once: true });
+    d.hidden = false;
   }
 
   /* ------------------------------------------------------------------ */
@@ -926,33 +1045,36 @@
       }
     });
 
-    document.querySelector("#cashProposeForm")?.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const dialog = document.querySelector("#cashProposeDialog");
-      const f = e.currentTarget;
-      if (!identityReady()) {
-        const n = f.elements.identityName?.value.trim();
-        const p = f.elements.identityPhone?.value.trim();
-        if (!n || !p) { toast("Renseigne ton nom et ton téléphone", true); return; }
-        setIdentity(n, p);
+    document.querySelector("#cashHelpWizardNext")?.addEventListener("click", async () => {
+      const form = document.querySelector("#cashProposeForm");
+      if (helpWizardStep === 1) {
+        if (!identityReady()) {
+          const n = form.elements.identityName?.value.trim();
+          const p = form.elements.identityPhone?.value.trim();
+          if (!n || !p) { toast("Renseigne ton nom et ton téléphone", true); return; }
+          setIdentity(n, p);
+        }
+        helpWizardStep = 2;
+        updateHelpWizardUI();
+        return;
       }
-      try {
-        await rpc("cash_submit_solution", {
-          p_mission_id: dialog.dataset.missionId,
-          p_solver_phone: identity().phone,
-          p_solver_name: identity().name,
-          p_description: f.elements.description.value,
-          p_attachments: [],
-          p_contact: f.elements.contact.value,
-          p_price_hint: f.elements.priceHint.value ? Number(f.elements.priceHint.value) : null,
-          p_availability: f.elements.availability.value,
-        });
-        dialog.hidden = true;
-        toast("Solution envoyée !");
-        if (currentMissionId) renderNeedDetail(currentMissionId);
-      } catch (error) {
-        toast(errMsg(error), true);
-      }
+      await submitHelpProposal(form);
+    });
+    document.querySelector("#cashHelpWizardBack")?.addEventListener("click", () => {
+      helpWizardStep = 1;
+      updateHelpWizardUI();
+    });
+    document.querySelectorAll("[name='durationPreset']").forEach((el) => {
+      el.addEventListener("change", () => {
+        const custom = document.querySelector("#cashDurationCustomFields");
+        if (custom) custom.hidden = el.value !== "autre" || !el.checked;
+      });
+    });
+    document.querySelector("#cashHelpSentGoBtn")?.addEventListener("click", () => {
+      document.querySelector("#cashHelpSentDialog").hidden = true;
+      bridge.setView?.("cash");
+      personalTab = "mes-solutions";
+      showPersonal();
     });
 
     document.querySelector("#cashDisputeForm")?.addEventListener("submit", async (e) => {
@@ -1010,6 +1132,18 @@
       btn.setAttribute("aria-selected", "true");
       personalTab = btn.dataset.cashTab;
       renderPersonalSpace();
+    });
+
+    document.querySelector("#cashSolutionsFilterBar")?.addEventListener("click", (e) => {
+      const chip = e.target.closest("[data-cash-sol-filter]");
+      if (!chip) return;
+      solutionsFilter = chip.dataset.cashSolFilter;
+      document.querySelectorAll("#cashSolutionsFilterBar [data-cash-sol-filter]").forEach((b) => {
+        const active = b === chip;
+        b.classList.toggle("active", active);
+        b.setAttribute("aria-pressed", String(active));
+      });
+      renderMySolutionsList();
     });
 
     document.querySelector("#cashNotifBtn")?.addEventListener("click", () => {
@@ -1072,6 +1206,7 @@
       if (e.target.closest("[data-cash-close-propose]")) { document.querySelector("#cashProposeDialog").hidden = true; return; }
       if (e.target.closest("[data-cash-close-dispute]")) { document.querySelector("#cashDisputeDialog").hidden = true; return; }
       if (e.target.closest("[data-cash-close-review]")) { document.querySelector("#cashReviewDialog").hidden = true; return; }
+      if (e.target.closest("[data-cash-close-confirm]")) { document.querySelector("#cashConfirmDialog").hidden = true; return; }
 
       const openNeed = e.target.closest("[data-cash-open-need]");
       if (openNeed && !e.target.closest("button[data-cash-select-solution],button[data-cash-withdraw-solution],[data-fav-toggle]")) {
@@ -1089,10 +1224,12 @@
 
       const finalizeBtn = e.target.closest("[data-cash-finalize]");
       if (finalizeBtn) {
-        finalizeBtn.disabled = true;
-        rpc("cash_solver_finalize_mission", { p_mission_id: finalizeBtn.dataset.cashFinalize, p_solver_phone: identity().phone })
-          .then(() => { toast("Mission finalisée, en attente de confirmation."); renderNeedDetail(finalizeBtn.dataset.cashFinalize); })
-          .catch((error) => { toast(errMsg(error), true); finalizeBtn.disabled = false; });
+        showConfirmDialog("Mission terminée ?", "Confirmer que la mission est terminée ? Le demandeur sera invité à valider ta solution.", () => {
+          finalizeBtn.disabled = true;
+          rpc("cash_solver_finalize_mission", { p_mission_id: finalizeBtn.dataset.cashFinalize, p_solver_phone: identity().phone })
+            .then(() => { toast("Mission finalisée, en attente de confirmation."); renderNeedDetail(finalizeBtn.dataset.cashFinalize); })
+            .catch((error) => { toast(errMsg(error), true); finalizeBtn.disabled = false; });
+        });
         return;
       }
       const confirmBtn = e.target.closest("[data-cash-confirm]");
@@ -1105,10 +1242,13 @@
       }
       const selectBtn = e.target.closest("[data-cash-select-solution]");
       if (selectBtn) {
-        selectBtn.disabled = true;
-        rpc("cash_select_solution", { p_mission_id: selectBtn.dataset.cashMissionId, p_requester_phone: identity().phone, p_solution_id: selectBtn.dataset.cashSelectSolution })
-          .then(() => { toast("Solution sélectionnée !"); renderNeedDetail(selectBtn.dataset.cashMissionId); })
-          .catch((error) => { toast(errMsg(error), true); selectBtn.disabled = false; });
+        const solverName = selectBtn.dataset.cashSolverName || "ce solveur";
+        showConfirmDialog("Confirmer ce solutionneur ?", `Tu vas confier cette mission à ${solverName}. La prime reste sécurisée jusqu'à la validation finale de la mission.`, () => {
+          selectBtn.disabled = true;
+          rpc("cash_select_solution", { p_mission_id: selectBtn.dataset.cashMissionId, p_requester_phone: identity().phone, p_solution_id: selectBtn.dataset.cashSelectSolution })
+            .then(() => { toast("Solution sélectionnée !"); renderNeedDetail(selectBtn.dataset.cashMissionId); })
+            .catch((error) => { toast(errMsg(error), true); selectBtn.disabled = false; });
+        });
         return;
       }
       const withdrawBtn = e.target.closest("[data-cash-withdraw-solution]");

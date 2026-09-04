@@ -1833,3 +1833,79 @@
   border: 1px solid rgba(8, 36, 92, .14);
   border-radius: 10px;
 }
+
+/* ---- "Je peux aider" (accepter + delai) ------------------------------ */
+.cash-help-reward-box {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding: 16px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  text-align: center;
+  background: rgba(20, 168, 105, .06);
+  border: 1px solid rgba(20, 168, 105, .18);
+}
+
+.cash-help-reward-box > span:first-child {
+  font-size: 12.5px;
+  color: #7e8794;
+}
+
+.cash-help-reward-box strong {
+  font-size: 28px;
+  font-weight: 950;
+  color: #0e7a53;
+}
+
+.cash-help-terms {
+  display: grid;
+  gap: 8px;
+  margin: 0 0 14px;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+  color: #4a5568;
+  line-height: 1.4;
+}
+
+.cash-help-subtitle {
+  margin: 0 0 12px;
+  font-size: 12.5px;
+  color: #7e8794;
+}
+
+.cash-help-lock-note {
+  margin: 10px 0 0;
+  font-size: 11.5px;
+  color: #7e8794;
+  text-align: center;
+}
+
+.cash-help-sent-badge {
+  padding: 8px 14px;
+  border-radius: 12px;
+  background: rgba(8, 36, 92, .06);
+  color: #2c3e6b;
+  font-weight: 800;
+  font-size: 13px;
+  text-align: center;
+}
+
+.cash-help-sent-duration {
+  font-weight: 800;
+  color: #10233f;
+}
+
+.cash-sol-duration {
+  font-size: 13px;
+  color: #10233f;
+}
+
+#cashHelpSentDialog .cash-dialog-body {
+  text-align: center;
+}
+
+#cashHelpSentDialog .cash-submit-btn {
+  margin-top: 12px;
+}

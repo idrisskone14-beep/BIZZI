@@ -81,7 +81,7 @@
   <link rel="stylesheet" href="v302.css?v=304">
   <link rel="stylesheet" href="v302-home.css?v=304">
   <link rel="stylesheet" href="home-magazine.css?v=304">
-  <link rel="stylesheet" href="zeyds-cash.css?v=402">
+  <link rel="stylesheet" href="zeyds-cash.css?v=403">
   <link rel="stylesheet" href="zeyds-jobs.css?v=1">
   <link rel="stylesheet" href="favorites.css?v=3">
   <link rel="stylesheet" href="global-assistant.css?v=304">
@@ -347,6 +347,14 @@
               <button class="cash-personal-tab" role="tab" type="button" data-cash-tab="mes-solutions" aria-selected="false">Mes solutions</button>
               <button class="cash-personal-tab" role="tab" type="button" data-cash-tab="portefeuille" aria-selected="false">Portefeuille 💰</button>
             </nav>
+            <div class="cash-filter-bar" id="cashSolutionsFilterBar" role="group" aria-label="Filtrer mes solutions" hidden>
+              <button class="cash-filter-chip active" type="button" data-cash-sol-filter="all" aria-pressed="true">Toutes</button>
+              <button class="cash-filter-chip" type="button" data-cash-sol-filter="pending" aria-pressed="false">En attente</button>
+              <button class="cash-filter-chip" type="button" data-cash-sol-filter="selected" aria-pressed="false">Acceptées</button>
+              <button class="cash-filter-chip" type="button" data-cash-sol-filter="in_progress" aria-pressed="false">En cours</button>
+              <button class="cash-filter-chip" type="button" data-cash-sol-filter="completed" aria-pressed="false">Terminées</button>
+              <button class="cash-filter-chip" type="button" data-cash-sol-filter="not_retained" aria-pressed="false">Non retenues</button>
+            </div>
             <div id="cashPersonalFeed" aria-live="polite"></div>
           </section>
 
@@ -501,42 +509,106 @@
         </div>
       </div>
 
-      <!-- Dialog : Proposer une solution -->
+      <!-- Dialog : Je peux aider (accepter + delai, en 2 etapes) -->
       <div id="cashProposeDialog" class="cash-dialog-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="cashProposeTitle">
         <div class="cash-dialog">
           <div class="cash-dialog-head">
-            <h3 id="cashProposeTitle">J'ai la solution</h3>
+            <h3 id="cashProposeTitle">Accepter cette mission ?</h3>
             <button class="cash-dialog-close" type="button" data-cash-close-propose aria-label="Fermer">×</button>
           </div>
+          <div class="cash-wizard-steps" id="cashHelpWizardSteps" aria-hidden="true">
+            <span class="cash-wizard-dot active" data-help-wizard-dot="1"></span>
+            <span class="cash-wizard-dot" data-help-wizard-dot="2"></span>
+          </div>
           <form id="cashProposeForm" class="cash-dialog-body" novalidate>
-            <div id="cashProposeIdentityFields" class="cash-identity-fields" hidden>
+            <fieldset class="cash-wizard-step" data-help-wizard-step="1">
+              <div id="cashProposeIdentityFields" class="cash-identity-fields" hidden>
+                <label class="cash-form-label">
+                  Ton nom <span aria-hidden="true">*</span>
+                  <input name="identityName" type="text" maxlength="80" placeholder="Ex. Koffi N'Guessan">
+                </label>
+                <label class="cash-form-label">
+                  Ton téléphone <span aria-hidden="true">*</span>
+                  <input name="identityPhone" type="tel" placeholder="Ex. 07 00 00 00 00">
+                </label>
+              </div>
+              <div class="cash-help-reward-box">
+                <span>Prime proposée par le demandeur</span>
+                <strong id="cashHelpRewardAmount">—</strong>
+                <span class="cash-secured-badge">🔒 Prime déjà bloquée et sécurisée</span>
+              </div>
+              <ul class="cash-help-terms">
+                <li>✓ En acceptant, tu t'engages à faire de ton mieux pour réaliser cette mission.</li>
+                <li>🔒 Tu ne peux pas modifier la prime proposée.</li>
+                <li>🛡️ La prime te sera versée uniquement si le demandeur valide ta solution.</li>
+              </ul>
               <label class="cash-form-label">
-                Ton nom <span aria-hidden="true">*</span>
-                <input name="identityName" type="text" maxlength="80" placeholder="Ex. Koffi N'Guessan">
+                Un mot pour le demandeur (optionnel)
+                <textarea name="description" maxlength="500" rows="3" placeholder="Qui contacter, où trouver, quoi choisir…"></textarea>
               </label>
-              <label class="cash-form-label">
-                Ton téléphone <span aria-hidden="true">*</span>
-                <input name="identityPhone" type="tel" placeholder="Ex. 07 00 00 00 00">
-              </label>
+            </fieldset>
+
+            <fieldset class="cash-wizard-step" data-help-wizard-step="2" hidden>
+              <legend>Combien de temps faut-il pour réaliser cette mission ?</legend>
+              <p class="cash-help-subtitle">Sélectionne ton délai estimé</p>
+              <div class="cash-deadline-choices" role="radiogroup" id="cashDurationChoices">
+                <label class="cash-deadline-chip"><input type="radio" name="durationPreset" value="2:heures">2 heures</label>
+                <label class="cash-deadline-chip"><input type="radio" name="durationPreset" value="5:heures">5 heures</label>
+                <label class="cash-deadline-chip"><input type="radio" name="durationPreset" value="1:jours" checked>1 jour</label>
+                <label class="cash-deadline-chip"><input type="radio" name="durationPreset" value="2:jours">2 jours</label>
+                <label class="cash-deadline-chip"><input type="radio" name="durationPreset" value="3:jours">3 jours</label>
+                <label class="cash-deadline-chip"><input type="radio" name="durationPreset" value="autre">Autre</label>
+              </div>
+              <div id="cashDurationCustomFields" class="cash-identity-fields" hidden>
+                <label class="cash-form-label">
+                  Nombre
+                  <input name="durationCustomValue" type="number" min="1" step="1" inputmode="numeric" placeholder="Ex. 12">
+                </label>
+                <label class="cash-form-label">
+                  Unité
+                  <select name="durationCustomUnit">
+                    <option value="heures">heures</option>
+                    <option value="jours">jours</option>
+                  </select>
+                </label>
+              </div>
+            </fieldset>
+
+            <div class="cash-wizard-nav">
+              <button class="secondary" type="button" id="cashHelpWizardBack" hidden>← Retour</button>
+              <button class="cash-submit-btn" type="button" id="cashHelpWizardNext">Accepter la mission</button>
             </div>
-            <label class="cash-form-label">
-              Explique ta solution <span aria-hidden="true">*</span>
-              <textarea name="description" maxlength="500" required rows="4" placeholder="Qui contacter, où trouver, quoi choisir…"></textarea>
-            </label>
-            <label class="cash-form-label">
-              Contact à transmettre (optionnel)
-              <input name="contact" type="tel" placeholder="Ex. 07 00 00 00 00">
-            </label>
-            <label class="cash-form-label">
-              Prix estimé (optionnel)
-              <input name="priceHint" type="number" min="0" step="500" inputmode="numeric" placeholder="Ex. 150000">
-            </label>
-            <label class="cash-form-label">
-              Disponibilité (optionnel)
-              <input name="availability" type="text" maxlength="120" placeholder="Ex. Disponible dès aujourd'hui">
-            </label>
-            <button class="cash-submit-btn" type="submit">Envoyer ma solution</button>
+            <p class="cash-help-lock-note">🔒 Ton engagement sera transmis au demandeur immédiatement.</p>
           </form>
+        </div>
+      </div>
+
+      <!-- Dialog : confirmation generique (choisir un solveur / finaliser) -->
+      <div id="cashConfirmDialog" class="cash-dialog-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="cashConfirmTitle">
+        <div class="cash-dialog">
+          <div class="cash-dialog-head">
+            <h3 id="cashConfirmTitle">Confirmer ?</h3>
+            <button class="cash-dialog-close" type="button" data-cash-close-confirm aria-label="Fermer">×</button>
+          </div>
+          <div class="cash-dialog-body">
+            <p id="cashConfirmMessage"></p>
+            <button class="cash-submit-btn" type="button" id="cashConfirmActionBtn">Confirmer</button>
+            <button class="secondary" type="button" data-cash-close-confirm>Annuler</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dialog : confirmation d'envoi de la proposition -->
+      <div id="cashHelpSentDialog" class="cash-dialog-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="cashHelpSentTitle">
+        <div class="cash-dialog">
+          <div class="cash-dialog-head">
+            <h3 id="cashHelpSentTitle">C'est envoyé ! 🎉</h3>
+          </div>
+          <div class="cash-dialog-body">
+            <p>Le demandeur a reçu ta proposition.</p>
+            <p id="cashHelpSentDuration" class="cash-help-sent-duration"></p>
+            <button class="cash-submit-btn" type="button" id="cashHelpSentGoBtn">Voir mes solutions</button>
+          </div>
         </div>
       </div>
 
@@ -1851,7 +1923,7 @@
   <script src="js/mobile-form-wizard.js?v=304"></script>
   <script src="js/zeyds-favorites.js?v=2"></script>
   <script src="js/zeyds-messages.js?v=1"></script>
-  <script src="js/zeyds-cash.js?v=308"></script>
+  <script src="js/zeyds-cash.js?v=309"></script>
   <script src="js/zeyds-jobs.js?v=3"></script>
   <script src="js/motion-system.js?v=304"></script>
   <script src="app.js?v=404"></script>

@@ -7893,7 +7893,12 @@ async function syncSupabasePublicData(button = null, options = {}) {
         : payment
     )) : [];
     nextState.ads = [];
-    if (Array.isArray(reviews)) nextState.reviews = reviews.map((review) => reviewFromSupabase(review, nextState.providers));
+    if (Array.isArray(reviews)) {
+      const remoteReviews = reviews.map((review) => reviewFromSupabase(review, nextState.providers));
+      const remoteReviewIds = new Set(remoteReviews.map((review) => review.remoteId).filter(Boolean));
+      const localOnlyReviews = (nextState.reviews || []).filter((review) => !review.remoteId || !remoteReviewIds.has(review.remoteId));
+      nextState.reviews = [...remoteReviews, ...localOnlyReviews];
+    }
     if (Array.isArray(jobs)) nextState.jobOffers = jobs.map(jobOfferFromSupabase);
     if (Array.isArray(events)) {
       const remoteEvents = events.map(eventPromotionFromSupabase);

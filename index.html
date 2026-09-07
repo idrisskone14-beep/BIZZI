@@ -152,7 +152,7 @@
 
       <div id="cashReturnBar" class="life-return-bar" hidden>
         <button type="button" data-cash-open-feed>← Revenir à Zeyds Cash</button>
-        <span id="cashReturnLabel">Vos besoins et propositions sont conservés.</span>
+        <span id="cashReturnLabel">Vos missions et propositions sont conservées.</span>
       </div>
 
       <section id="view-home" class="view active">
@@ -210,7 +210,7 @@
               <button type="button" data-go="food" aria-label="Ouvrir Food"><span class="premium-path-emoji green" aria-hidden="true">🍔</span><strong>Food<small>Commandez vos repas</small></strong></button>
               <button type="button" data-go="events" aria-label="Ouvrir Événements"><span class="premium-path-emoji purple" aria-hidden="true">📅</span><strong>Événements<small>Sorties &amp; activités</small></strong></button>
               <button type="button" data-go="jobs" aria-label="Ouvrir Emploi"><span class="premium-path-emoji blue" aria-hidden="true">💼</span><strong>Emplois<small>Trouvez votre job</small></strong></button>
-              <button type="button" data-go="cash" aria-label="Ouvrir Zeyds Cash"><span class="premium-path-emoji gold" aria-hidden="true">💸</span><strong>Zeyds Cash<small>Besoins &amp; récompenses</small></strong></button>
+              <button type="button" data-go="cash" aria-label="Ouvrir Zeyds Cash"><span class="premium-path-emoji gold" aria-hidden="true">💸</span><strong>Zeyds Cash<small>Missions &amp; récompenses</small></strong></button>
               <button type="button" data-go="exception-places" aria-label="Ouvrir Lieux d'exception"><span class="premium-path-emoji green" aria-hidden="true">📍</span><strong>Lieux d'exception<small>Adresses uniques</small></strong></button>
             </div>
           </section>
@@ -289,9 +289,9 @@
               <span aria-hidden="true">💸</span> Zeyds Cash
             </div>
             <h2 id="cashTitle" class="cash-hero-tagline">Tu cherches&nbsp;? Publie.<br>Tu trouves&nbsp;? Tu gagnes.</h2>
-            <p class="cash-hero-sub">Publie un besoin gratuitement ou avec récompense. Propose une solution et gagne en FCFA.</p>
+            <p class="cash-hero-sub">Publie une mission avec une prime. Propose une solution et gagne en FCFA.</p>
             <div class="cash-hero-actions">
-              <button class="cash-hero-cta" type="button" data-cash-publish>+ Publier un besoin</button>
+              <button class="cash-hero-cta" type="button" data-cash-publish>+ Publier une mission</button>
               <button class="cash-hero-cta-ghost" type="button" data-cash-open-personal>Mes recherches &amp; gains</button>
               <div class="cash-notif-btn-wrap">
                 <button id="cashNotifBtn" type="button" aria-label="Notifications Zeyds Cash">🔔 Notifs <span id="cashNotifBadge" hidden></span></button>
@@ -306,9 +306,9 @@
           <div id="cashCreditBanner" class="cash-credit-banner" hidden></div>
 
           <!-- Feed section -->
-          <section id="cashFeedSection" aria-label="Besoins publiés">
+          <section id="cashFeedSection" aria-label="Missions publiées">
             <div class="cash-section-head">
-              <h2>Besoins du moment</h2>
+              <h2>Missions du moment</h2>
             </div>
 
             <!-- Filters -->
@@ -330,11 +330,11 @@
             </div>
 
             <!-- Feed -->
-            <div id="cashFeed" aria-live="polite" aria-label="Liste des besoins"></div>
+            <div id="cashFeed" aria-live="polite" aria-label="Liste des missions"></div>
           </section>
 
           <!-- Need detail (hidden by default) -->
-          <section id="cashNeedDetail" hidden aria-live="polite" aria-label="Détail du besoin"></section>
+          <section id="cashNeedDetail" hidden aria-live="polite" aria-label="Détail de la mission"></section>
 
           <!-- Personal space (hidden by default) -->
           <section id="cashPersonalSection" hidden aria-label="Mon espace Zeyds Cash">
@@ -343,7 +343,7 @@
               <button class="cash-back-btn" type="button" data-cash-open-feed>← Retour</button>
             </div>
             <nav class="cash-personal-tabs" id="cashPersonalTabs" role="tablist">
-              <button class="cash-personal-tab" role="tab" type="button" data-cash-tab="mes-besoins" aria-selected="true">Mes besoins</button>
+              <button class="cash-personal-tab" role="tab" type="button" data-cash-tab="mes-besoins" aria-selected="true">Mes missions</button>
               <button class="cash-personal-tab" role="tab" type="button" data-cash-tab="mes-solutions" aria-selected="false">Mes solutions</button>
               <button class="cash-personal-tab" role="tab" type="button" data-cash-tab="portefeuille" aria-selected="false">Portefeuille 💰</button>
             </nav>
@@ -365,7 +365,7 @@
       <div id="cashPublishDialog" class="cash-dialog-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="cashPublishTitle">
         <div class="cash-dialog">
           <div class="cash-dialog-head">
-            <h3 id="cashPublishTitle">Publier un besoin</h3>
+            <h3 id="cashPublishTitle">Publier une mission</h3>
             <button class="cash-dialog-close" type="button" data-cash-close-publish aria-label="Fermer">×</button>
           </div>
           <div class="cash-wizard-steps" id="cashWizardSteps" aria-hidden="true">
@@ -1608,9 +1608,9 @@
           <section class="panel" id="cashAdminSection">
             <div class="section-head">
               <h2>Zeyds Cash</h2>
-              <span class="tag">Besoins &amp; récompenses</span>
+              <span class="tag">Missions &amp; récompenses</span>
             </div>
-            <p>Gérez les besoins publiés, les solutions proposées, les récompenses et configurez la commission Zeyds.</p>
+            <p>Gérez les missions publiées, les solutions proposées, les récompenses et configurez la commission Zeyds.</p>
             <div id="cashAdminPanel"></div>
           </section>
           <section class="panel remote-admin-panel">

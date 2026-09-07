@@ -23,6 +23,7 @@ const ASSETS = [
   "./js/admin-dashboard.js?v=240",
   "./js/geo-precision.js?v=304",
   "./js/maps-provider.js?v=304",
+  "./js/providers-map.js?v=304",
   "./js/location-intelligence.js?v=304",
   "./js/network-lite.js?v=240",
   "./js/voice-access.js?v=240",

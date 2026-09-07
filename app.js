@@ -1515,8 +1515,6 @@ function normalizeState(draft) {
   draft.reviews = Array.isArray(draft.reviews) ? draft.reviews : [];
   draft.jobOffers = Array.isArray(draft.jobOffers) ? draft.jobOffers.map(normalizeJobOffer) : [];
   draft.leads = Array.isArray(draft.leads) ? draft.leads : [];
-  draft.favorites = [];
-  draft.recentProviders = [];
   draft.providers = draft.providers.map((provider) => {
     const seeded = seed.providers.find((item) => item.id === provider.id) || {};
     const distanceKm = Number(provider.distanceKm ?? seeded.distanceKm ?? parseFloat(String(provider.distance).replace(",", ".")) ?? 20);
@@ -1630,10 +1628,6 @@ function renderCityOptions() {
   const citySelect = document.querySelector("#citySelect");
   citySelect.innerHTML = NATIONAL_CITIES.map((city) => `<option>${safe(city)}</option>`).join("");
   citySelect.value = state.selectedCity;
-}
-
-function isFavorite(providerId) {
-  return false;
 }
 
 function providerVisibleToClients(provider) {
@@ -2397,17 +2391,6 @@ function reliabilityBadge(provider) {
   return `<span class="tag reliability ${info.className}">Score ${info.score}/100 - ${safe(info.label)}</span>`;
 }
 
-function toggleFavorite(providerId) {
-  state.favorites = [];
-  saveState();
-  renderProviders();
-  renderDelivery();
-}
-
-function rememberRecentProvider(providerId) {
-  state.recentProviders = [];
-  saveState();
-}
 
 const views = {
   home: document.querySelector("#view-home"),
@@ -12946,32 +12929,9 @@ function renderHomeDiscovery() {
   bindEventActionTracking(boostedEventsRoot);
 }
 
-function savedProviderCard(provider, options = {}) {
-  const favorite = isFavorite(provider.id);
-  return `
-    <article class="saved-card">
-      ${providerMedia(provider)}
-      <div>
-        <h3>${safe(provider.fullName)}</h3>
-        <p>${safe(providerServicesLabel(provider))} - ${safe(provider.area)}</p>
-        <div class="meta">
-          ${verificationBadge(provider)}
-          <span class="tag ok">${safe(distanceLabel(provider))}</span>
-          <span class="tag">${safe(provider.city)}</span>
-        </div>
-      </div>
-      <div class="saved-actions">
-        <button class="secondary" data-open-saved="${safe(provider.id)}">Voir</button>
-        ${options.allowFavorite ? `<button class="secondary" data-toggle-saved="${safe(provider.id)}">${favorite ? "Retirer" : "Garder"}</button>` : ""}
-      </div>
-    </article>
-  `;
-}
-
-function renderSavedProviders() {
-  state.favorites = [];
-  state.recentProviders = [];
-}
+// Remplace par le module centralise js/zeyds-favorites.js (BizziFavorites) -
+// conserve comme no-op car appele a de nombreux points du cycle de rendu.
+function renderSavedProviders() {}
 
 function currentCity() {
   return document.querySelector("#citySelect").value || state.selectedCity || "Toute la Côte d'Ivoire";
@@ -13125,7 +13085,7 @@ function renderProviders() {
   `;
   const pagination = directoryActive && providerDirectoryState.mode === "server_cursor" && (providers.length || providerDirectoryState.hasMore) ? `
     <div class="provider-pagination-status">
-      ${providerDirectoryState.hasMore ? `<button class="secondary" type="button" data-provider-directory-more ${providerDirectoryState.loading ? "disabled" : ""}>${providerDirectoryState.loading ? "Chargement..." : "Voir plus de prestataires"}</button>` : ""}
+      ${providerDirectoryState.hasMore ? `<button class="secondary" type="button" data-provider-directory-more aria-busy="${providerDirectoryState.loading}" ${providerDirectoryState.loading ? "disabled" : ""}>${providerDirectoryState.loading ? "Chargement..." : "Voir plus de prestataires"}</button>` : ""}
     </div>
   ` : "";
   list.innerHTML = `${providers.length ? providers.map(providerCard).join("") : emptyState}${pagination}`;

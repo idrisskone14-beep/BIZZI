@@ -42,7 +42,7 @@
   color: #fff;
   background:
     radial-gradient(circle at 90% 12%, rgba(5, 139, 131, .34), transparent 32%),
-    linear-gradient(140deg, #05132c 0%, #08245c 60%, #0d3270 100%);
+    linear-gradient(140deg, #05132c 0%, var(--brand) 60%, #0d3270 100%);
   box-shadow: 0 16px 40px rgba(8, 36, 92, .22);
 }
 
@@ -99,7 +99,7 @@
 
 .jobs-cta-primary {
   border-color: transparent;
-  background: linear-gradient(135deg, #058b83, #0bb3a8);
+  background: linear-gradient(135deg, var(--teal), #0bb3a8);
   box-shadow: 0 8px 20px rgba(5, 139, 131, .32);
 }
 
@@ -132,7 +132,7 @@
   border: 1px solid rgba(8, 36, 92, .14);
   border-radius: 999px;
   background: #fff;
-  color: #2c3e6b;
+  color: var(--navy-soft);
   font-size: 12.5px;
   font-weight: 700;
   white-space: nowrap;
@@ -142,8 +142,8 @@
 }
 
 .jobs-subnav-tab.active {
-  background: var(--brand, #08245c);
-  border-color: var(--brand, #08245c);
+  background: var(--brand, var(--brand));
+  border-color: var(--brand, var(--brand));
   color: #fff;
 }
 
@@ -176,10 +176,10 @@
   padding: 0 14px;
   border: 1px solid rgba(8, 36, 92, .16);
   border-radius: 13px;
-  background: #f8faff;
+  background: var(--tint);
   font: inherit;
   font-size: 16px;
-  color: #10233f;
+  color: var(--navy);
   box-sizing: border-box;
 }
 
@@ -188,7 +188,7 @@
   min-height: 46px;
   border: 0;
   border-radius: 13px;
-  background: linear-gradient(135deg, #058b83, #0bb3a8);
+  background: linear-gradient(135deg, var(--teal), #0bb3a8);
   color: #fff;
   font-weight: 900;
   font-size: 14px;
@@ -214,7 +214,7 @@
   background: #fff;
   font: inherit;
   font-size: 13.5px;
-  color: #10233f;
+  color: var(--navy);
 }
 
 .jobs-locate-btn {
@@ -224,7 +224,7 @@
   border: 1px solid rgba(8, 36, 92, .14);
   border-radius: 12px;
   background: #fff;
-  color: #2c3e6b;
+  color: var(--navy-soft);
   font-weight: 700;
   font-size: 12.5px;
   cursor: pointer;
@@ -248,7 +248,7 @@
   border: 1px solid rgba(8, 36, 92, .14);
   border-radius: 12px;
   background: #fff;
-  color: #2c3e6b;
+  color: var(--navy-soft);
   font-weight: 800;
   font-size: 13px;
   cursor: pointer;
@@ -257,8 +257,8 @@
 }
 
 .jobs-type-tab.active {
-  background: var(--teal, #058b83);
-  border-color: var(--teal, #058b83);
+  background: var(--teal, var(--teal));
+  border-color: var(--teal, var(--teal));
   color: #fff;
 }
 
@@ -278,7 +278,7 @@
   font-size: clamp(16px, 4.5vw, 20px);
   font-weight: 900;
   letter-spacing: -.01em;
-  color: #10233f;
+  color: var(--navy);
 }
 
 /* Déclutter des cartes offres dans Zeyds Jobs : le bouton "Copier"
@@ -316,7 +316,7 @@
   border: 1px solid rgba(8, 36, 92, .12);
   border-radius: 12px;
   background: #fff;
-  color: #10233f;
+  color: var(--navy);
   font-weight: 800;
   font-size: 14px;
   cursor: pointer;
@@ -342,13 +342,13 @@
   min-width: 0;
   font-size: clamp(19px, 5.5vw, 28px);
   font-weight: 950;
-  color: #10233f;
+  color: var(--navy);
   word-break: break-word;
 }
 
 .jobs-detail-company {
   margin: 0;
-  color: #5a6270;
+  color: var(--gray-soft);
   font-weight: 700;
   font-size: 13.5px;
 }
@@ -366,7 +366,7 @@
   gap: 8px 14px;
   min-width: 0;
   font-size: 13px;
-  color: #3d4a5c;
+  color: var(--gray-deep);
 }
 
 .jobs-detail-facts span {
@@ -391,13 +391,13 @@
   margin: 0;
   font-size: 14px;
   font-weight: 900;
-  color: #10233f;
+  color: var(--navy);
 }
 
 .jobs-detail-section p {
   margin: 0;
   font-size: 13.5px;
-  color: #4a5568;
+  color: var(--gray-dark);
   line-height: 1.6;
   overflow-wrap: anywhere;
 }
@@ -432,11 +432,11 @@
   border: 1px dashed rgba(8, 36, 92, .14);
   border-radius: 16px;
   text-align: center;
-  color: #7e8794;
+  color: var(--gray);
 }
 
 .jobs-empty span { font-size: 32px; }
-.jobs-empty strong { font-size: 15px; color: #10233f; }
+.jobs-empty strong { font-size: 15px; color: var(--navy); }
 .jobs-empty p { margin: 0; font-size: 13px; }
 
 /* ---- Profil candidat --------------------------------------------------- */
@@ -458,14 +458,14 @@
 .jobs-profile-bar-fill {
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, #058b83, #0bb3a8);
+  background: linear-gradient(90deg, var(--teal), #0bb3a8);
   transition: width .3s ease;
 }
 
 #jobsProfileCompletionLabel {
   font-size: 12.5px;
   font-weight: 700;
-  color: #5a6270;
+  color: var(--gray-soft);
 }
 
 .jobs-form {
@@ -492,7 +492,7 @@
   margin: 0;
   font-size: 14px;
   font-weight: 900;
-  color: #10233f;
+  color: var(--navy);
 }
 
 .jobs-form-section-head {
@@ -505,7 +505,7 @@
 .jobs-form-hint {
   margin: 0;
   font-size: 12px;
-  color: #7e8794;
+  color: var(--gray);
 }
 
 .jobs-form-grid {
@@ -524,7 +524,7 @@
   min-width: 0;
   font-size: 13px;
   font-weight: 800;
-  color: #2c3e6b;
+  color: var(--navy-soft);
 }
 
 .jobs-form-label-full { grid-column: 1 / -1; }
@@ -538,10 +538,10 @@
   padding: 0 13px;
   border: 1px solid rgba(8, 36, 92, .16);
   border-radius: 12px;
-  background: #f8faff;
+  background: var(--tint);
   font: inherit;
   font-size: 16px;
-  color: #10233f;
+  color: var(--navy);
   box-sizing: border-box;
 }
 
@@ -558,14 +558,14 @@
   min-width: 0;
   font-size: 13.5px;
   font-weight: 700;
-  color: #2c3e6b;
+  color: var(--navy-soft);
 }
 
 .jobs-availability-toggle input {
   width: 20px;
   height: 20px;
   flex-shrink: 0;
-  accent-color: var(--teal, #058b83);
+  accent-color: var(--teal, var(--teal));
 }
 
 .jobs-form-submit {
@@ -588,7 +588,7 @@
   padding: 0 13px;
   border: 1px solid rgba(8, 36, 92, .16);
   border-radius: 12px;
-  background: #f8faff;
+  background: var(--tint);
   font: inherit;
   font-size: 16px;
   box-sizing: border-box;
@@ -643,7 +643,7 @@
   max-width: 100%;
   padding: 12px;
   border-radius: 13px;
-  background: #f8faff;
+  background: var(--tint);
   border: 1px solid rgba(8, 36, 92, .1);
 }
 
@@ -654,7 +654,7 @@
   border: 0;
   border-radius: 10px;
   background: rgba(220, 60, 60, .1);
-  color: #c0392b;
+  color: var(--red);
   font-weight: 700;
   font-size: 12px;
   cursor: pointer;
@@ -700,27 +700,27 @@
   min-width: 0;
   font-size: 15px;
   font-weight: 900;
-  color: #10233f;
+  color: var(--navy);
   word-break: break-word;
 }
 
 .jobs-application-card p {
   margin: 0;
   font-size: 13px;
-  color: #5a6270;
+  color: var(--gray-soft);
 }
 
 .jobs-application-date {
   font-size: 11.5px;
-  color: #9ca3af;
+  color: var(--gray-light);
 }
 
 .jobs-status-Envoyée { background: rgba(0, 122, 255, .1); color: #0056b3; }
 .jobs-status-Vue { background: rgba(8, 36, 92, .08); color: #3a4d6e; }
 .jobs-status-Présélectionné { background: rgba(255, 149, 0, .12); color: #b06a00; }
 .jobs-status-Entretien { background: rgba(155, 89, 182, .12); color: #7a3d9e; }
-.jobs-status-Retenu { background: rgba(20, 168, 105, .12); color: #0e7a53; }
-.jobs-status-Non-retenu { background: rgba(220, 60, 60, .1); color: #c0392b; }
+.jobs-status-Retenu { background: rgba(20, 168, 105, .12); color: var(--green); }
+.jobs-status-Non-retenu { background: rgba(220, 60, 60, .1); color: var(--red); }
 
 /* ---- Alertes ------------------------------------------------------------ */
 .jobs-alert-form {
@@ -762,7 +762,7 @@
 .jobs-alert-card strong {
   min-width: 0;
   overflow-wrap: anywhere;
-  color: #10233f;
+  color: var(--navy);
 }
 
 /* ---- Espace recruteur ---------------------------------------------------- */
@@ -805,12 +805,12 @@
 .jobs-kpi-card strong {
   font-size: clamp(18px, 5vw, 24px);
   font-weight: 950;
-  color: #10233f;
+  color: var(--navy);
 }
 
 .jobs-kpi-card span {
   font-size: 10.5px;
-  color: #7e8794;
+  color: var(--gray);
   text-transform: uppercase;
   letter-spacing: .04em;
   font-weight: 700;
@@ -831,7 +831,7 @@
   border: 1px solid rgba(8, 36, 92, .14);
   border-radius: 12px;
   background: #fff;
-  color: #2c3e6b;
+  color: var(--navy-soft);
   font-weight: 800;
   font-size: 12.5px;
   cursor: pointer;
@@ -839,8 +839,8 @@
 }
 
 .jobs-recruiter-tab.active {
-  background: var(--brand, #08245c);
-  border-color: var(--brand, #08245c);
+  background: var(--brand, var(--brand));
+  border-color: var(--brand, var(--brand));
   color: #fff;
 }
 
@@ -878,12 +878,12 @@
 .jobs-recruiter-offer-row strong {
   min-width: 0;
   overflow-wrap: anywhere;
-  color: #10233f;
+  color: var(--navy);
 }
 
 .jobs-recruiter-offer-meta {
   font-size: 12px;
-  color: #7e8794;
+  color: var(--gray);
 }
 
 .jobs-candidate-card {
@@ -910,12 +910,12 @@
 .jobs-candidate-head strong {
   min-width: 0;
   overflow-wrap: anywhere;
-  color: #10233f;
+  color: var(--navy);
 }
 
 .jobs-candidate-job {
   font-size: 12px;
-  color: #7e8794;
+  color: var(--gray);
 }
 
 .jobs-candidate-meta {
@@ -924,7 +924,7 @@
   gap: 6px 10px;
   min-width: 0;
   font-size: 12.5px;
-  color: #5a6270;
+  color: var(--gray-soft);
 }
 
 .jobs-candidate-actions {
@@ -940,11 +940,11 @@
   display: grid;
   gap: 4px;
   font-size: 12px;
-  color: #5a6270;
+  color: var(--gray-soft);
 }
 
 .jobs-notes-list small {
-  color: #9ca3af;
+  color: var(--gray-light);
   margin-left: 4px;
 }
 

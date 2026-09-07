@@ -223,7 +223,7 @@
         <span>⏱️ ${safe(timeLeft(m.deadline_at || m.expires_at))}</span>
         <span class="cash-sols-pill">${count}/${maxActive} solution${count !== 1 ? "s" : ""}</span>
       </div>
-      <button class="cash-solution-cta" type="button" data-cash-open-need="${safe(m.id)}">J'AI LA SOLUTION</button>
+      <button class="cash-solution-cta" type="button" data-cash-open-need="${safe(m.id)}">JE PEUX AIDER</button>
     </article>`;
   }
 
@@ -244,7 +244,7 @@
           <span>💸</span>
           <strong>Aucune mission publiée pour l'instant.</strong>
           <p>Sois le premier à publier une recherche rémunérée.</p>
-          <button class="cash-publish-cta" type="button" data-cash-publish>+ Publier un besoin</button>
+          <button class="cash-publish-cta" type="button" data-cash-publish>+ Publier une mission</button>
         </div>`;
         return;
       }

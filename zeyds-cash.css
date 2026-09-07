@@ -139,7 +139,7 @@
   border: 0;
   border-radius: 13px;
   color: #fff;
-  background: linear-gradient(135deg, #f46614, #ff9c38);
+  background: linear-gradient(135deg, var(--orange), var(--orange-light));
   box-shadow: 0 8px 20px rgba(255, 103, 22, .3);
   font-weight: 900;
   font-size: 14px;
@@ -196,7 +196,7 @@
 .cash-stat strong {
   font-size: clamp(15px, 4vw, 22px);
   font-weight: 950;
-  color: #ff9c38;
+  color: var(--orange-light);
   letter-spacing: -.02em;
 }
 
@@ -235,7 +235,7 @@
   border: 1px solid rgba(8, 36, 92, .14);
   border-radius: 999px;
   background: #fff;
-  color: #2c3e6b;
+  color: var(--navy-soft);
   font-size: 12.5px;
   font-weight: 700;
   white-space: nowrap;
@@ -250,8 +250,8 @@
 
 .cash-filter-chip.active,
 .cash-filter-chip[aria-pressed="true"] {
-  background: #f46614;
-  border-color: #f46614;
+  background: var(--orange);
+  border-color: var(--orange);
   color: #fff;
 }
 
@@ -280,7 +280,7 @@
   font-size: clamp(16px, 4.5vw, 22px);
   font-weight: 950;
   letter-spacing: -.02em;
-  color: #10233f;
+  color: var(--navy);
 }
 
 .cash-count-badge {
@@ -290,7 +290,7 @@
   height: 26px;
   padding: 0 7px;
   border-radius: 999px;
-  background: #f46614;
+  background: var(--orange);
   color: #fff;
   font-size: 11px;
   font-weight: 900;
@@ -339,7 +339,7 @@
   padding: 3px 10px;
   border-radius: 999px;
   background: rgba(8, 36, 92, .07);
-  color: #2c3e6b;
+  color: var(--navy-soft);
   font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
@@ -351,7 +351,7 @@
   padding: 3px 10px;
   border-radius: 999px;
   background: rgba(20, 168, 105, .12);
-  color: #0e7a53;
+  color: var(--green);
   font-size: 12px;
   font-weight: 800;
   max-width: 100%;
@@ -370,7 +370,7 @@
   padding: 3px 10px;
   border-radius: 999px;
   background: rgba(20, 168, 105, .12);
-  color: #0e7a53;
+  color: var(--green);
   font-size: 11px;
   font-weight: 800;
 }
@@ -379,7 +379,7 @@
   padding: 3px 10px;
   border-radius: 999px;
   background: rgba(8, 36, 92, .08);
-  color: #7e8794;
+  color: var(--gray);
   font-size: 11px;
   font-weight: 700;
 }
@@ -390,7 +390,7 @@
   font-size: 15px;
   font-weight: 900;
   letter-spacing: -.01em;
-  color: #10233f;
+  color: var(--navy);
   line-height: 1.28;
   word-break: break-word;
 }
@@ -399,7 +399,7 @@
   margin: 0;
   min-width: 0;
   font-size: 12.5px;
-  color: #5a6270;
+  color: var(--gray-soft);
   line-height: 1.5;
   word-break: break-word;
 }
@@ -411,7 +411,7 @@
   align-items: center;
   min-width: 0;
   font-size: 11.5px;
-  color: #7e8794;
+  color: var(--gray);
 }
 
 .cash-card-meta > span {
@@ -451,7 +451,7 @@
   border: 1px dashed rgba(8, 36, 92, .14);
   border-radius: 16px;
   text-align: center;
-  color: #7e8794;
+  color: var(--gray);
 }
 
 .cash-empty span {
@@ -460,7 +460,7 @@
 
 .cash-empty strong {
   font-size: 15px;
-  color: #10233f;
+  color: var(--navy);
 }
 
 .cash-empty p {
@@ -493,7 +493,7 @@
   border: 1px solid rgba(8, 36, 92, .12);
   border-radius: 12px;
   background: #fff;
-  color: #10233f;
+  color: var(--navy);
   font-weight: 800;
   font-size: 14px;
   cursor: pointer;
@@ -508,7 +508,7 @@
   padding: 0 10px;
   border: 0;
   background: transparent;
-  color: #9ca3af;
+  color: var(--gray-light);
   font-size: 12.5px;
   font-weight: 700;
   cursor: pointer;
@@ -537,7 +537,7 @@
   font-size: clamp(19px, 5.5vw, 30px);
   font-weight: 950;
   letter-spacing: -.02em;
-  color: #10233f;
+  color: var(--navy);
   word-break: break-word;
 }
 
@@ -545,7 +545,7 @@
   margin: 0;
   min-width: 0;
   font-size: 14px;
-  color: #4a5568;
+  color: var(--gray-dark);
   line-height: 1.6;
   word-break: break-word;
 }
@@ -572,7 +572,7 @@
   gap: 6px 10px;
   min-width: 0;
   font-size: 13px;
-  color: #4a5568;
+  color: var(--gray-dark);
 }
 
 .cash-reward-row > span {
@@ -586,7 +586,7 @@
   flex-shrink: 0;
   font-size: 14px;
   font-weight: 900;
-  color: #0e7a53;
+  color: var(--green);
 }
 
 .cash-gain-highlight {
@@ -601,7 +601,7 @@
   align-items: center;
   min-width: 0;
   font-size: 11.5px;
-  color: #7e8794;
+  color: var(--gray);
 }
 
 .cash-provider-chip {
@@ -629,7 +629,7 @@
   border: 1px solid rgba(8, 36, 92, .14);
   border-radius: 14px;
   background: #fff;
-  color: #10233f;
+  color: var(--navy);
   font-weight: 800;
   font-size: 13.5px;
   display: flex;
@@ -649,7 +649,7 @@
 }
 
 .cash-propose-accent {
-  background: linear-gradient(135deg, #f46614, #ff9c38);
+  background: linear-gradient(135deg, var(--orange), var(--orange-light));
   border-color: transparent;
   color: #fff;
   box-shadow: 0 8px 20px rgba(244, 102, 20, .28);
@@ -691,7 +691,7 @@
   border: 1px dashed rgba(8, 36, 92, .12);
   border-radius: 13px;
   text-align: center;
-  color: #7e8794;
+  color: var(--gray);
   font-size: 13.5px;
 }
 
@@ -744,25 +744,25 @@
   min-width: 0;
   font-size: 11.5px;
   font-weight: 800;
-  color: #2c3e6b;
+  color: var(--navy-soft);
 }
 
 .cash-sol-status {
   flex-shrink: 0;
   font-size: 11px;
   font-weight: 800;
-  color: #7e8794;
+  color: var(--gray);
 }
 
-.cash-sol-accepted .cash-sol-status { color: #0e7a53; }
-.cash-sol-refused .cash-sol-status { color: #c0392b; }
+.cash-sol-accepted .cash-sol-status { color: var(--green); }
+.cash-sol-refused .cash-sol-status { color: var(--red); }
 .cash-sol-pending .cash-sol-status { color: #e08520; }
 
 .cash-sol-card p {
   margin: 0;
   min-width: 0;
   font-size: 13.5px;
-  color: #3d4a5c;
+  color: var(--gray-deep);
   line-height: 1.5;
   word-break: break-word;
 }
@@ -785,7 +785,7 @@
   gap: 8px 10px;
   min-width: 0;
   font-size: 11.5px;
-  color: #9ca3af;
+  color: var(--gray-light);
 }
 
 .cash-sol-need-title {
@@ -796,10 +796,10 @@
   white-space: nowrap;
   font-size: 13.5px;
   font-weight: 900;
-  color: #10233f;
+  color: var(--navy);
 }
 
-.cash-sol-time { font-size: 11.5px; color: #9ca3af; flex-shrink: 0; }
+.cash-sol-time { font-size: 11.5px; color: var(--gray-light); flex-shrink: 0; }
 
 .cash-sol-actions {
   display: flex;
@@ -831,7 +831,7 @@
   border: 1px solid rgba(8, 36, 92, .14);
   border-radius: 11px;
   background: #fff;
-  color: #7e8794;
+  color: var(--gray);
   font-weight: 800;
   font-size: 13px;
   cursor: pointer;
@@ -857,7 +857,7 @@
   border: 0;
   border-radius: 11px;
   background: transparent;
-  color: #5a6270;
+  color: var(--gray-soft);
   font-weight: 800;
   font-size: 11.5px;
   padding: 0 4px;
@@ -871,7 +871,7 @@
 
 .cash-personal-tab[aria-selected="true"] {
   background: #fff;
-  color: #f46614;
+  color: var(--orange);
   box-shadow: 0 2px 8px rgba(8, 36, 92, .08);
 }
 
@@ -938,7 +938,7 @@
   white-space: nowrap;
   font-size: 13.5px;
   font-weight: 900;
-  color: #10233f;
+  color: var(--navy);
 }
 
 /* ---- Publish / propose dialogs — bottom sheet sur mobile ------------- */
@@ -989,7 +989,7 @@
   min-width: 0;
   font-size: 16px;
   font-weight: 950;
-  color: #10233f;
+  color: var(--navy);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1002,7 +1002,7 @@
   border: 0;
   border-radius: 50%;
   background: rgba(8, 36, 92, .06);
-  color: #5a6270;
+  color: var(--gray-soft);
   font-size: 20px;
   line-height: 1;
   cursor: pointer;
@@ -1030,7 +1030,7 @@
   min-width: 0;
   font-size: 13px;
   font-weight: 800;
-  color: #2c3e6b;
+  color: var(--navy-soft);
 }
 
 .cash-form-label input,
@@ -1042,8 +1042,8 @@
   padding: 0 14px;
   border: 1px solid rgba(8, 36, 92, .16);
   border-radius: 13px;
-  background: #f8faff;
-  color: #10233f;
+  background: var(--tint);
+  color: var(--navy);
   font: inherit;
   font-size: 16px; /* évite le zoom automatique iOS au focus */
   box-sizing: border-box;
@@ -1054,7 +1054,7 @@
 .cash-form-label textarea:focus,
 .cash-form-label select:focus {
   outline: 0;
-  border-color: #f46614;
+  border-color: var(--orange);
   background: #fff;
 }
 
@@ -1072,7 +1072,7 @@
   min-width: 0;
   font-size: 14px;
   font-weight: 800;
-  color: #2c3e6b;
+  color: var(--navy-soft);
 }
 
 .cash-reward-toggle-row input[type="checkbox"] {
@@ -1080,7 +1080,7 @@
   height: 22px;
   min-height: 0;
   flex-shrink: 0;
-  accent-color: #f46614;
+  accent-color: var(--orange);
   cursor: pointer;
 }
 
@@ -1089,7 +1089,7 @@
   min-height: 52px;
   border: 0;
   border-radius: 15px;
-  background: linear-gradient(135deg, #f46614, #ff9c38);
+  background: linear-gradient(135deg, var(--orange), var(--orange-light));
   color: #fff;
   font-weight: 900;
   font-size: 15px;
@@ -1114,7 +1114,7 @@
   border: 1px solid rgba(8, 36, 92, .12);
   border-radius: 12px;
   background: #fff;
-  color: #10233f;
+  color: var(--navy);
   font-weight: 800;
   font-size: 12.5px;
   cursor: pointer;
@@ -1133,7 +1133,7 @@
   height: 18px;
   padding: 0 5px;
   border-radius: 999px;
-  background: #f46614;
+  background: var(--orange);
   color: #fff;
   font-size: 10px;
   font-weight: 900;
@@ -1174,20 +1174,20 @@
 }
 
 .cash-notif-item:last-child { border-bottom: 0; }
-.cash-notif-item:hover { background: #f8faff; }
+.cash-notif-item:hover { background: var(--tint); }
 
 .cash-notif-item.unread { background: rgba(244, 102, 20, .05); }
-.cash-notif-item.unread .cash-notif-msg { color: #10233f; }
+.cash-notif-item.unread .cash-notif-msg { color: var(--navy); }
 
 .cash-notif-msg {
   min-width: 0;
   font-size: 12.5px;
   font-weight: 700;
-  color: #3d4a5c;
+  color: var(--gray-deep);
   word-break: break-word;
 }
 
-.cash-notif-time { font-size: 11px; color: #9ca3af; }
+.cash-notif-time { font-size: 11px; color: var(--gray-light); }
 
 /* ---- Publish CTA inline ------------------------------------------- */
 .cash-publish-cta {
@@ -1195,7 +1195,7 @@
   padding: 0 20px;
   border: 0;
   border-radius: 13px;
-  background: linear-gradient(135deg, #f46614, #ff9c38);
+  background: linear-gradient(135deg, var(--orange), var(--orange-light));
   color: #fff;
   font-weight: 900;
   font-size: 14px;
@@ -1228,7 +1228,7 @@
 .cash-admin-stat strong {
   font-size: clamp(17px, 5vw, 22px);
   font-weight: 950;
-  color: #10233f;
+  color: var(--navy);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1236,7 +1236,7 @@
 
 .cash-admin-stat span {
   font-size: 10.5px;
-  color: #7e8794;
+  color: var(--gray);
   text-transform: uppercase;
   letter-spacing: .04em;
   font-weight: 700;
@@ -1261,7 +1261,7 @@
   margin: 0;
   font-size: 14.5px;
   font-weight: 950;
-  color: #10233f;
+  color: var(--navy);
 }
 
 .cash-admin-config label {
@@ -1270,7 +1270,7 @@
   min-width: 0;
   font-size: 13px;
   font-weight: 700;
-  color: #2c3e6b;
+  color: var(--navy-soft);
 }
 
 .cash-admin-config input {
@@ -1280,7 +1280,7 @@
   padding: 0 12px;
   border: 1px solid rgba(8, 36, 92, .16);
   border-radius: 11px;
-  background: #f8faff;
+  background: var(--tint);
   font: inherit;
   font-size: 16px;
   box-sizing: border-box;
@@ -1291,7 +1291,7 @@
   margin: 0 0 10px;
   font-size: 14.5px;
   font-weight: 950;
-  color: #10233f;
+  color: var(--navy);
 }
 
 .cash-admin-row {
@@ -1316,7 +1316,7 @@
   flex: 1 1 200px;
   min-width: 0;
   font-size: 12.5px;
-  color: #3d4a5c;
+  color: var(--gray-deep);
 }
 
 .cash-admin-row-info strong {
@@ -1324,7 +1324,7 @@
   max-width: 100%;
   word-break: break-word;
   font-weight: 900;
-  color: #10233f;
+  color: var(--navy);
 }
 
 /* ============================================================
@@ -1470,7 +1470,7 @@
   max-width: calc(100vw - 32px);
   padding: 12px 18px;
   border-radius: 12px;
-  background: #10233f;
+  background: var(--navy);
   color: #fff;
   font-size: 13.5px;
   font-weight: 700;
@@ -1487,13 +1487,13 @@
 }
 
 .cash-toast.cash-toast-error {
-  background: #c0392b;
+  background: var(--red);
 }
 
 .cash-loading {
   padding: 28px;
   text-align: center;
-  color: #7e8794;
+  color: var(--gray);
   font-size: 13.5px;
 }
 
@@ -1509,7 +1509,7 @@
   padding: 3px 10px;
   border-radius: 999px;
   background: rgba(20, 168, 105, .12);
-  color: #0e7a53;
+  color: var(--green);
   font-size: 11px;
   font-weight: 800;
   white-space: nowrap;
@@ -1519,7 +1519,7 @@
   padding: 3px 10px;
   border-radius: 999px;
   background: rgba(8, 36, 92, .07);
-  color: #2c3e6b;
+  color: var(--navy-soft);
   font-size: 11px;
   font-weight: 800;
   white-space: nowrap;
@@ -1531,7 +1531,7 @@
   margin-top: 4px;
   border: 0;
   border-radius: 13px;
-  background: linear-gradient(135deg, #0e7a53, #14a869);
+  background: linear-gradient(135deg, var(--green), #14a869);
   color: #fff;
   font-weight: 900;
   font-size: 13.5px;
@@ -1564,7 +1564,7 @@
   gap: 8px;
   font-weight: 900;
   font-size: 13.5px;
-  color: #10233f;
+  color: var(--navy);
 }
 
 .cash-badge {
@@ -1575,9 +1575,9 @@
   white-space: nowrap;
 }
 
-.cash-badge-new { background: rgba(8, 36, 92, .07); color: #2c3e6b; }
-.cash-badge-active { background: rgba(8, 36, 92, .07); color: #2c3e6b; }
-.cash-badge-reliable { background: rgba(20, 168, 105, .12); color: #0e7a53; }
+.cash-badge-new { background: rgba(8, 36, 92, .07); color: var(--navy-soft); }
+.cash-badge-active { background: rgba(8, 36, 92, .07); color: var(--navy-soft); }
+.cash-badge-reliable { background: rgba(20, 168, 105, .12); color: var(--green); }
 .cash-badge-expert { background: rgba(0, 122, 255, .1); color: #0056b3; }
 .cash-badge-top { background: rgba(255, 193, 0, .18); color: #8a6200; }
 
@@ -1586,12 +1586,12 @@
   flex-wrap: wrap;
   gap: 8px;
   font-size: 11.5px;
-  color: #7e8794;
+  color: var(--gray);
 }
 
 .cash-sol-detail {
   font-size: 12.5px;
-  color: #4a5568;
+  color: var(--gray-dark);
 }
 
 /* ---- Actions de mission (paiement, confirmation, litige) ----------- */
@@ -1627,7 +1627,7 @@
 }
 
 .cash-wizard-dot.active {
-  background: #f46614;
+  background: var(--orange);
 }
 
 .cash-wizard-step legend {
@@ -1635,7 +1635,7 @@
   margin-bottom: 10px;
   font-size: 16px;
   font-weight: 900;
-  color: #10233f;
+  color: var(--navy);
 }
 
 .cash-identity-fields {
@@ -1662,19 +1662,19 @@
   border-radius: 999px;
   font-size: 13px;
   font-weight: 700;
-  color: #10233f;
+  color: var(--navy);
   cursor: pointer;
 }
 
 .cash-deadline-chip:has(input:checked) {
-  border-color: #f46614;
+  border-color: var(--orange);
   background: rgba(244, 102, 20, .08);
 }
 
 .cash-reward-hint {
   margin: 0;
   font-size: 12px;
-  color: #7e8794;
+  color: var(--gray);
 }
 
 .cash-wizard-nav {
@@ -1699,7 +1699,7 @@
   justify-content: space-between;
   gap: 10px;
   font-size: 13.5px;
-  color: #10233f;
+  color: var(--navy);
 }
 
 #cashRecapEdit {
@@ -1723,20 +1723,20 @@
 }
 
 .cash-payment-methods .cash-provider-chip.active {
-  background: #f46614;
+  background: var(--orange);
   color: #fff;
 }
 
 .cash-payment-note {
   margin: 10px 0;
   font-size: 12px;
-  color: #7e8794;
+  color: var(--gray);
 }
 
 #cashPaymentStatus {
   margin-top: 8px;
   font-size: 12.5px;
-  color: #c0392b;
+  color: var(--red);
   font-weight: 700;
 }
 
@@ -1787,7 +1787,7 @@
   padding: 10px 12px;
   border-bottom: 1px solid rgba(8, 36, 92, .06);
   font-size: 13px;
-  color: #4a5568;
+  color: var(--gray-dark);
 }
 
 /* ---- Notation --------------------------------------------------------- */
@@ -1824,7 +1824,7 @@
   margin-bottom: 8px;
   font-size: 12.5px;
   font-weight: 700;
-  color: #4a5568;
+  color: var(--gray-dark);
 }
 
 .cash-admin-config input {
@@ -1849,13 +1849,13 @@
 
 .cash-help-reward-box > span:first-child {
   font-size: 12.5px;
-  color: #7e8794;
+  color: var(--gray);
 }
 
 .cash-help-reward-box strong {
   font-size: 28px;
   font-weight: 950;
-  color: #0e7a53;
+  color: var(--green);
 }
 
 .cash-help-terms {
@@ -1865,20 +1865,20 @@
   padding: 0;
   list-style: none;
   font-size: 13px;
-  color: #4a5568;
+  color: var(--gray-dark);
   line-height: 1.4;
 }
 
 .cash-help-subtitle {
   margin: 0 0 12px;
   font-size: 12.5px;
-  color: #7e8794;
+  color: var(--gray);
 }
 
 .cash-help-lock-note {
   margin: 10px 0 0;
   font-size: 11.5px;
-  color: #7e8794;
+  color: var(--gray);
   text-align: center;
 }
 
@@ -1886,7 +1886,7 @@
   padding: 8px 14px;
   border-radius: 12px;
   background: rgba(8, 36, 92, .06);
-  color: #2c3e6b;
+  color: var(--navy-soft);
   font-weight: 800;
   font-size: 13px;
   text-align: center;
@@ -1894,12 +1894,12 @@
 
 .cash-help-sent-duration {
   font-weight: 800;
-  color: #10233f;
+  color: var(--navy);
 }
 
 .cash-sol-duration {
   font-size: 13px;
-  color: #10233f;
+  color: var(--navy);
 }
 
 #cashHelpSentDialog .cash-dialog-body {

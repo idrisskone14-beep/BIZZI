@@ -143,7 +143,7 @@
     const name = String(state.clientName || "").trim();
     const selectedCity = document.querySelector("#citySelect")?.value || state.selectedCity || "Côte d’Ivoire";
     const prompt = hour >= 18
-      ? "Une sortie, un restaurant ou un service pour ce soir ?"
+      ? "Un service ou une course pour ce soir ?"
       : hour < 11
         ? "Un service, une course ou une livraison ce matin ?"
         : "Que recherchez-vous aujourd’hui ?";

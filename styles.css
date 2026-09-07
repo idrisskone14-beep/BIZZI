@@ -4866,33 +4866,15 @@ body:has(#view-home.active) .location-pill { min-height: 44px; border: 0; backgr
   }
 }
 
-/* ── Modules masqués : Food, Événements, Lieux d'exception ───────
-   On masque via CSS pour préserver la logique JS existante.
-   Pour réactiver : retirer les règles display:none ci-dessous.
-   ─────────────────────────────────────────────────────────────── */
+/* Modules masques (Food, Evenements, Lieux d'exception) : desormais
+   pilotes exclusivement par les feature flags admin (tab_food, tab_events,
+   tab_exception_places) via applyPlatformFeatureFlags() dans app.js -
+   plus de regle display:none codee en dur ici, pour eviter que ce bloc CSS
+   et le panneau Super Admin ne racontent deux histoires differentes. */
 
-/* Sidebar nav */
-.nav-link.food-link,
-.nav-link.exception-link,
-.nav-link[data-view="events"] { display: none !important; }
-
-/* Home — boutons du grid "Les essentiels" */
-button[data-go="food"],
-button[data-go="events"],
-button[data-go="exception-places"] { display: none !important; }
-
-/* Home — sections de prévisualisation sur la page d'accueil */
-.premium-events-spotlight,
-#exceptionPlacesSection,
-.premium-monthly-food { display: none !important; }
-
-/* Liens "Voir agenda →" et "Explorer →" pointant vers ces modules */
-button[data-go="events"].premium-outline-action,
-button[data-go="food"].premium-text-link,
-button[data-go="exception-places"].premium-text-link { display: none !important; }
-
-/* Vues complètes */
-#view-food,
-#view-events,
-#view-event-detail,
-#view-exception-places { display: none !important; }
+/* Garantit que l'attribut natif [hidden] gagne toujours, meme face a des
+   regles display:grid/flex plus specifiques (ex. .premium-path-grid button,
+   .premium-monthly-food) : sans ca, masquer un element via .hidden en JS
+   ne suffit pas partout, comme le fait cette regle pour tab_food/tab_events/
+   tab_exception_places ci-dessus. */
+[hidden] { display: none !important; }

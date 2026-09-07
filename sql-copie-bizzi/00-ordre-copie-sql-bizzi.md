@@ -156,6 +156,10 @@ Contrairement au systeme de propositions de services (101/102/105/109, qui vit s
 1. `116-favoris-v305.sql` - **a executer sur NEON** : table `favorites` + RPC `favorite_add/remove/list` identifiees par telephone.
 2. `117-zeyds-cash-favoris-lookup-v305.sql` - **a executer sur SUPABASE** : RPC `cash_list_missions_by_ids` pour resoudre les favoris de type "cash" (Cash vit sur Supabase, base physiquement separee de Neon).
 
+## Unification du masquage Food/Evenements/Lieux d'exception
+
+1. `120-desactive-food-events-exception-v305.sql` - **a executer sur SUPABASE** : aligne les feature flags sur l'etat reellement affiche (masque), maintenant que le CSS code en dur qui les masquait a ete retire (styles.css). Sans ca, ces 3 modules redeviendraient visibles au prochain chargement.
+
 ## ZEYDS Cash — parcours solutionneur "Je peux aider"
 
 1. `119-zeyds-cash-delai-solveur-v305.sql` - **a executer sur SUPABASE** : ajoute le delai (`estimated_duration`/`duration_unit`) sur `cash_solutions`, assouplit la description, remplace `cash_submit_solution` (nouvelle signature), enrichit les notifications, enrichit `cash_list_my_solutions`.

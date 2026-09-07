@@ -2474,6 +2474,11 @@ function applyPlatformFeatureFlags() {
     document.querySelectorAll(`[data-view="${viewName}"]`).forEach((el) => { el.hidden = !enabled; });
     document.querySelectorAll(`[data-go="${viewName}"]`).forEach((el) => { el.hidden = !enabled; });
   });
+  // Blocs d'apercu sur la page d'accueil : pas de data-view/data-go propre,
+  // mais doivent suivre le meme drapeau que l'onglet complet qu'ils annoncent.
+  document.querySelectorAll(".premium-monthly-food").forEach((el) => { el.hidden = !isTabEnabled("food"); });
+  document.querySelectorAll(".premium-events-spotlight").forEach((el) => { el.hidden = !isTabEnabled("events"); });
+  document.querySelector("#exceptionPlacesSection")?.toggleAttribute("hidden", !isTabEnabled("exception-places"));
   updateProviderShortcutVisibility();
   const activeName = Object.entries(views).find(([, element]) => element?.classList.contains("active"))?.[0];
   if (activeName && !isTabEnabled(activeName)) {

@@ -143,10 +143,10 @@
     const name = String(state.clientName || "").trim();
     const selectedCity = document.querySelector("#citySelect")?.value || state.selectedCity || "Côte d’Ivoire";
     const prompt = hour >= 18
-      ? "Un service ou une course pour ce soir ?"
+      ? "un service ou une course pour ce soir"
       : hour < 11
-        ? "Un service, une course ou une livraison ce matin ?"
-        : "Que recherchez-vous aujourd’hui ?";
+        ? "un service, une course ou une livraison ce matin"
+        : "un prestataire pour aujourd’hui";
     const greetingRoot = document.querySelector("#homeTimeGreeting");
     const nameRoot = document.querySelector("#homeContextName");
     const locationRoot = document.querySelector("#homeContextLocation");

@@ -4878,3 +4878,12 @@ body:has(#view-home.active) .location-pill { min-height: 44px; border: 0; backgr
    ne suffit pas partout, comme le fait cette regle pour tab_food/tab_events/
    tab_exception_places ci-dessus. */
 [hidden] { display: none !important; }
+
+/* Systeme d'icones SVG (js/icons.js) : taille alignee sur le texte
+   environnant par defaut, comme le faisaient les emoticones remplacees. */
+.bz-icon {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  vertical-align: -0.15em;
+}

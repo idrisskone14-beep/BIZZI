@@ -156,7 +156,7 @@
     const reviews = Number(stats?.review_count || 0);
     const completed = Number(stats?.missions_completed || 0);
     if (completed === 0) return { label: "Nouveau", cls: "cash-badge-new" };
-    if (completed >= 50 && rating >= 4.8) return { label: "🥇 Top Solutionneur", cls: "cash-badge-top" };
+    if (completed >= 50 && rating >= 4.8) return { label: `${BizziIcon("trophy")} Top Solutionneur`, cls: "cash-badge-top" };
     if (completed >= 20 && rating >= 4.5) return { label: "Expert", cls: "cash-badge-expert" };
     if (reviews >= 3 && rating >= 4.5) return { label: "Solutionneur fiable", cls: "cash-badge-reliable" };
     return { label: "Actif", cls: "cash-badge-active" };
@@ -168,9 +168,9 @@
     return `<div class="cash-solver-card">
       <div class="cash-solver-name">${safe(name || "Solveur")} <span class="cash-badge ${badge.cls}">${badge.label}</span></div>
       <div class="cash-solver-stats">
-        <span>⭐ ${rating > 0 ? rating.toFixed(1) : "—"}/5</span>
-        <span>🏆 ${Number(stats?.missions_completed || 0)} solutions réussies</span>
-        ${Number(stats?.dispute_count || 0) > 0 ? `<span>🤝 ${stats.dispute_count} litige${stats.dispute_count > 1 ? "s" : ""}</span>` : ""}
+        <span>${BizziIcon("star", { filled: true })} ${rating > 0 ? rating.toFixed(1) : "—"}/5</span>
+        <span>${BizziIcon("trophy")} ${Number(stats?.missions_completed || 0)} solutions réussies</span>
+        ${Number(stats?.dispute_count || 0) > 0 ? `<span>${BizziIcon("handshake")} ${stats.dispute_count} litige${stats.dispute_count > 1 ? "s" : ""}</span>` : ""}
       </div>
     </div>`;
   }
@@ -203,7 +203,7 @@
   function favoriteHeartButton(id) {
     const active = Boolean(globalThis.BizziFavorites?.isFavorite?.("cash", id));
     const label = active ? "Retirer des favoris" : "Ajouter aux favoris";
-    return `<button class="fav-heart cash-fav-heart${active ? " is-favorite" : ""}" type="button" data-fav-toggle="cash:${safe(id)}" aria-pressed="${active}" aria-label="${label}" title="${label}">${active ? "♥" : "♡"}</button>`;
+    return `<button class="fav-heart cash-fav-heart${active ? " is-favorite" : ""}" type="button" data-fav-toggle="cash:${safe(id)}" aria-pressed="${active}" aria-label="${label}" title="${label}">${BizziIcon("heart", { filled: active })}</button>`;
   }
 
   function needCard(m) {
@@ -212,15 +212,15 @@
     return `<article class="cash-need-card" role="button" tabindex="0" data-cash-open-need="${safe(m.id)}">
       <div class="cash-card-tags">
         <span class="cash-cat-chip">${safe(m.category)}</span>
-        ${m.secured ? '<span class="cash-secured-badge">🔒 Prime sécurisée</span>' : ""}
+        ${m.secured ? `<span class="cash-secured-badge">${BizziIcon("lock")} Prime sécurisée</span>` : ""}
         ${favoriteHeartButton(m.id)}
       </div>
-      <div class="cash-card-reward">🔥 ${safe(formatMoney(m.reward_amount))} À GAGNER</div>
+      <div class="cash-card-reward">${BizziIcon("flame")} ${safe(formatMoney(m.reward_amount))} À GAGNER</div>
       <h3 class="cash-card-title">${safe(m.title)}</h3>
       ${m.description ? `<p class="cash-card-desc">${safe(m.description.slice(0, 120))}${m.description.length > 120 ? "…" : ""}</p>` : ""}
       <div class="cash-card-meta">
-        <span>📍 ${safe(m.area)}</span>
-        <span>⏱️ ${safe(timeLeft(m.deadline_at || m.expires_at))}</span>
+        <span>${BizziIcon("pin")} ${safe(m.area)}</span>
+        <span>${BizziIcon("clock")} ${safe(timeLeft(m.deadline_at || m.expires_at))}</span>
         <span class="cash-sols-pill">${count}/${maxActive} solution${count !== 1 ? "s" : ""}</span>
       </div>
       <button class="cash-solution-cta" type="button" data-cash-open-need="${safe(m.id)}">JE PEUX AIDER</button>
@@ -241,7 +241,7 @@
 
       if (!list.length) {
         container.innerHTML = `<div class="cash-empty">
-          <span>💸</span>
+          <span>${BizziIcon("money")}</span>
           <strong>Aucune mission publiée pour l'instant.</strong>
           <p>Sois le premier à publier une recherche rémunérée.</p>
           <button class="cash-publish-cta" type="button" data-cash-publish>+ Publier une mission</button>
@@ -250,7 +250,7 @@
       }
       container.innerHTML = list.map(needCard).join("");
     } catch (error) {
-      container.innerHTML = `<div class="cash-empty"><span>⚠️</span><strong>Impossible de charger les missions.</strong><p>${safe(errMsg(error))}</p></div>`;
+      container.innerHTML = `<div class="cash-empty"><span>${BizziIcon("warning")}</span><strong>Impossible de charger les missions.</strong><p>${safe(errMsg(error))}</p></div>`;
     }
   }
 
@@ -288,7 +288,7 @@
       const total = active.reduce((s, c) => s + Number(c.remaining_amount), 0);
       const soonest = active.reduce((min, c) => (!min || new Date(c.expires_at) < new Date(min)) ? c.expires_at : min, null);
       el.hidden = false;
-      el.innerHTML = `💳 Crédit ZEYDS Cash disponible : <strong>${safe(formatMoney(total))}</strong> · valable jusqu'au ${safe(new Date(soonest).toLocaleDateString("fr-FR"))}`;
+      el.innerHTML = `${BizziIcon("card")} Crédit ZEYDS Cash disponible : <strong>${safe(formatMoney(total))}</strong> · valable jusqu'au ${safe(new Date(soonest).toLocaleDateString("fr-FR"))}`;
     } catch { el.hidden = true; }
   }
 
@@ -308,23 +308,23 @@
   function solutionCard(s, mission) {
     const isMine = Boolean(s.is_mine);
     const isOwner = Boolean(mission.is_owner);
-    const statusLabels = { pending: "En attente", selected: "✓ Sélectionnée", rejected: "✗ Non retenue", withdrawn: "Retirée" };
+    const statusLabels = { pending: "En attente", selected: `${BizziIcon("check")} Sélectionnée`, rejected: `${BizziIcon("x")} Non retenue`, withdrawn: "Retirée" };
     const statusCls = { pending: "cash-sol-pending", selected: "cash-sol-accepted", rejected: "cash-sol-refused", withdrawn: "cash-sol-refused" };
     const duration = formatDuration(s.estimated_duration, s.duration_unit);
     return `<div class="cash-sol-card ${statusCls[s.status] || ""}">
       ${solverProfileCard(s.solver_stats, s.solver_name)}
-      ${duration ? `<div class="cash-sol-duration">⏱️ Délai annoncé : <strong>${safe(duration)}</strong></div>` : ""}
+      ${duration ? `<div class="cash-sol-duration">${BizziIcon("clock")} Délai annoncé : <strong>${safe(duration)}</strong></div>` : ""}
       ${s.description ? `<p>${safe(s.description)}</p>` : ""}
-      ${s.price_hint ? `<div class="cash-sol-detail">💵 Prix estimé : ${safe(formatMoney(s.price_hint))}</div>` : ""}
-      ${s.availability ? `<div class="cash-sol-detail">🕐 ${safe(s.availability)}</div>` : ""}
-      ${s.contact ? `<a class="cash-sol-contact" href="tel:${safe(s.contact)}" data-log-contact="cash:${safe(mission.id)}">📞 ${safe(s.contact)}</a>` : ""}
+      ${s.price_hint ? `<div class="cash-sol-detail">${BizziIcon("money")} Prix estimé : ${safe(formatMoney(s.price_hint))}</div>` : ""}
+      ${s.availability ? `<div class="cash-sol-detail">${BizziIcon("clock")} ${safe(s.availability)}</div>` : ""}
+      ${s.contact ? `<a class="cash-sol-contact" href="tel:${safe(s.contact)}" data-log-contact="cash:${safe(mission.id)}">${BizziIcon("phone")} ${safe(s.contact)}</a>` : ""}
       <div class="cash-sol-meta">
         <span class="cash-sol-status">${statusLabels[s.status] || s.status}</span>
-        <span>🕐 ${safe(timeAgo(s.submitted_at))}</span>
+        <span>${BizziIcon("clock")} ${safe(timeAgo(s.submitted_at))}</span>
       </div>
       ${isOwner && s.status === "pending" && mission.status === "published"
         ? `<div class="cash-sol-actions">
-            <button class="cash-accept-btn" type="button" data-cash-select-solution="${safe(s.id)}" data-cash-mission-id="${safe(mission.id)}" data-cash-solver-name="${safe(s.solver_name)}">✓ CHOISIR CETTE SOLUTION</button>
+            <button class="cash-accept-btn" type="button" data-cash-select-solution="${safe(s.id)}" data-cash-mission-id="${safe(mission.id)}" data-cash-solver-name="${safe(s.solver_name)}">${BizziIcon("check")} CHOISIR CETTE SOLUTION</button>
           </div>` : ""}
       ${isMine && s.status === "pending" ? `<button class="secondary" type="button" data-cash-withdraw-solution="${safe(s.id)}">Retirer ma proposition</button>` : ""}
     </div>`;
@@ -338,16 +338,16 @@
 
     if (mission.status === "draft" && isOwner) {
       return `<div class="cash-mission-actions">
-        <p class="cash-payment-warning">🔒 Cette demande n'est pas encore publiée : sécurise la prime pour la publier.</p>
+        <p class="cash-payment-warning">${BizziIcon("lock")} Cette demande n'est pas encore publiée : sécurise la prime pour la publier.</p>
         <button class="cash-submit-btn" type="button" data-cash-pay="${safe(mission.id)}">Sécuriser la prime</button>
       </div>`;
     }
     if (mission.status === "payment_pending" && isOwner) {
-      return `<div class="cash-mission-actions"><p class="cash-payment-warning">⏳ Paiement en attente de confirmation par un admin ZEYDS.</p></div>`;
+      return `<div class="cash-mission-actions"><p class="cash-payment-warning">${BizziIcon("clock")} Paiement en attente de confirmation par un admin ZEYDS.</p></div>`;
     }
     if (mission.status === "in_progress" && isSelectedSolver) {
       return `<div class="cash-mission-actions">
-        <p>🎉 Ta solution a été choisie ! Récompense potentielle : <strong>${safe(formatMoney(mission.reward_amount * (1 - Number(cashSettings.cash_commission_rate || 0.1))))}</strong></p>
+        <p>${BizziIcon("check-circle")} Ta solution a été choisie ! Récompense potentielle : <strong>${safe(formatMoney(mission.reward_amount * (1 - Number(cashSettings.cash_commission_rate || 0.1))))}</strong></p>
         <button class="cash-submit-btn" type="button" data-cash-finalize="${safe(mission.id)}">Finaliser la mission</button>
         <button class="secondary" type="button" data-cash-dispute="${safe(mission.id)}">Signaler un problème</button>
       </div>`;
@@ -360,13 +360,13 @@
       </div>`;
     }
     if (mission.status === "completed" && isOwner) {
-      return `<div class="cash-mission-actions"><button class="cash-submit-btn" type="button" data-cash-review="${safe(mission.id)}">⭐ Noter cette mission</button></div>`;
+      return `<div class="cash-mission-actions"><button class="cash-submit-btn" type="button" data-cash-review="${safe(mission.id)}">${BizziIcon("star")} Noter cette mission</button></div>`;
     }
     if (mission.status === "disputed") {
-      return `<div class="cash-mission-actions"><p class="cash-payment-warning">🔒 Fonds bloqués — litige en cours d'examen par ZEYDS.</p></div>`;
+      return `<div class="cash-mission-actions"><p class="cash-payment-warning">${BizziIcon("lock")} Fonds bloqués — litige en cours d'examen par ZEYDS.</p></div>`;
     }
     if (mission.status === "expired" && isOwner) {
-      return `<div class="cash-mission-actions"><p>❌ Aucune solution validée avant l'échéance — la prime est devenue un crédit ZEYDS Cash.</p></div>`;
+      return `<div class="cash-mission-actions"><p>${BizziIcon("x")} Aucune solution validée avant l'échéance — la prime est devenue un crédit ZEYDS Cash.</p></div>`;
     }
     return "";
   }
@@ -378,7 +378,7 @@
     panel.hidden = false;
     try {
       const mission = await rpc("cash_get_mission_detail", { p_mission_id: missionId, p_caller_phone: identity().phone || "" });
-      if (!mission) { panel.innerHTML = `<div class="cash-empty"><span>⚠️</span><strong>Mission introuvable.</strong></div>`; return; }
+      if (!mission) { panel.innerHTML = `<div class="cash-empty"><span>${BizziIcon("warning")}</span><strong>Mission introuvable.</strong></div>`; return; }
       currentMissionDetail = mission;
       const sols = mission.solutions || [];
       const commRate = Number(cashSettings.cash_commission_rate || 0.1);
@@ -394,20 +394,20 @@
       panel.innerHTML = `
         <div class="cash-detail-bar">
           <button class="cash-back-btn" type="button" data-cash-open-feed aria-label="Retour au feed">← Retour</button>
-          <button class="cash-report-link" type="button" data-cash-whatsapp="${safe(missionId)}">📲 Partager</button>
+          <button class="cash-report-link" type="button" data-cash-whatsapp="${safe(missionId)}">${BizziIcon("share")} Partager</button>
         </div>
         <div class="cash-detail-hero">
           <div class="cash-card-tags">
             <span class="cash-cat-chip">${safe(mission.category)}</span>
             <span class="cash-status-chip">${safe(statusLabel(mission.status))}</span>
-            ${mission.secured ? '<span class="cash-secured-badge">🔒 Prime sécurisée</span>' : ""}
+            ${mission.secured ? `<span class="cash-secured-badge">${BizziIcon("lock")} Prime sécurisée</span>` : ""}
           </div>
           <h2>${safe(mission.title)}</h2>
           ${mission.description ? `<p class="cash-detail-desc">${safe(mission.description)}</p>` : ""}
           <div class="cash-card-meta">
-            <span>📍 ${safe(mission.area)}</span>
-            <span>👤 ${safe(mission.requester_name)}</span>
-            <span>⏱️ ${safe(timeLeft(mission.deadline_at || mission.expires_at))}</span>
+            <span>${BizziIcon("pin")} ${safe(mission.area)}</span>
+            <span>${BizziIcon("user")} ${safe(mission.requester_name)}</span>
+            <span>${BizziIcon("clock")} ${safe(timeLeft(mission.deadline_at || mission.expires_at))}</span>
           </div>
           <div class="cash-reward-info">
             <div class="cash-reward-row"><span>Prime ZEYDS Cash</span><strong>${safe(formatMoney(mission.reward_amount))}</strong></div>
@@ -415,7 +415,7 @@
             ${mission.service_budget_hint ? `<div class="cash-reward-row"><span>Budget indicatif du produit/service</span><strong>${safe(formatMoney(mission.service_budget_hint))}</strong></div>` : ""}
           </div>
           ${canPropose ? `<button class="cash-solution-cta" type="button" data-cash-propose="${safe(missionId)}">JE PEUX AIDER</button>` : ""}
-          ${myPendingSolution ? `<div class="cash-help-sent-badge">✓ Proposition envoyée</div>` : ""}
+          ${myPendingSolution ? `<div class="cash-help-sent-badge">${BizziIcon("check")} Proposition envoyée</div>` : ""}
           ${mission.status === "published" && !isOwner && !canPropose && !myPendingSolution && activeCount >= maxActive ? `<p class="cash-payment-warning">3/3 — Solutions en cours d'examen.</p>` : ""}
         </div>
         ${missionActionsBlock(mission)}
@@ -428,7 +428,7 @@
           <div class="cash-solutions-list">${sols.map((s) => solutionCard(s, mission)).join("")}</div>
         </div>`;
     } catch (error) {
-      panel.innerHTML = `<div class="cash-empty"><span>⚠️</span><strong>${safe(errMsg(error))}</strong></div>`;
+      panel.innerHTML = `<div class="cash-empty"><span>${BizziIcon("warning")}</span><strong>${safe(errMsg(error))}</strong></div>`;
     }
   }
 
@@ -445,8 +445,8 @@
       </div>
       <h3 class="cash-card-title">${safe(m.title)}</h3>
       <div class="cash-card-meta">
-        <span>💰 ${safe(formatMoney(m.reward_amount))}</span>
-        <span>📍 ${safe(m.area)}</span>
+        <span>${BizziIcon("money")} ${safe(formatMoney(m.reward_amount))}</span>
+        <span>${BizziIcon("pin")} ${safe(m.area)}</span>
         <span class="cash-sols-pill">${Number(m.active_solutions_count || 0)} solution(s)</span>
       </div>
     </article>`;
@@ -481,9 +481,9 @@
         <span class="cash-status-chip">${safe(statusLabel(s.mission_status))}</span>
       </div>
       <div class="cash-sol-meta">
-        ${s.mission_reward_amount ? `<span>💰 ${safe(formatMoney(s.mission_reward_amount))}</span>` : ""}
-        ${duration ? `<span>⏱️ ${safe(duration)}</span>` : ""}
-        <span>🕐 ${safe(timeAgo(s.submitted_at))}</span>
+        ${s.mission_reward_amount ? `<span>${BizziIcon("money")} ${safe(formatMoney(s.mission_reward_amount))}</span>` : ""}
+        ${duration ? `<span>${BizziIcon("clock")} ${safe(duration)}</span>` : ""}
+        <span>${BizziIcon("clock")} ${safe(timeAgo(s.submitted_at))}</span>
       </div>
       ${s.description ? `<p>${safe(s.description)}</p>` : ""}
     </div>`;
@@ -494,7 +494,7 @@
     if (!container) return;
     const list = mySolutionsCache.filter(matchesSolutionsFilter);
     container.innerHTML = !list.length
-      ? `<div class="cash-empty"><span>🤝</span><strong>${mySolutionsCache.length ? "Aucune solution dans cette catégorie." : "Tu n'as encore proposé aucune solution."}</strong></div>`
+      ? `<div class="cash-empty"><span>${BizziIcon("handshake")}</span><strong>${mySolutionsCache.length ? "Aucune solution dans cette catégorie." : "Tu n'as encore proposé aucune solution."}</strong></div>`
       : list.map(mySolutionCard).join("");
   }
 
@@ -504,7 +504,7 @@
     const filterBar = document.querySelector("#cashSolutionsFilterBar");
     if (filterBar) filterBar.hidden = personalTab !== "mes-solutions";
     if (!identityReady()) {
-      container.innerHTML = `<div class="cash-empty"><span>👤</span><strong>Renseigne ton identité pour accéder à ton espace.</strong></div>`;
+      container.innerHTML = `<div class="cash-empty"><span>${BizziIcon("user")}</span><strong>Renseigne ton identité pour accéder à ton espace.</strong></div>`;
       return;
     }
     container.innerHTML = `<div class="cash-loading">Chargement…</div>`;
@@ -514,7 +514,7 @@
       if (personalTab === "mes-besoins") {
         const missions = await rpc("cash_list_my_missions", { p_phone: phone });
         container.innerHTML = !missions.length
-          ? `<div class="cash-empty"><span>📋</span><strong>Tu n'as pas encore publié de mission.</strong>
+          ? `<div class="cash-empty"><span>${BizziIcon("list")}</span><strong>Tu n'as pas encore publié de mission.</strong>
               <button class="cash-publish-cta" type="button" data-cash-publish>Publier ma première recherche</button></div>`
           : missions.map(missionRowCard).join("");
 
@@ -548,7 +548,7 @@
           </div>`).join("")}`;
       }
     } catch (error) {
-      container.innerHTML = `<div class="cash-empty"><span>⚠️</span><strong>${safe(errMsg(error))}</strong></div>`;
+      container.innerHTML = `<div class="cash-empty"><span>${BizziIcon("warning")}</span><strong>${safe(errMsg(error))}</strong></div>`;
     }
   }
 
@@ -650,9 +650,9 @@
     return `
       <div class="cash-recap-row"><strong>${safe(mission.title)}</strong></div>
       ${mission.description ? `<p>${safe(mission.description)}</p>` : ""}
-      <div class="cash-recap-row"><span>📍</span><span>${safe(mission.area)}</span></div>
-      <div class="cash-recap-row"><span>⏱️</span><span>${safe(timeLeft(mission.deadline_at))}</span></div>
-      <div class="cash-recap-row"><span>💰</span><strong>${safe(formatMoney(mission.reward_amount))}</strong></div>
+      <div class="cash-recap-row"><span>${BizziIcon("pin")}</span><span>${safe(mission.area)}</span></div>
+      <div class="cash-recap-row"><span>${BizziIcon("clock")}</span><span>${safe(timeLeft(mission.deadline_at))}</span></div>
+      <div class="cash-recap-row"><span>${BizziIcon("money")}</span><strong>${safe(formatMoney(mission.reward_amount))}</strong></div>
       ${mission.service_budget_hint ? `<div class="cash-recap-row"><span>Budget indicatif</span><span>${safe(formatMoney(mission.service_budget_hint))}</span></div>` : ""}`;
   }
 
@@ -713,7 +713,7 @@
         if (usable) {
           creditBox.hidden = false;
           creditBox.innerHTML = `<button class="cash-submit-btn" type="button" id="cashUseCreditBtn" data-credit-id="${safe(usable.id)}">
-            💳 Utiliser mon crédit (${safe(formatMoney(usable.remaining_amount))} disponibles)
+            ${BizziIcon("card")} Utiliser mon crédit (${safe(formatMoney(usable.remaining_amount))} disponibles)
           </button>`;
         }
       } catch { /* pas bloquant */ }
@@ -884,15 +884,15 @@
   function adminMissionRow(m) {
     const actions = [];
     if (m.status === "payment_pending") {
-      actions.push(`<button class="secondary" type="button" data-cash-admin-approve-payment="${safe(m.id)}">✓ Approuver le paiement</button>`);
-      actions.push(`<button class="danger" type="button" data-cash-admin-reject-payment="${safe(m.id)}">✗ Rejeter</button>`);
+      actions.push(`<button class="secondary" type="button" data-cash-admin-approve-payment="${safe(m.id)}">${BizziIcon("check")} Approuver le paiement</button>`);
+      actions.push(`<button class="danger" type="button" data-cash-admin-reject-payment="${safe(m.id)}">${BizziIcon("x")} Rejeter</button>`);
     }
     return `<div class="cash-admin-row">
       <div class="cash-admin-row-info">
         <span class="cash-cat-chip">${safe(m.category)}</span>
         <strong>${safe(m.title)}</strong>
-        <span>👤 ${safe(m.requester_name)} · ${safe(m.area)} · ${safe(timeAgo(m.created_at))}</span>
-        <span class="cash-reward-badge">💰 ${safe(formatMoney(m.reward_amount))}</span>
+        <span>${BizziIcon("user")} ${safe(m.requester_name)} · ${safe(m.area)} · ${safe(timeAgo(m.created_at))}</span>
+        <span class="cash-reward-badge">${BizziIcon("money")} ${safe(formatMoney(m.reward_amount))}</span>
         <span class="cash-sol-status">${safe(statusLabel(m.status))}</span>
         ${m.escrow_reference ? `<span>Réf. paiement : ${safe(m.escrow_reference)}</span>` : ""}
       </div>
@@ -906,7 +906,7 @@
         <strong>${safe(d.mission_title)}</strong>
         <span>${safe(d.category)} · ${safe(timeAgo(d.created_at))}</span>
         <p>${safe(d.description)}</p>
-        <span class="cash-reward-badge">💰 ${safe(formatMoney(d.mission_reward))}</span>
+        <span class="cash-reward-badge">${BizziIcon("money")} ${safe(formatMoney(d.mission_reward))}</span>
       </div>
       <div class="cash-admin-row-actions">
         <button class="secondary" type="button" data-cash-admin-resolve="${safe(d.id)}" data-favor="solver">En faveur du solveur</button>

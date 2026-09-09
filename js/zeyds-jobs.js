@@ -470,7 +470,7 @@
         favBtn.className = "secondary jobs-fav-btn";
         favBtn.dataset.jobsFav = jobId;
         favBtn.setAttribute("aria-label", "Enregistrer cette offre");
-        favBtn.textContent = favorites.includes(jobId) ? "★" : "☆";
+        favBtn.innerHTML = BizziIcon("star", { filled: favorites.includes(jobId) });
 
         actions.prepend(favBtn);
         actions.prepend(applyBtn);
@@ -487,7 +487,7 @@
     if (!container) return;
     const job = findOffer(jobId);
     if (!job) {
-      container.innerHTML = `<div class="jobs-empty"><span>🔎</span><strong>Offre introuvable.</strong><p>Elle a peut-être expiré.</p></div>`;
+      container.innerHTML = `<div class="jobs-empty"><span>${BizziIcon("search")}</span><strong>Offre introuvable.</strong><p>Elle a peut-être expiré.</p></div>`;
       return;
     }
     const profile = getProfile();
@@ -509,11 +509,11 @@
         <h2>${safe(job.title)}</h2>
         <p class="jobs-detail-company">${safe(job.companyName)} · ${safe(job.companyType || "Entreprise")}</p>
         <div class="jobs-detail-facts">
-          <span>📍 ${safe(job.city)}${job.area ? `, ${safe(job.area)}` : ""}</span>
-          <span>💼 ${safe(job.contractType)}</span>
-          ${job.salaryRange ? `<span>💰 ${safe(job.salaryRange)}</span>` : ""}
-          <span>🗓 Publié le ${new Date(job.createdAt).toLocaleDateString("fr-FR")}</span>
-          ${job.positions ? `<span>👥 ${safe(job.positions)} poste(s)</span>` : ""}
+          <span>${BizziIcon("pin")} ${safe(job.city)}${job.area ? `, ${safe(job.area)}` : ""}</span>
+          <span>${BizziIcon("briefcase")} ${safe(job.contractType)}</span>
+          ${job.salaryRange ? `<span>${BizziIcon("money")} ${safe(job.salaryRange)}</span>` : ""}
+          <span>${BizziIcon("calendar")} Publié le ${new Date(job.createdAt).toLocaleDateString("fr-FR")}</span>
+          ${job.positions ? `<span>${BizziIcon("users")} ${safe(job.positions)} poste(s)</span>` : ""}
         </div>
       </div>
 
@@ -524,10 +524,10 @@
 
       <div class="jobs-detail-cta-row">
         <button type="button" class="primary jobs-apply-btn" data-jobs-apply="${safe(job.id)}" ${applied || expired ? "disabled" : ""}>
-          ${applied ? "Candidature envoyée ✓" : expired ? "Offre expirée" : "Postuler maintenant"}
+          ${applied ? `Candidature envoyée ${BizziIcon("check")}` : expired ? "Offre expirée" : "Postuler maintenant"}
         </button>
-        <button type="button" class="secondary" data-jobs-fav="${safe(job.id)}">${favorite ? "★ Enregistrée" : "☆ Enregistrer"}</button>
-        ${whatsappUrl ? `<a class="secondary jobs-whatsapp-link" href="${safe(whatsappUrl)}" target="_blank" rel="noreferrer" data-log-contact="job:${safe(job.id)}">💬 WhatsApp</a>` : ""}
+        <button type="button" class="secondary" data-jobs-fav="${safe(job.id)}">${BizziIcon("star", { filled: favorite })} ${favorite ? "Enregistrée" : "Enregistrer"}</button>
+        ${whatsappUrl ? `<a class="secondary jobs-whatsapp-link" href="${safe(whatsappUrl)}" target="_blank" rel="noreferrer" data-log-contact="job:${safe(job.id)}">${BizziIcon("chat")} WhatsApp</a>` : ""}
       </div>
       <p id="jobsApplyStatus" class="status-box" role="status"></p>
     `;
@@ -641,7 +641,7 @@
     if (!container) return;
     const apps = getApplications();
     if (!apps.length) {
-      container.innerHTML = `<div class="jobs-empty"><span>📄</span><strong>Aucune candidature envoyée.</strong><p>Trouvez une offre et postulez en un clic.</p></div>`;
+      container.innerHTML = `<div class="jobs-empty"><span>${BizziIcon("document")}</span><strong>Aucune candidature envoyée.</strong><p>Trouvez une offre et postulez en un clic.</p></div>`;
       return;
     }
     container.innerHTML = apps.map((app) => {
@@ -666,7 +666,7 @@
     const whatsappUrl = bridge.jobWhatsAppUrl?.(job) || "";
     return `
       <article class="job-card" data-job-id="${safe(job.id)}">
-        <div class="job-art"><span>💼</span></div>
+        <div class="job-art"><span>${BizziIcon("briefcase")}</span></div>
         <div class="job-body">
           <div class="job-title-row">
             <h3>${safe(job.title)}</h3>
@@ -678,7 +678,7 @@
         <div class="job-actions">
           <button type="button" class="secondary" data-jobs-open="${safe(job.id)}">Voir l'offre</button>
           ${whatsappUrl ? `<a class="primary" href="${safe(whatsappUrl)}" target="_blank" rel="noreferrer" data-log-contact="job:${safe(job.id)}">Contacter</a>` : ""}
-          <button type="button" class="secondary jobs-fav-btn" data-jobs-fav="${safe(job.id)}">★</button>
+          <button type="button" class="secondary jobs-fav-btn" data-jobs-fav="${safe(job.id)}">${BizziIcon("star", { filled: true })}</button>
         </div>
       </article>
     `;
@@ -690,7 +690,7 @@
     const jobs = getFavorites().map(findOffer).filter(Boolean);
     container.innerHTML = jobs.length
       ? jobs.map(jobCardLite).join("")
-      : `<div class="jobs-empty"><span>☆</span><strong>Aucune offre enregistrée.</strong><p>Enregistrez une offre pour la retrouver ici.</p></div>`;
+      : `<div class="jobs-empty"><span>${BizziIcon("star")}</span><strong>Aucune offre enregistrée.</strong><p>Enregistrez une offre pour la retrouver ici.</p></div>`;
   }
 
   /* ------------------------------------------------------------------ */
@@ -701,7 +701,7 @@
     if (!container) return;
     const alerts = getAlerts();
     if (!alerts.length) {
-      container.innerHTML = `<div class="jobs-empty"><span>🔔</span><strong>Aucune alerte créée.</strong><p>Essayez d'élargir vos critères.</p></div>`;
+      container.innerHTML = `<div class="jobs-empty"><span>${BizziIcon("bell")}</span><strong>Aucune alerte créée.</strong><p>Essayez d'élargir vos critères.</p></div>`;
       return;
     }
     container.innerHTML = alerts.map((alert) => {
@@ -756,7 +756,7 @@
             <span class="tag ${job.status === "expired" ? "" : "ok"}">${safe(job.status)}</span>
           </div>
         `;
-      }).join("") : `<div class="jobs-empty"><span>📋</span><strong>Aucune offre associée à ce numéro.</strong><p>Renseignez le numéro utilisé lors de la publication, ou publiez une offre.</p></div>`;
+      }).join("") : `<div class="jobs-empty"><span>${BizziIcon("list")}</span><strong>Aucune offre associée à ce numéro.</strong><p>Renseignez le numéro utilisé lors de la publication, ou publiez une offre.</p></div>`;
     }
 
     const appsPanel = document.querySelector("#jobsRecruiterApplications");
@@ -780,7 +780,7 @@
               </select>
             </label>
             <div class="jobs-candidate-actions">
-              ${app.candidateSnapshot?.whatsapp ? `<a class="secondary" href="https://wa.me/${safe(String(app.candidateSnapshot.whatsapp).replace(/[^\d+]/g, "").replace(/^\+/, ""))}" target="_blank" rel="noreferrer">💬 Contacter</a>` : ""}
+              ${app.candidateSnapshot?.whatsapp ? `<a class="secondary" href="https://wa.me/${safe(String(app.candidateSnapshot.whatsapp).replace(/[^\d+]/g, "").replace(/^\+/, ""))}" target="_blank" rel="noreferrer">${BizziIcon("chat")} Contacter</a>` : ""}
             </div>
             <label class="jobs-form-label">Note interne (privée)
               <textarea rows="2" maxlength="300" placeholder="Visible par vous uniquement…" data-jobs-app-note="${safe(app.id)}"></textarea>
@@ -788,7 +788,7 @@
             ${(app.notes || []).length ? `<ul class="jobs-notes-list">${app.notes.map((n) => `<li>${safe(n.text)} <small>${safe(timeAgo(n.createdAt))}</small></li>`).join("")}</ul>` : ""}
           </div>
         `;
-      }).join("") : `<div class="jobs-empty"><span>🧑‍💼</span><strong>Aucune candidature reçue pour l'instant.</strong></div>`;
+      }).join("") : `<div class="jobs-empty"><span>${BizziIcon("briefcase")}</span><strong>Aucune candidature reçue pour l'instant.</strong></div>`;
     }
   }
 
@@ -963,7 +963,7 @@
         }
         const app = addApplication(jobId);
         if (app) {
-          apply.textContent = "Candidature envoyée ✓";
+          apply.innerHTML = `Candidature envoyée ${BizziIcon("check")}`;
           apply.disabled = true;
           const status = document.querySelector("#jobsApplyStatus");
           if (status) status.textContent = "Votre candidature a été envoyée avec succès.";
@@ -977,9 +977,9 @@
         const jobId = fav.dataset.jobsFav;
         const nowFav = toggleFavorite(jobId);
         const isDetailButton = Boolean(fav.closest(".jobs-detail-cta-row"));
-        fav.textContent = isDetailButton
-          ? (nowFav ? "★ Enregistrée" : "☆ Enregistrer")
-          : (nowFav ? "★" : "☆");
+        fav.innerHTML = isDetailButton
+          ? `${BizziIcon("star", { filled: nowFav })} ${nowFav ? "Enregistrée" : "Enregistrer"}`
+          : BizziIcon("star", { filled: nowFav });
         if (currentScreen === "favorites") renderFavoritesScreen();
         return;
       }

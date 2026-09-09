@@ -684,7 +684,7 @@
       } else {
         panel.innerHTML = items.map((item, index) => `
           <button type="button" id="deliveryAddressOption${index}" role="option" data-address-index="${index}">
-            <span aria-hidden="true">⌖</span>
+            <span aria-hidden="true">${typeof BizziIcon === "function" ? BizziIcon("pin") : "⌖"}</span>
             <strong>${escapeHtml(item.label)}</strong>
             <small>${escapeHtml(item.fullAddress)}</small>
           </button>`).join("")

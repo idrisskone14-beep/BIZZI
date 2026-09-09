@@ -33,7 +33,7 @@
       <div class="providers-map-popup">
         <strong>${name}</strong>
         <p>${serviceLabel}${distanceLine}</p>
-        <p>★ ${rating}</p>
+        <p>${typeof BizziIcon === "function" ? BizziIcon("star", { filled: true }) : "★"} ${rating}</p>
         <button type="button" data-map-open-profile="${provider.id}">Voir le profil</button>
       </div>
     `;

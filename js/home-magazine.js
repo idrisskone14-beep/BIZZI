@@ -83,7 +83,7 @@
   }
 
   function emptyCard(title, text, route) {
-    return `<article class="home-magazine-empty"><span>✦</span><div><strong>${safe(title)}</strong><p>${safe(text)}</p></div><button type="button" data-magazine-go="${safe(route)}">Explorer</button></article>`;
+    return `<article class="home-magazine-empty"><span>${BizziIcon("sparkle")}</span><div><strong>${safe(title)}</strong><p>${safe(text)}</p></div><button type="button" data-magazine-go="${safe(route)}">Explorer</button></article>`;
   }
 
   function markSection(root, hasContent) {
@@ -106,11 +106,11 @@
           <span class="home-provider-copy">
             <strong>${safe(provider.fullName || "Prestataire Zeyds")}</strong>
             <small>${safe(provider.service || "Service Zeyds")}</small>
-            <span class="home-provider-rating"><b>★ ${Number(provider.rating || 0).toFixed(1)}</b><i>${reviews ? `${reviews} avis` : "Nouveau"}</i></span>
+            <span class="home-provider-rating"><b>${BizziIcon("star", { filled: true })} ${Number(provider.rating || 0).toFixed(1)}</b><i>${reviews ? `${reviews} avis` : "Nouveau"}</i></span>
             <span class="home-provider-location">${safe([provider.area, provider.city, distance].filter(Boolean).join(" · "))}</span>
           </span>
         </button>
-        <button class="home-favorite" type="button" data-magazine-favorite="${safe(id)}" aria-label="${favorite ? "Retirer des favoris" : "Ajouter aux favoris"}" aria-pressed="${favorite}">${favorite ? "♥" : "♡"}</button>
+        <button class="home-favorite" type="button" data-magazine-favorite="${safe(id)}" aria-label="${favorite ? "Retirer des favoris" : "Ajouter aux favoris"}" aria-pressed="${favorite}">${BizziIcon("heart", { filled: favorite })}</button>
       </article>`;
   }
 
@@ -118,7 +118,7 @@
     const image = safeImage(item.image);
     return `
       <button class="home-deal-card" type="button" data-magazine-go="${safe(item.route)}">
-        ${image ? `<img src="${image}" loading="lazy" decoding="async" alt="">` : `<span aria-hidden="true">${safe(item.icon || "✦")}</span>`}
+        ${image ? `<img src="${image}" loading="lazy" decoding="async" alt="">` : `<span aria-hidden="true">${item.icon || BizziIcon("sparkle")}</span>`}
         <i>${safe(item.badge)}</i>
         <strong>${safe(item.title)}</strong>
         <small>${safe(item.detail)}</small>
@@ -130,7 +130,7 @@
     const image = safeImage(item.image);
     return `
       <button class="home-update-card" type="button" data-magazine-go="${safe(item.route)}"${item.query ? ` data-magazine-query="${safe(item.query)}"` : ""}>
-        <span>${image ? `<img src="${image}" loading="lazy" decoding="async" alt="">` : `<b>${safe(item.icon || "✦")}</b>`}</span>
+        <span>${image ? `<img src="${image}" loading="lazy" decoding="async" alt="">` : `<b>${item.icon || BizziIcon("sparkle")}</b>`}</span>
         <small>${safe(item.type)}</small>
         <strong>${safe(item.title)}</strong>
         <i>${safe(item.location || "Côte d’Ivoire")}</i>
@@ -186,7 +186,7 @@
         badge: "Événement boosté",
         route: "events",
         image: event.poster,
-        icon: "☆",
+        icon: BizziIcon("calendar"),
       })),
       ...(state.exceptionPlaces || []).filter((place) => realRecord(place) && place.status === "published" && new Date(place.boostEndsAt || 0).getTime() > now).map((place) => ({
         title: place.name,
@@ -194,7 +194,7 @@
         badge: "Lieu en promotion",
         route: "exception-places",
         image: place.photo,
-        icon: "⌖",
+        icon: BizziIcon("pin"),
       })),
       ...(state.providers || []).filter((provider) => realProvider(provider) && new Date(provider.boostEndsAt || 0).getTime() > now).map((provider) => ({
         title: provider.fullName,
@@ -202,7 +202,7 @@
         badge: "Prestataire mis en avant",
         route: "search",
         image: provider.photo,
-        icon: "✓",
+        icon: BizziIcon("check"),
       })),
     ].slice(0, 8);
     markSection(root, items.length > 0);
@@ -222,7 +222,7 @@
         image: providerImage(provider),
         route: "search",
         query: provider.fullName,
-        icon: "✓",
+        icon: BizziIcon("check"),
         date: dateValue(provider),
       })),
       ...(state.eventPromotions || []).filter((event) => realRecord(event) && event.status === "published").map((event) => ({
@@ -231,7 +231,7 @@
         location: [event.venue || event.area, event.city].filter(Boolean).join(" · "),
         image: event.poster,
         route: "events",
-        icon: "☆",
+        icon: BizziIcon("calendar"),
         date: dateValue(event),
       })),
       ...(state.foodPlaces || []).filter((place) => realRecord(place) && place.status === "published").map((place) => ({
@@ -240,7 +240,7 @@
         location: [place.area, place.city].filter(Boolean).join(" · "),
         image: place.photo,
         route: "food",
-        icon: "♨",
+        icon: BizziIcon("utensils"),
         date: dateValue(place),
       })),
       ...(state.exceptionPlaces || []).filter((place) => realRecord(place) && place.status === "published").map((place) => ({
@@ -249,7 +249,7 @@
         location: [place.area, place.city].filter(Boolean).join(" · "),
         image: place.photo,
         route: "exception-places",
-        icon: "⌖",
+        icon: BizziIcon("pin"),
         date: dateValue(place),
       })),
     ].sort((left, right) => right.date - left.date).slice(0, 10);

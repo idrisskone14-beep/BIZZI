@@ -193,7 +193,7 @@
 
   function emptyState() {
     return `<div class="fav-empty">
-      <span class="fav-empty-icon">💬</span>
+      <span class="fav-empty-icon">${BizziIcon("chat")}</span>
       <h3>Aucun contact pour le moment</h3>
       <p>Quand vous contactez un prestataire, un recruteur ou un solveur ZEYDS Cash, il apparaît ici pour que vous le retrouviez facilement.</p>
     </div>`;
@@ -202,11 +202,12 @@
   function msgCard(item) {
     if (item.missing) {
       return `<article class="fav-card fav-card-missing">
-        <div class="fav-card-media"><span class="fav-card-icon">⚠️</span></div>
+        <div class="fav-card-media"><span class="fav-card-icon">${BizziIcon("warning")}</span></div>
         <div class="fav-card-body"><strong>Contact introuvable</strong><span class="fav-card-meta">Ce contenu n'est plus disponible.</span></div>
       </article>`;
     }
-    const icon = { service: "🔧", job: "💼", cash: "💵" }[item.type];
+    const icon = { service: BizziIcon("wrench"), job: BizziIcon("briefcase"), cash: BizziIcon("money") }[item.type];
+    const contactIcon = item.contactMethod === "call" ? BizziIcon("phone") : BizziIcon("chat");
     return `<article class="fav-card msg-card">
       <div class="fav-card-media" data-msg-open="${safe(item.type)}:${safe(item.id)}">${item.photo ? `<img src="${safe(item.photo)}" alt="" loading="lazy">` : `<span class="fav-card-icon">${icon}</span>`}</div>
       <div class="fav-card-body">
@@ -214,7 +215,7 @@
           <strong>${safe(item.title)}</strong>
         </div>
         ${item.subtitle ? `<span class="fav-card-subtitle">${safe(item.subtitle)}</span>` : ""}
-        <span class="fav-card-meta">${item.location ? `📍 ${safe(item.location)} · ` : ""}${safe(item.contactMethod === "call" ? "📞" : "💬")} ${safe(timeAgo(item.updatedAt))}</span>
+        <span class="fav-card-meta">${item.location ? `${BizziIcon("pin")} ${safe(item.location)} · ` : ""}${contactIcon} ${safe(timeAgo(item.updatedAt))}</span>
         <div class="msg-card-actions">
           <button class="fav-card-cta" type="button" data-msg-open="${safe(item.type)}:${safe(item.id)}">Voir →</button>
           <button class="msg-recontact-btn" type="button" data-msg-recontact="${safe(item.type)}:${safe(item.id)}">Recontacter</button>

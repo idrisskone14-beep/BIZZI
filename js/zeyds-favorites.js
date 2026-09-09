@@ -161,7 +161,7 @@
       const label = active ? "Retirer des favoris" : "Ajouter aux favoris";
       btn.setAttribute("aria-label", label);
       btn.title = label;
-      btn.textContent = active ? "♥" : "♡";
+      btn.innerHTML = BizziIcon("heart", { filled: active });
     });
   }
 
@@ -321,13 +321,13 @@
 
   function emptyStateGlobal() {
     return `<div class="fav-empty">
-      <span class="fav-empty-icon">💛</span>
+      <span class="fav-empty-icon">${BizziIcon("heart", { filled: true })}</span>
       <h3>Aucun favori pour le moment</h3>
       <p>Enregistrez les services, offres d'emploi et opportunités Zeyds Cash qui vous intéressent pour les retrouver facilement ici.</p>
       <div class="fav-empty-shortcuts">
-        <button type="button" data-go="search"><span>🔧</span><strong>Services</strong><small>Explorer les services</small></button>
-        <button type="button" data-go="jobs"><span>💼</span><strong>Emplois</strong><small>Voir les emplois</small></button>
-        <button type="button" data-go="cash"><span>💵</span><strong>Zeyds Cash</strong><small>Découvrir Zeyds Cash</small></button>
+        <button type="button" data-go="search"><span>${BizziIcon("wrench")}</span><strong>Services</strong><small>Explorer les services</small></button>
+        <button type="button" data-go="jobs"><span>${BizziIcon("briefcase")}</span><strong>Emplois</strong><small>Voir les emplois</small></button>
+        <button type="button" data-go="cash"><span>${BizziIcon("money")}</span><strong>Zeyds Cash</strong><small>Découvrir Zeyds Cash</small></button>
       </div>
     </div>`;
   }
@@ -363,7 +363,7 @@
   function favCard(item) {
     if (item.missing) {
       return `<article class="fav-card fav-card-missing">
-        <div class="fav-card-media"><span class="fav-card-icon">⚠️</span></div>
+        <div class="fav-card-media"><span class="fav-card-icon">${BizziIcon("warning")}</span></div>
         <div class="fav-card-body">
           <div class="fav-card-top"><strong>Élément introuvable</strong>${favHeart(item)}</div>
           <span class="fav-card-meta">Ce contenu n'est plus disponible.</span>
@@ -371,14 +371,14 @@
       </article>`;
     }
 
-    const icon = { service: "🔧", job: "💼", cash: "💵" }[item.type];
-    let metaLine = safe(item.location ? `📍 ${item.location}` : "");
+    const icon = { service: BizziIcon("wrench"), job: BizziIcon("briefcase"), cash: BizziIcon("money") }[item.type];
+    let metaLine = item.location ? `${BizziIcon("pin")} ${safe(item.location)}` : "";
     let statusBadge = "";
     let ctaLabel = "Voir →";
 
     if (item.type === "service") {
       ctaLabel = "Voir le profil →";
-      if (item.rating > 0) metaLine += ` · ★ ${item.rating.toLocaleString("fr-FR", { maximumFractionDigits: 1 })}`;
+      if (item.rating > 0) metaLine += ` · ${BizziIcon("star", { filled: true })} ${item.rating.toLocaleString("fr-FR", { maximumFractionDigits: 1 })}`;
       if (item.unavailable) statusBadge = `<span class="fav-status-chip">Indisponible</span>`;
     } else if (item.type === "job") {
       ctaLabel = "Voir l'offre →";
@@ -386,9 +386,9 @@
       if (item.expired) statusBadge = `<span class="fav-status-chip fav-status-warn">Offre expirée</span>`;
     } else if (item.type === "cash") {
       ctaLabel = "Voir →";
-      if (item.reward) metaLine += ` · 💰 ${safe(formatMoney(item.reward))}`;
+      if (item.reward) metaLine += ` · ${BizziIcon("money")} ${safe(formatMoney(item.reward))}`;
       if (item.ended) statusBadge = `<span class="fav-status-chip">${item.status === "expired" ? "Offre terminée" : "Terminée"}</span>`;
-      else if (item.secured) statusBadge = `<span class="fav-secured-chip">🔒 Sécurisée</span>`;
+      else if (item.secured) statusBadge = `<span class="fav-secured-chip">${BizziIcon("lock")} Sécurisée</span>`;
     }
 
     return `<article class="fav-card" role="button" tabindex="0" data-fav-open="${safe(item.type)}:${safe(item.id)}">
@@ -407,7 +407,7 @@
   }
 
   function favHeart(item) {
-    return `<button class="fav-heart is-favorite" type="button" data-fav-toggle="${safe(item.type)}:${safe(item.id)}" aria-pressed="true" aria-label="Retirer des favoris" title="Retirer des favoris">♥</button>`;
+    return `<button class="fav-heart is-favorite" type="button" data-fav-toggle="${safe(item.type)}:${safe(item.id)}" aria-pressed="true" aria-label="Retirer des favoris" title="Retirer des favoris">${BizziIcon("heart", { filled: true })}</button>`;
   }
 
   function renderList() {

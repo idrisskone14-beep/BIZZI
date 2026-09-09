@@ -1,4 +1,4 @@
-const CACHE_NAME = "bizzi-v407-0";
+const CACHE_NAME = "bizzi-v408-0";
 const OFFLINE_URL = "./offline.html";
 const NAVIGATION_TIMEOUT_MS = 4500;
 const ASSETS = [
@@ -24,8 +24,8 @@ const ASSETS = [
   "./js/admin-dashboard.js?v=240",
   "./js/geo-precision.js?v=304",
   "./js/maps-provider.js?v=304",
-  "./js/providers-map.js?v=304",
-  "./js/location-intelligence.js?v=304",
+  "./js/providers-map.js?v=305",
+  "./js/location-intelligence.js?v=305",
   "./js/network-lite.js?v=240",
   "./js/voice-access.js?v=240",
   "./js/ai-voice.js?v=240",
@@ -53,12 +53,12 @@ const ASSETS = [
   "./mobile-v306.css?v=307",
   "./js/zeyds-cash.js?v=310",
   "./js/zeyds-jobs.js?v=4",
-  "./js/zeyds-favorites.js?v=2",
-  "./js/zeyds-messages.js?v=1",
+  "./js/zeyds-favorites.js?v=3",
+  "./js/zeyds-messages.js?v=2",
   "./js/motion-system.js?v=304",
   "./js/service-ai-images.js?v=304",
   "./app.js?v=404",
-  "./js/home-magazine.js?v=304",
+  "./js/home-magazine.js?v=305",
   "./admin-access.html",
   "./manifest.webmanifest",
   "./assets/logo-v302.png",

@@ -139,8 +139,8 @@
           <span>Zone</span>
           <select id="citySelect" aria-label="Ville"></select>
           <button id="geoButton" type="button">Me localiser</button>
-          <button class="provider-shortcut-button" type="button" data-provider-shortcut="new">🧰 S’inscrire</button>
-          <button class="provider-shortcut-button" type="button" data-provider-shortcut="existing">🔑 Déjà prestataire</button>
+          <button class="provider-shortcut-button" type="button" data-provider-shortcut="new"><svg class="bz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h20v13a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7Z"/><path d="M17 7V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2"/><path d="M2 12h20"/><path d="M12 12v2"/></svg> S’inscrire</button>
+          <button class="provider-shortcut-button" type="button" data-provider-shortcut="existing"><svg class="bz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg> Déjà prestataire</button>
           <button id="installButton" type="button" hidden data-i18n="install">Installer</button>
           <button id="topbarAvatar" class="topbar-avatar" type="button" aria-label="Se connecter ou voir mon profil client">?</button>
           <select id="languageSelect" aria-label="Langue">
@@ -288,7 +288,7 @@
           <!-- Hero -->
           <section class="cash-hero" aria-labelledby="cashTitle">
             <div class="cash-hero-brand">
-              <span aria-hidden="true">💸</span> Zeyds Cash
+              <span aria-hidden="true"><svg class="bz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/></svg></span> Zeyds Cash
             </div>
             <h2 id="cashTitle" class="cash-hero-tagline">Tu cherches&nbsp;? Publie.<br>Tu trouves&nbsp;? Tu gagnes.</h2>
             <p class="cash-hero-sub">Publie une mission avec une prime. Propose une solution et gagne en FCFA.</p>
@@ -296,7 +296,7 @@
               <button class="cash-hero-cta" type="button" data-cash-publish>+ Publier une mission</button>
               <button class="cash-hero-cta-ghost" type="button" data-cash-open-personal>Mes recherches &amp; gains</button>
               <div class="cash-notif-btn-wrap">
-                <button id="cashNotifBtn" type="button" aria-label="Notifications Zeyds Cash">🔔 Notifs <span id="cashNotifBadge" hidden></span></button>
+                <button id="cashNotifBtn" type="button" aria-label="Notifications Zeyds Cash"><svg class="bz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg> Notifs <span id="cashNotifBadge" hidden></span></button>
                 <div id="cashNotifPanel" class="cash-notif-panel" hidden aria-live="polite">
                   <div id="cashNotifList"></div>
                 </div>
@@ -315,7 +315,7 @@
 
             <!-- Filters -->
             <div class="cash-filter-bar" id="cashFilterBar" role="group" aria-label="Filtres">
-              <button class="cash-filter-chip" type="button" data-cash-filter="rewarded" aria-pressed="false">💰 Avec récompense</button>
+              <button class="cash-filter-chip" type="button" data-cash-filter="rewarded" aria-pressed="false"><svg class="bz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/></svg> Avec récompense</button>
               <div class="cash-filter-divider" role="separator"></div>
               <button class="cash-filter-chip" type="button" data-cash-filter="category" data-cash-filter-val="Services" aria-pressed="false">Services</button>
               <button class="cash-filter-chip" type="button" data-cash-filter="category" data-cash-filter-val="Livraison" aria-pressed="false">Livraison</button>
@@ -347,7 +347,7 @@
             <nav class="cash-personal-tabs" id="cashPersonalTabs" role="tablist">
               <button class="cash-personal-tab" role="tab" type="button" data-cash-tab="mes-besoins" aria-selected="true">Mes missions</button>
               <button class="cash-personal-tab" role="tab" type="button" data-cash-tab="mes-solutions" aria-selected="false">Mes solutions</button>
-              <button class="cash-personal-tab" role="tab" type="button" data-cash-tab="portefeuille" aria-selected="false">Portefeuille 💰</button>
+              <button class="cash-personal-tab" role="tab" type="button" data-cash-tab="portefeuille" aria-selected="false">Portefeuille <svg class="bz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/></svg></button>
             </nav>
             <div class="cash-filter-bar" id="cashSolutionsFilterBar" role="group" aria-label="Filtrer mes solutions" hidden>
               <button class="cash-filter-chip active" type="button" data-cash-sol-filter="all" aria-pressed="true">Toutes</button>
@@ -495,7 +495,7 @@
             <button class="cash-dialog-close" type="button" data-cash-close-payment aria-label="Fermer">×</button>
           </div>
           <div class="cash-dialog-body">
-            <p class="cash-payment-warning">🔒 Ta prime doit être sécurisée avant publication.</p>
+            <p class="cash-payment-warning"><svg class="bz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Ta prime doit être sécurisée avant publication.</p>
             <div id="cashPaymentCreditOption" hidden></div>
             <form id="cashPaymentForm" novalidate>
               <div id="cashPaymentMethods" class="cash-payment-methods" role="radiogroup"></div>
@@ -504,7 +504,7 @@
                 <input name="transactionReference" type="text" maxlength="80" required placeholder="Référence reçue après l'envoi">
               </label>
               <p class="cash-payment-note">Envoie le montant via le moyen choisi, puis colle ici la référence de la transaction. Un admin ZEYDS confirme le paiement rapidement — ta mission est publiée dès confirmation.</p>
-              <button class="cash-submit-btn" type="submit">🚀 J'ai payé — Publier ma demande</button>
+              <button class="cash-submit-btn" type="submit"><svg class="bz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09Z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2Z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg> J'ai payé — Publier ma demande</button>
             </form>
             <div id="cashPaymentStatus" role="status"></div>
           </div>
@@ -537,12 +537,12 @@
               <div class="cash-help-reward-box">
                 <span>Prime proposée par le demandeur</span>
                 <strong id="cashHelpRewardAmount">—</strong>
-                <span class="cash-secured-badge">🔒 Prime déjà bloquée et sécurisée</span>
+                <span class="cash-secured-badge"><svg class="bz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Prime déjà bloquée et sécurisée</span>
               </div>
               <ul class="cash-help-terms">
-                <li>✓ En acceptant, tu t'engages à faire de ton mieux pour réaliser cette mission.</li>
-                <li>🔒 Tu ne peux pas modifier la prime proposée.</li>
-                <li>🛡️ La prime te sera versée uniquement si le demandeur valide ta solution.</li>
+                <li><svg class="bz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> En acceptant, tu t'engages à faire de ton mieux pour réaliser cette mission.</li>
+                <li><svg class="bz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Tu ne peux pas modifier la prime proposée.</li>
+                <li><svg class="bz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg> La prime te sera versée uniquement si le demandeur valide ta solution.</li>
               </ul>
               <label class="cash-form-label">
                 Un mot pour le demandeur (optionnel)
@@ -580,7 +580,7 @@
               <button class="secondary" type="button" id="cashHelpWizardBack" hidden>← Retour</button>
               <button class="cash-submit-btn" type="button" id="cashHelpWizardNext">Accepter la mission</button>
             </div>
-            <p class="cash-help-lock-note">🔒 Ton engagement sera transmis au demandeur immédiatement.</p>
+            <p class="cash-help-lock-note"><svg class="bz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Ton engagement sera transmis au demandeur immédiatement.</p>
           </form>
         </div>
       </div>
@@ -604,7 +604,7 @@
       <div id="cashHelpSentDialog" class="cash-dialog-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="cashHelpSentTitle">
         <div class="cash-dialog">
           <div class="cash-dialog-head">
-            <h3 id="cashHelpSentTitle">C'est envoyé ! 🎉</h3>
+            <h3 id="cashHelpSentTitle">C'est envoyé ! <svg class="bz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></h3>
           </div>
           <div class="cash-dialog-body">
             <p>Le demandeur a reçu ta proposition.</p>
@@ -650,11 +650,11 @@
           </div>
           <form id="cashReviewForm" class="cash-dialog-body" novalidate>
             <div class="cash-star-picker" id="cashStarPicker" role="radiogroup" aria-label="Note globale">
-              <button type="button" class="cash-star" data-star="1">★</button>
-              <button type="button" class="cash-star" data-star="2">★</button>
-              <button type="button" class="cash-star" data-star="3">★</button>
-              <button type="button" class="cash-star" data-star="4">★</button>
-              <button type="button" class="cash-star" data-star="5">★</button>
+              <button type="button" class="cash-star" data-star="1"><svg class="bz-icon" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2Z"/></svg></button>
+              <button type="button" class="cash-star" data-star="2"><svg class="bz-icon" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2Z"/></svg></button>
+              <button type="button" class="cash-star" data-star="3"><svg class="bz-icon" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2Z"/></svg></button>
+              <button type="button" class="cash-star" data-star="4"><svg class="bz-icon" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2Z"/></svg></button>
+              <button type="button" class="cash-star" data-star="5"><svg class="bz-icon" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2Z"/></svg></button>
             </div>
             <input type="hidden" name="rating" value="5">
             <label class="cash-form-label">
@@ -914,7 +914,7 @@
 
         <div class="service-entry-tabs" role="tablist" aria-label="Choix Services">
           <button class="service-entry-tab selected" type="button" data-service-entry="search" aria-selected="true">Je cherche</button>
-          <button class="service-entry-tab" type="button" id="openProviderQuickSignup">🧰 Je propose</button>
+          <button class="service-entry-tab" type="button" id="openProviderQuickSignup"><svg class="bz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h20v13a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7Z"/><path d="M17 7V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2"/><path d="M2 12h20"/><path d="M12 12v2"/></svg> Je propose</button>
         </div>
 
         <div class="service-search-panel">
@@ -951,7 +951,7 @@
             </div>
             <label class="verified-service-toggle">
               <input id="verifiedOnly" type="checkbox">
-              <span class="verified-toggle-mark">✓</span>
+              <span class="verified-toggle-mark"><svg class="bz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
               <span id="verifiedServiceAction">Afficher les vérifiés</span>
             </label>
             <span id="verifiedServiceCount" class="tag verified">0 vérifié</span>
@@ -961,7 +961,7 @@
             <span id="resultCount" class="tag">0 résultat</span>
           </div>
           <div class="providers-view-toggle" role="tablist" aria-label="Affichage des résultats">
-            <button type="button" id="providersViewList" class="selected" role="tab" aria-selected="true" data-providers-view="list">☰ Liste</button>
+            <button type="button" id="providersViewList" class="selected" role="tab" aria-selected="true" data-providers-view="list"><svg class="bz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg> Liste</button>
             <button type="button" id="providersViewMap" role="tab" aria-selected="false" data-providers-view="map">⌖ Carte</button>
           </div>
           <div id="providersList" class="providers-list"></div>
@@ -980,13 +980,13 @@
             <p class="jobs-hero-tagline">Trouve un job. Trouve le bon profil.</p>
             <div class="jobs-hero-ctas">
               <button type="button" class="jobs-cta-btn jobs-cta-primary" data-jobs-goto="home">
-                <span aria-hidden="true">🔍</span> Trouver un emploi
+                <span aria-hidden="true"><svg class="bz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span> Trouver un emploi
               </button>
               <button type="button" class="jobs-cta-btn" data-jobs-goto="profile">
-                <span aria-hidden="true">🧑‍💼</span> Déposer mon profil
+                <span aria-hidden="true"><svg class="bz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span> Déposer mon profil
               </button>
               <button type="button" class="jobs-cta-btn" data-jobs-goto="recruiter">
-                <span aria-hidden="true">📋</span> Recruter
+                <span aria-hidden="true"><svg class="bz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11"/><path d="M9 12h11"/><path d="M9 18h11"/><path d="M4.5 6h.01"/><path d="M4.5 12h.01"/><path d="M4.5 18h.01"/></svg></span> Recruter
               </button>
             </div>
           </section>
@@ -1014,7 +1014,7 @@
             <div class="jobs-filter-row">
               <label class="sr-only" for="jobServiceFilter">Métier recherché</label>
               <select id="jobServiceFilter" aria-label="Métier recherché"></select>
-              <button type="button" class="jobs-locate-btn" data-jobs-locate title="Utiliser ma position">📍 Près de moi</button>
+              <button type="button" class="jobs-locate-btn" data-jobs-locate title="Utiliser ma position"><svg class="bz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> Près de moi</button>
             </div>
             <input type="hidden" id="jobTypeFilter" value="">
 

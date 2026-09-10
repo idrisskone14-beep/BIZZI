@@ -8923,7 +8923,7 @@ async function fetchAndRenderRequestPriceHint(serviceName) {
       return;
     }
     hint.hidden = false;
-    hint.textContent = `💡 Les prestataires de ce métier facturent en général entre ${formatMoney(estimate.min_amount)} et ${formatMoney(estimate.max_amount)}.`;
+    hint.innerHTML = `${BizziIcon("bulb")} Les prestataires de ce métier facturent en général entre ${safe(formatMoney(estimate.min_amount))} et ${safe(formatMoney(estimate.max_amount))}.`;
   } catch {
     hint.hidden = true;
   }
@@ -10210,113 +10210,113 @@ function contactActionMessage(provider, action) {
 
 function serviceIcon(service) {
   const map = {
-    "Déménageur": "📦",
-    Electricien: "💡",
-    Peintre: "🎨",
-    Plombier: "🔧",
-    Vidangeur: "🚛",
-    "Ramassage d'ordures": "🗑️",
-    "Soudeur / Métallier": "⚙️",
-    Menuisier: "🪚",
-    "Frigoriste / Climatisation": "❄️",
-    Serrurier: "🔑",
-    Maçon: "🧱",
-    Carreleur: "⬚",
-    "Couvreur / Étanchéité": "🏠",
-    "Vitrier / Aluminium": "▣",
-    "Jardinier / Paysagiste": "🌿",
-    "Nettoyage maison / bureau": "🧹",
-    "Nettoyage canapé / tapis / matelas": "🫧",
-    "Désinsectisation / Dératisation": "🛡️",
-    "Technicien électroménager": "🔌",
-    "Installateur solaire / groupe électrogène": "☀️",
-    "Antenniste / TV satellite": "📡",
-    "Architecte / décorateur professionnel": "📐",
-    "Aide à domicile": "🏡",
-    Nounou: "🍼",
-    Gardiennage: "🛡️",
-    "Détective privé(e)": "🔎",
-    "Coach sportif": "🏋️",
-    "Masseur / Masseuse": "🤲",
-    Esthéticienne: "💅",
-    "Maquilleuse / Maquilleur": "💄",
-    "Tresse / Coiffure": "✂️",
-    "Couturier / Retoucheur": "🧵",
-    Conciergerie: "🛎️",
-    "Pressing / Blanchisserie": "👕",
-    "Courses / achats à domicile": "🛒",
-    "Aide ménage / agence de placement": "🧼",
-    Tatouage: "✒️",
-    Chauffeur: "🚗",
-    "Livreur de gaz en bouteille": "🛢️",
-    "Location de véhicules": "🚙",
-    Mécanicien: "🔩",
-    "Remorquage / Dépannage auto": "🪝",
-    "Dépannage moto": "🛵",
-    "Vulcanisateur / Pneus": "🛞",
-    "Carrossier / Peintre auto": "🚘",
-    "Lavage auto / moto": "🧽",
-    "Transport de marchandises": "🚚",
-    "Zeyds Livraison": "📦",
-    "Transport de colis international": "🌍",
-    Transitaire: "🛃",
-    "Conducteur moto-taxi": "🏍️",
-    "Cours à domicile": "📚",
-    "Formateur / Coach": "🎓",
-    "Secrétaire virtuelle / Assistante administrative": "💼",
-    "Traducteur / Interprète": "💬",
-    "Formation informatique": "💻",
-    Photographe: "📷",
-    Imprimeur: "🖨️",
-    "Agence événementielle / organisateur événements": "🎟️",
-    "Location d'articles d'événements": "🎪",
-    "DJ / Animateur": "🎧",
-    "Serveur / Serveuse": "🍽️",
-    "Barman / Barmaid": "🍹",
-    "Designer d'intérieur": "🛋️",
-    "Traiteur / Cuisinier à domicile": "🍲",
-    "Décorateur événementiel": "🎈",
-    "Location sonorisation / lumière": "🔊",
-    Fleuriste: "💐",
-    "Agent immobilier": "🏘️",
-    "Vendeur / Vendeuse": "🛍️",
-    "Vendeur de terrains et biens immobiliers": "🏡",
-    "Location type Airbnb": "🛏️",
-    Hôtels: "🏨",
-    Restaurants: "🍴",
-    "Prêt financier": "💰",
-    "Achat Or et pierre": "💎",
-    "Aide démarches administratives": "📄",
-    "Comptable / Fiscaliste": "🧾",
-    "Juriste / Conseil légal": "⚖️",
-    "Courtier assurance": "🛡️",
-    "Aide visa / voyage": "✈️",
-    "Coach tennis": "🎾",
-    "Coach Golf": "⛳",
-    "Guide touristique": "🧭",
-    "Réparateur téléphone": "📱",
-    "Réparateur ordinateur / imprimante": "🖨️",
-    "Installation Wi-Fi / caméra": "📶",
-    "Assistance informatique": "🖥️",
-    "Création site web / design": "🌐",
-    "Community manager": "📣",
-    "Infirmier à domicile": "🩺",
-    "Garde-malade": "🛏️",
-    Kinésithérapeute: "♿",
-    "Sage-femme": "🤱",
-    "Ambulance privée": "🚑",
-    "Livraison médicaments": "💊",
-    "Technicien pompe / forage": "💧",
-    "Réparateur groupe électrogène": "⚡",
-    "Tractoriste / Labour": "🚜",
-    "Ouvrier agricole": "🌾",
-    "Transport de récoltes": "🧺",
-    "Vétérinaire / soins animaux": "🐾",
-    "Technicien irrigation": "💦",
-    "Réparateur chambre froide": "🧊",
-    "Clubs de foot": "⚽",
+    "Déménageur": "truck",
+    Electricien: "plug",
+    Peintre: "droplet",
+    Plombier: "wrench",
+    Vidangeur: "truck",
+    "Ramassage d'ordures": "trash",
+    "Soudeur / Métallier": "wrench",
+    Menuisier: "wrench",
+    "Frigoriste / Climatisation": "snowflake",
+    Serrurier: "key",
+    Maçon: "building",
+    Carreleur: "wrench",
+    "Couvreur / Étanchéité": "home",
+    "Vitrier / Aluminium": "wrench",
+    "Jardinier / Paysagiste": "leaf",
+    "Nettoyage maison / bureau": "sparkle",
+    "Nettoyage canapé / tapis / matelas": "sparkle",
+    "Désinsectisation / Dératisation": "shield",
+    "Technicien électroménager": "plug",
+    "Installateur solaire / groupe électrogène": "sun",
+    "Antenniste / TV satellite": "signal",
+    "Architecte / décorateur professionnel": "building",
+    "Aide à domicile": "home",
+    Nounou: "baby",
+    Gardiennage: "shield",
+    "Détective privé(e)": "search",
+    "Coach sportif": "dumbbell",
+    "Masseur / Masseuse": "sparkle",
+    Esthéticienne: "sparkle",
+    "Maquilleuse / Maquilleur": "sparkle",
+    "Tresse / Coiffure": "scissors",
+    "Couturier / Retoucheur": "scissors",
+    Conciergerie: "bell",
+    "Pressing / Blanchisserie": "sparkle",
+    "Courses / achats à domicile": "package",
+    "Aide ménage / agence de placement": "users",
+    Tatouage: "sparkle",
+    Chauffeur: "car",
+    "Livreur de gaz en bouteille": "package",
+    "Location de véhicules": "car",
+    Mécanicien: "wrench",
+    "Remorquage / Dépannage auto": "truck",
+    "Dépannage moto": "wrench",
+    "Vulcanisateur / Pneus": "wrench",
+    "Carrossier / Peintre auto": "car",
+    "Lavage auto / moto": "droplet",
+    "Transport de marchandises": "truck",
+    "Zeyds Livraison": "package",
+    "Transport de colis international": "globe",
+    Transitaire: "globe",
+    "Conducteur moto-taxi": "car",
+    "Cours à domicile": "graduation-cap",
+    "Formateur / Coach": "graduation-cap",
+    "Secrétaire virtuelle / Assistante administrative": "briefcase",
+    "Traducteur / Interprète": "chat",
+    "Formation informatique": "laptop",
+    Photographe: "camera",
+    Imprimeur: "printer",
+    "Agence événementielle / organisateur événements": "calendar",
+    "Location d'articles d'événements": "calendar",
+    "DJ / Animateur": "music",
+    "Serveur / Serveuse": "utensils",
+    "Barman / Barmaid": "utensils",
+    "Designer d'intérieur": "building",
+    "Traiteur / Cuisinier à domicile": "utensils",
+    "Décorateur événementiel": "calendar",
+    "Location sonorisation / lumière": "music",
+    Fleuriste: "leaf",
+    "Agent immobilier": "building",
+    "Vendeur / Vendeuse": "package",
+    "Vendeur de terrains et biens immobiliers": "building",
+    "Location type Airbnb": "home",
+    Hôtels: "building",
+    Restaurants: "utensils",
+    "Prêt financier": "money",
+    "Achat Or et pierre": "money",
+    "Aide démarches administratives": "document",
+    "Comptable / Fiscaliste": "document",
+    "Juriste / Conseil légal": "briefcase",
+    "Courtier assurance": "shield",
+    "Aide visa / voyage": "plane",
+    "Coach tennis": "dumbbell",
+    "Coach Golf": "dumbbell",
+    "Guide touristique": "pin",
+    "Réparateur téléphone": "phone",
+    "Réparateur ordinateur / imprimante": "laptop",
+    "Installation Wi-Fi / caméra": "signal",
+    "Assistance informatique": "laptop",
+    "Création site web / design": "globe",
+    "Community manager": "chat",
+    "Infirmier à domicile": "pulse",
+    "Garde-malade": "pulse",
+    Kinésithérapeute: "pulse",
+    "Sage-femme": "baby",
+    "Ambulance privée": "pulse",
+    "Livraison médicaments": "package",
+    "Technicien pompe / forage": "droplet",
+    "Réparateur groupe électrogène": "plug",
+    "Tractoriste / Labour": "car",
+    "Ouvrier agricole": "leaf",
+    "Transport de récoltes": "truck",
+    "Vétérinaire / soins animaux": "paw",
+    "Technicien irrigation": "droplet",
+    "Réparateur chambre froide": "snowflake",
+    "Clubs de foot": "trophy",
   };
-  return map[service] || "✦";
+  return BizziIcon(map[service] || "sparkle");
 }
 
 function serviceStyle(service) {
@@ -10411,9 +10411,9 @@ function providerMedia(provider) {
     ? globalThis.BizziServiceImages?.url?.(service)
     : "";
   if (serviceImage) {
-    return `<div class="provider-photo provider-service-photo" role="img" aria-label="Illustration du métier ${safe(service)}"><img src="${safe(serviceImage)}" alt="" loading="lazy" decoding="async" onerror="this.remove()"><span>${safe(serviceIcon(service))}</span></div>`;
+    return `<div class="provider-photo provider-service-photo" role="img" aria-label="Illustration du métier ${safe(service)}"><img src="${safe(serviceImage)}" alt="" loading="lazy" decoding="async" onerror="this.remove()"><span>${serviceIcon(service)}</span></div>`;
   }
-  return `<div class="avatar african-avatar" style="${serviceStyle(provider.service)}" role="img" aria-label="Avatar ${safe(provider.service)}"><span>${safe(serviceIcon(provider.service))}</span></div>`;
+  return `<div class="avatar african-avatar" style="${serviceStyle(provider.service)}" role="img" aria-label="Avatar ${safe(provider.service)}"><span>${serviceIcon(provider.service)}</span></div>`;
 }
 
 function distanceBetweenKm(a, b) {
@@ -10871,7 +10871,7 @@ function renderServices() {
 
   grid.innerHTML = services.map((service) => `
     <button class="service-card ${service === state.selectedService ? "active" : ""}" data-service="${safe(service)}">
-      <div class="service-art" style="${serviceStyle(service)}"><span>${safe(serviceIcon(service))}</span></div>
+      <div class="service-art" style="${serviceStyle(service)}"><span>${serviceIcon(service)}</span></div>
       <div class="service-body">
         <strong>${safe(service)}</strong>
       </div>
@@ -11137,12 +11137,12 @@ function deliveryTrackingHtml(request = {}, options = {}) {
       <div class="delivery-live-map" role="img" aria-label="Position du livreur sur le trajet">
         <span class="map-route"></span>
         <span class="map-pin pickup">A</span>
-        <span class="map-courier" style="left:${progress}%">🛵</span>
+        <span class="map-courier" style="left:${progress}%">${BizziIcon("car")}</span>
         <span class="map-pin dropoff">B</span>
       </div>
       ${request.courierLatitude && request.courierLongitude ? `<p class="sync-status">GPS livreur actualisé${request.courierLocationAt ? ` à ${safe(new Date(request.courierLocationAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }))}` : ""}.</p>` : `<p class="sync-status">Position GPS disponible dès que le livreur active le suivi live.</p>`}
       <div class="delivery-stage-list">
-        ${info.stages.map((stage, index) => `<span class="${index <= info.index ? "done" : ""}"><b>${index < info.index ? "✓" : index + 1}</b>${stage.label}</span>`).join("")}
+        ${info.stages.map((stage, index) => `<span class="${index <= info.index ? "done" : ""}"><b>${index < info.index ? BizziIcon("check") : index + 1}</b>${stage.label}</span>`).join("")}
       </div>
       ${!options.providerId && request.proofCode ? `<p class="delivery-proof-code"><strong>${ride ? "Code de fin de course" : "Code de remise"} :</strong> ${safe(request.proofCode)} <small>À communiquer uniquement ${ride ? "à l'arrivée" : "quand le colis est remis"}.</small></p>` : ""}
       ${request.proofPhoto ? `<a class="doc-link" href="${safe(request.proofPhoto)}" target="_blank" rel="noreferrer">Voir la preuve photo</a>` : ""}
@@ -13121,10 +13121,10 @@ function renderProviders() {
 
 function eventPosterHtml(event, large = false) {
   const poster = event.posterUrl || event.poster;
-  const icon = event.category === "Concert" ? "🎤" : event.category === "Conférence" ? "🎙" : event.category === "Sport" ? "🏆" : "🎟";
+  const icon = event.category === "Concert" ? BizziIcon("music") : event.category === "Conférence" ? BizziIcon("chat") : event.category === "Sport" ? BizziIcon("trophy") : BizziIcon("calendar");
   return `
     <div class="${large ? "event-detail-hero" : "event-poster"}">
-      ${poster ? `<img src="${safe(poster)}" alt="${safe(event.title)}" loading="${large ? "eager" : "lazy"}" decoding="async" onerror="this.outerHTML='${safe(icon)}'">` : `<span>${safe(icon)}</span>`}
+      ${poster ? `<img src="${safe(poster)}" alt="${safe(event.title)}" loading="${large ? "eager" : "lazy"}" decoding="async" onerror="this.outerHTML='${safe(icon)}'">` : `<span>${icon}</span>`}
     </div>
   `;
 }
@@ -13350,7 +13350,7 @@ function foodPlaceArt(place) {
   const photo = place.photoUrl || place.photo;
   return `
     <div class="food-art">
-      ${photo ? `<img src="${safe(photo)}" alt="${safe(place.name)}" loading="lazy" decoding="async">` : `<span>${safe(serviceIcon("Restaurants"))}</span>`}
+      ${photo ? `<img src="${safe(photo)}" alt="${safe(place.name)}" loading="lazy" decoding="async">` : `<span>${serviceIcon("Restaurants")}</span>`}
     </div>
   `;
 }
@@ -13685,7 +13685,7 @@ function pendingJobCard(job) {
   return `
     <article class="job-card pending-job">
       <div class="job-art" style="${serviceStyle(job.service)}">
-        <span>${safe(serviceIcon(job.service))}</span>
+        <span>${serviceIcon(job.service)}</span>
       </div>
       <div class="job-body">
         <div class="job-title-row">
@@ -13710,7 +13710,7 @@ function jobCard(job) {
   return `
     <article class="job-card">
       <div class="job-art" style="${serviceStyle(job.service)}">
-        <span>${safe(serviceIcon(job.service))}</span>
+        <span>${serviceIcon(job.service)}</span>
       </div>
       <div class="job-body">
         <div class="job-title-row">
@@ -13751,7 +13751,7 @@ function jobShareText(job) {
 function favoriteHeartButton(type, id) {
   const active = Boolean(globalThis.BizziFavorites?.isFavorite?.(type, id));
   const label = active ? "Retirer des favoris" : "Ajouter aux favoris";
-  return `<button class="fav-heart${active ? " is-favorite" : ""}" type="button" data-fav-toggle="${safe(type)}:${safe(id)}" aria-pressed="${active}" aria-label="${label}" title="${label}">${active ? "♥" : "♡"}</button>`;
+  return `<button class="fav-heart${active ? " is-favorite" : ""}" type="button" data-fav-toggle="${safe(type)}:${safe(id)}" aria-pressed="${active}" aria-label="${label}" title="${label}">${BizziIcon("heart", { filled: active })}</button>`;
 }
 
 function providerCard(provider) {
@@ -13788,14 +13788,14 @@ function providerCard(provider) {
       </div>
       <div class="provider-card-main">
         <div class="provider-card-title">
-          <h3>${safe(provider.fullName)}${isVerified(provider) ? ` <span class="provider-verified-check" title="Vérifié Zeyds">✅</span>` : ""}</h3>
+          <h3>${safe(provider.fullName)}${isVerified(provider) ? ` <span class="provider-verified-check" title="Vérifié Zeyds">${BizziIcon("check-circle")}</span>` : ""}</h3>
           ${providerBoostBadge(provider)}
           ${favoriteHeartButton("service", provider.remoteId)}
         </div>
         <p class="provider-card-service">${safe(providerServicesLabel(provider))}</p>
-        <p class="provider-card-rating-line">★ ${Number(provider.rating || 0).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} (${reviews}) · ${safe(distanceLabel(provider))}</p>
-        ${available ? `<p class="provider-card-availability">🟢 Disponible maintenant</p>` : ""}
-        ${responseLabel ? `<p class="provider-card-response-time">⚡ ${safe(responseLabel)}</p>` : ""}
+        <p class="provider-card-rating-line">${BizziIcon("star", { filled: true })} ${Number(provider.rating || 0).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} (${reviews}) · ${safe(distanceLabel(provider))}</p>
+        ${available ? `<p class="provider-card-availability">${BizziIcon("dot")} Disponible maintenant</p>` : ""}
+        ${responseLabel ? `<p class="provider-card-response-time">${BizziIcon("zap")} ${safe(responseLabel)}</p>` : ""}
         <p class="provider-card-price">${safe(providerAveragePriceLabel(provider))}</p>
         ${renewal ? `<span class="tag bad">${safe(renewal)}</span>` : ""}
         <div class="card-actions">
@@ -13842,7 +13842,7 @@ function openProfile(id) {
         <span class="tag">${safe(distanceLabel(provider))}</span>
         <span class="tag">${safe(provider.rating)}/5</span>
         <span class="tag">${safe(provider.city)}</span>
-        ${providerResponseTimeLabel(provider) ? `<span class="tag">⚡ ${safe(providerResponseTimeLabel(provider))}</span>` : ""}
+        ${providerResponseTimeLabel(provider) ? `<span class="tag">${BizziIcon("zap")} ${safe(providerResponseTimeLabel(provider))}</span>` : ""}
         ${verificationBadge(provider)}
         ${reliabilityBadge(provider)}
         ${providerBoostBadge(provider)}
@@ -17740,7 +17740,7 @@ function renderSidebarContact() {
     return;
   }
   const href = `https://wa.me/${supportWhatsapp.replace(/[^\d]/g, "")}`;
-  root.innerHTML = `<a class="sidebar-contact-link" href="${safe(href)}" target="_blank" rel="noreferrer"><span aria-hidden="true">💬</span> ${safe(supportWhatsapp)}</a>`;
+  root.innerHTML = `<a class="sidebar-contact-link" href="${safe(href)}" target="_blank" rel="noreferrer"><span aria-hidden="true">${BizziIcon("chat")}</span> ${safe(supportWhatsapp)}</a>`;
 }
 
 function refreshApp() {

@@ -1,4 +1,4 @@
-const CACHE_NAME = "bizzi-v409-0";
+const CACHE_NAME = "bizzi-v410-0";
 const OFFLINE_URL = "./offline.html";
 const NAVIGATION_TIMEOUT_MS = 4500;
 const ASSETS = [
@@ -7,9 +7,9 @@ const ASSETS = [
   "./admin.html",
   "./offline.html",
   "./landing.html",
-  "./landing.css?v=304",
+  "./landing.css?v=305",
   "./landing.js?v=304",
-  "./js/icons.js?v=1",
+  "./js/icons.js?v=2",
   "./js/storage-safe.js?v=240",
   "./js/privacy-guard.js?v=304",
   "./js/data-dedupe.js?v=304",
@@ -57,7 +57,7 @@ const ASSETS = [
   "./js/zeyds-messages.js?v=2",
   "./js/motion-system.js?v=304",
   "./js/service-ai-images.js?v=304",
-  "./app.js?v=404",
+  "./app.js?v=405",
   "./js/home-magazine.js?v=305",
   "./admin-access.html",
   "./manifest.webmanifest",

@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.vercel.bizzi_mu.twa",
+      "sha256_cert_fingerprints": [
+        "C6:95:50:C2:E2:7E:9C:C5:3D:91:E6:B5:9A:61:F8:6E:FF:40:E9:BB:A8:41:BB:15:5A:84:7F:5C:19:FF:18:5F"
+      ]
+    }
+  }
+]

@@ -51,6 +51,9 @@ ne pas la rejouer sur une base non vide.
 ## Jour J, apres la recopie des donnees
 
 1. `node link-admins.mjs <chemin/donnees.json>` (la recopie remet les anciens identifiants Supabase).
+1b. `delete from public.push_subscriptions;` sur zeyds-prod : ces abonnements ont ete crees avec
+   l'ancienne cle VAPID (Supabase). Les appareils se reabonnent tout seuls avec la nouvelle cle
+   (`BizziConfig.neon.vapidPublicKey`, js/push-client.js) a la prochaine activation des notifications.
 2. Refermer le CORS de la Data API sur les domaines de production (ouvert a tous pendant les tests).
 3. `config.js` : `neon.enabled: true`, deployer, verifier, puis couper Render et Supabase.
 

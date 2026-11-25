@@ -19,6 +19,8 @@ window.BizziConfig = {
     enabled: false,
     dataApiUrl: "https://ep-dry-night-bgn2xvtv.apirest.c-9.eu-central-1.aws.neon.tech/neondb",
     authUrl: "https://ep-dry-night-bgn2xvtv.neonauth.c-9.eu-central-1.aws.neon.tech/neondb/auth",
+    // Cle publique Web Push des fonctions Vercel (paire du 2026-11-25 ; la privee est dans Vercel).
+    vapidPublicKey: "BBCMDvTuvu2hormnVcGnzXp0a6oh--6ZbrQg--LlJVaQ6RegepVhaOHBCiic5P34hninTZsY2mqSoEVNP7f8lM0",
   },
   restBackend: {
     url: "https://bizzi-gateway.onrender.com",

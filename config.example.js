@@ -18,6 +18,7 @@ window.BizziConfig = {
     enabled: false,
     dataApiUrl: "https://ep-VOTRE-ENDPOINT.apirest.REGION.aws.neon.tech/neondb",
     authUrl: "https://ep-VOTRE-ENDPOINT.neonauth.REGION.aws.neon.tech/neondb/auth",
+    vapidPublicKey: "VOTRE_CLE_PUBLIQUE_VAPID_VERCEL",
   },
   supabase: {
     url: "https://VOTRE-PROJET.supabase.co",

@@ -1,6 +1,11 @@
 {
   "routes": [
-    { "src": "^/$", "dest": "/landing.html" },
+    {
+      "src": "^/(?!maintenance\\.html$|assets/|\\.well-known/).*",
+      "dest": "/maintenance.html",
+      "status": 503,
+      "headers": { "Cache-Control": "no-store", "Retry-After": "300" }
+    },
     { "handle": "filesystem" }
   ]
 }

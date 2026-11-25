@@ -1,5 +1,30 @@
 {
+  "regions": ["fra1"],
   "routes": [
+    {
+      "src": "/(.*)",
+      "headers": {
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "X-Permitted-Cross-Domain-Policies": "none",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Permissions-Policy": "camera=(), microphone=(self), geolocation=(self)",
+        "Cross-Origin-Opener-Policy": "same-origin",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Content-Security-Policy-Report-Only": "default-src 'self'; connect-src 'self' https://*.neon.tech https://hqqppxnvorcnvksulhna.supabase.co https://bizzi-gateway.onrender.com https://bizzi-backend.onrender.com https://api.mapbox.com; img-src 'self' data: blob: https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; worker-src 'self'; manifest-src 'self'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'; form-action 'self'; base-uri 'self'"
+      },
+      "continue": true
+    },
+    {
+      "src": "^/(index\\.html|config\\.js|sw\\.js)?$",
+      "headers": { "Cache-Control": "no-cache, no-store, must-revalidate" },
+      "continue": true
+    },
+    {
+      "src": "^/(admin|admin-access|admin-panel)/?$",
+      "status": 302,
+      "headers": { "Location": "/index.html?admin=1&entry=admin-access&open=admin" }
+    },
     { "src": "^/$", "dest": "/landing.html" },
     { "handle": "filesystem" }
   ]

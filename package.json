@@ -1,0 +1,15 @@
+{
+  "name": "zeyds",
+  "private": true,
+  "type": "module",
+  "description": "Site statique Zeyds + fonctions Vercel (dossier api/).",
+  "engines": {
+    "node": "24.x"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "1.2.0",
+    "@vercel/blob": "2.9.0",
+    "jose": "6.2.17",
+    "web-push": "3.6.7"
+  }
+}

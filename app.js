@@ -699,7 +699,7 @@ const bizziConfig = window.BizziConfig || {
   backend: { adminActionsEndpoint: "", dispatchEndpoint: "", serverAlertsEndpoint: "" },
   observability: { endpoint: "", forwarderEndpoint: "", externalProvider: "", sampleRate: 1 },
   realtime: { locationEndpoint: "" },
-  notifications: { enabled: false, vapidPublicKey: "", subscribeEndpoint: "", notifyEndpoint: "" },
+  notifications: { enabled: false, vapidPublicKey: "", subscribeEndpoint: "", notifyEndpoint: "", smsEnabled: false, smsEndpoint: "" },
   maps: {
     provider: "auto",
     mapboxAccessToken: "",
@@ -2451,6 +2451,13 @@ function isTabEnabled(viewName) {
 }
 
 async function fetchPlatformFeatureFlags() {
+  if (neonDataApiEnabled()) {
+    try {
+      return await supabaseRpc("public_get_feature_flags", {}, { prefer: "return=representation" }) || {};
+    } catch {
+      return {};
+    }
+  }
   if (!hasProductionValue(bizziConfig.supabase?.url) || !hasProductionValue(bizziConfig.supabase?.anonKey)) return {};
   try {
     // Appel direct a Supabase (pas activeRestBaseUrl) : public_get_feature_flags
@@ -2837,7 +2844,26 @@ function restBackendConfigured() {
   return hasProductionValue(bizziConfig.restBackend?.url) && hasProductionValue(bizziConfig.restBackend?.anonKey);
 }
 
+// V306 : base Neon unique (Data API + Neon Auth), voir js/zeyds-neon-auth.js. Quand elle est
+// active, toutes les tables et RPC (y compris admin) passent par elle, avec un JWT Neon.
+function neonDataApiEnabled() {
+  return Boolean(globalThis.ZeydsNeon?.enabled?.());
+}
+
+// Ajoute le JWT Neon (admin si accessToken, sinon visiteur anonyme) aux en-tetes d'une requete.
+async function withNeonAuthorization(headers, accessToken = "") {
+  if (!neonDataApiEnabled()) return headers;
+  let token = "";
+  if (accessToken) {
+    token = await globalThis.ZeydsNeon.currentAdminAccessToken();
+    adminAuthSession = loadAdminAuthSession();
+    if (!token) throw new Error("Session admin expirée : reconnectez-vous.");
+  }
+  return globalThis.ZeydsNeon.headers(headers, token);
+}
+
 function activeRestBaseUrl(accessToken = "") {
+  if (neonDataApiEnabled()) return globalThis.ZeydsNeon.dataBaseUrl();
   if (restBackendConfigured() && !accessToken) {
     return String(bizziConfig.restBackend.url).replace(/\/+$/, "");
   }
@@ -2845,6 +2871,7 @@ function activeRestBaseUrl(accessToken = "") {
 }
 
 function activeRestHeaders(extra = {}, accessToken = "") {
+  if (neonDataApiEnabled()) return { "X-Bizzi-Client-Token": BizziPrivacy.token(), ...extra };
   if (restBackendConfigured() && !accessToken) {
     const key = bizziConfig.restBackend.anonKey || "";
     return {
@@ -2922,10 +2949,10 @@ async function supabaseRequest(resource, options = {}) {
   if (!supabaseConfigured() && !restBackendConfigured()) {
     throw new Error("Configuration Supabase absente");
   }
-  const headers = activeRestHeaders({
+  const headers = await withNeonAuthorization(activeRestHeaders({
     Accept: "application/json",
     ...(options.headers || {}),
-  }, options.accessToken || "");
+  }, options.accessToken || ""), options.accessToken || "");
   if (options.body) {
     headers["Content-Type"] = "application/json";
   }
@@ -3007,12 +3034,12 @@ async function supabaseRpc(name, payload = {}, options = {}) {
   }
   const response = await fetchWithTimeout(`${activeRestBaseUrl(options.accessToken || "")}/rest/v1/rpc/${name}`, {
     method: "POST",
-    headers: activeRestHeaders({
+    headers: await withNeonAuthorization(activeRestHeaders({
       Accept: "application/json",
       "Content-Type": "application/json",
       Prefer: options.prefer || "return=minimal",
       ...(options.headers || {}),
-    }, options.accessToken || ""),
+    }, options.accessToken || ""), options.accessToken || ""),
     body: JSON.stringify(payload),
   }, options.timeoutMs || SUPABASE_REQUEST_TIMEOUT_MS);
   if (!response.ok) {
@@ -3213,7 +3240,56 @@ function ensureProviderDirectorySearch() {
   }, 180);
 }
 
+// Neon Auth : premiere connexion / mot de passe oublie par code e-mail (6 chiffres).
+function setupNeonAdminPasswordForms() {
+  const box = document.querySelector("#neonAdminPasswordSetup");
+  if (!box) return;
+  box.hidden = !neonDataApiEnabled();
+  const requestForm = box.querySelector("#neonAdminCodeRequestForm");
+  const resetForm = box.querySelector("#neonAdminPasswordResetForm");
+  requestForm?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const button = requestForm.querySelector("button[type='submit']");
+    const email = String(new FormData(requestForm).get("email") || "").trim();
+    setBusyButton(button, true, "Envoi...");
+    try {
+      await globalThis.ZeydsNeon.requestPasswordCode(email);
+      resetForm.elements.email.value = email;
+      renderAdminRemoteStatus(`Si ${email} est un compte admin, un code vient d'y être envoyé (valable quelques minutes).`, true);
+      finishActionButton(button, "Code envoyé");
+      resetForm.elements.otp.focus();
+    } catch (error) {
+      renderAdminRemoteStatus(`Envoi du code impossible : ${error.message}`, true);
+      finishActionButton(button, "Erreur");
+    }
+  });
+  resetForm?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const button = resetForm.querySelector("button[type='submit']");
+    const data = new FormData(resetForm);
+    const email = String(data.get("email") || "").trim();
+    setBusyButton(button, true, "Enregistrement...");
+    try {
+      await globalThis.ZeydsNeon.resetPassword(email, String(data.get("otp") || "").trim(), String(data.get("password") || ""));
+      resetForm.reset();
+      box.open = false;
+      const loginEmail = document.querySelector("#supabaseAdminLoginForm input[name='email']");
+      if (loginEmail) loginEmail.value = email;
+      renderAdminRemoteStatus("Mot de passe enregistré. Connectez-vous avec ce nouveau mot de passe.", true);
+      finishActionButton(button, "Enregistré");
+    } catch (error) {
+      renderAdminRemoteStatus(`Mot de passe non enregistré : ${error.message}`, true);
+      finishActionButton(button, "Erreur");
+    }
+  });
+}
+
 async function supabaseAuthSignIn(email, password) {
+  if (neonDataApiEnabled()) {
+    const session = await globalThis.ZeydsNeon.signIn(email, password);
+    saveAdminAuthSession(session);
+    return session;
+  }
   if (!supabaseConfigured()) {
     throw new Error("Configuration Supabase absente");
   }
@@ -3342,6 +3418,7 @@ async function supabaseUploadFile(bucket, path, file, options = {}) {
 async function optionalStorageUpload(bucketKey, folder, file, options = {}) {
   if (!file || !file.size) return { skipped: true };
   try {
+    if (neonDataApiEnabled()) return await globalThis.ZeydsNeon.uploadFile(bucketKey, file);
     const bucket = supabaseStorageBucket(bucketKey);
     return await supabaseUploadFile(bucket, storageFilePath(folder, file), file, options);
   } catch (error) {
@@ -8373,7 +8450,7 @@ function isMissingPriorityColumnError(error) {
 }
 
 async function sendPushNotification(payload) {
-  const endpoint = bizziConfig.notifications?.notifyEndpoint;
+  const endpoint = globalThis.ZeydsNeon?.endpoint?.("push-notify", bizziConfig.notifications?.notifyEndpoint) || bizziConfig.notifications?.notifyEndpoint;
   if (!endpoint || !bizziConfig.notifications?.enabled) return;
   try {
     const anonKey = bizziConfig.supabase?.anonKey || "";
@@ -8387,7 +8464,24 @@ async function sendPushNotification(payload) {
   }
 }
 
+// SMS LeTexto (fonction Vercel /api/sms-notify) : on n'envoie que l'identifiant de la demande ;
+// le serveur relit la demande en base (prestataires retenus, service, ville) et n'envoie qu'une
+// fois par demande. Voir api/_lib/sms-notify.js.
+async function sendOpportunitySms(request) {
+  if (!bizziConfig.notifications?.smsEnabled || !neonDataApiEnabled() || !request.remoteId) return;
+  try {
+    await fetch(globalThis.ZeydsNeon.endpoint("sms-notify"), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ event: "new_opportunity", request_id: request.remoteId }),
+    });
+  } catch {
+    // Best-effort, comme le push : la demande est deja enregistree.
+  }
+}
+
 function notifyMatchedProvidersOfOpportunity(request, matches) {
+  sendOpportunitySms(request);
   matches.forEach((provider) => {
     if (!provider.phone) return;
     sendPushNotification({
@@ -18083,6 +18177,7 @@ function setupDataTools() {
   }
   document.querySelector("#loadRemoteQueue")?.addEventListener("click", (event) => loadSupabaseAdminQueue(event.currentTarget));
   document.querySelector("#supabaseAdminLogout")?.addEventListener("click", () => {
+    globalThis.ZeydsNeon?.signOut?.(loadAdminAuthSession());
     saveAdminAuthSession(null);
     remoteAdminQueue = emptyRemoteAdminQueue();
     renderRemoteAdminPanel();
@@ -18108,6 +18203,7 @@ function setupDataTools() {
       finishActionButton(button, "Erreur");
     }
   });
+  setupNeonAdminPasswordForms();
   document.querySelector("#exportData")?.addEventListener("click", exportData);
   document.querySelector("#exportProvidersCsv")?.addEventListener("click", exportProvidersCsv);
   document.querySelector("#exportPaymentsCsv")?.addEventListener("click", exportPaymentsCsv);

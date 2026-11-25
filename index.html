@@ -14,6 +14,8 @@
   <link rel="apple-touch-icon" href="assets/apple-touch-icon-v305.png">
   <link rel="manifest" href="manifest.webmanifest?v=304">
   <link rel="preconnect" href="https://hqqppxnvorcnvksulhna.supabase.co">
+  <link rel="preconnect" href="https://ep-dry-night-bgn2xvtv.apirest.c-9.eu-central-1.aws.neon.tech" crossorigin>
+  <link rel="preconnect" href="https://ep-dry-night-bgn2xvtv.neonauth.c-9.eu-central-1.aws.neon.tech" crossorigin>
   <script>
     window.__bizziCssReady = false;
     window.__bizziAppReady = false;
@@ -1623,6 +1625,19 @@
               <label>Mot de passe<input name="password" type="password" autocomplete="current-password" placeholder="Mot de passe Supabase"></label>
               <button class="primary" type="submit">Connexion Supabase</button>
             </form>
+            <details id="neonAdminPasswordSetup" class="neon-admin-password" hidden>
+              <summary>Première connexion ou mot de passe oublié</summary>
+              <form id="neonAdminCodeRequestForm" class="form compact">
+                <label>Email admin<input name="email" type="email" autocomplete="email" required></label>
+                <button class="secondary" type="submit">Recevoir un code par e-mail</button>
+              </form>
+              <form id="neonAdminPasswordResetForm" class="form compact">
+                <label>Email admin<input name="email" type="email" autocomplete="email" required></label>
+                <label>Code reçu par e-mail<input name="otp" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required></label>
+                <label>Nouveau mot de passe<input name="password" type="password" autocomplete="new-password" minlength="8" required></label>
+                <button class="primary" type="submit">Enregistrer le mot de passe</button>
+              </form>
+            </details>
             <div class="admin-actions">
               <button class="secondary" id="loadRemoteQueue" type="button">Charger validations Supabase</button>
               <button class="secondary" id="supabaseAdminLogout" type="button">Déconnexion Supabase</button>
@@ -1900,18 +1915,19 @@
   <script src="js/storage-safe.js?v=240"></script>
   <script src="js/privacy-guard.js?v=304"></script>
   <script src="js/data-dedupe.js?v=304"></script>
-  <script src="config.js?v=304"></script>
+  <script src="config.js?v=306"></script>
+  <script src="js/zeyds-neon-auth.js?v=308"></script>
   <script src="js/ci-map.js?v=304"></script>
   <script src="js/error-monitor.js?v=240"></script>
   <script src="js/performance-monitor.js?v=240"></script>
   <script src="js/payment-gateway.js?v=240"></script>
   <script src="js/admin-guard.js?v=240"></script>
   <script src="js/live-location.js?v=240"></script>
-  <script src="js/push-client.js?v=240"></script>
+  <script src="js/push-client.js?v=241"></script>
   <script src="js/fraud-guard.js?v=240"></script>
   <script src="js/admin-dashboard.js?v=240"></script>
   <script src="js/geo-precision.js?v=304"></script>
-  <script src="js/maps-provider.js?v=304"></script>
+  <script src="js/maps-provider.js?v=305"></script>
   <script src="assets/vendor/leaflet/leaflet.js"></script>
   <script src="js/providers-map.js?v=305"></script>
   <script src="js/network-lite.js?v=240"></script>
@@ -1924,12 +1940,12 @@
   <script src="js/premium-home.js?v=240"></script>
   <script src="js/service-ai-images.js?v=304"></script>
   <script src="js/mobile-form-wizard.js?v=304"></script>
-  <script src="js/zeyds-favorites.js?v=3"></script>
-  <script src="js/zeyds-messages.js?v=2"></script>
-  <script src="js/zeyds-cash.js?v=310"></script>
+  <script src="js/zeyds-favorites.js?v=4"></script>
+  <script src="js/zeyds-messages.js?v=3"></script>
+  <script src="js/zeyds-cash.js?v=311"></script>
   <script src="js/zeyds-jobs.js?v=4"></script>
   <script src="js/motion-system.js?v=304"></script>
-  <script src="app.js?v=405"></script>
+  <script src="app.js?v=407"></script>
   <script src="js/location-intelligence.js?v=305"></script>
   <script src="js/home-magazine.js?v=305"></script>
   <script>

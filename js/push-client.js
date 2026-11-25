@@ -28,7 +28,9 @@
       applicationServerKey: urlBase64ToUint8Array(cfg.vapidPublicKey),
     });
     const anonKey = globalThis.BizziConfig?.supabase?.anonKey || "";
-    const response = await fetch(cfg.subscribeEndpoint, {
+    // Mode Neon : fonction Vercel /api/push-subscribe (meme domaine), sinon Edge Function Supabase.
+    const endpoint = globalThis.ZeydsNeon?.endpoint?.("push-subscribe", cfg.subscribeEndpoint) || cfg.subscribeEndpoint;
+    const response = await fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json", apikey: anonKey, Authorization: `Bearer ${anonKey}` },
       body: JSON.stringify({

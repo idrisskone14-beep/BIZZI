@@ -1,4 +1,4 @@
-const CACHE_NAME = "bizzi-v410-0";
+const CACHE_NAME = "bizzi-v413-0";
 const OFFLINE_URL = "./offline.html";
 const NAVIGATION_TIMEOUT_MS = 4500;
 const ASSETS = [
@@ -19,11 +19,11 @@ const ASSETS = [
   "./js/payment-gateway.js?v=240",
   "./js/admin-guard.js?v=240",
   "./js/live-location.js?v=240",
-  "./js/push-client.js?v=240",
+  "./js/push-client.js?v=241",
   "./js/fraud-guard.js?v=240",
   "./js/admin-dashboard.js?v=240",
   "./js/geo-precision.js?v=304",
-  "./js/maps-provider.js?v=304",
+  "./js/maps-provider.js?v=305",
   "./js/providers-map.js?v=305",
   "./js/location-intelligence.js?v=305",
   "./js/network-lite.js?v=240",
@@ -35,7 +35,8 @@ const ASSETS = [
   "./js/test-data.js?v=304",
   "./js/premium-home.js?v=240",
   "./js/mobile-form-wizard.js?v=304",
-  "./config.js?v=304",
+  "./config.js?v=306",
+  "./js/zeyds-neon-auth.js?v=308",
   "./styles.css?v=304",
   "./mobile-forms.css?v=304",
   "./journey-visuals.css?v=243",
@@ -51,13 +52,13 @@ const ASSETS = [
   "./motion-system.css?v=304",
   "./mobile-layout-v297.css?v=304",
   "./mobile-v306.css?v=307",
-  "./js/zeyds-cash.js?v=310",
+  "./js/zeyds-cash.js?v=311",
   "./js/zeyds-jobs.js?v=4",
-  "./js/zeyds-favorites.js?v=3",
-  "./js/zeyds-messages.js?v=2",
+  "./js/zeyds-favorites.js?v=4",
+  "./js/zeyds-messages.js?v=3",
   "./js/motion-system.js?v=304",
   "./js/service-ai-images.js?v=304",
-  "./app.js?v=405",
+  "./app.js?v=407",
   "./js/home-magazine.js?v=305",
   "./admin-access.html",
   "./manifest.webmanifest",
@@ -103,6 +104,8 @@ function cacheFirstThenRefresh(request) {
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
   const url = new URL(event.request.url);
+  // Fonctions Vercel (dont les justificatifs prives) : jamais servies depuis le cache.
+  if (url.origin === self.location.origin && url.pathname.startsWith("/api/")) return;
 
   if (url.origin !== self.location.origin) {
     event.respondWith(fetch(event.request));

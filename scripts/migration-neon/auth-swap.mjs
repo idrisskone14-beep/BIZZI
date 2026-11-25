@@ -1,7 +1,7 @@
 // Phase "save" : sauvegarde les policies dependant du schema auth puis renomme auth -> auth_legacy.
 // Phase "restore" : apres provisionnement Neon, recree ces policies et transfere les droits du role temporaire.
 import fs from "node:fs"; import pg from "pg";
-const env = Object.fromEntries(fs.readFileSync("./.env","utf8").split(/\r?\n/).filter(Boolean).map((l)=>[l.slice(0,l.indexOf("=")),l.slice(l.indexOf("=")+1)]));
+import { env } from "./common.mjs";
 const c = new pg.Client({connectionString: env.TARGET_URL}); await c.connect();
 const q = (n) => '"' + n.replace(/"/g, '""') + '"';
 const mode = process.argv[2];

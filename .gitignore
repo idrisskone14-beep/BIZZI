@@ -7,3 +7,5 @@ node_modules/
 backups/
 supabase/.temp/
 scripts/migration-neon/.env
+bascule-etat*.json
+**/supabase/.temp/

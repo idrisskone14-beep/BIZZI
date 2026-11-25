@@ -4,8 +4,8 @@
 // Usage : node link-admins.mjs <chemin/donnees.json>
 import fs from "node:fs";
 import pg from "pg";
+import { env } from "./common.mjs";
 
-const env = Object.fromEntries(fs.readFileSync(new URL("./.env", import.meta.url), "utf8").split(/\r?\n/).filter(Boolean).map((l) => [l.slice(0, l.indexOf("=")), l.slice(l.indexOf("=") + 1)]));
 const backup = JSON.parse(fs.readFileSync(process.argv[2], "utf8"));
 const oldIdToEmail = Object.fromEntries(backup.auth_users.map((u) => [u.id, String(u.email || "").toLowerCase()]));
 

@@ -1,5 +1,5 @@
 import fs from "node:fs"; import pg from "pg";
-const env = Object.fromEntries(fs.readFileSync("./.env","utf8").split(/\r?\n/).filter(Boolean).map((l)=>[l.slice(0,l.indexOf("=")),l.slice(l.indexOf("=")+1)]));
+import { env } from "./common.mjs";
 const priv = JSON.parse(fs.readFileSync("./supabase-export/private.json","utf8")).rows[0].info;
 const ddl = JSON.parse(fs.readFileSync("./supabase-export/ddl.json","utf8")).rows;
 const grants = JSON.parse(fs.readFileSync("./supabase-export/grants.json","utf8")).rows;

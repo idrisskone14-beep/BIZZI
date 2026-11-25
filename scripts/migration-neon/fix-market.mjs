@@ -1,5 +1,5 @@
 import fs from "node:fs"; import pg from "pg";
-const env = Object.fromEntries(fs.readFileSync("./.env","utf8").split(/\r?\n/).filter(Boolean).map((l)=>[l.slice(0,l.indexOf("=")),l.slice(l.indexOf("=")+1)]));
+import { env } from "./common.mjs";
 const c = new pg.Client({connectionString: env.TARGET_URL}); await c.connect();
 const { rows: [r] } = await c.query(`select pg_get_functiondef(p.oid) as d from pg_proc p where p.proname = 'process_market_expirations' and p.pronamespace = 'public'::regnamespace`);
 // Sans JWT (connexion directe d'un serveur de confiance) = equivalent du service_role Supabase.

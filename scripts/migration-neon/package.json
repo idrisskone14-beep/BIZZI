@@ -1,16 +1,9 @@
 {
-  "name": "migrate",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
+  "name": "zeyds-migration-neon",
+  "private": true,
+  "type": "module",
+  "description": "Scripts de migration vers la base Neon zeyds-prod (voir README.md et JOUR-J.md).",
   "dependencies": {
-    "pg": "^8.23.1"
+    "pg": "8.16.3"
   }
 }

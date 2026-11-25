@@ -20,18 +20,17 @@ TARGET_URL=postgresql://...zeyds-prod...?sslmode=verify-full
 
 Puis `npm install`.
 
-## Jour de la bascule (donnees a jour)
+## Jour de la bascule
 
-1. Mettre l'app en maintenance (plus d'ecritures sur bizzi-db ni Supabase).
-2. Reexporter les donnees Supabase (`npx supabase login`, puis la requete d'export des tables propres
-   a Supabase, voir `backups/` pour le format `donnees.json`).
-3. `node copy-neon.mjs data` puis `node copy-neon.mjs verify` (bizzi-db -> zeyds-prod).
-4. `node add-supabase.mjs data <chemin/donnees.json>` (tables Supabase, fusion des reglages).
-5. `node check-cash.mjs <chemin/donnees.json>` : Zeyds Cash doit etre identique.
-6. Basculer l'app vers zeyds-prod.
+Deroule complet, verifications et retour arriere : **[JOUR-J.md](JOUR-J.md)**.
 
-La structure (`copy-neon.mjs schema`, `add-supabase.mjs schema`, `add-private.mjs`) est deja en place :
-ne pas la rejouer sur une base non vide.
+- `node bascule.mjs --confirmer` enchaine : export Supabase frais (`export-supabase.mjs`), recopie
+  de bizzi-db (`copy-neon.mjs data` + `verify`), donnees Supabase (`add-supabase.mjs data`),
+  verification stricte (`verif-supabase.mjs`, Zeyds Cash compris), liaison des admins
+  (`link-admins.mjs`), remise a zero des abonnements push. S'arrete au premier ecart.
+- Repetition sans risque : `TARGET_URL=<branche Neon> node bascule.mjs --repetition`.
+- Apres la bascule : `node rattrapage.mjs` recupere les lignes ecrites sur l'ancien systeme apres
+  l'instantane (ajout seulement, jamais d'ecrasement).
 
 ## Data API et Neon Auth (en place depuis le 2026-11-25)
 
@@ -48,19 +47,12 @@ ne pas la rejouer sur une base non vide.
 - `link-admins.mjs` relie `admin_profiles.auth_user_id` aux comptes Neon Auth (par e-mail).
 - Cote app : `js/zeyds-neon-auth.js` + `BizziConfig.neon`. Test sans bascule : `?backend=neon`.
 
-## Jour J, apres la recopie des donnees
-
-1. `node link-admins.mjs <chemin/donnees.json>` (la recopie remet les anciens identifiants Supabase).
-1b. `delete from public.push_subscriptions;` sur zeyds-prod : ces abonnements ont ete crees avec
-   l'ancienne cle VAPID (Supabase). Les appareils se reabonnent tout seuls avec la nouvelle cle
-   (`BizziConfig.neon.vapidPublicKey`, js/push-client.js) a la prochaine activation des notifications.
-2. Refermer le CORS de la Data API sur les domaines de production (ouvert a tous pendant les tests).
-3. `config.js` : `neon.enabled: true`, deployer, verifier, puis couper Render et Supabase.
-
 ## Reste a faire
 
 - 12 cles etrangeres vers `auth.users` (tables Market, Ride, pricing_quotes, service_request_*,
-  toutes vides) : a rebrancher sur `neon_auth."user"`.
+  toutes vides) volontairement non recreees : `auth.users` n'existe pas chez Neon, et lier des tables
+  a `neon_auth."user"` (geree par Neon) pourrait bloquer la suppression d'un compte. A revoir si ces
+  modules sont actives.
 - `private.zeyds_broadcast_ride_change` utilise Supabase Realtime : a remplacer (module Ride vide).
 - Les policies Supabase « smart request » sur `express_requests` n'ont pas ete reprises : Neon garde
   les siennes, qui sont celles de l'app en production.

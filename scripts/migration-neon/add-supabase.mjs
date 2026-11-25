@@ -3,16 +3,14 @@
 //         node add-supabase.mjs data <chemin/donnees.json>   (rejouable)
 import fs from "node:fs";
 import pg from "pg";
+import { env, MERGE_TABLES, NEW_TABLES } from "./common.mjs";
 
-const env = Object.fromEntries(fs.readFileSync(new URL("./.env", import.meta.url), "utf8").split(/\r?\n/).filter(Boolean).map((l) => [l.slice(0, l.indexOf("=")), l.slice(l.indexOf("=") + 1)]));
 const read = (p) => JSON.parse(fs.readFileSync(new URL(p, import.meta.url), "utf8")).rows;
 const ddl = read("./supabase-export/ddl.json");
 const grants = read("./supabase-export/grants.json");
 const revokes = read("./supabase-export/revokes.json");
 const expressCols = read("./supabase-export/express-cols.json");
 
-const NEW_TABLES = new Set("cash_credits cash_disputes cash_missions cash_notifications cash_reviews cash_solutions cash_solver_stats cash_transactions cash_wallets driver_locations driver_vehicles market_credits market_ledger market_requests market_settings market_solutions market_solver_permissions pricing_quotes professional_wallets provider_availability recommendation_settings request_services ride_admin_audit_log ride_drivers ride_pricing_settings ride_promotions ride_status_history ride_stops rides service_proposals service_request_events service_request_matches service_request_media situation_questions situation_services situations vehicle_categories wallet_transactions push_subscriptions".split(" "));
-const MERGE_TABLES = ["platform_settings", "admin_profiles", "admin_audit_events"];
 const EXPRESS_EXTRA = "client_user_id client_name analysis requested_skills desired_at budget_amount latitude longitude location_accuracy_m location_label search_radius_km radius_history dispatch_status accepted_proposal_id situation_id situation_code solution_mode people_count constraint_notes resolution_status overall_budget resolved_at".split(" ");
 
 const q = (n) => '"' + n.replace(/"/g, '""') + '"';

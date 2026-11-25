@@ -4,13 +4,8 @@
 //         node copy-neon.mjs verify   (compare les nombres de lignes)
 import fs from "node:fs";
 import pg from "pg";
+import { env } from "./common.mjs";
 
-const env = Object.fromEntries(
-  fs.readFileSync(new URL("./.env", import.meta.url), "utf8").split(/\r?\n/).filter(Boolean).map((l) => {
-    const i = l.indexOf("=");
-    return [l.slice(0, i), l.slice(i + 1)];
-  }),
-);
 const EXCLUDED_TABLES = new Set(["playing_with_neon"]); // table de demo Neon
 const mode = process.argv[2];
 
@@ -223,6 +218,7 @@ async function verify() {
     }
   }
   console.log(`tables comparees : ${a.length - EXCLUDED_TABLES.size}, differences : ${diff}`);
+  if (diff) process.exitCode = 1;
   console.log("objets source", (await src.query(OBJ)).rows[0]);
   console.log("objets cible ", (await tgt.query(OBJ)).rows[0]);
   await src.end();

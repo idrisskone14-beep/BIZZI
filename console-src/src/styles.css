@@ -61,7 +61,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .logout:hover { background: rgba(255, 255, 255, .08) !important; }
 .main { min-width: 0; }
 .content { max-width: 1180px; margin: 0 auto; padding: 28px 32px 64px; }
-.only-mobile { display: none; }
+.only-mobile { display: none !important; }
 .boot { display: grid; place-items: center; min-height: 100vh; }
 
 /* Page */
@@ -237,6 +237,12 @@ button.metric:hover { border-color: var(--line-2); }
 .setting-row { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 12px 0; border-top: 1px solid var(--line); }
 .settings .setting-row:first-child { border-top: 0; }
 .setting-label { display: flex; flex-direction: column; min-width: 0; }
+.setting-bool { grid-template-columns: minmax(0, 1fr) auto; }
+.switch { position: relative; width: 46px; height: 26px; border-radius: 999px; border: 0; background: #cfd6e2; cursor: pointer; transition: background .15s; flex: none; }
+.switch span { position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, .2); transition: transform .15s; }
+.switch.on { background: var(--green); }
+.switch.on span { transform: translateX(20px); }
+.switch:disabled { opacity: .6; cursor: wait; }
 .setting-label span { color: var(--faint); font-size: 12px; overflow-wrap: anywhere; }
 .setting-row input, .login input { height: 38px; padding: 0 12px; border: 1px solid var(--line-2); border-radius: 9px; background: #fff; outline: 0; width: 100%; }
 .setting-row input:focus, .login input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(11, 95, 168, .12); }
@@ -269,7 +275,7 @@ button.metric:hover { border-color: var(--line-2); }
 }
 @media (max-width: 860px) {
   .shell { grid-template-columns: minmax(0, 1fr); }
-  .only-mobile { display: inline-grid; }
+  .icon-btn.only-mobile { display: inline-grid !important; }
   .sidebar { position: fixed; inset: 0 auto 0 0; width: 272px; z-index: 60; transform: translateX(-100%); transition: transform .2s ease; }
   .menu-open .sidebar { transform: none; }
   .scrim { display: none !important; }
@@ -280,6 +286,7 @@ button.metric:hover { border-color: var(--line-2); }
   .grid-2 { grid-template-columns: minmax(0, 1fr); gap: 0; }
   .page-header h1 { font-size: 21px; }
   .setting-row { grid-template-columns: minmax(0, 1fr); }
+  .setting-row.setting-bool { grid-template-columns: minmax(0, 1fr) auto; }
 }
 @media (max-width: 560px) {
   .hide-sm { display: none; }

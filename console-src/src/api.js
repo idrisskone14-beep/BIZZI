@@ -43,6 +43,26 @@ async function auth(path, { method = "GET", body } = {}) {
   return { payload, response };
 }
 
+// Juste apres l'emission d'un jeton, la Data API Neon traite parfois une premiere requete comme
+// un visiteur (lignes vides, « Admin only »). On confirme donc chaque nouveau jeton par un appel
+// is_admin avant de l'utiliser (3 essais max ; un compte non admin passe simplement a la suite).
+async function warmUp(token) {
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    try {
+      const response = await fetch(`${DATA_URL}/rpc/is_admin`, {
+        method: "POST",
+        headers: { Accept: "application/json", "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: "{}",
+        cache: "no-store",
+      });
+      if (response.ok && (await response.json()) === true) return;
+    } catch {
+      /* reseau : on reessaie */
+    }
+    await new Promise((resolve) => { setTimeout(resolve, 250 * (attempt + 1)); });
+  }
+}
+
 /** Jeton d'acces (~15 min) tire du cookie de session Neon Auth ; "" si pas de session. */
 export async function accessToken({ force = false } = {}) {
   if (!force && access.token && access.exp - MARGIN_MS > Date.now()) return access.token;
@@ -59,6 +79,7 @@ export async function accessToken({ force = false } = {}) {
           token = "";
         }
       }
+      if (token) await warmUp(token);
       access = { token, exp: token ? Number(claims(token).exp || 0) * 1000 : 0 };
       return token;
     })().finally(() => { pending = null; });

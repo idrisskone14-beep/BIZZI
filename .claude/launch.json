@@ -6,6 +6,13 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["-y", "serve", "-l", "5173", "."],
       "port": 5173
+    },
+    {
+      "name": "console-admin",
+      "runtimeExecutable": "npm.cmd",
+      "runtimeArgs": ["run", "console:dev", "--", "--port", "5174", "--strictPort"],
+      "port": 5174,
+      "url": "http://localhost:5174"
     }
   ]
 }

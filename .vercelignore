@@ -1,0 +1,11 @@
+# Fichiers internes : jamais envoyes a Vercel (ils etaient lisibles publiquement sur le site).
+sql-copie-bizzi
+scripts
+docs
+supabase
+supabase-stack
+backend
+backups
+load-tests
+local-test-fally.html
+dev-server.cmd

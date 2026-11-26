@@ -9,3 +9,6 @@ supabase/.temp/
 scripts/migration-neon/.env
 bascule-etat*.json
 **/supabase/.temp/
+
+# Console admin construite par Vercel (npm run build) : jamais dans git
+console/

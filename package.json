@@ -6,11 +6,22 @@
   "engines": {
     "node": "24.x"
   },
+  "scripts": {
+    "build": "vite build --config console-src/vite.config.js",
+    "console:dev": "vite --config console-src/vite.config.js"
+  },
   "dependencies": {
     "@neondatabase/serverless": "1.2.0",
     "@vercel/blob": "2.9.0",
     "@vercel/oidc": "3.8.10",
     "jose": "6.2.17",
     "web-push": "3.6.7"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "4.5.2",
+    "lucide-react": "0.468.0",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "vite": "6.3.5"
   }
 }

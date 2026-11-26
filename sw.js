@@ -1,4 +1,4 @@
-const CACHE_NAME = "bizzi-v417-0";
+const CACHE_NAME = "bizzi-v418-0";
 const OFFLINE_URL = "./offline.html";
 const NAVIGATION_TIMEOUT_MS = 4500;
 const ASSETS = [
@@ -104,8 +104,8 @@ function cacheFirstThenRefresh(request) {
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
   const url = new URL(event.request.url);
-  // Fonctions Vercel (dont les justificatifs prives) : jamais servies depuis le cache.
-  if (url.origin === self.location.origin && url.pathname.startsWith("/api/")) return;
+  // Fonctions Vercel (dont les justificatifs prives) et console admin : jamais servies depuis le cache.
+  if (url.origin === self.location.origin && (url.pathname.startsWith("/api/") || url.pathname.startsWith("/console"))) return;
 
   if (url.origin !== self.location.origin) {
     event.respondWith(fetch(event.request));

@@ -13,6 +13,15 @@ window.BizziConfig = {
     providersEmail: "prestataires@bizzi-africa.com",
     supportWhatsapp: "+225 07 59 95 81 21",
   },
+  // V306 : base unique Neon (Francfort). Le jour de la bascule, passer enabled a true.
+  // Test sans bascule : ajouter ?backend=neon a l'adresse du site (?backend=legacy pour revenir).
+  neon: {
+    enabled: true,
+    dataApiUrl: "https://ep-dry-night-bgn2xvtv.apirest.c-9.eu-central-1.aws.neon.tech/neondb",
+    authUrl: "https://ep-dry-night-bgn2xvtv.neonauth.c-9.eu-central-1.aws.neon.tech/neondb/auth",
+    // Cle publique Web Push des fonctions Vercel (paire du 2026-11-25 ; la privee est dans Vercel).
+    vapidPublicKey: "BBCMDvTuvu2hormnVcGnzXp0a6oh--6ZbrQg--LlJVaQ6RegepVhaOHBCiic5P34hninTZsY2mqSoEVNP7f8lM0",
+  },
   restBackend: {
     url: "https://bizzi-gateway.onrender.com",
     anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzg1NDM3NDAxLCJleHAiOjIxMDA3OTc0MDF9.rkYbqdw1bG0U5FwTmTRPDqIoCtwaNTWO35oOOKhtpwk",
@@ -78,6 +87,9 @@ window.BizziConfig = {
     vapidPublicKey: "BFsmlYLLFeStWOvvaU47YXn5CKyGIsyztoxeZsOj8h4hl9WAX31ERNzrfC8wPSyr6YkyJPDca3nybcp-iLOHl-4",
     subscribeEndpoint: "https://hqqppxnvorcnvksulhna.supabase.co/functions/v1/push-subscribe",
     notifyEndpoint: "https://hqqppxnvorcnvksulhna.supabase.co/functions/v1/push-notify",
+    // A passer a true une fois sms-notify deployee avec ses secrets (docs/guide-api-sms-letexto-zeyds.md).
+    smsEnabled: false,
+    smsEndpoint: "https://hqqppxnvorcnvksulhna.supabase.co/functions/v1/sms-notify",
   },
   maps: {
     provider: "auto",

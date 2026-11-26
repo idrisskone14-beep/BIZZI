@@ -13,6 +13,13 @@ window.BizziConfig = {
     providersEmail: "prestataires@bizzi-africa.com",
     supportWhatsapp: "+225 07 59 95 81 21",
   },
+  // Base unique Neon : Data API + Neon Auth (voir scripts/migration-neon/README.md).
+  neon: {
+    enabled: false,
+    dataApiUrl: "https://ep-VOTRE-ENDPOINT.apirest.REGION.aws.neon.tech/neondb",
+    authUrl: "https://ep-VOTRE-ENDPOINT.neonauth.REGION.aws.neon.tech/neondb/auth",
+    vapidPublicKey: "VOTRE_CLE_PUBLIQUE_VAPID_VERCEL",
+  },
   supabase: {
     url: "https://VOTRE-PROJET.supabase.co",
     anonKey: "VOTRE_CLE_PUBLISHABLE_OU_ANON_SUPABASE",
@@ -70,6 +77,9 @@ window.BizziConfig = {
     vapidPublicKey: "VOTRE_CLE_PUBLIQUE_VAPID",
     subscribeEndpoint: "https://VOTRE-PROJET.supabase.co/functions/v1/push-subscribe",
     notifyEndpoint: "https://VOTRE-PROJET.supabase.co/functions/v1/push-notify",
+    // SMS LeTexto aux prestataires retenus (voir docs/guide-api-sms-letexto-zeyds.md).
+    smsEnabled: false,
+    smsEndpoint: "https://VOTRE-PROJET.supabase.co/functions/v1/sms-notify",
   },
   maps: {
     provider: "auto",

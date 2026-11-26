@@ -21,7 +21,11 @@
   function neonCfg() { return globalThis.BizziConfig?.restBackend || {}; }
   function supaCfg() { return globalThis.BizziConfig?.supabase || {}; }
 
-  function restHeaders(cfg) {
+  // V306 : quand la base Neon est active (js/zeyds-neon-auth.js), tout passe par sa Data API.
+  const neonOn = () => Boolean(globalThis.ZeydsNeon?.enabled?.());
+
+  async function restHeaders(cfg) {
+    if (neonOn()) return globalThis.ZeydsNeon.headers({ "Content-Type": "application/json" });
     const key = cfg.anonKey || "";
     return {
       apikey: key,
@@ -32,13 +36,14 @@
   }
 
   function restUrl(cfg, path) {
+    if (neonOn()) return globalThis.ZeydsNeon.restUrl(path);
     const base = String(cfg.url || "").replace(/\/+$/, "");
     return `${base}/rest/v1/${path}`;
   }
 
   async function neonRpc(name, args = {}) {
     const cfg = neonCfg();
-    const response = await fetch(restUrl(cfg, `rpc/${name}`), { method: "POST", headers: restHeaders(cfg), body: JSON.stringify(args) });
+    const response = await fetch(restUrl(cfg, `rpc/${name}`), { method: "POST", headers: await restHeaders(cfg), body: JSON.stringify(args) });
     const data = await response.json().catch(() => null);
     if (!response.ok) throw new Error(data?.message || data?.error || `Erreur (${name})`);
     return data;
@@ -46,7 +51,7 @@
 
   async function neonSelect(resource, query) {
     const cfg = neonCfg();
-    const response = await fetch(restUrl(cfg, `${resource}?${query}`), { headers: restHeaders(cfg) });
+    const response = await fetch(restUrl(cfg, `${resource}?${query}`), { headers: await restHeaders(cfg) });
     const data = await response.json().catch(() => []);
     if (!response.ok) throw new Error((Array.isArray(data) ? "" : data?.message) || `Erreur (${resource})`);
     return Array.isArray(data) ? data : [];
@@ -54,7 +59,7 @@
 
   async function supaRpc(name, args = {}) {
     const cfg = supaCfg();
-    const response = await fetch(restUrl(cfg, `rpc/${name}`), { method: "POST", headers: restHeaders(cfg), body: JSON.stringify(args) });
+    const response = await fetch(restUrl(cfg, `rpc/${name}`), { method: "POST", headers: await restHeaders(cfg), body: JSON.stringify(args) });
     const data = await response.json().catch(() => null);
     if (!response.ok) throw new Error(data?.message || data?.error || `Erreur (${name})`);
     return data;

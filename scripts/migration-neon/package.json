@@ -1,0 +1,9 @@
+{
+  "name": "zeyds-migration-neon",
+  "private": true,
+  "type": "module",
+  "description": "Scripts de migration vers la base Neon zeyds-prod (voir README.md et JOUR-J.md).",
+  "dependencies": {
+    "pg": "8.16.3"
+  }
+}

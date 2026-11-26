@@ -2,3 +2,10 @@ node_modules/
 .DS_Store
 
 .vercel
+
+# Sauvegardes locales (donnees personnelles) : jamais dans git
+backups/
+supabase/.temp/
+scripts/migration-neon/.env
+bascule-etat*.json
+**/supabase/.temp/

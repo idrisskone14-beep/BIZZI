@@ -2,7 +2,17 @@
   "use strict";
 
   function config() {
-    return globalThis.BizziConfig?.notifications || {};
+    const base = globalThis.BizziConfig?.notifications || {};
+    // Mode Neon : cle publique des fonctions Vercel (la privee correspondante est dans Vercel).
+    const neonKey = globalThis.ZeydsNeon?.enabled?.() ? globalThis.BizziConfig?.neon?.vapidPublicKey : "";
+    return neonKey ? { ...base, vapidPublicKey: neonKey } : base;
+  }
+
+  function sameKey(subscription, key) {
+    const current = subscription?.options?.applicationServerKey;
+    if (!current) return false;
+    const a = new Uint8Array(current);
+    return a.length === key.length && a.every((byte, index) => byte === key[index]);
   }
 
   function urlBase64ToUint8Array(base64String) {
@@ -23,12 +33,18 @@
     const permission = await Notification.requestPermission();
     if (permission !== "granted") return { ok: false, reason: "permission_denied" };
     const registration = await navigator.serviceWorker.ready;
+    const applicationServerKey = urlBase64ToUint8Array(cfg.vapidPublicKey);
+    // Abonnement cree avec une autre cle (changement de cle VAPID) : on le remplace.
+    const existing = await registration.pushManager.getSubscription();
+    if (existing && !sameKey(existing, applicationServerKey)) await existing.unsubscribe();
     const subscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(cfg.vapidPublicKey),
+      applicationServerKey,
     });
     const anonKey = globalThis.BizziConfig?.supabase?.anonKey || "";
-    const response = await fetch(cfg.subscribeEndpoint, {
+    // Mode Neon : fonction Vercel /api/push-subscribe (meme domaine), sinon Edge Function Supabase.
+    const endpoint = globalThis.ZeydsNeon?.endpoint?.("push-subscribe", cfg.subscribeEndpoint) || cfg.subscribeEndpoint;
+    const response = await fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json", apikey: anonKey, Authorization: `Bearer ${anonKey}` },
       body: JSON.stringify({

@@ -19,7 +19,14 @@
     } catch { return ""; }
   }
 
-  function apiHeaders(useAdmin) {
+  // V306 : quand la base Neon est active (js/zeyds-neon-auth.js), tout passe par sa Data API.
+  const neonOn = () => Boolean(globalThis.ZeydsNeon?.enabled?.());
+
+  async function apiHeaders(useAdmin) {
+    if (neonOn()) {
+      const admin = useAdmin ? await globalThis.ZeydsNeon.currentAdminAccessToken() : "";
+      return globalThis.ZeydsNeon.headers({ "Content-Type": "application/json" }, admin);
+    }
     const key = supabaseCfg().anonKey || "";
     const token = useAdmin ? adminAccessToken() : "";
     const headers = {
@@ -32,6 +39,7 @@
   }
 
   function restUrl(path) {
+    if (neonOn()) return globalThis.ZeydsNeon.restUrl(path);
     const base = String(supabaseCfg().url || "").replace(/\/+$/, "");
     return `${base}/rest/v1/${path}`;
   }
@@ -39,7 +47,7 @@
   async function rpc(name, args = {}, useAdmin = false) {
     const response = await fetch(restUrl(`rpc/${name}`), {
       method: "POST",
-      headers: apiHeaders(useAdmin),
+      headers: await apiHeaders(useAdmin),
       body: JSON.stringify(args),
     });
     const data = await response.json().catch(() => null);
@@ -50,7 +58,7 @@
   }
 
   async function viewSelect(view, query = "") {
-    const response = await fetch(restUrl(`${view}${query ? `?${query}` : ""}`), { headers: apiHeaders(false) });
+    const response = await fetch(restUrl(`${view}${query ? `?${query}` : ""}`), { headers: await apiHeaders(false) });
     const data = await response.json().catch(() => []);
     if (!response.ok) {
       throw new Error((Array.isArray(data) ? "" : data?.message) || `Erreur (${view})`);

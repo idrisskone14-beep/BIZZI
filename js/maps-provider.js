@@ -48,7 +48,9 @@
 
   async function backendRequest(payload) {
     if (!hasBackend()) return null;
-    const response = await fetch(cfg().geocodingEndpoint, {
+    // Mode Neon : fonction Vercel /api/map-geocode, sinon backend Render.
+    const endpoint = globalThis.ZeydsNeon?.endpoint?.("map-geocode", cfg().geocodingEndpoint) || cfg().geocodingEndpoint;
+    const response = await fetch(endpoint, {
       method: "POST",
       headers: authHeaders(),
       body: JSON.stringify(payload),

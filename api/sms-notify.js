@@ -32,8 +32,8 @@ export function POST(request) {
       return rows[0]?.n ?? 0;
     },
     async record(row) {
-      await sql()`insert into public.sms_log (event, request_id, provider_id, phone, status, letexto_id, error)
-        values (${row.event}, ${row.request_id}::uuid, ${row.provider_id}, ${row.phone}, ${row.status}, ${row.letexto_id}, ${row.error})`;
+      await sql()`insert into public.sms_log (event, request_id, provider_id, phone, status, letexto_id, parts, error)
+        values (${row.event}, ${row.request_id}::uuid, ${row.provider_id}, ${row.phone}, ${row.status}, ${row.letexto_id}, ${row.parts ?? null}, ${row.error})`;
     },
   });
 }

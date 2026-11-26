@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   BadgeCheck, Bolt, Coins, ExternalLink, Flag, LayoutDashboard, LogOut, Megaphone, Menu,
-  Receipt, Settings, ShieldCheck, Users, X,
+  MessageSquareText, Receipt, Settings, ShieldCheck, Users, X,
 } from "lucide-react";
 import { accessToken, claims, count, rpc, signOut } from "./api.js";
 import { Loading } from "./ui.jsx";
@@ -15,6 +15,7 @@ import Cash from "./pages/Cash.jsx";
 import Moderation from "./pages/Moderation.jsx";
 import Admins from "./pages/Admins.jsx";
 import SettingsPage from "./pages/Settings.jsx";
+import Sms from "./pages/Sms.jsx";
 
 const PAGES = [
   { id: "tableau", label: "Tableau de bord", icon: LayoutDashboard, component: Dashboard },
@@ -24,6 +25,7 @@ const PAGES = [
   { id: "demandes", label: "Demandes", icon: Bolt, component: Requests, badge: "requests" },
   { id: "cash", label: "Zeyds Cash", icon: Coins, component: Cash, badge: "cash" },
   { id: "moderation", label: "Modération", icon: Flag, component: Moderation, badge: "reports" },
+  { id: "sms", label: "SMS", icon: MessageSquareText, component: Sms },
   { id: "admins", label: "Admins et journal", icon: ShieldCheck, component: Admins, superOnly: true },
   { id: "reglages", label: "Réglages", icon: Settings, component: SettingsPage, superOnly: true },
 ];

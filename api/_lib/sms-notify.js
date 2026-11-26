@@ -8,7 +8,7 @@
 // - texte = modele fixe ; service et ville viennent des tables services / cities ;
 // - une seule salve par demande, 3 SMS par prestataire et 200 au total sur 24 h glissantes.
 import { normalizeIvorianPhone } from "./http.js";
-import { letextoConfig, sendSms } from "./letexto.js";
+import { dlrUrlFor, letextoConfig, sendSms } from "./letexto.js";
 
 export const MAX_RECIPIENTS = 5;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -61,6 +61,7 @@ export async function handleSmsNotify(request, deps) {
     const ids = [...new Set((demand.matched_provider_ids || []).map(String).filter((id) => UUID.test(id)))].slice(0, MAX_RECIPIENTS);
     const providers = ids.length ? await deps.listProviders(ids) : [];
     const content = opportunityMessage(demand.service, demand.city);
+    const dlrUrl = dlrUrlFor(request, sms);
 
     let sent = 0;
     let failed = 0;
@@ -72,7 +73,7 @@ export async function handleSmsNotify(request, deps) {
         skipped += 1;
         continue;
       }
-      const result = await sendSms(sms, phone, content, deps.fetch);
+      const result = await sendSms(sms, phone, content, deps.fetch, { dlrUrl });
       await deps.record({
         event: "new_opportunity",
         request_id: requestId,
@@ -80,7 +81,8 @@ export async function handleSmsNotify(request, deps) {
         phone,
         status: result.ok ? "sent" : "failed",
         letexto_id: result.ok ? result.id || null : null,
-        error: result.ok ? null : [result.error, result.detail].filter(Boolean).join(" ").slice(0, 300),
+        parts: result.ok ? result.parts : null,
+        error: result.ok ? null : String(result.error || "").slice(0, 300),
       });
       if (result.ok) sent += 1;
       else failed += 1;

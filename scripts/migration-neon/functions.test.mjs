@@ -125,3 +125,36 @@ test("sms-notify : entrees invalides et cle absente", async () => {
   assert.equal((await handleSmsNotify(post({ event: "new_opportunity", request_id: crypto.randomUUID() }), noKey)).status, 503);
   assert.equal(sent.length, 0);
 });
+
+test("sms-admin et sms-dlr : acces admin, accuse de reception signe", async () => {
+  const smsAdmin = await import(API + "sms-admin.js");
+  const smsDlr = await import(API + "sms-dlr.js");
+  const { dlrSecret, dlrUrlFor, sendSms } = await import(API + "_lib/letexto.js");
+  process.env.LETEXTO_API_KEY = "cle-de-test";
+  const config = { apiKey: "cle-de-test", sender: "ZEYDS", baseUrl: "https://letexto.invalid" };
+
+  // Console : refus sans jeton admin.
+  assert.equal((await smsAdmin.GET(new Request("https://zeyds.test/api/sms-admin"))).status, 403);
+  assert.equal((await smsAdmin.POST(post({ action: "test", to: "0700000000" }))).status, 403);
+
+  // L'envoi transmet l'adresse d'accuse de reception, sans la cle en clair.
+  let sentBody = null;
+  const fakeFetch = async (_url, init) => { sentBody = JSON.parse(init.body); return new Response(JSON.stringify({ id: "m-1", partCount: 2 })); };
+  const url = dlrUrlFor(new Request("https://www.bizzis-africa.com/api/sms-notify"), config);
+  const result = await sendSms(config, "2250700000000", "test", fakeFetch, { dlrUrl: url });
+  assert.deepEqual(result, { ok: true, id: "m-1", parts: 2 });
+  assert.equal(sentBody.dlrUrl, `https://www.bizzis-africa.com/api/sms-dlr?k=${dlrSecret(config)}`);
+  assert.ok(!sentBody.dlrUrl.includes("cle-de-test"));
+
+  // Accuse de reception : secret faux refuse, secret juste -> statut enregistre.
+  const id = `test-dlr-${Date.now()}`;
+  await sql()`insert into public.sms_log (event, phone, status, letexto_id) values ('test', '2250700000000', 'sent', ${id})`;
+  cleanup.push(() => sql()`delete from public.sms_log where letexto_id = ${id}`);
+  const dlr = (k, body) => new Request(`https://zeyds.test/api/sms-dlr?k=${k}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  assert.equal((await smsDlr.POST(dlr("mauvais", { id, statuts: "DELIVERED" }))).status, 403);
+  assert.equal((await smsDlr.POST(dlr(dlrSecret(config), { id, statuts: "DELIVERED" }))).status, 200);
+  const [row] = await sql()`select delivery_status, delivered_at from public.sms_log where letexto_id = ${id}`;
+  assert.equal(row.delivery_status, "DELIVERED");
+  assert.ok(row.delivered_at);
+  delete process.env.LETEXTO_API_KEY;
+});

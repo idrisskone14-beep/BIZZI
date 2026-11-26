@@ -171,6 +171,23 @@ export function audit(action, targetId, payload = {}, success = true, errorMessa
   }).catch(() => null);
 }
 
+/** Appel d'une fonction Vercel reservee aux admins (/api/<name>). */
+export async function adminApi(name, { method = "GET", body } = {}) {
+  const token = await accessToken();
+  const response = await fetch(`/api/${name}`, {
+    method,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      ...(body !== undefined ? { "Content-Type": "application/json" } : {}),
+    },
+    body: body !== undefined ? JSON.stringify(body) : undefined,
+    cache: "no-store",
+  });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(payload.error || `Erreur ${response.status}`);
+  return payload;
+}
+
 /** Justificatif prive (stockage Vercel Blob prive) -> URL locale temporaire. */
 export async function privateFileUrl(path) {
   const token = await accessToken();

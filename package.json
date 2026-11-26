@@ -7,7 +7,7 @@
     "node": "24.x"
   },
   "scripts": {
-    "build": "vite build --config console-src/vite.config.js",
+    "console:build": "vite build --config console-src/vite.config.js",
     "console:dev": "vite --config console-src/vite.config.js"
   },
   "dependencies": {

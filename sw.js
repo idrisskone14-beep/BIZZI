@@ -1,4 +1,4 @@
-const CACHE_NAME = "bizzi-v415-0";
+const CACHE_NAME = "bizzi-v416-0";
 const OFFLINE_URL = "./offline.html";
 const NAVIGATION_TIMEOUT_MS = 4500;
 const ASSETS = [
@@ -36,7 +36,7 @@ const ASSETS = [
   "./js/premium-home.js?v=240",
   "./js/mobile-form-wizard.js?v=304",
   "./config.js?v=308",
-  "./js/zeyds-neon-auth.js?v=308",
+  "./js/zeyds-neon-auth.js?v=309",
   "./styles.css?v=304",
   "./mobile-forms.css?v=304",
   "./journey-visuals.css?v=243",

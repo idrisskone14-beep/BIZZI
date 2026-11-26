@@ -61,7 +61,9 @@
 
   const fresh = (token, expiresAt) => Boolean(token) && expiresAt - REFRESH_MARGIN_MS > Date.now();
 
-  async function call(path, { method = "GET", body, bearer } = {}) {
+  // La session admin vit dans un cookie de Neon Auth (comme le SDK officiel @neon/auth) : les appels
+  // d'authentification envoient donc les cookies (credentials: "include"), sauf le jeton visiteur.
+  async function request(path, { method = "GET", body, bearer, credentials = "include" } = {}) {
     const headers = { Accept: "application/json" };
     if (body) headers["Content-Type"] = "application/json";
     if (bearer) headers.Authorization = `Bearer ${bearer}`;
@@ -69,14 +71,19 @@
       method,
       headers,
       body: body ? JSON.stringify(body) : undefined,
-      credentials: "omit",
+      credentials,
       cache: "no-store",
     });
     const payload = await response.json().catch(() => ({}));
+    return { response, payload };
+  }
+
+  async function call(path, options = {}) {
+    const { response, payload } = await request(path, options);
     if (!response.ok) {
       const error = new Error(frenchError(payload, response.status));
       error.status = response.status;
-      error.code = payload.code || "";
+      error.code = payload?.code || "";
       throw error;
     }
     return payload;
@@ -102,7 +109,7 @@
     try { cached = JSON.parse(persistent()?.getItem(ANON_KEY) || "null"); } catch { cached = null; }
     if (cached && fresh(cached.token, cached.expiresAt)) return cached.token;
     if (!anonPromise) {
-      anonPromise = call("/token/anonymous")
+      anonPromise = call("/token/anonymous", { credentials: "omit" })
         .then(({ token }) => {
           const value = { token, expiresAt: jwtExpiryMs(token) };
           try { persistent()?.setItem(ANON_KEY, JSON.stringify(value)); } catch { /* stockage indisponible */ }
@@ -113,9 +120,22 @@
     return anonPromise;
   }
 
+  // Jeton d'acces (JWT, ~15 min) a partir de la session : cookie de session d'abord (methode du SDK
+  // officiel), puis en-tete set-auth-jwt de /get-session, puis jeton de session en Bearer.
   async function accessFromSession(sessionToken) {
-    const { token } = await call("/token", { bearer: sessionToken });
-    return { accessToken: token, accessExpiresAt: jwtExpiryMs(token) };
+    const attempts = [
+      async () => (await call("/token")).token,
+      async () => {
+        const { response } = await request("/get-session");
+        return response.ok ? response.headers.get("set-auth-jwt") : "";
+      },
+      async () => (sessionToken ? (await call("/token", { bearer: sessionToken, credentials: "omit" })).token : ""),
+    ];
+    for (const attempt of attempts) {
+      const token = await attempt().catch(() => "");
+      if (token) return { accessToken: token, accessExpiresAt: jwtExpiryMs(token) };
+    }
+    throw new Error("Session admin refusée par Neon Auth : reconnectez-vous.");
   }
 
   /** Connexion admin. Renvoie la session a conserver (format attendu par app.js). */
@@ -135,14 +155,14 @@
 
   /** Renvoie un jeton d'acces valide pour la session admin, en le renouvelant si besoin. */
   async function refreshAdmin(stored) {
-    if (!stored?.sessionToken) return stored;
+    if (stored?.provider !== "neon") return stored;
     if (fresh(stored.accessToken, stored.accessExpiresAt || 0)) return stored;
     return { ...stored, ...(await accessFromSession(stored.sessionToken)) };
   }
 
   async function signOut(stored) {
-    if (!stored?.sessionToken) return;
-    await call("/sign-out", { method: "POST", bearer: stored.sessionToken, body: {} }).catch(() => null);
+    if (stored?.provider !== "neon") return;
+    await call("/sign-out", { method: "POST", body: {} }).catch(() => null);
   }
 
   /** Premiere connexion ou mot de passe oublie : envoie un code a 6 chiffres par e-mail. */
@@ -170,7 +190,7 @@
     const key = "bizzi-admin-auth-session";
     let stored = null;
     try { stored = JSON.parse(session()?.getItem(key) || "null"); } catch { stored = null; }
-    if (!stored?.sessionToken || !stored.expiresAt || stored.expiresAt <= Date.now()) return "";
+    if (stored?.provider !== "neon" || !stored.expiresAt || stored.expiresAt <= Date.now()) return "";
     const next = await refreshAdmin(stored);
     if (next !== stored) {
       try { session()?.setItem(key, JSON.stringify(next)); } catch { /* stockage indisponible */ }

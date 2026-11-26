@@ -18183,6 +18183,7 @@ function setupDataTools() {
     renderRemoteAdminPanel();
     renderSuperAdminPanel();
     renderLaunchChecklist();
+    globalThis.ZeydsCash?.renderAdminCash?.();
     renderAdminRemoteStatus("Compte admin Supabase déconnecté.", true);
   });
   document.querySelector("#supabaseAdminLoginForm")?.addEventListener("submit", async (event) => {
@@ -18196,6 +18197,7 @@ function setupDataTools() {
       form.reset();
       renderRemoteAdminPanel();
       renderSuperAdminPanel();
+      globalThis.ZeydsCash?.renderAdminCash?.();
       renderAdminRemoteStatus(`Connexion réussie : ${session.email}. Cliquez sur Charger validations Supabase quand vous voulez actualiser la file.`, true);
       finishActionButton(button, "Connecté");
     } catch (error) {

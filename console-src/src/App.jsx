@@ -59,15 +59,20 @@ export default function App() {
   const checkSession = useCallback(async () => {
     const token = await accessToken({ force: true });
     if (!token) return setSession({ status: "signedOut" });
-    const [isAdmin, isSuper] = await Promise.all([
-      rpc("is_admin").catch(() => false),
-      rpc("is_super_admin").catch(() => false),
-    ]);
-    if (!isAdmin) {
-      await signOut();
-      return setSession({ status: "signedOut", notice: "Ce compte n'est pas administrateur Zeyds." });
-    }
     const info = claims(token);
+    let isAdmin = false;
+    let isSuper = false;
+    try {
+      [isAdmin, isSuper] = await Promise.all([rpc("is_admin"), rpc("is_super_admin").catch(() => false)]);
+    } catch (error) {
+      // Erreur technique (reseau, jeton) : on garde la session et on affiche la vraie cause.
+      console.warn("[console] is_admin", error);
+      return setSession({ status: "signedOut", notice: `Vérification admin impossible : ${error.message}` });
+    }
+    if (isAdmin !== true) {
+      await signOut();
+      return setSession({ status: "signedOut", notice: `Le compte ${info.email || ""} n'est pas administrateur Zeyds.` });
+    }
     return setSession({ status: "signedIn", email: info.email || "", name: info.name || "", isSuper: Boolean(isSuper) });
   }, []);
 

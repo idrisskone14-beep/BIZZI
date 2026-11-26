@@ -25,10 +25,10 @@
       "continue": true
     },
     {
-      "src": "^/(admin|admin-access|admin-panel)/?$",
+      "src": "^/(admin|admin-access|admin-panel|admin-console)(\\.html|/)?$",
       "status": 302,
       "headers": {
-        "Location": "/index.html?admin=1&entry=admin-access&open=admin"
+        "Location": "/console/"
       }
     },
     {

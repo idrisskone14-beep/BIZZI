@@ -16,7 +16,7 @@ window.BizziConfig = {
   // V306 : base unique Neon (Francfort). Le jour de la bascule, passer enabled a true.
   // Test sans bascule : ajouter ?backend=neon a l'adresse du site (?backend=legacy pour revenir).
   neon: {
-    enabled: false,
+    enabled: true,
     dataApiUrl: "https://ep-dry-night-bgn2xvtv.apirest.c-9.eu-central-1.aws.neon.tech/neondb",
     authUrl: "https://ep-dry-night-bgn2xvtv.neonauth.c-9.eu-central-1.aws.neon.tech/neondb/auth",
     // Cle publique Web Push des fonctions Vercel (paire du 2026-11-25 ; la privee est dans Vercel).

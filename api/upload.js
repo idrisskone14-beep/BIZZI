@@ -2,6 +2,7 @@
 // Remplace Supabase Storage. Corps multipart : file, kind (cle de BizziConfig.supabase.storage).
 // L'app compresse les photos avant envoi ; la limite des fonctions Vercel est 4,5 Mo par requete.
 import { put } from "@vercel/blob";
+import { blobAuth } from "./_lib/blob-auth.js";
 import { json, text } from "./_lib/http.js";
 
 const MAX_BYTES = 4 * 1024 * 1024;
@@ -37,13 +38,13 @@ export async function POST(request) {
   if (file.size > MAX_BYTES) return json({ error: "Fichier trop lourd (4 Mo maximum)." }, 413);
   if (!kind.types.includes(file.type)) return json({ error: "Format non accepte (JPEG, PNG, WebP ou PDF)." }, 415);
 
-  const token = kind.access === "private" ? process.env.PRIVATE_BLOB_READ_WRITE_TOKEN : process.env.BLOB_READ_WRITE_TOKEN;
-  if (!token) return json({ error: "Stockage non configure." }, 503);
+  const auth = await blobAuth(kind.access);
+  if (!auth) return json({ error: "Stockage non configure." }, 503);
 
   try {
     const blob = await put(`${kind.folder}/${Date.now()}-${safeName(file.name)}`, file, {
       access: kind.access,
-      token,
+      ...auth,
       addRandomSuffix: true,
       contentType: file.type,
       cacheControlMaxAge: kind.access === "public" ? 60 * 60 * 24 * 365 : undefined,

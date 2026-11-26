@@ -3,6 +3,7 @@
 // de Neon Auth ; l'admin est ensuite controle dans admin_profiles.
 import { get } from "@vercel/blob";
 import { createRemoteJWKSet, jwtVerify } from "jose";
+import { blobAuth } from "./_lib/blob-auth.js";
 import { json, sql, text } from "./_lib/http.js";
 
 let jwks = null;
@@ -26,9 +27,9 @@ export async function GET(request) {
   const path = text(new URL(request.url).searchParams.get("path"));
   if (!/^(verification|payments)\/[\w.-]+$/.test(path)) return json({ error: "Chemin invalide." }, 400);
   if (!(await adminUserId(request))) return json({ error: "Acces reserve aux admins." }, 403);
-  const token = process.env.PRIVATE_BLOB_READ_WRITE_TOKEN;
-  if (!token) return json({ error: "Stockage prive non configure." }, 503);
-  const result = await get(path, { access: "private", token });
+  const auth = await blobAuth("private");
+  if (!auth) return json({ error: "Stockage prive non configure." }, 503);
+  const result = await get(path, { access: "private", ...auth });
   if (!result || result.statusCode !== 200) return json({ error: "Fichier introuvable." }, 404);
   return new Response(result.stream, {
     headers: {

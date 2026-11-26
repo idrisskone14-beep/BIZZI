@@ -53,7 +53,7 @@ test("upload refuse les envois invalides sans toucher au stockage", async () => 
 });
 
 test("private-file refuse sans jeton admin valide", async () => {
-  process.env.NEON_AUTH_ISSUER = "https://ep-dry-night-bgn2xvtv.neonauth.c-9.eu-central-1.aws.neon.tech/neondb/auth";
+  process.env.NEON_AUTH_ISSUER = "https://ep-dry-night-bgn2xvtv.neonauth.c-9.eu-central-1.aws.neon.tech";
   process.env.NEON_AUTH_JWKS_URL = "https://ep-dry-night-bgn2xvtv.neonauth.c-9.eu-central-1.aws.neon.tech/neondb/auth/.well-known/jwks.json";
   const anon = (await (await fetch("https://ep-dry-night-bgn2xvtv.neonauth.c-9.eu-central-1.aws.neon.tech/neondb/auth/token/anonymous")).json()).token;
   const req = (token, path = "verification/a.jpg") => new Request(`https://zeyds.test/api/private-file?path=${path}`, { headers: token ? { Authorization: `Bearer ${token}` } : {} });
